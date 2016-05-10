@@ -1,7 +1,50 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="ru.okmarket.okgoods.fragments.GoodsFragment">
 
-</FrameLayout>
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="48dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/addButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/add" />
+
+            <ImageButton
+                android:id="@+id/deleteButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/delete" />
+
+            <ImageButton
+                android:id="@+id/startButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/start" />
+
+            <ImageButton
+                android:id="@+id/historyButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/history" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
