@@ -4,4 +4,42 @@
     android:layout_height="match_parent"
     tools:context="ru.okmarket.okgoods.fragments.ShopMapFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary">
+
+        <TextView
+            android:id="@+id/shopTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:textColor="@color/textColorPrimary"
+            android:text="@string/shop" />
+
+        <TextView
+            android:id="@+id/selectShopTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/shopTextView"
+            android:layout_toEndOf="@id/shopTextView"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:ellipsize="start"
+            android:gravity="center"
+            android:textColor="@color/textColorPrimary"
+            android:text="@string/select_shop" />
+
+    </RelativeLayout>
+
 </FrameLayout>

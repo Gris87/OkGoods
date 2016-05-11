@@ -49,7 +49,7 @@ public class ImageButtonWithTooltip extends ImageButton implements View.OnLongCl
     }
 
     @Override
-    public boolean onLongClick(View v)
+    public boolean onLongClick(View view)
     {
         int[] screenPos    = new int[2];
         Rect  displayFrame = new Rect();
@@ -64,7 +64,7 @@ public class ImageButtonWithTooltip extends ImageButton implements View.OnLongCl
         int centerY = screenPos[1] + height / 2;
         int centerX = screenPos[0] + width  / 2;
 
-        if (ViewCompat.getLayoutDirection(v) == ViewCompat.LAYOUT_DIRECTION_LTR)
+        if (ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_LTR)
         {
             final int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
             centerX = screenWidth - centerX;
@@ -87,7 +87,7 @@ public class ImageButtonWithTooltip extends ImageButton implements View.OnLongCl
 
         if (mOnLongClickListener != null)
         {
-            mOnLongClickListener.onLongClick(v);
+            mOnLongClickListener.onLongClick(view);
         }
 
         return true;

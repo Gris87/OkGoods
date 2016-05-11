@@ -19,6 +19,11 @@
         tools:layout="@layout/fragment_goods"
         class="ru.okmarket.okgoods.fragments.GoodsFragment"/>
 
+    <FrameLayout
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorBorder" />
+
     <fragment
         android:id="@+id/shopMapFragment"
         android:layout_width="match_parent"

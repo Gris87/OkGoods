@@ -28,11 +28,14 @@ public class GoodsFragment extends Fragment
 
         mToolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
 
-
-
-        onFragmentCreated();
+        init();
 
         return rootView;
+    }
+
+    private void init()
+    {
+        onFragmentCreated();
     }
 
     public void onFragmentCreated()

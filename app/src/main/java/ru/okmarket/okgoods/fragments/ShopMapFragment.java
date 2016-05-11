@@ -3,15 +3,19 @@ package ru.okmarket.okgoods.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ru.okmarket.okgoods.R;
 
-public class ShopMapFragment extends Fragment
+public class ShopMapFragment extends Fragment implements View.OnClickListener
 {
-    private OnFragmentInteractionListener mListener = null;
+    private OnFragmentInteractionListener mListener             = null;
+    private TextView                      mSelectedShopTextView = null;
 
 
 
@@ -24,11 +28,40 @@ public class ShopMapFragment extends Fragment
     {
         View rootView = inflater.inflate(R.layout.fragment_shop_map, container, false);
 
+        mSelectedShopTextView = (TextView)rootView.findViewById(R.id.selectShopTextView);
 
-
-        onFragmentCreated();
+        init();
 
         return rootView;
+    }
+
+    private void init()
+    {
+        mSelectedShopTextView.setOnClickListener(this);
+
+        resetSelectedShop();
+        onFragmentCreated();
+    }
+
+    public void resetSelectedShop()
+    {
+        setSelectedShopText(getContext().getResources().getString(R.string.select_shop));
+    }
+
+    private void setSelectedShopText(String text)
+    {
+        SpannableString content = new SpannableString(text);
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        mSelectedShopTextView.setText(content);
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        if (view == mSelectedShopTextView)
+        {
+
+        }
     }
 
     public void onFragmentCreated()

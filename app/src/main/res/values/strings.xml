@@ -7,4 +7,6 @@
     <string name="history">History</string>
     <string name="update_db">Update database</string>
     <string name="exit">Exit</string>
+    <string name="shop">Shop:</string>
+    <string name="select_shop">Select shop</string>
 </resources>
