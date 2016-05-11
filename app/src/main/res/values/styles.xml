@@ -7,4 +7,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ToolButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@drawable/tool_button</item>
+    </style>
+
 </resources>

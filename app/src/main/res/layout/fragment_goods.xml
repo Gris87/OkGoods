@@ -18,25 +18,29 @@
                 android:id="@+id/addButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/add" />
+                android:src="@drawable/add"
+                style="@style/ToolButtonStyle" />
 
             <ImageButton
                 android:id="@+id/deleteButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/delete" />
+                android:src="@drawable/delete"
+                style="@style/ToolButtonStyle" />
 
             <ImageButton
                 android:id="@+id/startButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/start" />
+                android:src="@drawable/start"
+                style="@style/ToolButtonStyle" />
 
             <ImageButton
                 android:id="@+id/historyButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/history" />
+                android:src="@drawable/history"
+                style="@style/ToolButtonStyle" />
 
         </LinearLayout>
 
