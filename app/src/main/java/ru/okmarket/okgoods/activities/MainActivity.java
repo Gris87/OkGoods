@@ -1,10 +1,8 @@
 package ru.okmarket.okgoods.activities;
 
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,7 +11,7 @@ import ru.okmarket.okgoods.adapters.PagerAdapter;
 import ru.okmarket.okgoods.fragments.GoodsFragment;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements GoodsFragment.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener
 {
     private ViewPager       mPager           = null;
     private PagerAdapter    mPagerAdapter    = null;
@@ -28,26 +26,19 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        mPager           = null;
+        mPagerAdapter    = null;
+        mGoodsFragment   = null;
+        mShopMapFragment = null;
 
         mPager = (ViewPager)findViewById(R.id.pager);
 
         if (mPager != null)
         {
-            mPagerAdapter = new PagerAdapter(fragmentManager);
+            mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
             mPager.setAdapter(mPagerAdapter);
-
-            mGoodsFragment   = (GoodsFragment)   mPagerAdapter.getItem(PagerAdapter.PAGE_GOODS);
-            mShopMapFragment = (ShopMapFragment) mPagerAdapter.getItem(PagerAdapter.PAGE_SHOP_MAP);
         }
-        else
-        {
-            mGoodsFragment   = (GoodsFragment)   fragmentManager.findFragmentById(R.id.goodsFragment);
-            mShopMapFragment = (ShopMapFragment) fragmentManager.findFragmentById(R.id.shopMapFragment);
-        }
-
-        setSupportActionBar(mGoodsFragment.getToolbar());
     }
 
     @Override
@@ -91,5 +82,19 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onGoodsFragmentCreated(GoodsFragment fragment)
+    {
+        mGoodsFragment = fragment;
+
+        setSupportActionBar(mGoodsFragment.getToolbar());
+    }
+
+    @Override
+    public void onShopMapFragmentCreated(ShopMapFragment fragment)
+    {
+        mShopMapFragment = fragment;
     }
 }
