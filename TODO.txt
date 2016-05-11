@@ -1,0 +1,22 @@
+Free money everywhere
+Find more free money
+Yandex Maps
+Shop list
+Points on Map
+Nearest shop
+Ask for starting
+Fill with debug data
+Add/remove goods
+Add aproximate cost
+Check that we have goods
+Check that shop selected
+Change UI on start
+Change UI on stop
+Allow to remove goods
+Fade out for removed good
+Add to history
+Show history
+Show the way
+Walk on the shop map
+Get real data
+CachedImage
