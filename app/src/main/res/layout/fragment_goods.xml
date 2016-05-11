@@ -14,32 +14,36 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <ImageButton
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/addButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/add"
+                android:contentDescription="@string/add_good"
                 style="@style/ToolButtonStyle" />
 
-            <ImageButton
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/deleteButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/delete"
+                android:contentDescription="@string/delete_goods"
                 style="@style/ToolButtonStyle" />
 
-            <ImageButton
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/startButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/start"
+                android:contentDescription="@string/start"
                 style="@style/ToolButtonStyle" />
 
-            <ImageButton
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/historyButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/history"
+                android:contentDescription="@string/history"
                 style="@style/ToolButtonStyle" />
 
         </LinearLayout>

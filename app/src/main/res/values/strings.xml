@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OK Goods</string>
+    <string name="add_good">Add good</string>
+    <string name="delete_goods">Delete goods</string>
+    <string name="start">Start</string>
+    <string name="history">History</string>
+    <string name="update_db">Update database</string>
+    <string name="exit">Exit</string>
 </resources>
