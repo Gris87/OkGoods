@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Покупки в О\'КЕЙ</string>
+    <string name="add_good">Добавить товар</string>
+    <string name="delete_goods">Удалить товары</string>
+    <string name="start">Старт</string>
+    <string name="history">История</string>
+    <string name="update_db">Обновить базу данных</string>
+    <string name="exit">Выход</string>
 </resources>
