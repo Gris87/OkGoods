@@ -6,6 +6,7 @@
     <string name="start">Старт</string>
     <string name="history">История</string>
     <string name="update_db">Обновить базу данных</string>
+    <string name="settings">Настройки</string>
     <string name="exit">Выход</string>
     <string name="shop">Магазин:</string>
     <string name="select_shop">Выбрать магазин</string>

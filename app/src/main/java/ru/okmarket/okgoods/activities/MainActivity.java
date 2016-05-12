@@ -74,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
             return true;
         }
 
+        if (id == R.id.menu_settings)
+        {
+            return true;
+        }
+
         if (id == R.id.menu_exit)
         {
             finish();

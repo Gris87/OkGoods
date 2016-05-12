@@ -28,10 +28,16 @@
         android:orderInCategory="400"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/menu_settings"
+        android:icon="@drawable/settings"
+        android:title="@string/settings"
+        android:orderInCategory="500"
+        app:showAsAction="never"/>
+
     <item android:id="@+id/menu_exit"
         android:icon="@drawable/exit"
         android:title="@string/exit"
-        android:orderInCategory="500"
+        android:orderInCategory="600"
         app:showAsAction="never"/>
 
 </menu>
