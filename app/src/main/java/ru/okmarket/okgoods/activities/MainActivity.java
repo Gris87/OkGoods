@@ -1,5 +1,6 @@
 package ru.okmarket.okgoods.activities;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,11 +9,17 @@ import android.view.MenuItem;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.PagerAdapter;
+import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.fragments.GoodsFragment;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
 
 public class MainActivity extends AppCompatActivity implements GoodsFragment.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener
 {
+    private static final String TAG = "MainActivity";
+
+
+
+    private SQLiteDatabase  mDB              = null;
     private ViewPager       mPager           = null;
     private PagerAdapter    mPagerAdapter    = null;
     private GoodsFragment   mGoodsFragment   = null;
@@ -26,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mDB = new MainDatabase(this).getWritableDatabase();
+
         mPager           = null;
         mPagerAdapter    = null;
         mGoodsFragment   = null;
@@ -38,6 +47,17 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
             mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
             mPager.setAdapter(mPagerAdapter);
+        }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        if (mDB != null)
+        {
+            mDB.close();
         }
     }
 

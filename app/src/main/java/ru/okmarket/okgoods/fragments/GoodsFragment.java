@@ -12,6 +12,10 @@ import ru.okmarket.okgoods.R;
 
 public class GoodsFragment extends Fragment
 {
+    private static final String TAG = "GoodsFragment";
+
+
+
     private OnFragmentInteractionListener mListener = null;
     private Toolbar                       mToolbar  = null;
 

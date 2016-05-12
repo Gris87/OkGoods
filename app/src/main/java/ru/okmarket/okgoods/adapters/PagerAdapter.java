@@ -9,6 +9,10 @@ import ru.okmarket.okgoods.fragments.ShopMapFragment;
 
 public class PagerAdapter extends FragmentPagerAdapter
 {
+    private static final String TAG = "PagerAdapter";
+
+
+
     private static final int PAGE_GOODS    = 0;
     private static final int PAGE_SHOP_MAP = 1;
     private static final int PAGES_COUNT   = 2;
