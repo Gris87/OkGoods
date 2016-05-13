@@ -23,9 +23,13 @@ protected:
 
 private:
     void addError(const QString& error);
+    bool startPoint();
+    bool getProjectDir();
+    bool requestCities();
 
     bool        mTerminated;
     QStringList mErrors;
+    QString     mProjectDir;
 
 signals:
     void progressChanged(int value, int maxValue);
