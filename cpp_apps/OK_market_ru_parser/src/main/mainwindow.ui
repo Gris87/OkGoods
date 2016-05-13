@@ -51,6 +51,12 @@
          <iconset resource="../../Resources.qrc">
           <normaloff>:/images/Start.png</normaloff>:/images/Start.png</iconset>
         </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
         <property name="autoDefault">
          <bool>true</bool>
         </property>

@@ -60,6 +60,7 @@ void MainWindow::startThread()
     Q_ASSERT(mParserThread == 0);
 
     ui->startButton->setText(tr("Stop"));
+    ui->startButton->setIcon(QIcon(":/images/Stop.png"));
 
     mParserThread = new ParserThread();
     Threads::registerThread(mParserThread);
@@ -80,5 +81,6 @@ void MainWindow::stopThread()
     mParserThread = 0;
 
     ui->startButton->setText(tr("Start"));
+    ui->startButton->setIcon(QIcon(":/images/Start.png"));
     ui->progressBar->setValue(0);
 }
