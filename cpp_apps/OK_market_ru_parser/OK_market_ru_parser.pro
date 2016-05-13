@@ -52,11 +52,15 @@ CONFIG (debug, debug|release) {
 
 
 SOURCES  += \
-            src/main.cpp\
-            src/main/mainwindow.cpp
+            src/main.cpp \
+            src/main/mainwindow.cpp \
+            src/threads/parserthread.cpp \
+            src/threads/threads.cpp
 
 HEADERS  += \
-            src/main/mainwindow.h
+            src/main/mainwindow.h \
+            src/threads/parserthread.h \
+            src/threads/threads.h
 
 FORMS    += \
             src/main/mainwindow.ui

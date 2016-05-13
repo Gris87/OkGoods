@@ -1,14 +1,20 @@
 #include <QApplication>
 
-#include "main/mainwindow.h"
+#include "src/main/mainwindow.h"
+#include "src/threads/threads.h"
 
 
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
     MainWindow w;
     w.show();
 
-    return a.exec();
+    int res = a.exec();
+
+    Threads::waitAllThreads();
+
+    return res;
 }

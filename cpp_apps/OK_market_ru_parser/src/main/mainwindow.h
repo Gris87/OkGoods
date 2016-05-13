@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 
+#include "src/threads/parserthread.h"
+
+
+
 namespace Ui {
 class MainWindow;
 }
@@ -16,7 +20,14 @@ public:
     ~MainWindow();
 
 private:
+    void startThread();
+    void stopThread();
+
     Ui::MainWindow *ui;
+    ParserThread   *mParserThread;
+
+private slots:
+    void on_startButton_clicked();
 };
 
 #endif // MAINWINDOW_H
