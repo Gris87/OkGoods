@@ -2,6 +2,10 @@
 
 #include <QApplication>
 #include <QFile>
+#include <QDebug>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
 
 
 
@@ -84,5 +88,16 @@ bool ParserThread::getProjectDir()
 
 bool ParserThread::requestCities()
 {
+    QNetworkAccessManager manager;
+
+    QNetworkReply *reply = manager.get(QNetworkRequest(QUrl("http://okmarket.ru/stores/")));
+
+    reply->waitForReadyRead(30000);
+
+    while (!reply->atEnd())
+    {
+        qDebug() << reply->readLine();
+    }
+
     return true;
 }
