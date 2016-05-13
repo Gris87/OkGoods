@@ -27,6 +27,8 @@ private:
     ParserThread   *mParserThread;
 
 private slots:
+    void parserThreadFinished();
+    void parserThreadProgressChanged(int value, int maxValue);
     void on_startButton_clicked();
 };
 

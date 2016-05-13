@@ -20,6 +20,9 @@ protected:
 
 private:
     bool mTerminated;
+
+signals:
+    void progressChanged(int value, int maxValue);
 };
 
 #endif // PARSERTHREAD_H

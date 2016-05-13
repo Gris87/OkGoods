@@ -24,6 +24,25 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::parserThreadFinished()
+{
+    if (mParserThread)
+    {
+        Threads::unregisterThread(mParserThread);
+
+        stopThread();
+    }
+}
+
+void MainWindow::parserThreadProgressChanged(int value, int maxValue)
+{
+    if (mParserThread)
+    {
+        ui->progressBar->setMaximum(maxValue);
+        ui->progressBar->setValue(value);
+    }
+}
+
 void MainWindow::on_startButton_clicked()
 {
     if (mParserThread)
@@ -45,6 +64,8 @@ void MainWindow::startThread()
     mParserThread = new ParserThread();
     Threads::registerThread(mParserThread);
 
+    QObject::connect(mParserThread, SIGNAL(progressChanged(int,int)), this, SLOT(parserThreadProgressChanged(int,int)), Qt::QueuedConnection);
+    QObject::connect(mParserThread, SIGNAL(finished()),               this, SLOT(parserThreadFinished()),               Qt::QueuedConnection);
 
     mParserThread->start(QThread::TimeCriticalPriority);
 }
@@ -53,10 +74,11 @@ void MainWindow::stopThread()
 {
     Q_ASSERT(mParserThread != 0);
 
-    ui->startButton->setText(tr("Start"));
-
     mParserThread->blockSignals(true);
     mParserThread->stop();
 
     mParserThread = 0;
+
+    ui->startButton->setText(tr("Start"));
+    ui->progressBar->setValue(0);
 }
