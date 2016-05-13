@@ -28,9 +28,13 @@ void MainWindow::parserThreadFinished()
 {
     if (mParserThread)
     {
+        ui->logTextEdit->setPlainText(mParserThread->getErrors());
+
         Threads::unregisterThread(mParserThread);
 
+        ParserThread *thread = mParserThread;
         stopThread();
+        delete thread;
     }
 }
 
@@ -61,6 +65,7 @@ void MainWindow::startThread()
 
     ui->startButton->setText(tr("Stop"));
     ui->startButton->setIcon(QIcon(":/images/Stop.png"));
+    ui->logTextEdit->clear();
 
     mParserThread = new ParserThread();
     Threads::registerThread(mParserThread);

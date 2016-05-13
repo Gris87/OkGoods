@@ -13,6 +13,11 @@ ParserThread::~ParserThread()
     // Nothing
 }
 
+QString ParserThread::getErrors() const
+{
+    return mErrors.join('\n');
+}
+
 void ParserThread::stop()
 {
     mTerminated = true;
@@ -21,4 +26,9 @@ void ParserThread::stop()
 void ParserThread::run()
 {
 
+}
+
+void ParserThread::addError(const QString& error)
+{
+    mErrors.append(error);
 }

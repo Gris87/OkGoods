@@ -2,6 +2,7 @@
 #define PARSERTHREAD_H
 
 #include <QThread>
+#include <QStringList>
 
 
 
@@ -13,13 +14,18 @@ public:
     explicit ParserThread(QObject *parent = 0);
     ~ParserThread();
 
+    QString getErrors() const;
+
     void stop();
 
 protected:
     void run();
 
 private:
-    bool mTerminated;
+    void addError(const QString& error);
+
+    bool        mTerminated;
+    QStringList mErrors;
 
 signals:
     void progressChanged(int value, int maxValue);
