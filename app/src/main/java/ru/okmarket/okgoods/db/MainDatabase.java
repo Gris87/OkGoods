@@ -173,23 +173,45 @@ public class MainDatabase extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase db)
     {
         createTables(db);
-        fillTables(db);
+        fillStaticTables(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        // Nothing
+        if (oldVersion <= 0)
+        {
+            dropStaticTables(db);
+            createStaticTables(db);
+            fillStaticTables(db);
+        }
     }
 
     private void createTables(SQLiteDatabase db)
+    {
+        createStaticTables(db);
+        createDynamicTables(db);
+    }
+
+    private void createStaticTables(SQLiteDatabase db)
     {
         db.execSQL(CITIES_TABLE_CREATE);
         db.execSQL(SERVICES_TABLE_CREATE);
         db.execSQL(SHOPS_TABLE_CREATE);
     }
 
-    private void fillTables(SQLiteDatabase db)
+    private void dropStaticTables(SQLiteDatabase db)
+    {
+        db.execSQL("DROP TABLE " + SHOPS_TABLE_NAME      + ";");
+        db.execSQL("DROP TABLE " + SERVICES_TABLE_CREATE + ";");
+        db.execSQL("DROP TABLE " + CITIES_TABLE_CREATE   + ";");
+    }
+
+    private void createDynamicTables(SQLiteDatabase db)
+    {
+    }
+
+    private void fillStaticTables(SQLiteDatabase db)
     {
         fillCitiesTable(db);
         fillServicesTable(db);
