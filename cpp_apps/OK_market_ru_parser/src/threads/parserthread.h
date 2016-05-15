@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QStringList>
 
+#include "src/other/shopinfo.h"
+
 
 
 class ParserThread : public QThread
@@ -25,11 +27,15 @@ private:
     void addError(const QString& error);
     bool startPoint();
     bool getProjectDir();
-    bool requestCities();
+    bool requestCitiesAndServices();
+    bool requestShops();
 
-    bool        mTerminated;
-    QStringList mErrors;
-    QString     mProjectDir;
+    bool            mTerminated;
+    QStringList     mErrors;
+    QString         mProjectDir;
+    QStringList     mCities;
+    QStringList     mServices;
+    QList<ShopInfo> mShops;
 
 signals:
     void progressChanged(int value, int maxValue);

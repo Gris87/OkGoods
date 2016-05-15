@@ -59,6 +59,7 @@ SOURCES  += \
 
 HEADERS  += \
             src/main/mainwindow.h \
+            src/other/shopinfo.h \
             src/threads/parserthread.h \
             src/threads/threads.h
 
