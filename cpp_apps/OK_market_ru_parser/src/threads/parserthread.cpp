@@ -225,7 +225,7 @@ bool ParserThread::requestShops()
                         shopId.remove(shopId.length() - 1, 1);
                     }
 
-                    shop.id      = shopId.toLongLong();
+                    shop.id      = shopId.toULongLong();
                     shop.city_id = i + 1;
 
 
@@ -424,6 +424,11 @@ bool ParserThread::requestShops()
                                 {
                                     break;
                                 }
+                                else
+                                if (line != "")
+                                {
+                                    addError(tr("Unexpected line during parsing services set: %1").arg(line));
+                                }
                             }
                         }
                     }
@@ -480,7 +485,7 @@ bool ParserThread::requestShops()
                         addError(tr("Incorrect opening date for shop %1 (%2)").arg(shop.name).arg(mCities.at(i)));
                     }
 
-                    if (shop.parking_places == 0)
+                    if ((shop.parking_places > 0) != (shop.services_set.contains("Парковка")))
                     {
                         addError(tr("Incorrect parking places %1 for shop %2 (%3)").arg(shop.parking_places).arg(shop.name).arg(mCities.at(i)));
                     }

@@ -10,8 +10,8 @@ struct ShopInfo
 {
     ShopInfo();
 
-    qint64      id;
-    qint64      city_id;
+    quint64     id;
+    quint64     city_id;
     QString     name;
     bool        is_hyper_market;
     double      latitude;
