@@ -54,6 +54,7 @@ CONFIG (debug, debug|release) {
 SOURCES  += \
             src/main.cpp \
             src/main/mainwindow.cpp \
+            src/other/shopinfo.cpp \
             src/threads/parserthread.cpp \
             src/threads/threads.cpp
 

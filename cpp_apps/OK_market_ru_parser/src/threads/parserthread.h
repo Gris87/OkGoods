@@ -13,7 +13,7 @@ class ParserThread : public QThread
     Q_OBJECT
 
 public:
-    explicit ParserThread(QObject *parent = 0);
+    explicit ParserThread(const QString &proxyHost = "", quint16 proxyPort = 0, QObject *parent = 0);
     ~ParserThread();
 
     QString getErrors() const;
@@ -25,12 +25,15 @@ protected:
 
 private:
     void addError(const QString& error);
-    bool startPoint();
+    QString removeLetters(const QString &text);
     bool getProjectDir();
     bool requestCitiesAndServices();
     bool requestShops();
+    bool updateSourceCode();
 
     bool            mTerminated;
+    QString         mProxyHost;
+    quint16         mProxyPort;
     QStringList     mErrors;
     QString         mProjectDir;
     QStringList     mCities;

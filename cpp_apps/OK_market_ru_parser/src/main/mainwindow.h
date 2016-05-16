@@ -22,6 +22,8 @@ public:
 private:
     void startThread();
     void stopThread();
+    void saveConfig();
+    void loadConfig();
 
     Ui::MainWindow *ui;
     ParserThread   *mParserThread;
