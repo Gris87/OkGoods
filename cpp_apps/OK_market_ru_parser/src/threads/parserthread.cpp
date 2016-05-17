@@ -1,12 +1,13 @@
 #include "parserthread.h"
 
 #include <QApplication>
-#include <QStringBuilder>
 #include <QDebug>
 #include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkCookie>
+#include <QtNetwork/QNetworkCookieJar>
 #include <QtNetwork/QNetworkProxy>
-#include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 
 
 
@@ -320,10 +321,16 @@ bool ParserThread::requestShops()
         manager.setProxy(QNetworkProxy(QNetworkProxy::HttpProxy, mProxyHost, mProxyPort));
     }
 
+    QNetworkCookieJar cookies;
+    cookies.insertCookie(QNetworkCookie("BITRIX_SM_CURRENT_CITY", ""));
+    manager.setCookieJar(&cookies);
+
     QLocale russianLocale(QLocale::Russian);
 
     for (int i = 0; i < mCities.length() && !mTerminated; ++i)
     {
+        cookies.updateCookie(QNetworkCookie("BITRIX_SM_CURRENT_CITY", mCities.at(i).toUtf8()));
+
         QNetworkReply *reply = manager.get(QNetworkRequest(QUrl("http://okmarket.ru/stores/")));
 
         QEventLoop loop;
@@ -1372,17 +1379,50 @@ void ParserThread::updateMainDatabaseJava()
     }
 }
 
-void ParserThread::updateMainDatabaseJavaCities(QStringList &/*fileContents*/)
+void ParserThread::updateMainDatabaseJavaCities(QStringList &fileContents)
+{
+    updateMainDatabaseJavaCitiesIDs(fileContents);
+    updateMainDatabaseJavaCitiesFilling(fileContents);
+}
+
+void ParserThread::updateMainDatabaseJavaCitiesIDs(QStringList &/*fileContents*/)
 {
 
 }
 
-void ParserThread::updateMainDatabaseJavaServices(QStringList &/*fileContents*/)
+void ParserThread::updateMainDatabaseJavaCitiesFilling(QStringList &/*fileContents*/)
 {
 
 }
 
-void ParserThread::updateMainDatabaseJavaShops(QStringList &/*fileContents*/)
+void ParserThread::updateMainDatabaseJavaServices(QStringList &fileContents)
+{
+    updateMainDatabaseJavaServicesIDs(fileContents);
+    updateMainDatabaseJavaServicesFilling(fileContents);
+}
+
+void ParserThread::updateMainDatabaseJavaServicesIDs(QStringList &/*fileContents*/)
+{
+
+}
+
+void ParserThread::updateMainDatabaseJavaServicesFilling(QStringList &/*fileContents*/)
+{
+
+}
+
+void ParserThread::updateMainDatabaseJavaShops(QStringList &fileContents)
+{
+    updateMainDatabaseJavaShopsIDs(fileContents);
+    updateMainDatabaseJavaShopsFilling(fileContents);
+}
+
+void ParserThread::updateMainDatabaseJavaShopsIDs(QStringList &/*fileContents*/)
+{
+
+}
+
+void ParserThread::updateMainDatabaseJavaShopsFilling(QStringList &/*fileContents*/)
 {
 
 }

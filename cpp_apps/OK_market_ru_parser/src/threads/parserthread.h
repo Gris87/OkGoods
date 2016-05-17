@@ -47,8 +47,14 @@ private:
     void updateEnglishStringsXmlShops(QStringList &fileContents);
     void updateMainDatabaseJava();
     void updateMainDatabaseJavaCities(QStringList &fileContents);
+    void updateMainDatabaseJavaCitiesIDs(QStringList &fileContents);
+    void updateMainDatabaseJavaCitiesFilling(QStringList &fileContents);
     void updateMainDatabaseJavaServices(QStringList &fileContents);
+    void updateMainDatabaseJavaServicesIDs(QStringList &fileContents);
+    void updateMainDatabaseJavaServicesFilling(QStringList &fileContents);
     void updateMainDatabaseJavaShops(QStringList &fileContents);
+    void updateMainDatabaseJavaShopsIDs(QStringList &fileContents);
+    void updateMainDatabaseJavaShopsFilling(QStringList &fileContents);
 
     bool            mTerminated;
     QString         mProxyHost;
