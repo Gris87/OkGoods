@@ -321,17 +321,19 @@ bool ParserThread::requestShops()
         manager.setProxy(QNetworkProxy(QNetworkProxy::HttpProxy, mProxyHost, mProxyPort));
     }
 
-    QNetworkCookieJar cookies;
-    cookies.insertCookie(QNetworkCookie("BITRIX_SM_CURRENT_CITY", ""));
-    manager.setCookieJar(&cookies);
+    QList<QNetworkCookie> cookies;
+    manager.setCookieJar(0);
 
     QLocale russianLocale(QLocale::Russian);
 
     for (int i = 0; i < mCities.length() && !mTerminated; ++i)
     {
-        cookies.updateCookie(QNetworkCookie("BITRIX_SM_CURRENT_CITY", mCities.at(i).toUtf8()));
+        cookies.clear();
+        cookies.append(QNetworkCookie("BITRIX_SM_CURRENT_CITY", QUrl::toPercentEncoding(mCities.at(i))));
 
-        QNetworkReply *reply = manager.get(QNetworkRequest(QUrl("http://okmarket.ru/stores/")));
+        QNetworkRequest request(QUrl("http://okmarket.ru/stores/"));
+        request.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookies));
+        QNetworkReply *reply = manager.get(request);
 
         QEventLoop loop;
         QObject::connect(reply, SIGNAL(finished()),                         &loop, SLOT(quit()));

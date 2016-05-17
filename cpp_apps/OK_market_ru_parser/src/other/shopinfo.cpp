@@ -21,5 +21,5 @@ ShopInfo::ShopInfo()
 
 bool ShopInfo::isLess(const ShopInfo &another) const
 {
-    return city_id < another.city_id || id < another.id;
+    return city_id < another.city_id || (city_id == another.city_id && id < another.id);
 }
