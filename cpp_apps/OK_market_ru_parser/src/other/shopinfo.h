@@ -13,7 +13,7 @@ struct ShopInfo
     quint64     id;
     quint64     city_id;
     QString     name;
-    bool        is_hyper_market;
+    bool        is_hypermarket;
     double      latitude;
     double      longitude;
     QString     phone;
@@ -23,6 +23,8 @@ struct ShopInfo
     quint64     parking_places;
     quint64     number_of_cashboxes;
     QStringList services_set;
+
+    bool isLess(const ShopInfo &another) const;
 };
 
 #endif // SHOPINFO_H

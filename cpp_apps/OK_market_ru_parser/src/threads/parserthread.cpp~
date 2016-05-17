@@ -581,7 +581,7 @@ bool ParserThread::requestShops()
                     addError(tr("Failed to get shop ID in line: %1").arg(line));
                 }
 
-                break; // TODO: Remove it
+                //break; // TODO: Remove it
             }
         }
 

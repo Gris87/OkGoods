@@ -6,7 +6,7 @@ ShopInfo::ShopInfo()
     : id(0)
     , city_id(0)
     , name("")
-    , is_hyper_market(false)
+    , is_hypermarket(false)
     , latitude(0)
     , longitude(0)
     , phone("")
@@ -17,4 +17,9 @@ ShopInfo::ShopInfo()
     , number_of_cashboxes(0)
     , services_set()
 {
+}
+
+bool ShopInfo::isLess(const ShopInfo &another) const
+{
+    return city_id < another.city_id || id < another.id;
 }

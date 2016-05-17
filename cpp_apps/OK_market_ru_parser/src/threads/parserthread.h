@@ -3,6 +3,7 @@
 
 #include <QThread>
 #include <QStringList>
+#include <QFile>
 
 #include "src/other/shopinfo.h"
 
@@ -30,6 +31,17 @@ private:
     bool requestCitiesAndServices();
     bool requestShops();
     bool updateSourceCode();
+    QString russianTransliteration(const QString &text);
+    void generateIDs();
+    void readFileToStringList(QFile &file, QStringList &fileContents);
+    void writeStringListToFile(const QStringList &fileContents, QFile &file);
+    void updateStringsXml();
+    void updateRussianStringsXml();
+    void updateEnglishStringsXml();
+    void updateMainDatabaseJava();
+    void updateMainDatabaseJavaCities(QStringList &fileContents);
+    void updateMainDatabaseJavaServices(QStringList &fileContents);
+    void updateMainDatabaseJavaShops(QStringList &fileContents);
 
     bool            mTerminated;
     QString         mProxyHost;
@@ -39,6 +51,9 @@ private:
     QStringList     mCities;
     QStringList     mServices;
     QList<ShopInfo> mShops;
+    QStringList     mCitiesIDs;
+    QStringList     mServicesIDs;
+    QStringList     mShopsIDs;
 
 signals:
     void progressChanged(int value, int maxValue);
