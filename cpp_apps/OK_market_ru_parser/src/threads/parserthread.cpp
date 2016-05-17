@@ -223,7 +223,7 @@ bool ParserThread::requestCitiesAndServices()
             }
             else
             {
-                addError(tr("Failed to get city in line: %1").arg(line));
+                addError(tr("Failed to get city in line: \"%1\"").arg(line));
             }
         }
         else
@@ -279,12 +279,12 @@ bool ParserThread::requestCitiesAndServices()
                         service != "Круглосуточно"
                    )
                 {
-                    addError(tr("Unknown service: %1").arg(service));
+                    addError(tr("Unknown service: \"%1\"").arg(service));
                 }
             }
             else
             {
-                addError(tr("Failed to get service in line: %1").arg(line));
+                addError(tr("Failed to get service in line: \"%1\"").arg(line));
             }
         }
     }
@@ -445,7 +445,7 @@ bool ParserThread::requestShops()
                                         }
                                         else
                                         {
-                                            addError(tr("Unexpected property value %1 for property %2").arg(propertyValue).arg(property));
+                                            addError(tr("Unexpected property value \"%1\" for property \"%2\" in shop \"%3\" (%4). It is expected that square is specified in square meters").arg(propertyValue).arg(property).arg(shop.name).arg(mCities.at(i)));
                                         }
 
                                         shop.square = removeLetters(propertyValue).toULongLong();
@@ -467,12 +467,12 @@ bool ParserThread::requestShops()
                                     }
                                     else
                                     {
-                                        addError(tr("Incorrect property \"%1\" in shop %2 (%3)").arg(property).arg(shop.name).arg(mCities.at(i)));
+                                        addError(tr("Incorrect property \"%1\" in shop \"%2\" (%3)").arg(property).arg(shop.name).arg(mCities.at(i)));
                                     }
                                 }
                                 else
                                 {
-                                    addError(tr("Failed to read value for property \"%1\" in shop %2 (%3)").arg(property).arg(shop.name).arg(mCities.at(i)));
+                                    addError(tr("Failed to read value for property \"%1\" in shop \"%2\" (%3)").arg(property).arg(shop.name).arg(mCities.at(i)));
                                 }
                             }
                             else
@@ -484,7 +484,7 @@ bool ParserThread::requestShops()
                                     property != "Как добраться"
                                )
                             {
-                                addError(tr("Unknown property \"%1\" in shop %2 (%3)").arg(property).arg(shop.name).arg(mCities.at(i)));
+                                addError(tr("Unknown property \"%1\" in shop \"%2\" (%3)").arg(property).arg(shop.name).arg(mCities.at(i)));
                             }
                         }
                         else
@@ -514,22 +514,22 @@ bool ParserThread::requestShops()
                                         }
                                         else
                                         {
-                                            addError(tr("Failed to get coordinates for shop %1 (%2)").arg(shop.name).arg(mCities.at(i)));
+                                            addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(i)));
                                         }
                                     }
                                     else
                                     {
-                                        addError(tr("Failed to get coordinates for shop %1 (%2)").arg(shop.name).arg(mCities.at(i)));
+                                        addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(i)));
                                     }
                                 }
                                 else
                                 {
-                                    addError(tr("Failed to get coordinates for shop %1 (%2)").arg(shop.name).arg(mCities.at(i)));
+                                    addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(i)));
                                 }
                             }
                             else
                             {
-                                addError(tr("Failed to get coordinates for shop %1 (%2)").arg(shop.name).arg(mCities.at(i)));
+                                addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(i)));
                             }
 
                             shop.is_hypermarket = line.contains("\"giper\":\"Y\"");
@@ -555,7 +555,7 @@ bool ParserThread::requestShops()
                                         }
                                         else
                                         {
-                                            addError(tr("Unexpected service %1 for shop %2 (%3)").arg(service).arg(shop.name).arg(mCities.at(i)));
+                                            addError(tr("Unexpected service \"%1\" for shop \"%2\" (%3)").arg(service).arg(shop.name).arg(mCities.at(i)));
                                         }
                                     }
                                 }
@@ -567,7 +567,7 @@ bool ParserThread::requestShops()
                                 else
                                 if (line != "")
                                 {
-                                    addError(tr("Unexpected line during parsing services set: %1").arg(line));
+                                    addError(tr("Unexpected line during parsing services set: \"%1\"").arg(line));
                                 }
                             }
                         }
@@ -582,77 +582,84 @@ bool ParserThread::requestShops()
 
                     if (shop.id == 0)
                     {
-                        addError(tr("Incorrect shop id %1 in shop %2 (%3)").arg(shopId).arg(shop.name).arg(mCities.at(i)));
+                        addError(tr("Incorrect shop id \"%1\" in shop \"%2\" (%3)").arg(shopId).arg(shop.name).arg(mCities.at(i)));
                     }
 
                     if (shop.city_id == 0)
                     {
-                        addError(tr("Incorrect city id %1 for shop %2 (%3)").arg(shop.city_id).arg(shop.name).arg(mCities.at(i)));
+                        addError(tr("Incorrect city id \"%1\" for shop \"%2\" (%3)").arg(shop.city_id).arg(shop.name).arg(mCities.at(i)));
                     }
 
                     if (shop.name == "")
                     {
-                        addError(tr("Incorrect shop name in city %1").arg(mCities.at(i)));
+                        addError(tr("Incorrect shop name in city \"%1\"").arg(mCities.at(i)));
                     }
 
                     if (shop.is_hypermarket)
                     {
                         if (!shop.name.startsWith("Гипермаркет"))
                         {
-                            addError(tr("Shop name %1 (2) is not specifying that shop is hypermarket").arg(shop.name).arg(mCities.at(i)));
+                            addError(tr("Shop name \"%1\" (2) is not specifying that shop is hypermarket").arg(shop.name).arg(mCities.at(i)));
                         }
                     }
                     else
                     {
                         if (!shop.name.startsWith("Супермаркет"))
                         {
-                            addError(tr("Shop name %1 (2) is not specifying that shop is supermarket").arg(shop.name).arg(mCities.at(i)));
+                            addError(tr("Shop name \"%1\" (2) is not specifying that shop is supermarket").arg(shop.name).arg(mCities.at(i)));
                         }
                     }
 
                     if (shop.latitude == 0)
                     {
-                        addError(tr("Incorrect latitude %1 for shop %2 (%3)").arg(shop.latitude).arg(shop.name).arg(mCities.at(i)));
+                        addError(tr("Incorrect latitude \"%1\" for shop \"%2\" (%3)").arg(shop.latitude).arg(shop.name).arg(mCities.at(i)));
                     }
 
                     if (shop.longitude == 0)
                     {
-                        addError(tr("Incorrect longitude %1 for shop %2 (%3)").arg(shop.longitude).arg(shop.name).arg(mCities.at(i)));
+                        addError(tr("Incorrect longitude \"%1\" for shop \"%2\" (%3)").arg(shop.longitude).arg(shop.name).arg(mCities.at(i)));
                     }
 
                     if (shop.phone == "")
                     {
-                        addError(tr("Incorrect phone for shop %1 (%2)").arg(shop.name).arg(mCities.at(i)));
+                        addError(tr("Incorrect phone for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(i)));
                     }
 
                     if (shop.work_hours == "")
                     {
-                        addError(tr("Incorrect work hours for shop %1 (%2)").arg(shop.name).arg(mCities.at(i)));
+                        addError(tr("Incorrect work hours for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(i)));
                     }
 
                     if (shop.square == 0)
                     {
-                        addError(tr("Incorrect square %1 for shop %2 (%3)").arg(shop.square).arg(shop.name).arg(mCities.at(i)));
+                        addError(tr("Incorrect square \"%1\" for shop \"%2\" (%3)").arg(shop.square).arg(shop.name).arg(mCities.at(i)));
                     }
 
                     if (!shop.opening_date.isValid())
                     {
-                        addError(tr("Incorrect opening date for shop %1 (%2)").arg(shop.name).arg(mCities.at(i)));
+                        addError(tr("Incorrect opening date for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(i)));
                     }
 
                     if ((shop.parking_places > 0) != (shop.services_set.contains("Парковка")))
                     {
-                        addError(tr("Incorrect parking places %1 for shop %2 (%3)").arg(shop.parking_places).arg(shop.name).arg(mCities.at(i)));
+                        if (shop.parking_places > 0)
+                        {
+                            addError(tr("Parking places \"%1\" specified for shop \"%2\" (%3) while parking service is not available").arg(shop.parking_places).arg(shop.name).arg(mCities.at(i)));
+                        }
+                        else
+                        {
+                            addError(tr("Parking places is not specified for shop \"%1\" (%2) while parking service is available").arg(shop.name).arg(mCities.at(i)));
+                        }
                     }
 
                     if (shop.number_of_cashboxes == 0)
                     {
-                        addError(tr("Incorrect number of cashboxes %1 for shop %2 (%3)").arg(shop.number_of_cashboxes).arg(shop.name).arg(mCities.at(i)));
+                        addError(tr("Incorrect number of cashboxes \"%1\" for shop \"%2\" (%3)").arg(shop.number_of_cashboxes).arg(shop.name).arg(mCities.at(i)));
                     }
 
                     if (shop.services_set.length() == 0)
                     {
-                        addError(tr("Incorrect services set for shop %1 (%2)").arg(shop.name).arg(mCities.at(i)));
+                        addError(tr("Incorrect services set for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(i)));
                     }
 
 
@@ -677,7 +684,7 @@ bool ParserThread::requestShops()
                 }
                 else
                 {
-                    addError(tr("Failed to get shop ID in line: %1").arg(line));
+                    addError(tr("Failed to get shop ID in line: \"%1\"").arg(line));
                 }
 
                 break; // TODO: Remove it
@@ -839,7 +846,7 @@ void ParserThread::generateIDs()
         }
         else
         {
-            addError(tr("Unknown service: %1").arg(service));
+            addError(tr("Unknown service: \"%1\"").arg(service));
 
             service = service.replace(" ", "_").replace("-", "_");
             serviceId = russianTransliteration(service).toLower();
@@ -887,7 +894,7 @@ void ParserThread::updateRussianStringsXml()
     }
     else
     {
-        addError(tr("File %1 not found").arg(file.fileName()));
+        addError(tr("File \"%1\" not found").arg(file.fileName()));
     }
 }
 
@@ -1071,7 +1078,7 @@ void ParserThread::updateEnglishStringsXml()
     }
     else
     {
-        addError(tr("File %1 not found").arg(file.fileName()));
+        addError(tr("File \"%1\" not found").arg(file.fileName()));
     }
 }
 
@@ -1229,7 +1236,7 @@ void ParserThread::updateEnglishStringsXmlServices(QStringList &fileContents)
         }
         else
         {
-            addError(tr("Unknown service: %1").arg(service));
+            addError(tr("Unknown service: \"%1\"").arg(service));
 
             service = russianTransliteration(service);
         }
@@ -1361,7 +1368,7 @@ void ParserThread::updateMainDatabaseJava()
     }
     else
     {
-        addError(tr("File %1 not found").arg(file.fileName()));
+        addError(tr("File \"%1\" not found").arg(file.fileName()));
     }
 }
 
