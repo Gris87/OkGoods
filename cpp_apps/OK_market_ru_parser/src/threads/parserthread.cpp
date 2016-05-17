@@ -71,6 +71,93 @@ QString ParserThread::removeLetters(const QString &text)
     return res;
 }
 
+QString ParserThread::russianTransliteration(const QString &text)
+{
+    QString res;
+
+    static QString transliteration[] = { "a", "b", "v", "g", "d", "e", "zh", "z", "i", "y", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "kh", "ts", "ch", "sh", "shch", "", "y", "", "eh", "yu", "ya" };
+
+    for (int i = 0; i < text.length(); ++i)
+    {
+        QChar letter           = text.at(i);
+        bool isLetterUpperCase = letter.isUpper();
+
+        if (isLetterUpperCase)
+        {
+            letter = letter.toLower();
+        }
+
+        QString letterTransliteration;
+
+        if (letter.unicode() >= 0x0430 && letter.unicode() <= 0x044F) // letter >= 'а' && letter <= 'я'
+        {
+            letterTransliteration = transliteration[letter.unicode() - 0x0430]; // letter - 'а'
+        }
+        else
+        if (letter.unicode() == 0x0451) // letter == 'ё'
+        {
+            letterTransliteration = "yo";
+        }
+        else
+        {
+            letterTransliteration = letter;
+        }
+
+        if (isLetterUpperCase)
+        {
+            if (letterTransliteration.length() > 0)
+            {
+                if (letterTransliteration.length() == 1)
+                {
+                    letterTransliteration = letterTransliteration.toUpper();
+                }
+                else
+                {
+                    letterTransliteration = letterTransliteration.at(0).toUpper() + letterTransliteration.mid(1);
+                }
+            }
+        }
+
+        res.append(letterTransliteration);
+    }
+
+    return res;
+}
+
+void ParserThread::readFileToStringList(QFile &file, QStringList &fileContents)
+{
+    file.open(QIODevice::ReadOnly);
+
+    QTextStream stream(&file);
+    stream.setCodec("UTF-8");
+
+    while (!stream.atEnd())
+    {
+        fileContents.append(stream.readLine());
+    }
+
+    file.close();
+}
+
+void ParserThread::writeStringListToFile(const QStringList &fileContents, QFile &file)
+{
+    file.open(QIODevice::WriteOnly);
+
+    QTextStream stream(&file);
+    stream.setCodec("UTF-8");
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+#ifdef Q_OS_WIN
+        stream << fileContents.at(i) << "\r\n";
+#else
+        stream << fileContents.at(i) << "\n";
+#endif
+    }
+
+    file.close();
+}
+
 bool ParserThread::getProjectDir()
 {
     QString res = QApplication::applicationDirPath();
@@ -356,6 +443,10 @@ bool ParserThread::requestShops()
                                         {
                                             propertyValue.remove(propertyValue.length() - 2, 2);
                                         }
+                                        else
+                                        {
+                                            addError(tr("Unexpected property value %1 for property %2").arg(propertyValue).arg(property));
+                                        }
 
                                         shop.square = removeLetters(propertyValue).toULongLong();
                                     }
@@ -457,7 +548,15 @@ bool ParserThread::requestShops()
                                     if (index >= 0)
                                     {
                                         QString service = line.mid(12, index - 12);
-                                        shop.services_set.append(service);
+
+                                        if (mServices.contains(service))
+                                        {
+                                            shop.services_set.append(service);
+                                        }
+                                        else
+                                        {
+                                            addError(tr("Unexpected service %1 for shop %2 (%3)").arg(service).arg(shop.name).arg(mCities.at(i)));
+                                        }
                                     }
                                 }
                                 else
@@ -634,59 +733,6 @@ bool ParserThread::updateSourceCode()
     return true;
 }
 
-QString ParserThread::russianTransliteration(const QString &text)
-{
-    QString res;
-
-    static QString transliteration[] = { "a", "b", "v", "g", "d", "e", "zh", "z", "i", "y", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "kh", "ts", "ch", "sh", "shch", "", "y", "", "eh", "yu", "ya" };
-
-    for (int i = 0; i < text.length(); ++i)
-    {
-        QChar letter           = text.at(i);
-        bool isLetterUpperCase = letter.isUpper();
-
-        if (isLetterUpperCase)
-        {
-            letter = letter.toLower();
-        }
-
-        QString letterTransliteration;
-
-        if (letter.unicode() >= 0x0430 && letter.unicode() <= 0x044F) // letter >= 'а' && letter <= 'я'
-        {
-            letterTransliteration = transliteration[letter.unicode() - 0x0430]; // letter - 'а'
-        }
-        else
-        if (letter.unicode() == 0x0451) // letter == 'ё'
-        {
-            letterTransliteration = "yo";
-        }
-        else
-        {
-            letterTransliteration = letter;
-        }
-
-        if (isLetterUpperCase)
-        {
-            if (letterTransliteration.length() > 0)
-            {
-                if (letterTransliteration.length() == 1)
-                {
-                    letterTransliteration = letterTransliteration.toUpper();
-                }
-                else
-                {
-                    letterTransliteration = letterTransliteration.at(0).toUpper() + letterTransliteration.mid(1);
-                }
-            }
-        }
-
-        res.append(letterTransliteration);
-    }
-
-    return res;
-}
-
 void ParserThread::generateIDs()
 {
     for (int i = 0; i < mCities.length(); ++i)
@@ -817,36 +863,6 @@ void ParserThread::generateIDs()
     }
 }
 
-void ParserThread::readFileToStringList(QFile &file, QStringList &fileContents)
-{
-    file.open(QIODevice::ReadOnly);
-
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-
-    while (!stream.atEnd())
-    {
-        fileContents.append(stream.readLine());
-    }
-
-    file.close();
-}
-
-void ParserThread::writeStringListToFile(const QStringList &fileContents, QFile &file)
-{
-    file.open(QIODevice::WriteOnly);
-
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-
-    for (int i = 0; i < fileContents.length(); ++i)
-    {
-        stream << fileContents.at(i) << "\n";
-    }
-
-    file.close();
-}
-
 void ParserThread::updateStringsXml()
 {
     updateRussianStringsXml();
@@ -863,7 +879,9 @@ void ParserThread::updateRussianStringsXml()
 
         readFileToStringList(file, fileContents);
 
-
+        updateRussianStringsXmlCities(fileContents);
+        updateRussianStringsXmlServices(fileContents);
+        updateRussianStringsXmlShops(fileContents);
 
         writeStringListToFile(fileContents, file);
     }
@@ -871,6 +889,21 @@ void ParserThread::updateRussianStringsXml()
     {
         addError(tr("File %1 not found").arg(file.fileName()));
     }
+}
+
+void ParserThread::updateRussianStringsXmlCities(QStringList &fileContents)
+{
+
+}
+
+void ParserThread::updateRussianStringsXmlServices(QStringList &fileContents)
+{
+
+}
+
+void ParserThread::updateRussianStringsXmlShops(QStringList &fileContents)
+{
+
 }
 
 void ParserThread::updateEnglishStringsXml()
@@ -883,7 +916,9 @@ void ParserThread::updateEnglishStringsXml()
 
         readFileToStringList(file, fileContents);
 
-
+        updateEnglishStringsXmlCities(fileContents);
+        updateEnglishStringsXmlServices(fileContents);
+        updateEnglishStringsXmlShops(fileContents);
 
         writeStringListToFile(fileContents, file);
     }
@@ -891,6 +926,21 @@ void ParserThread::updateEnglishStringsXml()
     {
         addError(tr("File %1 not found").arg(file.fileName()));
     }
+}
+
+void ParserThread::updateEnglishStringsXmlCities(QStringList &fileContents)
+{
+
+}
+
+void ParserThread::updateEnglishStringsXmlServices(QStringList &fileContents)
+{
+
+}
+
+void ParserThread::updateEnglishStringsXmlShops(QStringList &fileContents)
+{
+
 }
 
 void ParserThread::updateMainDatabaseJava()

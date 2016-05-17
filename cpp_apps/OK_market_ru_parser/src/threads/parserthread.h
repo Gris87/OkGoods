@@ -27,17 +27,24 @@ protected:
 private:
     void addError(const QString& error);
     QString removeLetters(const QString &text);
+    QString russianTransliteration(const QString &text);
+    void readFileToStringList(QFile &file, QStringList &fileContents);
+    void writeStringListToFile(const QStringList &fileContents, QFile &file);
+
     bool getProjectDir();
     bool requestCitiesAndServices();
     bool requestShops();
     bool updateSourceCode();
-    QString russianTransliteration(const QString &text);
     void generateIDs();
-    void readFileToStringList(QFile &file, QStringList &fileContents);
-    void writeStringListToFile(const QStringList &fileContents, QFile &file);
     void updateStringsXml();
     void updateRussianStringsXml();
+    void updateRussianStringsXmlCities(QStringList &fileContents);
+    void updateRussianStringsXmlServices(QStringList &fileContents);
+    void updateRussianStringsXmlShops(QStringList &fileContents);
     void updateEnglishStringsXml();
+    void updateEnglishStringsXmlCities(QStringList &fileContents);
+    void updateEnglishStringsXmlServices(QStringList &fileContents);
+    void updateEnglishStringsXmlShops(QStringList &fileContents);
     void updateMainDatabaseJava();
     void updateMainDatabaseJavaCities(QStringList &fileContents);
     void updateMainDatabaseJavaServices(QStringList &fileContents);
