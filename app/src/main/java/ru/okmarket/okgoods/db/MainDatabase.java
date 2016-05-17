@@ -109,7 +109,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final int CITY_ID_KRASNOYARSK      = 10;
     public static final int CITY_ID_LIPETSK          = 11;
     public static final int CITY_ID_MURMANSK         = 12;
-    public static final int CITY_ID_NIZHNY_NOVGOROD  = 13;
+    public static final int CITY_ID_NIZHNIY_NOVGOROD = 13;
     public static final int CITY_ID_NOVOSIBIRSK      = 14;
     public static final int CITY_ID_NOVOCHERKASSK    = 15;
     public static final int CITY_ID_OMSK             = 16;
@@ -232,7 +232,7 @@ public class MainDatabase extends SQLiteOpenHelper
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_KRASNOYARSK,      mContext.getResources().getString(R.string.city_krasnoyarsk));
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_LIPETSK,          mContext.getResources().getString(R.string.city_lipetsk));
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_MURMANSK,         mContext.getResources().getString(R.string.city_murmansk));
-        insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_NIZHNY_NOVGOROD,  mContext.getResources().getString(R.string.city_nizhny_novgorod));
+        insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_NIZHNIY_NOVGOROD, mContext.getResources().getString(R.string.city_nizhniy_novgorod));
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_NOVOSIBIRSK,      mContext.getResources().getString(R.string.city_novosibirsk));
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_NOVOCHERKASSK,    mContext.getResources().getString(R.string.city_novocherkassk));
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_OMSK,             mContext.getResources().getString(R.string.city_omsk));

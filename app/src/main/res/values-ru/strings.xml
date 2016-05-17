@@ -22,7 +22,7 @@
     <string name="city_krasnoyarsk">Красноярск</string>
     <string name="city_lipetsk">Липецк</string>
     <string name="city_murmansk">Мурманск</string>
-    <string name="city_nizhny_novgorod">Нижний Новгород</string>
+    <string name="city_nizhniy_novgorod">Нижний Новгород</string>
     <string name="city_novosibirsk">Новосибирск</string>
     <string name="city_novocherkassk">Новочеркасск</string>
     <string name="city_omsk">Омск</string>
@@ -52,4 +52,5 @@
     <string name="service_gift_cards">Подарочные карты</string>
     <string name="service_parking">Парковка</string>
     <string name="service_point_of_issuing_orders">ПВЗ интернет-магазина</string>
+    <string name="shop_moscow_hypermarket_ok_kirovogradskaya_kolumbus">Гипермаркет О'КЕЙ «Кировоградская Колумбус»</string>
 </resources>

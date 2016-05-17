@@ -22,7 +22,7 @@
     <string name="city_krasnoyarsk">Krasnoyarsk</string>
     <string name="city_lipetsk">Lipetsk</string>
     <string name="city_murmansk">Murmansk</string>
-    <string name="city_nizhny_novgorod">Nizhny Novgorod</string>
+    <string name="city_nizhniy_novgorod">Nizhniy Novgorod</string>
     <string name="city_novosibirsk">Novosibirsk</string>
     <string name="city_novocherkassk">Novocherkassk</string>
     <string name="city_omsk">Omsk</string>
@@ -52,4 +52,5 @@
     <string name="service_gift_cards">Gift cards</string>
     <string name="service_parking">Parking</string>
     <string name="service_point_of_issuing_orders">Point of issuing orders</string>
+    <string name="shop_moscow_hypermarket_ok_kirovogradskaya_kolumbus">Hypermarket OK «Kirovogradskaya Kolumbus»</string>
 </resources>

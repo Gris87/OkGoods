@@ -854,7 +854,7 @@ void ParserThread::generateIDs()
         QString shopId;
 
         shop = shop.replace("Гипермаркет", "Hypermarket").replace("Супермаркет", "Supermarket").replace("О'КЕЙ", "OK").replace("О’КЕЙ", "OK")
-                .replace("Москва", "moscow", Qt::CaseInsensitive).replace("Санкт-Петербург", "st_petersburg", Qt::CaseInsensitive).replace("Ростов-на-Дону", "rostov_on_don", Qt::CaseInsensitive)
+                .replace("Москва", "moscow").replace("Санкт-Петербург", "st_petersburg").replace("Ростов-на-Дону", "rostov_on_don")
                 .replace(" ", "_").replace("-", "_").replace("«", "").replace("»", "").replace("\"", "");
 
         shopId = mCitiesIDs.at(mShops.at(i).city_id - 1) + "_" + russianTransliteration(shop).toLower();
@@ -893,17 +893,164 @@ void ParserThread::updateRussianStringsXml()
 
 void ParserThread::updateRussianStringsXmlCities(QStringList &fileContents)
 {
+    QStringList newLines;
 
+    for (int i = 0; i < mCities.length(); ++i)
+    {
+        newLines.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + mCities.at(i) + "</string>");
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("<string name=\"city_"))
+        {
+            if (start < 0)
+            {
+                start = i;
+            }
+
+            end = i;
+        }
+        else
+        {
+            if (end >= 0)
+            {
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify cities in values-ru/strings.xml"));
+    }
 }
 
 void ParserThread::updateRussianStringsXmlServices(QStringList &fileContents)
 {
+    QStringList newLines;
 
+    for (int i = 0; i < mServices.length(); ++i)
+    {
+        newLines.append("    <string name=\"service_" + mServicesIDs.at(i) + "\">" + mServices.at(i) + "</string>");
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("<string name=\"service_"))
+        {
+            if (start < 0)
+            {
+                start = i;
+            }
+
+            end = i;
+        }
+        else
+        {
+            if (end >= 0)
+            {
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify services in values-ru/strings.xml"));
+    }
 }
 
 void ParserThread::updateRussianStringsXmlShops(QStringList &fileContents)
 {
+    QStringList newLines;
 
+    for (int i = 0; i < mShops.length(); ++i)
+    {
+        newLines.append("    <string name=\"shop_" + mShopsIDs.at(i) + "\">" + mShops.at(i).name + "</string>");
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("<string name=\"shop_"))
+        {
+            if (start < 0)
+            {
+                start = i;
+            }
+
+            end = i;
+        }
+        else
+        {
+            if (end >= 0)
+            {
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify shops in values-ru/strings.xml"));
+    }
 }
 
 void ParserThread::updateEnglishStringsXml()
@@ -930,17 +1077,270 @@ void ParserThread::updateEnglishStringsXml()
 
 void ParserThread::updateEnglishStringsXmlCities(QStringList &fileContents)
 {
+    QStringList newLines;
 
+    for (int i = 0; i < mCities.length(); ++i)
+    {
+        QString city = mCities.at(i);
+
+        if (city == "Москва")
+        {
+            city = "Moscow";
+        }
+        else
+        if (city == "Санкт-Петербург")
+        {
+            city = "St. Petersburg";
+        }
+        else
+        if (city == "Ростов-на-Дону")
+        {
+            city = "Rostov-on-Don";
+        }
+        else
+        {
+            city = russianTransliteration(city);
+        }
+
+        newLines.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + city + "</string>");
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("<string name=\"city_"))
+        {
+            if (start < 0)
+            {
+                start = i;
+            }
+
+            end = i;
+        }
+        else
+        {
+            if (end >= 0)
+            {
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify cities in values-ru/strings.xml"));
+    }
 }
 
 void ParserThread::updateEnglishStringsXmlServices(QStringList &fileContents)
 {
+    QStringList newLines;
 
+    for (int i = 0; i < mServices.length(); ++i)
+    {
+        QString service = mServices.at(i);
+
+        if (service == "Оплата карточкой")
+        {
+            service = "Clearing settlement";
+        }
+        else
+        if (service == "Бутик косметики")
+        {
+            service = "Cosmetics";
+        }
+        else
+        if (service == "Детская площадка")
+        {
+            service = "Playground";
+        }
+        else
+        if (service == "Рыбный остров")
+        {
+            service = "Fish island";
+        }
+        else
+        if (service == "Пекарня")
+        {
+            service = "Bakery";
+        }
+        else
+        if (service == "Кулинария")
+        {
+            service = "Cookery";
+        }
+        else
+        if (service == "Заказ такси")
+        {
+            service = "Taxi ordering";
+        }
+        else
+        if (service == "Аптека")
+        {
+            service = "Pharmacy";
+        }
+        else
+        if (service == "Блюда на заказ")
+        {
+            service = "Ordering food";
+        }
+        else
+        if (service == "Дегустации")
+        {
+            service = "Degustation";
+        }
+        else
+        if (service == "Кафе")
+        {
+            service = "Cafe";
+        }
+        else
+        if (service == "Подарочные карты")
+        {
+            service = "Gift cards";
+        }
+        else
+        if (service == "Парковка")
+        {
+            service = "Parking";
+        }
+        else
+        if (service == "ПВЗ интернет-магазина")
+        {
+            service = "Point of issuing orders";
+        }
+        else
+        {
+            addError(tr("Unknown service: %1").arg(service));
+
+            service = russianTransliteration(service);
+        }
+
+        newLines.append("    <string name=\"service_" + mServicesIDs.at(i) + "\">" + service + "</string>");
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("<string name=\"service_"))
+        {
+            if (start < 0)
+            {
+                start = i;
+            }
+
+            end = i;
+        }
+        else
+        {
+            if (end >= 0)
+            {
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify services in values-ru/strings.xml"));
+    }
 }
 
 void ParserThread::updateEnglishStringsXmlShops(QStringList &fileContents)
 {
+    QStringList newLines;
 
+    for (int i = 0; i < mShops.length(); ++i)
+    {
+        QString shop = mShops.at(i).name;
+
+        shop = shop.replace("Гипермаркет", "Hypermarket").replace("Супермаркет", "Supermarket").replace("О'КЕЙ", "OK").replace("О’КЕЙ", "OK")
+                .replace("Москва", "Moscow").replace("Санкт-Петербург", "St. Petersburg").replace("Ростов-на-Дону", "Rostov-on-Don");
+
+        shop = russianTransliteration(shop);
+
+        newLines.append("    <string name=\"shop_" + mShopsIDs.at(i) + "\">" + shop + "</string>");
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("<string name=\"shop_"))
+        {
+            if (start < 0)
+            {
+                start = i;
+            }
+
+            end = i;
+        }
+        else
+        {
+            if (end >= 0)
+            {
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify shops in values-ru/strings.xml"));
+    }
 }
 
 void ParserThread::updateMainDatabaseJava()
