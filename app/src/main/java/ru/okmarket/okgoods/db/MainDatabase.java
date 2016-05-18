@@ -22,6 +22,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String COLUMN_ID                  = "_id";
     public static final String COLUMN_NAME                = "_name";
     public static final String COLUMN_CITY_ID             = "_city_id";
+    public static final String COLUMN_IS_HYPERMARKET      = "_is_hypermarket";
     public static final String COLUMN_LATITUDE            = "_latitude";
     public static final String COLUMN_LONGITUDE           = "_longitude";
     public static final String COLUMN_PHONE               = "_phone";
@@ -48,6 +49,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                                         COLUMN_ID,
                                                         COLUMN_CITY_ID,
                                                         COLUMN_NAME,
+                                                        COLUMN_IS_HYPERMARKET,
                                                         COLUMN_LATITUDE,
                                                         COLUMN_LONGITUDE,
                                                         COLUMN_PHONE,
@@ -84,6 +86,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                                           COLUMN_ID                  + " INTEGER PRIMARY KEY, "                                                                            +
                                                           COLUMN_CITY_ID             + " INTEGER NOT NULL REFERENCES " + CITIES_TABLE_NAME + "(" + COLUMN_ID + "), "                       +
                                                           COLUMN_NAME                + " TEXT NOT NULL, "                                                                                  +
+                                                          COLUMN_IS_HYPERMARKET      + " INTEGER NOT NULL, "                                                                               +
                                                           COLUMN_LATITUDE            + " REAL NOT NULL CHECK (" + COLUMN_LATITUDE  + " >= -90)  CHECK (" + COLUMN_LATITUDE  + " <= 90), "  +
                                                           COLUMN_LONGITUDE           + " REAL NOT NULL CHECK (" + COLUMN_LONGITUDE + " >= -180) CHECK (" + COLUMN_LONGITUDE + " <= 180), " +
                                                           COLUMN_PHONE               + " TEXT NOT NULL, "                                                                                  +
@@ -156,6 +159,9 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final int SERVICE_PARKING_MASK                 = 0x00001000;
     public static final int SERVICE_POINT_OF_ISSUING_ORDERS_MASK = 0x00002000;
 
+    public static final int SHOP_SUPERMARKET = 0;
+    public static final int SHOP_HYPERMARKET = 1;
+
     public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_KIROVOGRADSKAYA_KOLUMBUS = 1;
 
 
@@ -223,7 +229,7 @@ public class MainDatabase extends SQLiteOpenHelper
     private void fillCitiesTable(SQLiteDatabase db)
     {
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_MOSCOW,           mContext.getResources().getString(R.string.city_moscow));
-        insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_SAINT_PETERSBURG, mContext.getResources().getString(R.string.city_st_petersburg));
+        insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_ST_PETERSBURG,    mContext.getResources().getString(R.string.city_st_petersburg));
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_ASTRAKHAN,        mContext.getResources().getString(R.string.city_astrakhan));
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_VOLGOGRAD,        mContext.getResources().getString(R.string.city_volgograd));
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_VORONEZH,         mContext.getResources().getString(R.string.city_voronezh));
@@ -273,28 +279,29 @@ public class MainDatabase extends SQLiteOpenHelper
     private void fillShopsTable(SQLiteDatabase db)
     {
         insertToTable(db, SHOPS_TABLE_NAME, SHOPS_COLUMNS,
-                1,                                      // COLUMN_ID
-                CITY_ID_SAINT_PETERSBURG,               // COLUMN_CITY_ID
-                "Гипермаркет О’КЕЙ «Балканская»",       // COLUMN_NAME
-                59.829385934709,                        // COLUMN_LATITUDE
-                30.38297256721,                         // COLUMN_LONGITUDE
-                "+7 (812) 703-70-12",                   // COLUMN_PHONE
-                "8:00 - 24:00",                         // COLUMN_WORK_HOURS
-                6484,                                   // COLUMN_SQUARE
-                "20.12.2007",                           // COLUMN_OPENING_DATE
-                561,                                    // COLUMN_PARKING_PLACES
-                37,                                     // COLUMN_NUMBER_OF_CASHBOXES
-                SERVICE_CLEARING_SETTLEMENT_MASK   |    // COLUMN_SERVICES_SET
-                        SERVICE_COSMETICS_MASK     |
-                        SERVICE_PLAYGROUND_MASK    |
-                        SERVICE_FISH_ISLAND_MASK   |
-                        SERVICE_COOKERY_MASK       |
-                        SERVICE_TAXI_ORDERING_MASK |
-                        SERVICE_PHARMACY_MASK      |
-                        SERVICE_ORDERING_FOOD_MASK |
-                        SERVICE_DEGUSTATION_MASK   |
-                        SERVICE_GIFT_CARDS_MASK    |
-                        SERVICE_PARKING_MASK
+                SHOP_ID_MOSCOW_HYPERMARKET_OK_KIROVOGRADSKAYA_KOLUMBUS,                                             // COLUMN_ID
+                CITY_ID_MOSCOW,                                                                                     // COLUMN_CITY_ID
+                mContext.getResources().getString(R.string.shop_moscow_hypermarket_ok_kirovogradskaya_kolumbus),    // COLUMN_NAME
+                SHOP_HYPERMARKET,                                                                                   // COLUMN_IS_HYPERMARKET
+                55.612265447129,                                                                                    // COLUMN_LATITUDE
+                37.606913669311,                                                                                    // COLUMN_LONGITUDE
+                "+7 (495) 734-78-46",                                                                               // COLUMN_PHONE
+                "8:00 - 24:00",                                                                                     // COLUMN_WORK_HOURS
+                8500,                                                                                               // COLUMN_SQUARE
+                "01.03.2015",                                                                                       // COLUMN_OPENING_DATE
+                2600,                                                                                               // COLUMN_PARKING_PLACES
+                36,                                                                                                 // COLUMN_NUMBER_OF_CASHBOXES
+                SERVICE_CLEARING_SETTLEMENT_MASK             |                                                      // COLUMN_SERVICES_SET
+                        SERVICE_PLAYGROUND_MASK              |
+                        SERVICE_FISH_ISLAND_MASK             |
+                        SERVICE_BAKERY_MASK                  |
+                        SERVICE_COOKERY_MASK                 |
+                        SERVICE_TAXI_ORDERING_MASK           |
+                        SERVICE_ORDERING_FOOD_MASK           |
+                        SERVICE_DEGUSTATION_MASK             |
+                        SERVICE_GIFT_CARDS_MASK              |
+                        SERVICE_PARKING_MASK                 |
+                        SERVICE_POINT_OF_ISSUING_ORDERS_MASK
         );
     }
 

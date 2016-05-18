@@ -28,6 +28,7 @@ private:
     void addError(const QString& error);
     QString removeLetters(const QString &text);
     QString russianTransliteration(const QString &text);
+    QString precedeTranslations(QString text);
     void readFileToStringList(QFile &file, QStringList &fileContents);
     void writeStringListToFile(const QStringList &fileContents, QFile &file);
 

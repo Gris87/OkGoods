@@ -50,6 +50,8 @@ void ParserThread::run()
     CHECK_AND_CALL(requestCitiesAndServices());
     CHECK_AND_CALL(requestShops());
     CHECK_AND_CALL(updateSourceCode());
+
+    qDebug() << "Done";
 }
 
 void ParserThread::addError(const QString& error)
@@ -123,6 +125,11 @@ QString ParserThread::russianTransliteration(const QString &text)
     }
 
     return res;
+}
+
+QString ParserThread::precedeTranslations(QString text)
+{
+    return text.replace("\'", "\\\'").replace("\"", "\\\"").replace("<", "&lt;").replace(">", "&gt;");
 }
 
 void ParserThread::readFileToStringList(QFile &file, QStringList &fileContents)
@@ -914,7 +921,7 @@ void ParserThread::updateRussianStringsXmlCities(QStringList &fileContents)
 
     for (int i = 0; i < mCities.length(); ++i)
     {
-        newLines.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + mCities.at(i) + "</string>");
+        newLines.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + precedeTranslations(mCities.at(i)) + "</string>");
     }
 
 
@@ -968,7 +975,7 @@ void ParserThread::updateRussianStringsXmlServices(QStringList &fileContents)
 
     for (int i = 0; i < mServices.length(); ++i)
     {
-        newLines.append("    <string name=\"service_" + mServicesIDs.at(i) + "\">" + mServices.at(i) + "</string>");
+        newLines.append("    <string name=\"service_" + mServicesIDs.at(i) + "\">" + precedeTranslations(mServices.at(i)) + "</string>");
     }
 
 
@@ -1022,7 +1029,7 @@ void ParserThread::updateRussianStringsXmlShops(QStringList &fileContents)
 
     for (int i = 0; i < mShops.length(); ++i)
     {
-        newLines.append("    <string name=\"shop_" + mShopsIDs.at(i) + "\">" + mShops.at(i).name + "</string>");
+        newLines.append("    <string name=\"shop_" + mShopsIDs.at(i) + "\">" + precedeTranslations(mShops.at(i).name) + "</string>");
     }
 
 
@@ -1119,7 +1126,7 @@ void ParserThread::updateEnglishStringsXmlCities(QStringList &fileContents)
             city = russianTransliteration(city);
         }
 
-        newLines.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + city + "</string>");
+        newLines.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + precedeTranslations(city) + "</string>");
     }
 
 
@@ -1251,7 +1258,7 @@ void ParserThread::updateEnglishStringsXmlServices(QStringList &fileContents)
             service = russianTransliteration(service);
         }
 
-        newLines.append("    <string name=\"service_" + mServicesIDs.at(i) + "\">" + service + "</string>");
+        newLines.append("    <string name=\"service_" + mServicesIDs.at(i) + "\">" + precedeTranslations(service) + "</string>");
     }
 
 
@@ -1312,7 +1319,7 @@ void ParserThread::updateEnglishStringsXmlShops(QStringList &fileContents)
 
         shop = russianTransliteration(shop);
 
-        newLines.append("    <string name=\"shop_" + mShopsIDs.at(i) + "\">" + shop + "</string>");
+        newLines.append("    <string name=\"shop_" + mShopsIDs.at(i) + "\">" + precedeTranslations(shop) + "</string>");
     }
 
 
@@ -1456,9 +1463,77 @@ void ParserThread::updateMainDatabaseJavaCitiesIDs(QStringList &fileContents)
     }
 }
 
-void ParserThread::updateMainDatabaseJavaCitiesFilling(QStringList &/*fileContents*/)
+void ParserThread::updateMainDatabaseJavaCitiesFilling(QStringList &fileContents)
 {
+    int maxLength = 0;
 
+    for (int i = 0; i < mCities.length(); ++i)
+    {
+        int cityLength = mCitiesIDs.at(i).length();
+
+        if (cityLength > maxLength)
+        {
+            maxLength = cityLength;
+        }
+    }
+
+
+
+    QStringList newLines;
+
+    for (int i = 0; i < mCities.length(); ++i)
+    {
+        newLines.append(QString("        insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_%1 mContext.getResources().getString(R.string.city_%2));").arg(mCitiesIDs.at(i).toUpper() + ",", -maxLength - 1, QChar(' ')).arg(mCitiesIDs.at(i)));
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("private void fillCitiesTable("))
+        {
+            start = i + 2;
+
+            break;
+        }
+    }
+
+
+
+    if (start >= 0)
+    {
+        for (int i = start; i < fileContents.length(); ++i)
+        {
+            if (fileContents.at(i).trimmed() == "}")
+            {
+                end = i - 1;
+
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify cities in MainDatabase.java"));
+    }
 }
 
 void ParserThread::updateMainDatabaseJavaServices(QStringList &fileContents)
@@ -1568,9 +1643,77 @@ void ParserThread::updateMainDatabaseJavaServicesIDs(QStringList &fileContents)
     }
 }
 
-void ParserThread::updateMainDatabaseJavaServicesFilling(QStringList &/*fileContents*/)
+void ParserThread::updateMainDatabaseJavaServicesFilling(QStringList &fileContents)
 {
+    int maxLength = 0;
 
+    for (int i = 0; i < mServices.length(); ++i)
+    {
+        int serviceLength = mServicesIDs.at(i).length();
+
+        if (serviceLength > maxLength)
+        {
+            maxLength = serviceLength;
+        }
+    }
+
+
+
+    QStringList newLines;
+
+    for (int i = 0; i < mServices.length(); ++i)
+    {
+        newLines.append(QString("        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_%1 mContext.getResources().getString(R.string.service_%2));").arg(mServicesIDs.at(i).toUpper() + ",", -maxLength - 1, QChar(' ')).arg(mServicesIDs.at(i)));
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("private void fillServicesTable("))
+        {
+            start = i + 2;
+
+            break;
+        }
+    }
+
+
+
+    if (start >= 0)
+    {
+        for (int i = start; i < fileContents.length(); ++i)
+        {
+            if (fileContents.at(i).trimmed() == "}")
+            {
+                end = i - 1;
+
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify services in MainDatabase.java"));
+    }
 }
 
 void ParserThread::updateMainDatabaseJavaShops(QStringList &fileContents)
@@ -1647,7 +1790,193 @@ void ParserThread::updateMainDatabaseJavaShopsIDs(QStringList &fileContents)
     }
 }
 
-void ParserThread::updateMainDatabaseJavaShopsFilling(QStringList &/*fileContents*/)
+void ParserThread::updateMainDatabaseJavaShopsFilling(QStringList &fileContents)
 {
+    QStringList newLines;
 
+    for (int i = 0; i < mShops.length(); ++i)
+    {
+        if (i > 0)
+        {
+            newLines.append(" ");
+        }
+
+        const ShopInfo &shop = mShops.at(i);
+
+
+
+        QStringList servicesLines;
+
+        for (int i = 0; i < shop.services_set.length(); ++i)
+        {
+            QString service = shop.services_set.at(i);
+
+            int index = mServices.indexOf(service);
+
+            if (index >= 0)
+            {
+                QString serviceMask = "SERVICE_" + mServicesIDs.at(index).toUpper() + "_MASK";
+
+                if (servicesLines.length() == 0)
+                {
+                    servicesLines.append("                " + serviceMask);
+                }
+                else
+                {
+                    servicesLines.append("                        " + serviceMask);
+                }
+            }
+            else
+            {
+                addError(tr("Unknown service: \"%1\"").arg(service));
+            }
+        }
+
+
+
+        int maxLength = 0;
+
+        for (int i = 0; i < servicesLines.length(); ++i)
+        {
+            int lineLength = servicesLines.at(i).length();
+
+            if (lineLength > maxLength)
+            {
+                maxLength = lineLength;
+            }
+        }
+
+
+
+        for (int i = 0; i < servicesLines.length() - 1; ++i)
+        {
+            QString &line = servicesLines[i];
+
+            while (line.length() < maxLength)
+            {
+                line.append(" ");
+            }
+
+            line.append(" |");
+        }
+
+
+
+        QStringList shopLines;
+
+        shopLines.append("        insertToTable(db, SHOPS_TABLE_NAME, SHOPS_COLUMNS,");
+        shopLines.append("                SHOP_ID_" + mShopsIDs.at(i).toUpper() + ",");
+        shopLines.append("                CITY_ID_" + mCitiesIDs.at(shop.city_id - 1).toUpper() + ",");
+        shopLines.append("                mContext.getResources().getString(R.string.shop_" + mShopsIDs.at(i) + "),");
+        shopLines.append("                " + QString(shop.is_hypermarket ? "SHOP_HYPERMARKET" : "SHOP_SUPERMARKET") + ",");
+        shopLines.append("                " + QString::number(shop.latitude,  'f', 12) + ",");
+        shopLines.append("                " + QString::number(shop.longitude, 'f', 12) + ",");
+        shopLines.append("                \"" + shop.phone + "\",");
+        shopLines.append("                \"" + shop.work_hours + "\",");
+        shopLines.append("                " + QString::number(shop.square) + ",");
+        shopLines.append("                \"" + shop.opening_date.toString("dd.MM.yyyy") + "\",");
+        shopLines.append("                " + QString::number(shop.parking_places) + ",");
+        shopLines.append("                " + QString::number(shop.number_of_cashboxes) + ",");
+        shopLines.append(servicesLines);
+        shopLines.append("        );");
+
+
+
+        maxLength = 0;
+
+        for (int i = 1; i <= 13; ++i)
+        {
+            int lineLength = shopLines.at(i).length();
+
+            if (lineLength > maxLength)
+            {
+                maxLength = lineLength;
+            }
+        }
+
+        maxLength += 4 - (maxLength % 4);
+
+
+
+        static QString columnNames[] = {
+            "COLUMN_ID",
+            "COLUMN_CITY_ID",
+            "COLUMN_NAME",
+            "COLUMN_IS_HYPERMARKET",
+            "COLUMN_LATITUDE",
+            "COLUMN_LONGITUDE",
+            "COLUMN_PHONE",
+            "COLUMN_WORK_HOURS",
+            "COLUMN_SQUARE",
+            "COLUMN_OPENING_DATE",
+            "COLUMN_PARKING_PLACES",
+            "COLUMN_NUMBER_OF_CASHBOXES",
+            "COLUMN_SERVICES_SET"
+        };
+
+        for (int i = 1; i <= 13; ++i)
+        {
+            QString &line = shopLines[i];
+
+            while (line.length() < maxLength)
+            {
+                line.append(" ");
+            }
+
+            line.append("// " + columnNames[i - 1]);
+        }
+
+
+
+        newLines.append(shopLines);
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("private void fillShopsTable("))
+        {
+            start = i + 2;
+
+            break;
+        }
+    }
+
+
+
+    if (start >= 0)
+    {
+        for (int i = start; i < fileContents.length(); ++i)
+        {
+            if (fileContents.at(i).trimmed() == "}")
+            {
+                end = i - 1;
+
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify shops in MainDatabase.java"));
+    }
 }
