@@ -98,7 +98,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
     public static final int CITY_ID_MOSCOW           = 1;
-    public static final int CITY_ID_SAINT_PETERSBURG = 2;
+    public static final int CITY_ID_ST_PETERSBURG    = 2;
     public static final int CITY_ID_ASTRAKHAN        = 3;
     public static final int CITY_ID_VOLGOGRAD        = 4;
     public static final int CITY_ID_VORONEZH         = 5;
@@ -141,20 +141,22 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final int SERVICE_ID_PARKING                 = 13;
     public static final int SERVICE_ID_POINT_OF_ISSUING_ORDERS = 14;
 
-    public static final int SERVICE_CLEARING_SETTLEMENT_MASK     = 1 << (SERVICE_ID_CLEARING_SETTLEMENT     - 1);
-    public static final int SERVICE_COSMETICS_MASK               = 1 << (SERVICE_ID_COSMETICS               - 1);
-    public static final int SERVICE_PLAYGROUND_MASK              = 1 << (SERVICE_ID_PLAYGROUND              - 1);
-    public static final int SERVICE_FISH_ISLAND_MASK             = 1 << (SERVICE_ID_FISH_ISLAND             - 1);
-    public static final int SERVICE_BAKERY_MASK                  = 1 << (SERVICE_ID_BAKERY                  - 1);
-    public static final int SERVICE_COOKERY_MASK                 = 1 << (SERVICE_ID_COOKERY                 - 1);
-    public static final int SERVICE_TAXI_ORDERING_MASK           = 1 << (SERVICE_ID_TAXI_ORDERING           - 1);
-    public static final int SERVICE_PHARMACY_MASK                = 1 << (SERVICE_ID_PHARMACY                - 1);
-    public static final int SERVICE_ORDERING_FOOD_MASK           = 1 << (SERVICE_ID_ORDERING_FOOD           - 1);
-    public static final int SERVICE_DEGUSTATION_MASK             = 1 << (SERVICE_ID_DEGUSTATION             - 1);
-    public static final int SERVICE_CAFE_MASK                    = 1 << (SERVICE_ID_CAFE                    - 1);
-    public static final int SERVICE_GIFT_CARDS_MASK              = 1 << (SERVICE_ID_GIFT_CARDS              - 1);
-    public static final int SERVICE_PARKING_MASK                 = 1 << (SERVICE_ID_PARKING                 - 1);
-    public static final int SERVICE_POINT_OF_ISSUING_ORDERS_MASK = 1 << (SERVICE_ID_POINT_OF_ISSUING_ORDERS - 1);
+    public static final int SERVICE_CLEARING_SETTLEMENT_MASK     = 0x00000001;
+    public static final int SERVICE_COSMETICS_MASK               = 0x00000002;
+    public static final int SERVICE_PLAYGROUND_MASK              = 0x00000004;
+    public static final int SERVICE_FISH_ISLAND_MASK             = 0x00000008;
+    public static final int SERVICE_BAKERY_MASK                  = 0x00000010;
+    public static final int SERVICE_COOKERY_MASK                 = 0x00000020;
+    public static final int SERVICE_TAXI_ORDERING_MASK           = 0x00000040;
+    public static final int SERVICE_PHARMACY_MASK                = 0x00000080;
+    public static final int SERVICE_ORDERING_FOOD_MASK           = 0x00000100;
+    public static final int SERVICE_DEGUSTATION_MASK             = 0x00000200;
+    public static final int SERVICE_CAFE_MASK                    = 0x00000400;
+    public static final int SERVICE_GIFT_CARDS_MASK              = 0x00000800;
+    public static final int SERVICE_PARKING_MASK                 = 0x00001000;
+    public static final int SERVICE_POINT_OF_ISSUING_ORDERS_MASK = 0x00002000;
+
+    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_KIROVOGRADSKAYA_KOLUMBUS = 1;
 
 
 

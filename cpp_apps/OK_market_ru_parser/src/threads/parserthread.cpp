@@ -366,8 +366,9 @@ bool ParserThread::requestShops()
                     shop.city_id = i + 1;
 
 
-
-                    QNetworkReply *reply = manager.get(QNetworkRequest(QUrl("http://okmarket.ru/stores/" + shopId + "/")));
+                    QNetworkRequest request(QUrl("http://okmarket.ru/stores/" + shopId + "/"));
+                    request.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookies));
+                    QNetworkReply *reply = manager.get(request);
 
                     QEventLoop loop;
                     QObject::connect(reply, SIGNAL(finished()),                         &loop, SLOT(quit()));
@@ -1387,9 +1388,72 @@ void ParserThread::updateMainDatabaseJavaCities(QStringList &fileContents)
     updateMainDatabaseJavaCitiesFilling(fileContents);
 }
 
-void ParserThread::updateMainDatabaseJavaCitiesIDs(QStringList &/*fileContents*/)
+void ParserThread::updateMainDatabaseJavaCitiesIDs(QStringList &fileContents)
 {
+    int maxLength = 0;
 
+    for (int i = 0; i < mCities.length(); ++i)
+    {
+        int cityLength = mCitiesIDs.at(i).length();
+
+        if (cityLength > maxLength)
+        {
+            maxLength = cityLength;
+        }
+    }
+
+
+
+    QStringList newLines;
+
+    for (int i = 0; i < mCities.length(); ++i)
+    {
+        newLines.append(QString("    public static final int CITY_ID_%1 = %2;").arg(mCitiesIDs.at(i).toUpper(), -maxLength, QChar(' ')).arg(i + 1));
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("public static final int CITY_ID_"))
+        {
+            if (start < 0)
+            {
+                start = i;
+            }
+
+            end = i;
+        }
+        else
+        {
+            if (end >= 0)
+            {
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify cities in MainDatabase.java"));
+    }
 }
 
 void ParserThread::updateMainDatabaseJavaCitiesFilling(QStringList &/*fileContents*/)
@@ -1403,9 +1467,105 @@ void ParserThread::updateMainDatabaseJavaServices(QStringList &fileContents)
     updateMainDatabaseJavaServicesFilling(fileContents);
 }
 
-void ParserThread::updateMainDatabaseJavaServicesIDs(QStringList &/*fileContents*/)
+void ParserThread::updateMainDatabaseJavaServicesIDs(QStringList &fileContents)
 {
+    int maxLength = 0;
 
+    for (int i = 0; i < mServices.length(); ++i)
+    {
+        int serviceLength = mServicesIDs.at(i).length();
+
+        if (serviceLength > maxLength)
+        {
+            maxLength = serviceLength;
+        }
+    }
+
+
+
+    QStringList newLines;
+
+    for (int i = 0; i < mServices.length(); ++i)
+    {
+        newLines.append(QString("    public static final int SERVICE_ID_%1 = %2;").arg(mServicesIDs.at(i).toUpper(), -maxLength, QChar(' ')).arg(i + 1));
+    }
+
+    newLines.append("");
+
+    for (int i = 0; i < mServices.length(); ++i)
+    {
+        newLines.append(QString("    public static final int SERVICE_%1 = 0x%2;").arg(mServicesIDs.at(i).toUpper() + "_MASK", -maxLength - 5, QChar(' ')).arg(1 << i, 8, 16, QChar('0')));
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("public static final int SERVICE_ID_"))
+        {
+            if (start < 0)
+            {
+                start = i;
+            }
+
+            end = i;
+        }
+        else
+        {
+            if (end >= 0)
+            {
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        int newEnd = -1;
+
+        for (int i = end + 1; i < fileContents.length(); ++i)
+        {
+            QString line = fileContents.at(i).trimmed();
+
+            if (line.startsWith("public static final int SERVICE_") && line.contains("_MASK"))
+            {
+                newEnd = i;
+            }
+            else
+            {
+                if (newEnd >= 0)
+                {
+                    break;
+                }
+            }
+        }
+
+        end = newEnd;
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify services in MainDatabase.java"));
+    }
 }
 
 void ParserThread::updateMainDatabaseJavaServicesFilling(QStringList &/*fileContents*/)
@@ -1419,9 +1579,72 @@ void ParserThread::updateMainDatabaseJavaShops(QStringList &fileContents)
     updateMainDatabaseJavaShopsFilling(fileContents);
 }
 
-void ParserThread::updateMainDatabaseJavaShopsIDs(QStringList &/*fileContents*/)
+void ParserThread::updateMainDatabaseJavaShopsIDs(QStringList &fileContents)
 {
+    int maxLength = 0;
 
+    for (int i = 0; i < mShops.length(); ++i)
+    {
+        int shopLength = mShopsIDs.at(i).length();
+
+        if (shopLength > maxLength)
+        {
+            maxLength = shopLength;
+        }
+    }
+
+
+
+    QStringList newLines;
+
+    for (int i = 0; i < mShops.length(); ++i)
+    {
+        newLines.append(QString("    public static final int SHOP_ID_%1 = %2;").arg(mShopsIDs.at(i).toUpper(), -maxLength, QChar(' ')).arg(i + 1));
+    }
+
+
+
+    int start = -1;
+    int end   = -1;
+
+    for (int i = 0; i < fileContents.length(); ++i)
+    {
+        if (fileContents.at(i).trimmed().startsWith("public static final int SHOP_ID_"))
+        {
+            if (start < 0)
+            {
+                start = i;
+            }
+
+            end = i;
+        }
+        else
+        {
+            if (end >= 0)
+            {
+                break;
+            }
+        }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        for (int i = end; i >= start; --i)
+        {
+            fileContents.removeAt(i);
+        }
+
+        for (int i = 0; i < newLines.length(); ++i)
+        {
+            fileContents.insert(start + i, newLines.at(i));
+        }
+    }
+    else
+    {
+        addError(tr("Failed to modify shops in MainDatabase.java"));
+    }
 }
 
 void ParserThread::updateMainDatabaseJavaShopsFilling(QStringList &/*fileContents*/)
