@@ -1833,7 +1833,7 @@ void ParserThread::updateMainDatabaseJavaShopsFilling(QStringList &fileContents)
     {
         if (i > 0)
         {
-            newLines.append(" ");
+            newLines.append("");
         }
 
         const ShopInfo &shop = mShops.at(i);
