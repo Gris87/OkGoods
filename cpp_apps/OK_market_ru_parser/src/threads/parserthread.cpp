@@ -46,15 +46,23 @@ void ParserThread::stop()
 
 void ParserThread::run()
 {
+    qDebug() << "Started";
+    qDebug() << "===================================";
+    qDebug() << "";
+
+
+
     CHECK_AND_CALL(getProjectDir());
     CHECK_AND_CALL(requestCitiesAndServices());
     CHECK_AND_CALL(requestShops());
     CHECK_AND_CALL(updateSourceCode());
 
+
+
     qDebug() << "";
     qDebug() << "===================================";
-    qDebug() << "";
     qDebug() << "Done";
+    qDebug() << "===================================";
 }
 
 void ParserThread::addError(const QString& error)
@@ -741,19 +749,20 @@ bool ParserThread::requestShops()
 
 
 
-        qDebug() << shop.id;
-        qDebug() << shop.city_id;
-        qDebug() << shop.name;
-        qDebug() << shop.is_hypermarket;
-        qDebug() << shop.latitude;
-        qDebug() << shop.longitude;
-        qDebug() << shop.phone;
-        qDebug() << shop.work_hours;
-        qDebug() << shop.square;
-        qDebug() << shop.opening_date;
-        qDebug() << shop.parking_places;
-        qDebug() << shop.number_of_cashboxes;
-        qDebug() << shop.services_set;
+        qDebug() << "";
+        qDebug() << "id                  =" << shop.id;
+        qDebug() << "city_id             =" << shop.city_id;
+        qDebug() << "name                =" << shop.name;
+        qDebug() << "is_hypermarket      =" << shop.is_hypermarket;
+        qDebug() << "latitude            =" << shop.latitude;
+        qDebug() << "longitude           =" << shop.longitude;
+        qDebug() << "phone               =" << shop.phone;
+        qDebug() << "work_hours          =" << shop.work_hours;
+        qDebug() << "square              =" << shop.square;
+        qDebug() << "opening_date        =" << shop.opening_date;
+        qDebug() << "parking_places      =" << shop.parking_places;
+        qDebug() << "number_of_cashboxes =" << shop.number_of_cashboxes;
+        qDebug() << "services_set        =" << shop.services_set;
     }
 
     if (mTerminated)
