@@ -443,7 +443,7 @@ bool ParserThread::requestShops()
 
 
 
-        QNetworkRequest request(QUrl("http://okmarket.ru/stores/" + shopId + "/"));
+        QNetworkRequest request(QUrl("http://okmarket.ru/stores/" + QString::number(shop.id) + "/"));
         request.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookies));
         QNetworkReply *reply = manager.get(request);
 
