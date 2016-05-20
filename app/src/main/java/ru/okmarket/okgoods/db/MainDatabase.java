@@ -295,9 +295,7 @@ public class MainDatabase extends SQLiteOpenHelper
     {
         if (oldVersion <= 0)
         {
-            dropStaticTables(db);
-            createStaticTables(db);
-            fillStaticTables(db);
+            recreateStaticTables(db);
         }
     }
 
@@ -316,9 +314,16 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private void dropStaticTables(SQLiteDatabase db)
     {
-        db.execSQL("DROP TABLE " + SHOPS_TABLE_NAME      + ";");
-        db.execSQL("DROP TABLE " + SERVICES_TABLE_CREATE + ";");
-        db.execSQL("DROP TABLE " + CITIES_TABLE_CREATE   + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + SHOPS_TABLE_NAME    + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + SERVICES_TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + CITIES_TABLE_NAME   + ";");
+    }
+
+    public void recreateStaticTables(SQLiteDatabase db)
+    {
+        dropStaticTables(db);
+        createStaticTables(db);
+        fillStaticTables(db);
     }
 
     private void createDynamicTables(SQLiteDatabase db)

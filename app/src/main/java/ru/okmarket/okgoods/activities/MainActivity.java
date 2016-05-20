@@ -1,5 +1,7 @@
 package ru.okmarket.okgoods.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +9,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.Locale;
+
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.PagerAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.fragments.GoodsFragment;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
+import ru.okmarket.okgoods.other.Preferences;
 
 public class MainActivity extends AppCompatActivity implements GoodsFragment.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener
 {
@@ -19,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
 
 
 
+    private MainDatabase    mMainDatabase    = null;
     private SQLiteDatabase  mDB              = null;
     private ViewPager       mPager           = null;
     private PagerAdapter    mPagerAdapter    = null;
@@ -33,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDB = new MainDatabase(this).getWritableDatabase();
+        mMainDatabase = new MainDatabase(this);
+        mDB           = mMainDatabase.getWritableDatabase();
 
         mPager           = null;
         mPagerAdapter    = null;
@@ -48,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
 
             mPager.setAdapter(mPagerAdapter);
         }
+
+        verifyContextPreferences();
     }
 
     @Override
@@ -107,6 +116,27 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void verifyContextPreferences()
+    {
+        boolean modified = false;
+
+        SharedPreferences prefs = getSharedPreferences(Preferences.CONTEXT_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        if (!prefs.getString(Preferences.CONTEXT_LOCALE, "").equals(Locale.getDefault().toString()))
+        {
+            mMainDatabase.recreateStaticTables(mDB);
+
+            editor.putString(Preferences.CONTEXT_LOCALE, Locale.getDefault().toString());
+            modified = true;
+        }
+
+        if (modified)
+        {
+            editor.apply();
+        }
     }
 
     @Override
