@@ -1,6 +1,7 @@
 package ru.okmarket.okgoods.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.view.ViewPager;
@@ -21,6 +22,11 @@ import ru.okmarket.okgoods.other.Preferences;
 public class MainActivity extends AppCompatActivity implements GoodsFragment.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener
 {
     private static final String TAG = "MainActivity";
+
+
+
+    private static final int SETTINGS    = 1;
+    private static final int SELECT_SHOP = 2;
 
 
 
@@ -105,6 +111,9 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
 
         if (id == R.id.menu_settings)
         {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivityForResult(intent, SETTINGS);
+
             return true;
         }
 
@@ -151,5 +160,12 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
     public void onShopMapFragmentCreated(ShopMapFragment fragment)
     {
         mShopMapFragment = fragment;
+    }
+
+    @Override
+    public void onShopMapSelectShopClicked()
+    {
+        Intent intent = new Intent(this, SelectShopActivity.class);
+        startActivityForResult(intent, SELECT_SHOP);
     }
 }
