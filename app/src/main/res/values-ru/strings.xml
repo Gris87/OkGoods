@@ -159,4 +159,12 @@
     <string name="shop_ufa_hypermarket_ok_ufa_iyun">Гипермаркет О’КЕЙ «Уфа Июнь»</string>
     <string name="shop_ufa_hypermarket_ok_ufa_planeta">Гипермаркет О’КЕЙ «Уфа Планета»</string>
     <string name="shop_cherepovets_hypermarket_ok_cherepovets_raakhe">Гипермаркет О\'КЕЙ «Череповец Раахе»</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="title_activity_select_shop">Выбор магазина</string>
+    <string name="pref_header_general">Основные</string>
+    <string name="pref_header_notifications">Уведомления</string>
+    <string name="pref_title_general_city">Город</string>
+    <string name="pref_description_general_city">Выберите свой город</string>
+    <string name="pref_title_notifications_show_notification">Показывать уведомление</string>
+    <string name="pref_description_notifications_show_notification">Включает уведомление</string>
 </resources>
