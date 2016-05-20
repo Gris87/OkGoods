@@ -19,6 +19,15 @@
     } \
 }
 
+#define TOTAL_PROGRESS                       100
+#define GET_PROJECT_DIR_PROGRESS             1
+#define REQUEST_CITIES_AND_SERVICES_PROGRESS 5
+#define REQUEST_SHOP_STEP_1_PROGRESS         25
+#define REQUEST_SHOP_STEP_2_PROGRESS         95
+#define GENERATE_IDS_PROGRESS                96
+#define UPDATE_STRINGS_XML_PROGRESS          98
+#define UPDATE_MAIN_DATABASE_JAVA_PROGRESS   100
+
 
 
 ParserThread::ParserThread(const QString &proxyHost, quint16 proxyPort, QObject *parent) :
@@ -179,6 +188,10 @@ void ParserThread::writeStringListToFile(const QStringList &fileContents, QFile 
 
 bool ParserThread::getProjectDir()
 {
+    emit progressChanged(GET_PROJECT_DIR_PROGRESS, TOTAL_PROGRESS);
+
+
+
     QString res = QApplication::applicationDirPath();
 
     while (!mTerminated)
@@ -212,6 +225,10 @@ bool ParserThread::getProjectDir()
 
 bool ParserThread::requestCitiesAndServices()
 {
+    emit progressChanged(REQUEST_CITIES_AND_SERVICES_PROGRESS, TOTAL_PROGRESS);
+
+
+
     QNetworkAccessManager manager;
 
     if (mProxyHost != "")
@@ -352,6 +369,10 @@ bool ParserThread::requestShops()
 
     for (int i = 0; i < mCities.length() && !mTerminated; ++i)
     {
+        emit progressChanged(REQUEST_CITIES_AND_SERVICES_PROGRESS + (i + 1) * (REQUEST_SHOP_STEP_1_PROGRESS - REQUEST_CITIES_AND_SERVICES_PROGRESS) / mCities.length(), TOTAL_PROGRESS);
+
+
+
         cookies.clear();
         cookies.append(QNetworkCookie("BITRIX_SM_CURRENT_CITY", QUrl::toPercentEncoding(mCities.at(i))));
 
@@ -433,7 +454,7 @@ bool ParserThread::requestShops()
     {
         ShopInfo &shop = mShops[i];
 
-        emit progressChanged(i + 1, mShops.length());
+        emit progressChanged(REQUEST_SHOP_STEP_1_PROGRESS + (i + 1) * (REQUEST_SHOP_STEP_2_PROGRESS - REQUEST_SHOP_STEP_1_PROGRESS) / mShops.length(), TOTAL_PROGRESS);
 
 
 
@@ -799,6 +820,10 @@ bool ParserThread::updateSourceCode()
 
 void ParserThread::generateIDs()
 {
+    emit progressChanged(GENERATE_IDS_PROGRESS, TOTAL_PROGRESS);
+
+
+
     for (int i = 0; i < mCities.length(); ++i)
     {
         QString city = mCities.at(i);
@@ -929,6 +954,10 @@ void ParserThread::generateIDs()
 
 void ParserThread::updateStringsXml()
 {
+    emit progressChanged(UPDATE_STRINGS_XML_PROGRESS, TOTAL_PROGRESS);
+
+
+
     updateRussianStringsXml();
     updateEnglishStringsXml();
 }
@@ -1409,6 +1438,10 @@ void ParserThread::updateEnglishStringsXmlShops(QStringList &fileContents)
 
 void ParserThread::updateMainDatabaseJava()
 {
+    emit progressChanged(UPDATE_MAIN_DATABASE_JAVA_PROGRESS, TOTAL_PROGRESS);
+
+
+
     QFile file(mProjectDir + "/app/src/main/java/ru/okmarket/okgoods/db/MainDatabase.java");
 
     if (file.exists())
