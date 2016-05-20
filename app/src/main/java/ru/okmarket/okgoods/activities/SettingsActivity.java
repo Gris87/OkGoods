@@ -107,7 +107,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
         {
             if (!super.onMenuItemSelected(featureId, item))
             {
-                NavUtils.navigateUpFromSameTask(this);
+                NavUtils.navigateUpFromSameTask(this); // TODO: Check it
             }
 
             return true;
