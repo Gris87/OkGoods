@@ -1,5 +1,4 @@
-Free money everywhere
-Find more free money
+Settings
 Yandex Maps
 Shop list
 Points on Map
@@ -20,3 +19,5 @@ Show the way
 Walk on the shop map
 Get real data
 CachedImage
+Free money everywhere
+Find more free money
