@@ -1,4 +1,5 @@
 Settings
+Ask for settings
 Yandex Maps
 Shop list
 Points on Map
@@ -19,5 +20,6 @@ Show the way
 Walk on the shop map
 Get real data
 CachedImage
+Release keys
 Free money everywhere
 Find more free money
