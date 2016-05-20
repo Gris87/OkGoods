@@ -524,7 +524,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 55.864167062595,                                                                    // COLUMN_LATITUDE
                 37.397173695801,                                                                    // COLUMN_LONGITUDE
                 "+7 (499) 272-54-44",                                                               // COLUMN_PHONE
-                "Круглосуточно",                                                                    // COLUMN_WORK_HOURS
+                "0:00 - 24:00",                                                                     // COLUMN_WORK_HOURS
                 10700,                                                                              // COLUMN_SQUARE
                 "11.12.2012",                                                                       // COLUMN_OPENING_DATE
                 1000,                                                                               // COLUMN_PARKING_PLACES
@@ -599,7 +599,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 55.831412545996,                                                                            // COLUMN_LATITUDE
                 38.393524753967,                                                                            // COLUMN_LONGITUDE
                 "+7 (495) 287-96-69",                                                                       // COLUMN_PHONE
-                "Круглосуточно",                                                                            // COLUMN_WORK_HOURS
+                "0:00 - 24:00",                                                                             // COLUMN_WORK_HOURS
                 9322,                                                                                       // COLUMN_SQUARE
                 "20.05.2009",                                                                               // COLUMN_OPENING_DATE
                 991,                                                                                        // COLUMN_PARKING_PLACES
@@ -823,7 +823,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 60.000131726412,                                                                            // COLUMN_LATITUDE
                 30.272287944458,                                                                            // COLUMN_LONGITUDE
                 "+7 (812) 703-70-06",                                                                       // COLUMN_PHONE
-                "Круглосуточно",                                                                            // COLUMN_WORK_HOURS
+                "0:00 - 24:00",                                                                             // COLUMN_WORK_HOURS
                 8651,                                                                                       // COLUMN_SQUARE
                 "24.03.2006",                                                                               // COLUMN_OPENING_DATE
                 722,                                                                                        // COLUMN_PARKING_PLACES
@@ -848,7 +848,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 60.056460343261,                                                                            // COLUMN_LATITUDE
                 30.309786855820,                                                                            // COLUMN_LONGITUDE
                 "+7 (812) 703-70-10",                                                                       // COLUMN_PHONE
-                "Круглосуточно",                                                                            // COLUMN_WORK_HOURS
+                "0:00 - 24:00",                                                                             // COLUMN_WORK_HOURS
                 8331,                                                                                       // COLUMN_SQUARE
                 "12.01.2007",                                                                               // COLUMN_OPENING_DATE
                 734,                                                                                        // COLUMN_PARKING_PLACES
@@ -1067,7 +1067,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 59.827402167838,                                                                            // COLUMN_LATITUDE
                 30.316197042328,                                                                            // COLUMN_LONGITUDE
                 "+7 (812) 703-70-09",                                                                       // COLUMN_PHONE
-                "круглосуточно",                                                                            // COLUMN_WORK_HOURS
+                "0:00 - 24:00",                                                                             // COLUMN_WORK_HOURS
                 10776,                                                                                      // COLUMN_SQUARE
                 "25.12.2006",                                                                               // COLUMN_OPENING_DATE
                 1024,                                                                                       // COLUMN_PARKING_PLACES
@@ -1421,7 +1421,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 60.095835683606,                                                                                        // COLUMN_LATITUDE
                 29.971504186508,                                                                                        // COLUMN_LONGITUDE
                 "+7 (812) 363-37-30",                                                                                   // COLUMN_PHONE
-                "круглосуточно",                                                                                        // COLUMN_WORK_HOURS
+                "0:00 - 24:00",                                                                                         // COLUMN_WORK_HOURS
                 1300,                                                                                                   // COLUMN_SQUARE
                 "11.06.2008",                                                                                           // COLUMN_OPENING_DATE
                 17,                                                                                                     // COLUMN_PARKING_PLACES
@@ -2984,7 +2984,7 @@ public class MainDatabase extends SQLiteOpenHelper
             }
 
             builder.append("\'");
-            builder.append(String.valueOf(values[i]).replace("\'", "\\\'"));
+            builder.append(String.valueOf(values[i]).replace("\'", "\'\'").replace("\"", "\"\""));
             builder.append("\'");
         }
 

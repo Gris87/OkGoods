@@ -547,6 +547,11 @@ bool ParserThread::requestShops()
                         if (property == "Часы работы")
                         {
                             shop.work_hours = propertyValue;
+
+                            if (shop.work_hours.compare("Круглосуточно", Qt::CaseInsensitive) == 0)
+                            {
+                                shop.work_hours = "0:00 - 24:00";
+                            }
                         }
                         else
                         if (property == "Площадь магазина")
