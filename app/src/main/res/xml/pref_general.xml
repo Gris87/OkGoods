@@ -2,7 +2,7 @@
 
     <SwitchPreference
         android:defaultValue="true"
-        android:key="city"
+        android:key="CITY"
         android:summary="@string/pref_description_general_city"
         android:title="@string/pref_title_general_city" />
 

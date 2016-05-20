@@ -2,8 +2,7 @@ package ru.okmarket.okgoods.other;
 
 public class Preferences
 {
-    public static final String SETTINGS_FILE_NAME = "Settings";
-    public static final String CONTEXT_FILE_NAME  = "Context";
+    public static final String CONTEXT_FILE_NAME = "Context";
 
     public static final String SETTINGS_CITY              = "CITY";
     public static final String SETTINGS_SHOW_NOTIFICATION = "SHOW_NOTIFICATION";
