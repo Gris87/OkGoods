@@ -33,8 +33,14 @@
     <AroundMultiplicativeOperatorParentheses>False</AroundMultiplicativeOperatorParentheses>
     <SpacesBeforeBrackets>False</SpacesBeforeBrackets>
   </CSharpFormattingPolicy>
-  <TextStylePolicy inheritsSet="null" scope="text/x-csharp" />
-  <TextStylePolicy inheritsSet="null" scope="application/xml" />
+  <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp">
+    <FileWidth>120</FileWidth>
+    <TabsToSpaces>False</TabsToSpaces>
+  </TextStylePolicy>
+  <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="application/xml">
+    <FileWidth>120</FileWidth>
+    <TabsToSpaces>False</TabsToSpaces>
+  </TextStylePolicy>
   <XmlFormattingPolicy inheritsSet="Mono" inheritsScope="application/xml" scope="application/xml" />
   <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/plain">
     <FileWidth>120</FileWidth>
