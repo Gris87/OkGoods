@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using Utils;
+
 
 
 namespace UI
@@ -17,6 +19,8 @@ namespace UI
         // Use this for initialization
         void Start()
         {
+            DebugEx.Verbose("FloorScript.Start()");
+
             GeneratePlaneMesh();
             GetMaterials();
             GenerateFloor();
@@ -24,6 +28,8 @@ namespace UI
 
         private void GeneratePlaneMesh()
         {
+            DebugEx.Verbose("FloorScript.GeneratePlaneMesh()");
+
             mPlaneMesh = new Mesh();
             mPlaneMesh.name = "Plane";
 
@@ -65,12 +71,16 @@ namespace UI
 
         private void GetMaterials()
         {
+            DebugEx.Verbose("FloorScript.GetMaterials()");
+
             mGrassMaterial = Resources.Load<Material>("Materials/Grass");
             mFloorMaterial = Resources.Load<Material>("Materials/Floor");
         }
 
         private void GenerateFloor()
         {
+            DebugEx.Verbose("FloorScript.GenerateFloor()");
+
             for (int i = 0; i < Constants.TILES_COUNT; ++i)
             {
                 for (int j = 0; j < Constants.TILES_COUNT; ++j)
