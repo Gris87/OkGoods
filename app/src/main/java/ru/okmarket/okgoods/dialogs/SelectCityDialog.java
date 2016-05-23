@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.widget.Toolbar;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
@@ -27,14 +26,10 @@ public class SelectCityDialog extends DialogFragment
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        Log.e(TAG, "1111");
-
         MainDatabase mainDatabase = new MainDatabase(getActivity());
         SQLiteDatabase db = mainDatabase.getReadableDatabase();
         String[] cities = mainDatabase.getCities(db);
         db.close();
-
-        Log.e(TAG, "2222");
 
 
 

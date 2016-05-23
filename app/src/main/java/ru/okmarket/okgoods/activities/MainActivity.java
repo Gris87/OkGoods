@@ -72,14 +72,8 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
 
         if (!prefs.contains(Preferences.SETTINGS_CITY))
         {
-            Log.e(TAG, "AAAA");
-
             SelectCityDialog dialog = new SelectCityDialog();
-
-            Log.e(TAG, "BBBB");
             dialog.show(getSupportFragmentManager(), "SelectCityDialog");
-
-            Log.e(TAG, "CCCC");
         }
     }
 
