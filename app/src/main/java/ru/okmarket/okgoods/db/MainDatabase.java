@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
+import android.util.Log;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.util.AppLog;
@@ -3032,6 +3033,8 @@ public class MainDatabase extends SQLiteOpenHelper
 
     public String[] getCities(SQLiteDatabase db)
     {
+        Log.e(TAG, "hjjhg");
+
         Cursor cursor = db.query(CITIES_TABLE_NAME, new String[] { COLUMN_NAME }, null, null, null, null, null);
         int nameColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_NAME);
 
@@ -3042,6 +3045,10 @@ public class MainDatabase extends SQLiteOpenHelper
 
         while (cursor.isAfterLast())
         {
+            Log.e(TAG, cursor.toString());
+            Log.e(TAG, String.valueOf(nameColumnIndex));
+            Log.e(TAG, cursor.getString(nameColumnIndex));
+
             res[i] = cursor.getString(nameColumnIndex);
 
             ++i;

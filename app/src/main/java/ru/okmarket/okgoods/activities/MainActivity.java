@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +16,12 @@ import java.util.Locale;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.PagerAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.dialogs.SelectCityDialog;
 import ru.okmarket.okgoods.fragments.GoodsFragment;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
 import ru.okmarket.okgoods.other.Preferences;
 
-public class MainActivity extends AppCompatActivity implements GoodsFragment.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener
+public class MainActivity extends AppCompatActivity implements GoodsFragment.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener, SelectCityDialog.OnFragmentInteractionListener
 {
     private static final String TAG = "MainActivity";
 
@@ -63,6 +65,22 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
         }
 
         verifyContextPreferences();
+
+
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (!prefs.contains(Preferences.SETTINGS_CITY))
+        {
+            Log.e(TAG, "AAAA");
+
+            SelectCityDialog dialog = new SelectCityDialog();
+
+            Log.e(TAG, "BBBB");
+            dialog.show(getSupportFragmentManager(), "SelectCityDialog");
+
+            Log.e(TAG, "CCCC");
+        }
     }
 
     @Override
@@ -167,5 +185,16 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
     {
         Intent intent = new Intent(this, SelectShopActivity.class);
         startActivityForResult(intent, SELECT_SHOP);
+    }
+
+    @Override
+    public void onCitySelected(String cityId)
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString(Preferences.SETTINGS_CITY, cityId);
+
+        editor.apply();
     }
 }

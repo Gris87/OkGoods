@@ -18,6 +18,10 @@ import android.view.ViewGroup;
  */
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity
 {
+    private static final String TAG = "AppCompatPreferenceActivity";
+
+
+
     private AppCompatDelegate mDelegate;
 
 

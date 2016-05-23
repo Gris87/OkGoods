@@ -5,6 +5,10 @@ import android.util.Log;
 @SuppressWarnings("unused")
 public class AppLog
 {
+    private static final String TAG = "AppLog";
+
+
+
     private AppLog()
     {
     }
