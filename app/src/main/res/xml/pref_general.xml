@@ -1,9 +1,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="true"
+    <ListPreference
         android:key="CITY"
+        android:title="@string/pref_title_general_city"
         android:summary="@string/pref_description_general_city"
-        android:title="@string/pref_title_general_city" />
+        android:defaultValue="ST_PETERSBURG" />
 
 </PreferenceScreen>

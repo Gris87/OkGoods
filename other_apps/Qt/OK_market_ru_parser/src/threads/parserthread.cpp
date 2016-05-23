@@ -1496,6 +1496,17 @@ void ParserThread::updateMainDatabaseJavaCitiesIDs(QStringList &fileContents)
         newLines.append(QString("    public static final int CITY_ID_%1 = %2;").arg(mCitiesIDs.at(i).toUpper(), -maxLength, QChar(' ')).arg(i + 1));
     }
 
+    newLines.append("");
+    newLines.append("    public static final String[] CITIES = {");
+    newLines.append("              \"" + mCitiesIDs.at(0).toUpper() + "\"");
+
+    for (int i = 1; i < mCities.length(); ++i)
+    {
+        newLines.append("            , \"" + mCitiesIDs.at(i).toUpper() + "\"");
+    }
+
+    newLines.append("    };");
+
 
 
     int start = -1;
@@ -1519,6 +1530,36 @@ void ParserThread::updateMainDatabaseJavaCitiesIDs(QStringList &fileContents)
                 break;
             }
         }
+    }
+
+
+
+    if (start >= 0 && start <= end)
+    {
+        int newEnd = -1;
+        bool found = false;
+
+        for (int i = end + 1; i < fileContents.length(); ++i)
+        {
+            QString line = fileContents.at(i).trimmed();
+
+            if (line == "public static final String[] CITIES = {")
+            {
+                found = true;
+            }
+            else
+            if (line == "};")
+            {
+                if (found)
+                {
+                    newEnd = i;
+
+                    break;
+                }
+            }
+        }
+
+        end = newEnd;
     }
 
 

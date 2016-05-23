@@ -1,6 +1,7 @@
 package ru.okmarket.okgoods.db;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
@@ -128,6 +129,37 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final int CITY_ID_TYUMEN           = 26;
     public static final int CITY_ID_UFA              = 27;
     public static final int CITY_ID_CHEREPOVETS      = 28;
+
+    public static final String[] CITIES = {
+              "MOSCOW"
+            , "ST_PETERSBURG"
+            , "ASTRAKHAN"
+            , "VOLGOGRAD"
+            , "VORONEZH"
+            , "EKATERINBURG"
+            , "IVANOVO"
+            , "IRKUTSK"
+            , "KRASNODAR"
+            , "KRASNOYARSK"
+            , "LIPETSK"
+            , "MURMANSK"
+            , "NIZHNIY_NOVGOROD"
+            , "NOVOSIBIRSK"
+            , "NOVOCHERKASSK"
+            , "OMSK"
+            , "ORENBURG"
+            , "ROSTOV_ON_DON"
+            , "SARATOV"
+            , "SOCHI"
+            , "STAVROPOL"
+            , "STERLITAMAK"
+            , "SURGUT"
+            , "SYKTYVKAR"
+            , "TOLYATTI"
+            , "TYUMEN"
+            , "UFA"
+            , "CHEREPOVETS"
+    };
 
     public static final int SERVICE_ID_CLEARING_SETTLEMENT     = 1;
     public static final int SERVICE_ID_COSMETICS               = 2;
@@ -2996,5 +3028,39 @@ public class MainDatabase extends SQLiteOpenHelper
         builder.append(");");
 
         db.execSQL(builder.toString());
+    }
+
+    public String[] getCities(SQLiteDatabase db)
+    {
+        Cursor cursor = db.query(CITIES_TABLE_NAME, new String[] { COLUMN_NAME }, null, null, null, null, null);
+        int nameColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+
+        String[] res = new String[cursor.getCount()];
+
+        int i = 0;
+        cursor.moveToFirst();
+
+        while (cursor.isAfterLast())
+        {
+            res[i] = cursor.getString(nameColumnIndex);
+
+            ++i;
+            cursor.moveToNext();
+        }
+
+        return res;
+    }
+
+    public int getCityId(String city)
+    {
+        for (int i = 0; i < CITIES.length; ++i)
+        {
+            if (city.equals(CITIES[i]))
+            {
+                return i + 1;
+            }
+        }
+
+        return -1;
     }
 }

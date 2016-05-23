@@ -3,6 +3,7 @@ package ru.okmarket.okgoods.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -14,6 +15,8 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 import ru.okmarket.okgoods.R;
+import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.other.Preferences;
 
 import java.util.List;
 
@@ -107,7 +110,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
         {
             if (!super.onMenuItemSelected(featureId, item))
             {
-                NavUtils.navigateUpFromSameTask(this); // TODO: Check it
+                NavUtils.navigateUpFromSameTask(this);
             }
 
             return true;
@@ -153,6 +156,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      */
     public static class GeneralPreferenceFragment extends PreferenceFragment
     {
+        private MainDatabase   mMainDatabase = null;
+        private SQLiteDatabase mDB           = null;
+
+
+
         @Override
         public void onCreate(Bundle savedInstanceState)
         {
@@ -160,6 +168,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
+
+            mMainDatabase = new MainDatabase(getActivity());
+            mDB           = mMainDatabase.getReadableDatabase();
+
+            ListPreference cities = (ListPreference)findPreference(Preferences.SETTINGS_CITY);
+            cities.setEntries(mMainDatabase.getCities(mDB));
+            cities.setEntryValues(MainDatabase.CITIES);
+        }
+
+        @Override
+        public void onDestroy()
+        {
+            super.onDestroy();
+
+            if (mDB != null)
+            {
+                mDB.close();
+            }
         }
 
         @Override
