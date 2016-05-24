@@ -6,6 +6,9 @@ using Utils;
 
 namespace UI
 {
+    /// <summary>
+    /// Floor management script.
+    /// </summary>
     public class FloorManagementScript : MonoBehaviour
     {
         // Use this for initialization
@@ -16,6 +19,10 @@ namespace UI
             AddFloor(1);
         }
 
+        /// <summary>
+        /// Adds the floor with specified id.
+        /// </summary>
+        /// <param name="floorId">Floor identifier.</param>
         public void AddFloor(int floorId)
         {
             DebugEx.VerboseFormat("FloorManagementScript.AddFloor(floorId = {0})", floorId);

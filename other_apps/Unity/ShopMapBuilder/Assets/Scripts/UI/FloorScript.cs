@@ -6,6 +6,9 @@ using Utils;
 
 namespace UI
 {
+    /// <summary>
+    /// Floor script.
+    /// </summary>
     public class FloorScript : MonoBehaviour
     {
         public int floorId;
@@ -26,6 +29,9 @@ namespace UI
             GenerateFloor();
         }
 
+        /// <summary>
+        /// Generates the plane mesh.
+        /// </summary>
         private void GeneratePlaneMesh()
         {
             DebugEx.Verbose("FloorScript.GeneratePlaneMesh()");
@@ -35,15 +41,15 @@ namespace UI
 
             mPlaneMesh.vertices = new Vector3[4]
             {
-                new Vector3(-Constants.TILES_COUNT / 2, 0, -Constants.TILES_COUNT / 2)
-                , new Vector3(Constants.TILES_COUNT  / 2, 0, -Constants.TILES_COUNT / 2)
-                , new Vector3(-Constants.TILES_COUNT / 2, 0, Constants.TILES_COUNT  / 2)
-                , new Vector3(Constants.TILES_COUNT  / 2, 0, Constants.TILES_COUNT  / 2)
+                  new Vector3(-Constants.GLOBAL_SCALE / 2, 0, -Constants.GLOBAL_SCALE / 2)
+                , new Vector3(Constants.GLOBAL_SCALE  / 2, 0, -Constants.GLOBAL_SCALE / 2)
+                , new Vector3(-Constants.GLOBAL_SCALE / 2, 0, Constants.GLOBAL_SCALE  / 2)
+                , new Vector3(Constants.GLOBAL_SCALE  / 2, 0, Constants.GLOBAL_SCALE  / 2)
             };
 
             mPlaneMesh.triangles = new int[]
             {
-                0
+                  0
                 , 2
                 , 1
 
@@ -54,7 +60,7 @@ namespace UI
 
             mPlaneMesh.normals = new Vector3[]
             {
-                new Vector3(0, 1, 0)
+                  new Vector3(0, 1, 0)
                 , new Vector3(0, 1, 0)
                 , new Vector3(0, 1, 0)
                 , new Vector3(0, 1, 0)
@@ -62,13 +68,16 @@ namespace UI
 
             mPlaneMesh.uv = new Vector2[]
             {
-                new Vector2(0, 0)
+                  new Vector2(0, 0)
                 , new Vector2(1, 0)
                 , new Vector2(0, 1)
                 , new Vector2(1, 1)
             };
         }
 
+        /// <summary>
+        /// Gets the materials from resources.
+        /// </summary>
         private void GetMaterials()
         {
             DebugEx.Verbose("FloorScript.GetMaterials()");
@@ -77,6 +86,9 @@ namespace UI
             mFloorMaterial = Resources.Load<Material>("Materials/Floor");
         }
 
+        /// <summary>
+        /// Generates floor tiles.
+        /// </summary>
         private void GenerateFloor()
         {
             DebugEx.Verbose("FloorScript.GenerateFloor()");

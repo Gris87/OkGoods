@@ -6,6 +6,9 @@ using Utils;
 
 namespace UI
 {
+    /// <summary>
+    /// Master script.
+    /// </summary>
     public class MasterScript : MonoBehaviour
     {
         // Use this for initialization
