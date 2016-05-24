@@ -47,13 +47,16 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mMainDatabase = new MainDatabase(this);
-        mDB           = mMainDatabase.getWritableDatabase();
 
+
+        mMainDatabase    = null;
+        mDB              = null;
         mPager           = null;
         mPagerAdapter    = null;
         mGoodsFragment   = null;
         mShopMapFragment = null;
+
+
 
         mPager = (ViewPager)findViewById(R.id.pager);
 
@@ -64,16 +67,24 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
             mPager.setAdapter(mPagerAdapter);
         }
 
-        verifyContextPreferences();
+
+
+        mMainDatabase = new MainDatabase(MainActivity.this);
+        mDB           = mMainDatabase.getWritableDatabase();
 
 
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        if (!prefs.contains(Preferences.SETTINGS_CITY))
+        if (savedInstanceState == null)
         {
-            SelectCityDialog dialog = new SelectCityDialog();
-            dialog.show(getSupportFragmentManager(), "SelectCityDialog");
+            verifyContextPreferences();
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+            if (!prefs.contains(Preferences.SETTINGS_CITY))
+            {
+                SelectCityDialog dialog = new SelectCityDialog();
+                dialog.show(getSupportFragmentManager(), "SelectCityDialog");
+            }
         }
     }
 

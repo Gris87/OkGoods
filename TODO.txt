@@ -1,5 +1,3 @@
-Settings
-Ask for settings
 Yandex Maps
 Shop list
 Points on Map
