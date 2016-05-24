@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+using Other;
+
 
 
 namespace UI
@@ -19,12 +21,7 @@ namespace UI
         void Start()
         {
             mDropdown = GetComponent<Dropdown>();
-
-            List<string> shops = new List<string>();
-            shops.Add("Hello");
-            shops.Add("World");
-
-            mDropdown.AddOptions(shops);
+            mDropdown.AddOptions(CodeManager.GetShops());
         }
     }
 }
