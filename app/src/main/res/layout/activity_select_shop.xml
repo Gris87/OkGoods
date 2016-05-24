@@ -9,4 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ru.okmarket.okgoods.activities.SelectShopActivity">
 
+    <ru.yandex.yandexmapkit.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:apiKey="oFLmlTN7o4WKqoqtg8WSRJe-kh3uNWvFONhsUBz~baYzPKDfXgHp6C-wPZ0-OLgup9s6rsl4Fzn-iWsAvz8BDDDy3fb6cbSB4vlQSloXo3A=" />
+
 </RelativeLayout>
