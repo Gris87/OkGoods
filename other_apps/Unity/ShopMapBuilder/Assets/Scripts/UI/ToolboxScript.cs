@@ -25,9 +25,7 @@ public class ToolboxScript : UIBehaviour
     void Update()
     {
         Bounds toolBoxBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(transform);
-        float buttonWidth = (toolBoxBounds.max.x - toolBoxBounds.min.x - 8) / 2;
-
-        Debug.LogError(buttonWidth);
+        float buttonWidth = (toolBoxBounds.max.x - toolBoxBounds.min.x - 8 * (mGridLayoutGroup.constraintCount - 1)) / mGridLayoutGroup.constraintCount;
 
         if (mPreviouseButtonWidth != buttonWidth)
         {

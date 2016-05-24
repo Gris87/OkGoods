@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityTranslation;
 
 using Utils;
 
@@ -14,6 +15,8 @@ namespace Other
     public static class CodeManager
     {
         private static string sProjectDir;
+        public static List<string> shops;
+        public static List<string> shopsIDs;
 
 
 
@@ -28,8 +31,6 @@ namespace Other
 
             do
             {
-                DebugEx.DebugFormat("sProjectDir = {0}", sProjectDir);
-
                 if (File.Exists(sProjectDir + "/build.gradle"))
                 {
                     break;
@@ -46,13 +47,61 @@ namespace Other
 
                 sProjectDir = sProjectDir.Substring(0, index);
             } while(true);
+
+            UpdateShopsInfo();
         }
 
-        public static List<string> GetShops()
+        /// <summary>
+        /// Updates info about shops.
+        /// </summary>
+        public static void UpdateShopsInfo()
         {
-            List<string> res = new List<string>();
+            shops    = new List<string>();
+            shopsIDs = new List<string>();
 
-            return res;
+            StreamReader reader;
+            string language = LanguageCode.LanguageToCode(Translator.language);
+
+            if (File.Exists(sProjectDir + "/app/src/main/res/values-" + language + "/strings.xml"))
+            {
+                reader = File.OpenText(sProjectDir + "/app/src/main/res/values-" + language + "/strings.xml");
+            }
+            else
+            {
+                reader = File.OpenText(sProjectDir + "/app/src/main/res/values-ru/strings.xml");
+            }
+
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine().Trim();
+
+                if (line.StartsWith("<string name=\"shop_"))
+                {
+                    int index = line.IndexOf('\"', 19);
+
+                    if (index >= 0)
+                    {
+                        string shopId = line.Substring(19, index - 19);
+
+                        index = line.IndexOf('>', index + 1);
+
+                        if (index >= 0)
+                        {
+                            int index2 = line.IndexOf("</string>", index + 1);
+
+                            if (index2 >= 0)
+                            {
+                                string shop = line.Substring(index + 1, index2 - index - 1).Replace("\\\'", "\'");
+
+                                shops.Add(shop);
+                                shopsIDs.Add(shopId);
+                            }
+                        }
+                    }
+                }
+            }
+
+            reader.Close();
         }
     }
 }
