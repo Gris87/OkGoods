@@ -4,7 +4,7 @@ using Utils;
 
 
 
-namespace UI
+namespace World
 {
     /// <summary>
     /// Floor script.

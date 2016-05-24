@@ -21,27 +21,36 @@ namespace Cameras
         {
             Vector3 moveDirection = new Vector3(InputControl.GetAxis(Controls.axes.horizontal), 0, InputControl.GetAxis(Controls.axes.vertical));
 
-            float mouseX = Mouse.x;
-            float mouseY = Mouse.y;
+            if (
+                !InputControl.GetMouseButton(MouseButton.Left)
+                &&
+                !InputControl.GetMouseButton(MouseButton.Right)
+                &&
+                !InputControl.GetMouseButton(MouseButton.Middle)
+               )
+            {
+                float mouseX = Mouse.x;
+                float mouseY = Mouse.y;
 
-            if (mouseX < 20)
-            {
-                moveDirection.x -= 1;
-            }
-            else
-            if (mouseX > Screen.width - 20)
-            {
-                moveDirection.x += 1;
-            }
+                if (mouseX < 20)
+                {
+                    moveDirection.x -= 1;
+                }
+                else
+                if (mouseX > Screen.width - 20)
+                {
+                    moveDirection.x += 1;
+                }
 
-            if (mouseY < 20)
-            {
-                moveDirection.z += 1;
-            }
-            else
-            if (mouseY > Screen.height - 20)
-            {
-                moveDirection.z -= 1;
+                if (mouseY < 20)
+                {
+                    moveDirection.z += 1;
+                }
+                else
+                if (mouseY > Screen.height - 20)
+                {
+                    moveDirection.z -= 1;
+                }
             }
 
             moveDirection = transform.TransformDirection(moveDirection);
