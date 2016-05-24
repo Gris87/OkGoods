@@ -1,4 +1,3 @@
-Yandex Maps
 Shop list
 Points on Map
 Nearest shop
