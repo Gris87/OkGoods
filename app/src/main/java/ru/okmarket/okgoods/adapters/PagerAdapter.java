@@ -19,7 +19,7 @@ public class PagerAdapter extends FragmentPagerAdapter
 
 
 
-    private Fragment[] mFragments;
+    private Fragment[] mFragments = null;
 
 
 

@@ -22,7 +22,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
 
 
 
-    private AppCompatDelegate mDelegate;
+    private AppCompatDelegate mDelegate = null;
 
 
 
