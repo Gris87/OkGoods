@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityTranslation;
 
 using Other;
+using Utils;
 
 
 
@@ -21,6 +22,8 @@ namespace UI
         // Use this for initialization
         void Start()
         {
+            DebugEx.Verbose("ShopsDropdownScript.Start()");
+
             mDropdown = GetComponent<Dropdown>();
             mDropdown.AddOptions(CodeManager.shops);
 
@@ -32,6 +35,8 @@ namespace UI
         /// </summary>
         public void OnLanguageChanged()
         {
+            DebugEx.Verbose("ShopsDropdownScript.OnLanguageChanged()");
+
             CodeManager.UpdateShopsInfo();
 
             mDropdown.ClearOptions();

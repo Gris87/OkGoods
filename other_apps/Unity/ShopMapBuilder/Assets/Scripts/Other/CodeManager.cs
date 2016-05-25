@@ -56,6 +56,8 @@ namespace Other
         /// </summary>
         public static void UpdateShopsInfo()
         {
+            DebugEx.Verbose("CodeManager.UpdateShopsInfo()");
+
             shops    = new List<string>();
             shopsIDs = new List<string>();
 

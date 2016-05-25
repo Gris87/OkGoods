@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using Other;
+using Utils;
 
 
 
@@ -11,14 +12,11 @@ namespace Cameras
     /// </summary>
     public class MainCameraScript : MonoBehaviour
     {
-        // Use this for initialization
-        void Start()
-        {
-        }
-
         // Update is called once per frame
         void Update()
         {
+            DebugEx.VeryVeryVerbose("MainCameraScript.Update()");
+
             Vector3 moveDirection = new Vector3(InputControl.GetAxis(Controls.axes.horizontal), 0, InputControl.GetAxis(Controls.axes.vertical));
 
             if (
