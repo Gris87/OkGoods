@@ -22,12 +22,13 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorBorder"/>
+        android:background="@color/windowBackground"/>
 
     <RelativeLayout
         android:id="@+id/shopDetailsView"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_gravity="end" />
+        android:layout_gravity="end"
+        android:background="@color/windowBackground" />
 
 </android.support.v4.widget.DrawerLayout>

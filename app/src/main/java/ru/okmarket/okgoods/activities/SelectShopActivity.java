@@ -4,6 +4,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -29,35 +30,45 @@ public class SelectShopActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_shop);
 
+
+
         mMapView          = (MapView)        findViewById(R.id.map);
         mDrawerLayout     = (DrawerLayout)   findViewById(R.id.drawer_layout);
         mShopsListView    = (ListView)       findViewById(R.id.shopsListView);
         mShopDetailstView = (RelativeLayout) findViewById(R.id.shopDetailsView);
 
+
+
         mMapView.showBuiltInScreenButtons(true);
 
         int drawerWidth = getResources().getDisplayMetrics().widthPixels * 80 / 100;
-        DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams)mShopsListView.getLayoutParams();
-        params.width = drawerWidth;
-        mShopsListView.setLayoutParams(params);
-        mShopDetailstView.setLayoutParams(params);
+        mShopsListView.getLayoutParams().width    = drawerWidth;
+        mShopDetailstView.getLayoutParams().width = drawerWidth;
     }
 
     @Override
     public void onBackPressed()
     {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
+        if (mDrawerLayout.isDrawerOpen(mShopsListView))
         {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
+            mDrawerLayout.closeDrawer(mShopsListView);
         }
         else
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.END))
+        if (mDrawerLayout.isDrawerOpen(mShopDetailstView))
         {
-            mDrawerLayout.closeDrawer(GravityCompat.END);
+            mDrawerLayout.closeDrawer(mShopDetailstView);
         }
         else
         {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        mDrawerLayout.openDrawer(mShopDetailstView);
+
+        return true;
     }
 }
