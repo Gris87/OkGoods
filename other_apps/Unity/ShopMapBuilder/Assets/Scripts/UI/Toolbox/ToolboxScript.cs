@@ -10,7 +10,7 @@ namespace UI.Toolbox
     public class ToolboxScript : MonoBehaviour
     {
         private GridLayoutGroup mGridLayoutGroup;
-        private float           mPreviouseButtonWidth;
+        private float           mPreviousButtonWidth;
 
 
 
@@ -21,7 +21,7 @@ namespace UI.Toolbox
 
             mGridLayoutGroup = GetComponent<GridLayoutGroup>();
 
-            mPreviouseButtonWidth = 0;
+            mPreviousButtonWidth = 0;
     	}
     	
         /// <summary>
@@ -34,9 +34,9 @@ namespace UI.Toolbox
             Bounds toolBoxBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(transform);
             float buttonWidth = (toolBoxBounds.max.x - toolBoxBounds.min.x - 8 * (mGridLayoutGroup.constraintCount - 1)) / mGridLayoutGroup.constraintCount;
 
-            if (mPreviouseButtonWidth != buttonWidth)
+            if (mPreviousButtonWidth != buttonWidth)
             {
-                mPreviouseButtonWidth = buttonWidth;
+                mPreviousButtonWidth = buttonWidth;
 
                 mGridLayoutGroup.cellSize = new Vector2(buttonWidth, buttonWidth);
             }
