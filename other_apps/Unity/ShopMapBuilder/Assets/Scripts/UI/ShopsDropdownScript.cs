@@ -19,7 +19,9 @@ namespace UI
 
 
 
-        // Use this for initialization
+        /// <summary>
+        /// Script starting callback.
+        /// </summary>
         void Start()
         {
             DebugEx.Verbose("ShopsDropdownScript.Start()");

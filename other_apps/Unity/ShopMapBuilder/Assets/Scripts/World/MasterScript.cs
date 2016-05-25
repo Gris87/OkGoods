@@ -11,7 +11,9 @@ namespace World
     /// </summary>
     public class MasterScript : MonoBehaviour
     {
-        // Use this for initialization
+        /// <summary>
+        /// Script starting callback.
+        /// </summary>
         void Start()
         {
             DebugEx.Verbose("MasterScript.Start()");

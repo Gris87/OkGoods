@@ -11,7 +11,9 @@ namespace World
     /// </summary>
     public class FloorManagementScript : MonoBehaviour
     {
-        // Use this for initialization
+        /// <summary>
+        /// Script starting callback.
+        /// </summary>
         void Start()
         {
             DebugEx.Verbose("FloorManagementScript.Start()");

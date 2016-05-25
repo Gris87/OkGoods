@@ -11,7 +11,12 @@ namespace World
     /// </summary>
     public class FloorScript : MonoBehaviour
     {
+        /// <summary>
+        /// The floor identifier.
+        /// </summary>
         public int floorId;
+
+
 
         private Mesh     mPlaneMesh;
         private Material mGrassMaterial;
@@ -19,7 +24,9 @@ namespace World
 
 
 
-        // Use this for initialization
+        /// <summary>
+        /// Script starting callback.
+        /// </summary>
         void Start()
         {
             DebugEx.Verbose("FloorScript.Start()");

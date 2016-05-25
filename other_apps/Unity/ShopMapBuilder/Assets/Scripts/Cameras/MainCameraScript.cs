@@ -12,7 +12,9 @@ namespace Cameras
     /// </summary>
     public class MainCameraScript : MonoBehaviour
     {
-        // Update is called once per frame
+        /// <summary>
+        /// Update is called once per frame.
+        /// </summary>
         void Update()
         {
             DebugEx.VeryVeryVerbose("MainCameraScript.Update()");
