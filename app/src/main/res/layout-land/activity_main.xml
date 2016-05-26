@@ -22,7 +22,7 @@
     <FrameLayout
         android:layout_width="2dp"
         android:layout_height="match_parent"
-        android:background="@color/colorBorder" />
+        android:background="@color/border" />
 
     <fragment
         android:id="@+id/shopMapFragment"

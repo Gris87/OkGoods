@@ -6,6 +6,7 @@
     <color name="windowBackground">#FFFFFFFF</color>
     <color name="textColorPrimary">#FFFFFFFF</color>
     <color name="textColor">#FF000000</color>
-    <color name="colorToolbar">#FFBDBDBD</color>
-    <color name="colorBorder">#FF303F9F</color>
+    <color name="toolbar">#FFBDBDBD</color>
+    <color name="border">#FF303F9F</color>
+    <color name="nearestShop">#64DD17</color>
 </resources>

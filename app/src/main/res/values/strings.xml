@@ -10,6 +10,8 @@
     <string name="exit">Exit</string>
     <string name="shop">Shop:</string>
     <string name="select_shop">Select shop</string>
+    <string name="filter">filter</string>
+    <string name="nearest_shop">Nearest shop</string>
     <string name="city_moscow">Moscow</string>
     <string name="city_st_petersburg">St. Petersburg</string>
     <string name="city_astrakhan">Astrakhan</string>

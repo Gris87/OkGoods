@@ -1,14 +1,23 @@
 package ru.okmarket.okgoods.activities;
 
-import android.support.v4.view.GravityCompat;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
+
 import ru.okmarket.okgoods.R;
+import ru.okmarket.okgoods.adapters.ShopsAdapter;
+import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.other.Preferences;
+import ru.okmarket.okgoods.other.ShopInfo;
 import ru.yandex.yandexmapkit.MapView;
 
 public class SelectShopActivity extends AppCompatActivity
@@ -17,10 +26,11 @@ public class SelectShopActivity extends AppCompatActivity
 
 
 
-    private MapView        mMapView          = null;
-    private DrawerLayout   mDrawerLayout     = null;
-    private ListView       mShopsListView    = null;
-    private RelativeLayout mShopDetailstView = null;
+    private MapView        mMapView         = null;
+    private DrawerLayout   mDrawerLayout    = null;
+    private ListView       mShopsListView   = null;
+    private RelativeLayout mShopDetailsView = null;
+    private ShopsAdapter   mShopsAdapter    = null;
 
 
 
@@ -32,10 +42,19 @@ public class SelectShopActivity extends AppCompatActivity
 
 
 
-        mMapView          = (MapView)        findViewById(R.id.map);
-        mDrawerLayout     = (DrawerLayout)   findViewById(R.id.drawer_layout);
-        mShopsListView    = (ListView)       findViewById(R.id.shopsListView);
-        mShopDetailstView = (RelativeLayout) findViewById(R.id.shopDetailsView);
+        mMapView         = (MapView)        findViewById(R.id.map);
+        mDrawerLayout    = (DrawerLayout)   findViewById(R.id.drawer_layout);
+        mShopsListView   = (ListView)       findViewById(R.id.shopsListView);
+        mShopDetailsView = (RelativeLayout) findViewById(R.id.shopDetailsView);
+
+
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        MainDatabase mainDatabase = new MainDatabase(this);
+        SQLiteDatabase db = mainDatabase.getReadableDatabase();
+        ArrayList<ShopInfo> shops = mainDatabase.getShops(db, mainDatabase.getCityId(prefs.getString(Preferences.SETTINGS_CITY, "MOSCOW")));
+        db.close();
 
 
 
@@ -43,7 +62,10 @@ public class SelectShopActivity extends AppCompatActivity
 
         int drawerWidth = getResources().getDisplayMetrics().widthPixels * 80 / 100;
         mShopsListView.getLayoutParams().width    = drawerWidth;
-        mShopDetailstView.getLayoutParams().width = drawerWidth;
+        mShopDetailsView.getLayoutParams().width = drawerWidth;
+
+        mShopsAdapter = new ShopsAdapter(this, shops);
+        mShopsListView.setAdapter(mShopsAdapter);
     }
 
     @Override
@@ -54,9 +76,9 @@ public class SelectShopActivity extends AppCompatActivity
             mDrawerLayout.closeDrawer(mShopsListView);
         }
         else
-        if (mDrawerLayout.isDrawerOpen(mShopDetailstView))
+        if (mDrawerLayout.isDrawerOpen(mShopDetailsView))
         {
-            mDrawerLayout.closeDrawer(mShopDetailstView);
+            mDrawerLayout.closeDrawer(mShopDetailsView);
         }
         else
         {
@@ -67,8 +89,36 @@ public class SelectShopActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        mDrawerLayout.openDrawer(mShopDetailstView);
+        getMenuInflater().inflate(R.menu.menu_select_shop, menu);
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        if (mDrawerLayout.isDrawerOpen(mShopDetailsView))
+        {
+            mDrawerLayout.closeDrawer(mShopDetailsView);
+        }
+        else
+        {
+            mDrawerLayout.openDrawer(mShopDetailsView);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_filter)
+        {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

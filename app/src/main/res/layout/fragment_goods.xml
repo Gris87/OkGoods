@@ -23,7 +23,7 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_size"
-        android:background="@color/colorToolbar">
+        android:background="@color/toolbar">
 
         <LinearLayout
             android:layout_width="wrap_content"

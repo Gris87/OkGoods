@@ -5,8 +5,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import ru.okmarket.okgoods.R;
+import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
 
 public class MainDatabase extends SQLiteOpenHelper
@@ -3048,6 +3056,8 @@ public class MainDatabase extends SQLiteOpenHelper
             cursor.moveToNext();
         }
 
+        cursor.close();
+
         return res;
     }
 
@@ -3062,5 +3072,83 @@ public class MainDatabase extends SQLiteOpenHelper
         }
 
         return -1;
+    }
+
+    public ArrayList<ShopInfo> getShops(SQLiteDatabase db, int cityId)
+    {
+        ArrayList<ShopInfo> res = new ArrayList<>();
+
+
+
+        Cursor cursor;
+
+        if (cityId > 0)
+        {
+            cursor = db.query(SHOPS_TABLE_NAME, SHOPS_COLUMNS, COLUMN_CITY_ID + " = ?", new String[] { String.valueOf(cityId) }, null, null, null);
+        }
+        else
+        {
+            cursor = db.query(SHOPS_TABLE_NAME, SHOPS_COLUMNS, null, null, null, null, null);
+        }
+
+
+
+        int idColumnIndex                = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int cityIdColumnIndex            = cursor.getColumnIndexOrThrow(COLUMN_CITY_ID);
+        int nameColumnIndex              = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+        int isHypermarketColumnIndex     = cursor.getColumnIndexOrThrow(COLUMN_IS_HYPERMARKET);
+        int latitudeColumnIndex          = cursor.getColumnIndexOrThrow(COLUMN_LATITUDE);
+        int longitudeColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_LONGITUDE);
+        int phoneColumnIndex             = cursor.getColumnIndexOrThrow(COLUMN_PHONE);
+        int workHoursColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_WORK_HOURS);
+        int squareColumnIndex            = cursor.getColumnIndexOrThrow(COLUMN_SQUARE);
+        int openingDateColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_OPENING_DATE);
+        int parkingPlacesColumnIndex     = cursor.getColumnIndexOrThrow(COLUMN_PARKING_PLACES);
+        int numberOfCashboxesColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_NUMBER_OF_CASHBOXES);
+        int servicesSetColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_SERVICES_SET);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
+
+
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            ShopInfo shop = new ShopInfo();
+
+            shop.setId(cursor.getInt(idColumnIndex));
+            shop.setCityId(cursor.getInt(cityIdColumnIndex));
+            shop.setName(cursor.getString(nameColumnIndex));
+            shop.setIsHypermarket(cursor.getInt(isHypermarketColumnIndex) == SHOP_HYPERMARKET);
+            shop.setLatitude(cursor.getInt(latitudeColumnIndex));
+            shop.setLongitude(cursor.getInt(longitudeColumnIndex));
+            shop.setPhone(cursor.getString(phoneColumnIndex));
+            shop.setWorkHours(cursor.getString(workHoursColumnIndex));
+            shop.setSquare(cursor.getInt(squareColumnIndex));
+
+            try
+            {
+                shop.setOpeningDate(dateFormat.parse(cursor.getString(openingDateColumnIndex)));
+            }
+            catch (ParseException e)
+            {
+                shop.setOpeningDate(null);
+            }
+
+            shop.setParkingPlaces(cursor.getInt(parkingPlacesColumnIndex));
+            shop.setNumberOfCashboxes(cursor.getInt(numberOfCashboxesColumnIndex));
+            shop.setServicesSet(cursor.getInt(servicesSetColumnIndex));
+
+            res.add(shop);
+
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+
+
+        return res;
     }
 }

@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
     {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
