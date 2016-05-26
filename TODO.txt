@@ -19,3 +19,5 @@ CachedImage
 Release keys
 Free money everywhere
 Find more free money
+Walls in 3D
+Stairs

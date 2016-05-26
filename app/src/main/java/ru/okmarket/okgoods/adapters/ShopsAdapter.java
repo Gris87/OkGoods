@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,8 +29,8 @@ public class ShopsAdapter extends BaseAdapter
 
     private static class ViewHolder
     {
-        TextView mName;
-        TextView mNearest;
+        TextView  mNameTextView;
+        ImageView mNearestShopImageView;
     }
 
 
@@ -70,8 +71,8 @@ public class ShopsAdapter extends BaseAdapter
 
         ViewHolder holder = new ViewHolder();
 
-        holder.mName    = (TextView)resView.findViewById(R.id.nameTextView);
-        holder.mNearest = (TextView)resView.findViewById(R.id.nearestShopTextView);
+        holder.mNameTextView         = (TextView) resView.findViewById(R.id.nameTextView);
+        holder.mNearestShopImageView = (ImageView)resView.findViewById(R.id.nearestShopImageView);
 
         resView.setTag(holder);
 
@@ -84,15 +85,15 @@ public class ShopsAdapter extends BaseAdapter
 
         ViewHolder holder = (ViewHolder)view.getTag();
 
-        holder.mName.setText(shop.getName());
+        holder.mNameTextView.setText(shop.getName());
 
         if (shop == mNearestShop)
         {
-            holder.mNearest.setVisibility(View.VISIBLE);
+            holder.mNearestShopImageView.setVisibility(View.VISIBLE);
         }
         else
         {
-            holder.mNearest.setVisibility(View.GONE);
+            holder.mNearestShopImageView.setVisibility(View.GONE);
         }
     }
 

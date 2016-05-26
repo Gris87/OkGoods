@@ -11,6 +11,7 @@
     <string name="shop">Магазин:</string>
     <string name="select_shop">Выбрать магазин</string>
     <string name="filter">Фильтр</string>
+    <string name="shop_details">Информация о магазине</string>
     <string name="nearest_shop">Ближайший магазин</string>
     <string name="city_moscow">Москва</string>
     <string name="city_st_petersburg">Санкт-Петербург</string>

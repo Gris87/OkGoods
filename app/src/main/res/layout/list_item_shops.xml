@@ -7,27 +7,25 @@
         android:id="@+id/nameTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/nearestShopTextView"
+        android:layout_toLeftOf="@+id/nearestShopImageView"
+        android:layout_toStartOf="@+id/nearestShopImageView"
         android:layout_alignWithParentIfMissing="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:singleLine="true"
-        android:ellipsize="start"
         android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/nearestShopTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+    <ImageView
+        android:id="@+id/nearestShopImageView"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:singleLine="true"
-        android:gravity="bottom"
-        android:text="@string/nearest_shop"
-        android:textColor="@color/nearestShop"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/nearest_shop"
+        android:src="@drawable/nearest_shop" />
 
 </RelativeLayout>

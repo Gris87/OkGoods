@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -95,18 +96,18 @@ public class SelectShopActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
+    public boolean onKeyUp(int keyCode, KeyEvent event)
     {
-        if (mDrawerLayout.isDrawerOpen(mShopDetailsView))
+        if (keyCode == KeyEvent.KEYCODE_MENU)
         {
-            mDrawerLayout.closeDrawer(mShopDetailsView);
+            toggleShopDetails();
+
+            return true;
         }
         else
         {
-            mDrawerLayout.openDrawer(mShopDetailsView);
+            return super.onKeyUp(keyCode, event);
         }
-
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -119,6 +120,25 @@ public class SelectShopActivity extends AppCompatActivity
             return true;
         }
 
+        if (id == R.id.menu_shop_details)
+        {
+            toggleShopDetails();
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void toggleShopDetails()
+    {
+        if (mDrawerLayout.isDrawerOpen(mShopDetailsView))
+        {
+            mDrawerLayout.closeDrawer(mShopDetailsView);
+        }
+        else
+        {
+            mDrawerLayout.openDrawer(mShopDetailsView);
+        }
     }
 }
