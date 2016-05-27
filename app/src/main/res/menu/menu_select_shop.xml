@@ -11,7 +11,7 @@
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/menu_shop_details"
-        android:icon="@android:drawable/ic_menu_more"
+        android:icon="@drawable/menu_overflow"
         android:title="@string/shop_details"
         android:orderInCategory="200"
         app:showAsAction="ifRoom"/>
