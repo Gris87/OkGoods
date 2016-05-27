@@ -2,6 +2,7 @@
 
 using Utils;
 using World.Common;
+using World.Objects;
 
 
 
@@ -19,12 +20,6 @@ namespace World
 
 
 
-        private Mesh     mPlaneMesh;
-        private Material mGrassMaterial;
-        private Material mFloorMaterial;
-
-
-
         /// <summary>
         /// Script starting callback.
         /// </summary>
@@ -34,66 +29,7 @@ namespace World
 
             DebugEx.Verbose("FloorScript.Start()");
 
-            GeneratePlaneMesh();
-            GetMaterials();
             GenerateFloor();
-        }
-
-        /// <summary>
-        /// Generates the plane mesh.
-        /// </summary>
-        private void GeneratePlaneMesh()
-        {
-            DebugEx.Verbose("FloorScript.GeneratePlaneMesh()");
-
-            mPlaneMesh = new Mesh();
-            mPlaneMesh.name = "Plane";
-
-            mPlaneMesh.vertices = new Vector3[4]
-            {
-                  new Vector3(-Constants.GLOBAL_SCALE / 2, 0, -Constants.GLOBAL_SCALE / 2)
-                , new Vector3(Constants.GLOBAL_SCALE  / 2, 0, -Constants.GLOBAL_SCALE / 2)
-                , new Vector3(-Constants.GLOBAL_SCALE / 2, 0, Constants.GLOBAL_SCALE  / 2)
-                , new Vector3(Constants.GLOBAL_SCALE  / 2, 0, Constants.GLOBAL_SCALE  / 2)
-            };
-
-            mPlaneMesh.triangles = new int[]
-            {
-                  0
-                , 2
-                , 1
-
-                , 2
-                , 3
-                , 1
-            };
-
-            mPlaneMesh.normals = new Vector3[]
-            {
-                  new Vector3(0, 1, 0)
-                , new Vector3(0, 1, 0)
-                , new Vector3(0, 1, 0)
-                , new Vector3(0, 1, 0)
-            };
-
-            mPlaneMesh.uv = new Vector2[]
-            {
-                  new Vector2(0, 0)
-                , new Vector2(1, 0)
-                , new Vector2(0, 1)
-                , new Vector2(1, 1)
-            };
-        }
-
-        /// <summary>
-        /// Gets the materials from resources.
-        /// </summary>
-        private void GetMaterials()
-        {
-            DebugEx.Verbose("FloorScript.GetMaterials()");
-
-            mGrassMaterial = Resources.Load<Material>("Materials/Grass");
-            mFloorMaterial = Resources.Load<Material>("Materials/Floor");
         }
 
         /// <summary>
@@ -111,23 +47,8 @@ namespace World
                     tileObject.transform.SetParent(transform);
                     tileObject.transform.position = new Vector3((i - Constants.TILES_COUNT / 2) * Constants.GLOBAL_SCALE, 0, (j - Constants.TILES_COUNT / 2) * Constants.GLOBAL_SCALE);
 
-                    MeshFilter   meshFilter   = tileObject.AddComponent<MeshFilter>();
-                    MeshCollider meshCollider = tileObject.AddComponent<MeshCollider>();
-                    MeshRenderer meshRenderer = tileObject.AddComponent<MeshRenderer>();
-
-                    meshFilter.mesh         = mPlaneMesh;
-                    meshCollider.sharedMesh = mPlaneMesh;
-
-
-
-                    if (floorId == 1)
-                    {
-                        meshRenderer.material = mGrassMaterial;
-                    }
-                    else
-                    {
-                        meshRenderer.material = mFloorMaterial;
-                    }               
+                    FloorTileScript floorTile = tileObject.AddComponent<FloorTileScript>();
+                    floorTile.parent = this;
                 }
             }
         }
