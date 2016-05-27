@@ -32,8 +32,7 @@ namespace World.Objects
 
             DebugEx.VeryVeryVerbose("FloorTileScript.Start()");
 
-            GeneratePlaneMesh();
-            GetMaterials();
+            StaticInitialize();
             Initialize();
         }
 
@@ -42,48 +41,45 @@ namespace World.Objects
         /// </summary>
         private void GeneratePlaneMesh()
         {
-            DebugEx.VeryVerbose("FloorScript.GeneratePlaneMesh()");
+            DebugEx.Verbose("FloorScript.GeneratePlaneMesh()");
 
-            if (sPlaneMesh == null)
+            sPlaneMesh = new Mesh();
+            sPlaneMesh.name = "Plane";
+
+            sPlaneMesh.vertices = new Vector3[4]
             {
-                sPlaneMesh = new Mesh();
-                sPlaneMesh.name = "Plane";
+                  new Vector3(-Constants.GLOBAL_SCALE / 2, 0, -Constants.GLOBAL_SCALE / 2)
+                , new Vector3(Constants.GLOBAL_SCALE  / 2, 0, -Constants.GLOBAL_SCALE / 2)
+                , new Vector3(-Constants.GLOBAL_SCALE / 2, 0, Constants.GLOBAL_SCALE  / 2)
+                , new Vector3(Constants.GLOBAL_SCALE  / 2, 0, Constants.GLOBAL_SCALE  / 2)
+            };
 
-                sPlaneMesh.vertices = new Vector3[4]
-                {
-                      new Vector3(-Constants.GLOBAL_SCALE / 2, 0, -Constants.GLOBAL_SCALE / 2)
-                    , new Vector3(Constants.GLOBAL_SCALE  / 2, 0, -Constants.GLOBAL_SCALE / 2)
-                    , new Vector3(-Constants.GLOBAL_SCALE / 2, 0, Constants.GLOBAL_SCALE  / 2)
-                    , new Vector3(Constants.GLOBAL_SCALE  / 2, 0, Constants.GLOBAL_SCALE  / 2)
-                };
+            sPlaneMesh.triangles = new int[]
+            {
+                  0
+                , 2
+                , 1
 
-                sPlaneMesh.triangles = new int[]
-                {
-                      0
-                    , 2
-                    , 1
+                , 2
+                , 3
+                , 1
+            };
 
-                    , 2
-                    , 3
-                    , 1
-                };
+            sPlaneMesh.normals = new Vector3[]
+            {
+                  new Vector3(0, 1, 0)
+                , new Vector3(0, 1, 0)
+                , new Vector3(0, 1, 0)
+                , new Vector3(0, 1, 0)
+            };
 
-                sPlaneMesh.normals = new Vector3[]
-                {
-                      new Vector3(0, 1, 0)
-                    , new Vector3(0, 1, 0)
-                    , new Vector3(0, 1, 0)
-                    , new Vector3(0, 1, 0)
-                };
-
-                sPlaneMesh.uv = new Vector2[]
-                {
-                      new Vector2(0, 0)
-                    , new Vector2(1, 0)
-                    , new Vector2(0, 1)
-                    , new Vector2(1, 1)
-                };
-            }
+            sPlaneMesh.uv = new Vector2[]
+            {
+                  new Vector2(0, 0)
+                , new Vector2(1, 0)
+                , new Vector2(0, 1)
+                , new Vector2(1, 1)
+            };
         }
 
         /// <summary>
@@ -91,12 +87,23 @@ namespace World.Objects
         /// </summary>
         private void GetMaterials()
         {
-            DebugEx.VeryVerbose("FloorScript.GetMaterials()");
+            DebugEx.Verbose("FloorScript.GetMaterials()");
 
-            if (sGrassMaterial == null)
+            sGrassMaterial = Resources.Load<Material>("Materials/Grass");
+            sFloorMaterial = Resources.Load<Material>("Materials/Floor");
+        }
+
+        /// <summary>
+        /// Initialize this instance.
+        /// </summary>
+        private void StaticInitialize()
+        {
+            DebugEx.VeryVerbose("FloorScript.StaticInitialize()");
+
+            if (sPlaneMesh == null)
             {
-                sGrassMaterial = Resources.Load<Material>("Materials/Grass");
-                sFloorMaterial = Resources.Load<Material>("Materials/Floor");
+                GeneratePlaneMesh();
+                GetMaterials();
             }
         }
 
@@ -105,6 +112,8 @@ namespace World.Objects
         /// </summary>
         private void Initialize()
         {
+            DebugEx.VeryVerbose("FloorScript.Initialize()");
+
             MeshFilter   meshFilter   = gameObject.AddComponent<MeshFilter>();
             MeshCollider meshCollider = gameObject.AddComponent<MeshCollider>();
             MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
