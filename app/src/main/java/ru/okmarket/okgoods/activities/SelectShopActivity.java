@@ -1,7 +1,12 @@
 package ru.okmarket.okgoods.activities;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +24,14 @@ import ru.okmarket.okgoods.adapters.ShopsAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.other.Preferences;
 import ru.okmarket.okgoods.other.ShopInfo;
+import ru.okmarket.okgoods.util.AppLog;
+import ru.yandex.yandexmapkit.MapController;
 import ru.yandex.yandexmapkit.MapView;
+import ru.yandex.yandexmapkit.OverlayManager;
+import ru.yandex.yandexmapkit.overlay.Overlay;
+import ru.yandex.yandexmapkit.overlay.OverlayItem;
+import ru.yandex.yandexmapkit.overlay.balloon.BalloonItem;
+import ru.yandex.yandexmapkit.utils.GeoPoint;
 
 public class SelectShopActivity extends AppCompatActivity
 {
@@ -28,6 +40,8 @@ public class SelectShopActivity extends AppCompatActivity
 
 
     private MapView        mMapView         = null;
+    private Overlay        mShopsOverlay    = null;
+    private Drawable       mOverlayDrawable = null;
     private DrawerLayout   mDrawerLayout    = null;
     private ListView       mShopsListView   = null;
     private RelativeLayout mShopDetailsView = null;
@@ -36,6 +50,7 @@ public class SelectShopActivity extends AppCompatActivity
 
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -59,14 +74,30 @@ public class SelectShopActivity extends AppCompatActivity
 
 
 
+        MapController  mapController  = mMapView.getMapController();
+        OverlayManager overlayManager = mapController.getOverlayManager();
+
         mMapView.showBuiltInScreenButtons(true);
+        mShopsOverlay = new Overlay(mapController);
+        mOverlayDrawable = getResources().getDrawable(R.drawable.ok_overlay);
+
+        overlayManager.addOverlay(mShopsOverlay);
+
+
 
         int drawerWidth = getResources().getDisplayMetrics().widthPixels * 80 / 100;
-        mShopsListView.getLayoutParams().width    = drawerWidth;
+        mShopsListView.getLayoutParams().width   = drawerWidth;
         mShopDetailsView.getLayoutParams().width = drawerWidth;
+
+
 
         mShopsAdapter = new ShopsAdapter(this, shops);
         mShopsListView.setAdapter(mShopsAdapter);
+
+
+
+        moveMapToCurrentLocation();
+        updateMapPoints();
     }
 
     @Override
@@ -128,6 +159,58 @@ public class SelectShopActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void moveMapToCurrentLocation()
+    {
+        try
+        {
+            MapController mapController = mMapView.getMapController();
+
+            LocationManager  locationManager  = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            LocationListener locationListener = new LocationListener()
+            {
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+                @Override
+                public void onProviderEnabled(String provider) {}
+
+                @Override
+                public void onProviderDisabled(String provider) {}
+
+                @Override
+                public void onLocationChanged(Location location) {}
+            };
+
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            mapController.setPositionAnimationTo(new GeoPoint((int) location.getLatitude() * 1000000, (int) location.getLongitude() * 1000000));
+        }
+        catch (SecurityException e)
+        {
+            AppLog.e(TAG, "Failed to get current location", e);
+        }
+    }
+
+    private void updateMapPoints()
+    {
+        mShopsOverlay.clearOverlayItems();
+
+        for (int i = 0; i < mShopsAdapter.getCount(); ++i)
+        {
+            ShopInfo shop = (ShopInfo)mShopsAdapter.getItem(i);
+
+            GeoPoint geoPoint = new GeoPoint(shop.getLatitude(), shop.getLongitude());
+            OverlayItem overlayItem = new OverlayItem(geoPoint, mOverlayDrawable);
+            BalloonItem balloonItem = new BalloonItem(this, geoPoint);
+            balloonItem.setText(shop.getName());
+            overlayItem.setBalloonItem(balloonItem);
+
+            mShopsOverlay.addOverlayItem(overlayItem);
+        }
     }
 
     private void toggleShopDetails()
