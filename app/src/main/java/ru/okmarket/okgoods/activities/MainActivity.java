@@ -122,6 +122,13 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
             return true;
         }
 
+        if (id == R.id.menu_select_shop)
+        {
+            onShopMapSelectShopClicked();
+
+            return true;
+        }
+
         if (id == R.id.menu_history)
         {
             return true;

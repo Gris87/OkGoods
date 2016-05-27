@@ -1,21 +1,26 @@
 package ru.okmarket.okgoods.activities;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 
@@ -31,21 +36,25 @@ import ru.yandex.yandexmapkit.OverlayManager;
 import ru.yandex.yandexmapkit.overlay.Overlay;
 import ru.yandex.yandexmapkit.overlay.OverlayItem;
 import ru.yandex.yandexmapkit.overlay.balloon.BalloonItem;
+import ru.yandex.yandexmapkit.overlay.balloon.OnBalloonListener;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
-public class SelectShopActivity extends AppCompatActivity
+public class SelectShopActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnBalloonListener, AdapterView.OnItemClickListener
 {
     private static final String TAG = "SelectShopActivity";
 
 
 
-    private MapView        mMapView         = null;
-    private Overlay        mShopsOverlay    = null;
-    private Drawable       mOverlayDrawable = null;
-    private DrawerLayout   mDrawerLayout    = null;
-    private ListView       mShopsListView   = null;
-    private RelativeLayout mShopDetailsView = null;
-    private ShopsAdapter   mShopsAdapter    = null;
+    private MapView         mMapView           = null;
+    private Overlay         mShopsOverlay      = null;
+    private Drawable        mOverlayDrawable   = null;
+    private GoogleApiClient mGoogleApiClient   = null;
+    private DrawerLayout    mDrawerLayout      = null;
+    private ListView        mShopsListView     = null;
+    private ShopsAdapter    mShopsAdapter      = null;
+    private RelativeLayout  mShopDetailsView   = null;
+    private ShopInfo        mSelectedShop      = null;
+    private boolean         mMovedToCurrentPos = false;
 
 
 
@@ -58,10 +67,10 @@ public class SelectShopActivity extends AppCompatActivity
 
 
 
-        mMapView         = (MapView)        findViewById(R.id.map);
-        mDrawerLayout    = (DrawerLayout)   findViewById(R.id.drawer_layout);
-        mShopsListView   = (ListView)       findViewById(R.id.shopsListView);
-        mShopDetailsView = (RelativeLayout) findViewById(R.id.shopDetailsView);
+        mMapView         = (MapView)       findViewById(R.id.map);
+        mDrawerLayout    = (DrawerLayout)  findViewById(R.id.drawer_layout);
+        mShopsListView   = (ListView)      findViewById(R.id.shopsListView);
+        mShopDetailsView = (RelativeLayout)findViewById(R.id.shopDetailsView);
 
 
 
@@ -85,6 +94,14 @@ public class SelectShopActivity extends AppCompatActivity
 
 
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+
+
         int drawerWidth = getResources().getDisplayMetrics().widthPixels * 80 / 100;
         mShopsListView.getLayoutParams().width   = drawerWidth;
         mShopDetailsView.getLayoutParams().width = drawerWidth;
@@ -93,11 +110,28 @@ public class SelectShopActivity extends AppCompatActivity
 
         mShopsAdapter = new ShopsAdapter(this, shops);
         mShopsListView.setAdapter(mShopsAdapter);
+        mShopsListView.setOnItemClickListener(this);
 
 
 
-        moveMapToCurrentLocation();
         updateMapPoints();
+        updateShopDetails();
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        mGoogleApiClient.disconnect();
     }
 
     @Override
@@ -161,37 +195,92 @@ public class SelectShopActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void moveMapToCurrentLocation()
+    @Override
+    public void onConnected(@Nullable Bundle bundle)
     {
         try
         {
-            MapController mapController = mMapView.getMapController();
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-            LocationManager  locationManager  = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            LocationListener locationListener = new LocationListener()
+            if (location != null)
             {
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {}
+                if (!mMovedToCurrentPos)
+                {
+                    mMovedToCurrentPos = true;
 
-                @Override
-                public void onProviderEnabled(String provider) {}
+                    mMapView.getMapController().setPositionAnimationTo(new GeoPoint((int) location.getLatitude(), (int) location.getLongitude()));
+                }
 
-                @Override
-                public void onProviderDisabled(String provider) {}
-
-                @Override
-                public void onLocationChanged(Location location) {}
-            };
-
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-            mapController.setPositionAnimationTo(new GeoPoint((int) location.getLatitude() * 1000000, (int) location.getLongitude() * 1000000));
+                mShopsAdapter.findNearestShop(location.getLatitude(), location.getLongitude());
+            }
         }
         catch (SecurityException e)
         {
             AppLog.e(TAG, "Failed to get current location", e);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+        AppLog.w(TAG, "Getting current location suspended: " + String.valueOf(i));
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+    {
+        AppLog.e(TAG, "Failed to get current location: " + String.valueOf(connectionResult));
+    }
+
+    @Override
+    public void onBalloonViewClick(BalloonItem balloonItem, View view)
+    {
+        // Nothing
+    }
+
+    @Override
+    public void onBalloonShow(BalloonItem balloonItem)
+    {
+        int itemId = Integer.parseInt(String.valueOf(balloonItem.getText()));
+
+        mSelectedShop = (ShopInfo)mShopsAdapter.getItem(itemId);
+        updateShopDetails();
+
+        mDrawerLayout.openDrawer(mShopDetailsView);
+
+        balloonItem.setVisible(false);
+    }
+
+    @Override
+    public void onBalloonHide(BalloonItem balloonItem)
+    {
+        // Nothing
+    }
+
+    @Override
+    public void onBalloonAnimationStart(BalloonItem balloonItem)
+    {
+        // Nothing
+    }
+
+    @Override
+    public void onBalloonAnimationEnd(BalloonItem balloonItem)
+    {
+        // Nothing
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    {
+        if (parent == mShopsListView)
+        {
+            mSelectedShop = (ShopInfo)mShopsAdapter.getItem(position);
+            updateShopDetails();
+
+            mMapView.getMapController().setPositionAnimationTo(new GeoPoint(mSelectedShop.getLatitude(), mSelectedShop.getLongitude()));
+
+            mDrawerLayout.closeDrawer(mShopsListView);
+            mDrawerLayout.openDrawer(mShopDetailsView);
         }
     }
 
@@ -203,13 +292,17 @@ public class SelectShopActivity extends AppCompatActivity
         {
             ShopInfo shop = (ShopInfo)mShopsAdapter.getItem(i);
 
-            GeoPoint geoPoint = new GeoPoint(shop.getLatitude(), shop.getLongitude());
-            OverlayItem overlayItem = new OverlayItem(geoPoint, mOverlayDrawable);
-            BalloonItem balloonItem = new BalloonItem(this, geoPoint);
-            balloonItem.setText(shop.getName());
-            overlayItem.setBalloonItem(balloonItem);
+            if (shop.getLatitude() != 0 || shop.getLongitude() != 0)
+            {
+                GeoPoint geoPoint = new GeoPoint(shop.getLatitude(), shop.getLongitude());
+                OverlayItem overlayItem = new OverlayItem(geoPoint, mOverlayDrawable);
+                BalloonItem balloonItem = new BalloonItem(this, geoPoint);
+                balloonItem.setText(String.valueOf(i));
+                balloonItem.setOnBalloonListener(this);
+                overlayItem.setBalloonItem(balloonItem);
 
-            mShopsOverlay.addOverlayItem(overlayItem);
+                mShopsOverlay.addOverlayItem(overlayItem);
+            }
         }
     }
 
@@ -223,5 +316,9 @@ public class SelectShopActivity extends AppCompatActivity
         {
             mDrawerLayout.openDrawer(mShopDetailsView);
         }
+    }
+
+    private void updateShopDetails()
+    {
     }
 }
