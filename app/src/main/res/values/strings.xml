@@ -10,6 +10,8 @@
     <string name="exit">Exit</string>
     <string name="shop">Shop:</string>
     <string name="select_shop">Select shop</string>
+    <string name="show_list">Show list</string>
+    <string name="hide_list">Hide list</string>
     <string name="filter">Filter</string>
     <string name="shop_details">Shop details</string>
     <string name="nearest_shop">The nearest shop</string>

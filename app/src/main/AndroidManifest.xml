@@ -37,7 +37,8 @@
 
         <activity
             android:name=".activities.SelectShopActivity"
-            android:label="@string/title_activity_select_shop" />
+            android:label="@string/title_activity_select_shop"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

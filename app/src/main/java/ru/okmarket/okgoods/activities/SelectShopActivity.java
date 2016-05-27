@@ -1,6 +1,7 @@
 package ru.okmarket.okgoods.activities;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -8,8 +9,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,16 +48,18 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
 
 
 
-    private MapView         mMapView           = null;
-    private Overlay         mShopsOverlay      = null;
-    private Drawable        mOverlayDrawable   = null;
-    private GoogleApiClient mGoogleApiClient   = null;
-    private DrawerLayout    mDrawerLayout      = null;
-    private ListView        mShopsListView     = null;
-    private ShopsAdapter    mShopsAdapter      = null;
-    private RelativeLayout  mShopDetailsView   = null;
-    private ShopInfo        mSelectedShop      = null;
-    private boolean         mMovedToCurrentPos = false;
+    private Toolbar               mToolbar           = null;
+    private MapView               mMapView           = null;
+    private Overlay               mShopsOverlay      = null;
+    private Drawable              mOverlayDrawable   = null;
+    private GoogleApiClient       mGoogleApiClient   = null;
+    private DrawerLayout          mDrawerLayout      = null;
+    private ActionBarDrawerToggle mDrawerToggle      = null;
+    private ListView              mShopsListView     = null;
+    private ShopsAdapter          mShopsAdapter      = null;
+    private RelativeLayout        mShopDetailsView   = null;
+    private ShopInfo              mSelectedShop      = null;
+    private boolean               mMovedToCurrentPos = false;
 
 
 
@@ -67,6 +72,7 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
 
 
 
+        mToolbar         = (Toolbar)       findViewById(R.id.toolbar);
         mMapView         = (MapView)       findViewById(R.id.map);
         mDrawerLayout    = (DrawerLayout)  findViewById(R.id.drawer_layout);
         mShopsListView   = (ListView)      findViewById(R.id.shopsListView);
@@ -80,6 +86,10 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
         SQLiteDatabase db = mainDatabase.getReadableDatabase();
         ArrayList<ShopInfo> shops = mainDatabase.getShops(db, mainDatabase.getCityId(prefs.getString(Preferences.SETTINGS_CITY, "MOSCOW")));
         db.close();
+
+
+
+        setSupportActionBar(mToolbar);
 
 
 
@@ -105,6 +115,16 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
         int drawerWidth = getResources().getDisplayMetrics().widthPixels * 80 / 100;
         mShopsListView.getLayoutParams().width   = drawerWidth;
         mShopDetailsView.getLayoutParams().width = drawerWidth;
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawerLayout,
+                mToolbar,
+                R.string.show_list,
+                R.string.hide_list
+        );
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 
 
@@ -135,6 +155,22 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
     }
 
     @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public void onBackPressed()
     {
         if (mDrawerLayout.isDrawerOpen(mShopsListView))
@@ -161,23 +197,13 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_MENU)
-        {
-            toggleShopDetails();
-
-            return true;
-        }
-        else
-        {
-            return super.onKeyUp(keyCode, event);
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        if (mDrawerToggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
+
         int id = item.getItemId();
 
         if (id == R.id.menu_filter)
@@ -193,6 +219,21 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_MENU)
+        {
+            toggleShopDetails();
+
+            return true;
+        }
+        else
+        {
+            return super.onKeyUp(keyCode, event);
+        }
     }
 
     @Override
@@ -308,6 +349,8 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
 
     private void toggleShopDetails()
     {
+        mDrawerLayout.closeDrawer(mShopsListView);
+
         if (mDrawerLayout.isDrawerOpen(mShopDetailsView))
         {
             mDrawerLayout.closeDrawer(mShopDetailsView);

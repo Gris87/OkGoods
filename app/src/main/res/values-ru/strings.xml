@@ -10,6 +10,8 @@
     <string name="exit">Выход</string>
     <string name="shop">Магазин:</string>
     <string name="select_shop">Выбрать магазин</string>
+    <string name="show_list">Показать список</string>
+    <string name="hide_list">Скрыть список</string>
     <string name="filter">Фильтр</string>
     <string name="shop_details">Информация о магазине</string>
     <string name="nearest_shop">Ближайший магазин</string>
