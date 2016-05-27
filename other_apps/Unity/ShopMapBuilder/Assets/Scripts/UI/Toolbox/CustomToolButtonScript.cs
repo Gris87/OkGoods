@@ -17,7 +17,7 @@ namespace UI.Toolbox
         /// <summary>
         /// Script starting callback.
         /// </summary>
-        public virtual void Start()
+        protected virtual void Start()
         {
             DebugEx.VeryVerbose("CustomToolButtonScript.Start()");
 

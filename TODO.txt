@@ -1,5 +1,7 @@
 Points on Map
 Nearest shop
+Shop info
+Shop photos
 Ask for starting
 Fill with debug data
 Add/remove goods

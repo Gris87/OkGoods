@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using Utils;
+using World.Common;
 
 
 
@@ -9,7 +10,7 @@ namespace World
     /// <summary>
     /// Floor script.
     /// </summary>
-    public class FloorScript : MonoBehaviour
+    public class FloorScript : ObjectWithProperties
     {
         /// <summary>
         /// The floor identifier.
@@ -27,8 +28,10 @@ namespace World
         /// <summary>
         /// Script starting callback.
         /// </summary>
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             DebugEx.Verbose("FloorScript.Start()");
 
             GeneratePlaneMesh();
