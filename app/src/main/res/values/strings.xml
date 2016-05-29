@@ -23,6 +23,7 @@
     <string name="parking_places">Parking places:</string>
     <string name="number_of_cashboxes">Number of cashboxes:</string>
     <string name="services">Services:</string>
+    <string name="photos">Photos:</string>
     <string name="no_value" translatable="false">--------</string>
     <string name="city_moscow">Moscow</string>
     <string name="city_st_petersburg">St. Petersburg</string>
