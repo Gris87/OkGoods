@@ -49,42 +49,20 @@
             android:layout_gravity="start"
             android:background="@color/windowBackground"/>
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/shopDetailsView"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:background="@color/windowBackground">
 
-            <LinearLayout
+            <fragment
+                android:id="@+id/shopDetailsFragment"
+                android:name="ru.okmarket.okgoods.fragments.ShopDetailsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                style="?android:attr/buttonBarStyle">
+                android:layout_height="match_parent" />
 
-                <Button
-                    android:id="@+id/okButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@android:string/ok"
-                    style="?android:attr/buttonBarButtonStyle" />
-
-                <Button
-                    android:id="@+id/cancelButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@android:string/cancel"
-                    style="?android:attr/buttonBarButtonStyle" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
+        </FrameLayout>
 
     </android.support.v4.widget.DrawerLayout>
 

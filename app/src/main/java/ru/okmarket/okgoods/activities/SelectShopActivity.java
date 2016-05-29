@@ -17,15 +17,15 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.ShopsAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.fragments.ShopDetailsFragment;
 import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.other.Preferences;
 import ru.okmarket.okgoods.other.ShopInfo;
@@ -41,7 +41,7 @@ import ru.yandex.yandexmapkit.overlay.location.MyLocationOverlay;
 import ru.yandex.yandexmapkit.overlay.location.OnMyLocationListener;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
-public class SelectShopActivity extends AppCompatActivity implements OnMyLocationListener, OnBalloonListener, AdapterView.OnItemClickListener, View.OnTouchListener, View.OnClickListener
+public class SelectShopActivity extends AppCompatActivity implements OnMyLocationListener, OnBalloonListener, AdapterView.OnItemClickListener, View.OnTouchListener, ShopDetailsFragment.OnFragmentInteractionListener
 {
     private static final String TAG = "SelectShopActivity";
 
@@ -51,19 +51,18 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-    private Toolbar               mToolbar           = null;
-    private MapView               mMapView           = null;
-    private Overlay               mShopsOverlay      = null;
-    private Drawable              mOverlayDrawable   = null;
-    private DrawerLayout          mDrawerLayout      = null;
-    private ActionBarDrawerToggle mDrawerToggle      = null;
-    private ListView              mShopsListView     = null;
-    private ShopsAdapter          mShopsAdapter      = null;
-    private RelativeLayout        mShopDetailsView   = null;
-    private Button                mOkButton          = null;
-    private Button                mCancelButton      = null;
-    private ShopInfo              mSelectedShop      = null;
-    private boolean               mMovedToCurrentPos = false;
+    private Toolbar               mToolbar             = null;
+    private MapView               mMapView             = null;
+    private Overlay               mShopsOverlay        = null;
+    private Drawable              mOverlayDrawable     = null;
+    private DrawerLayout          mDrawerLayout        = null;
+    private ActionBarDrawerToggle mDrawerToggle        = null;
+    private ListView              mShopsListView       = null;
+    private ShopsAdapter          mShopsAdapter        = null;
+    private FrameLayout           mShopDetailsView     = null;
+    private ShopDetailsFragment   mShopDetailsFragment = null;
+    private ShopInfo              mSelectedShop        = null;
+    private boolean               mMovedToCurrentPos   = false;
 
 
 
@@ -76,13 +75,12 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-        mToolbar         = (Toolbar)       findViewById(R.id.toolbar);
-        mMapView         = (MapView)       findViewById(R.id.map);
-        mDrawerLayout    = (DrawerLayout)  findViewById(R.id.drawer_layout);
-        mShopsListView   = (ListView)      findViewById(R.id.shopsListView);
-        mShopDetailsView = (RelativeLayout)findViewById(R.id.shopDetailsView);
-        mOkButton        = (Button)        findViewById(R.id.okButton);
-        mCancelButton    = (Button)        findViewById(R.id.cancelButton);
+        mToolbar             = (Toolbar)            findViewById(R.id.toolbar);
+        mMapView             = (MapView)            findViewById(R.id.map);
+        mDrawerLayout        = (DrawerLayout)       findViewById(R.id.drawer_layout);
+        mShopsListView       = (ListView)           findViewById(R.id.shopsListView);
+        mShopDetailsView     = (FrameLayout)        findViewById(R.id.shopDetailsView);
+        mShopDetailsFragment = (ShopDetailsFragment)getSupportFragmentManager().findFragmentById(R.id.shopDetailsFragment);
 
 
 
@@ -148,11 +146,6 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
         mShopDetailsView.setOnTouchListener(this);
-
-
-
-        mOkButton.setOnClickListener(this);
-        mCancelButton.setOnClickListener(this);
 
 
 
@@ -322,21 +315,19 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     }
 
     @Override
-    public void onClick(View view)
+    public void onShopDetailsCancelClicked()
     {
-        if (view == mOkButton)
-        {
-            Intent intent = new Intent();
-            intent.putExtra(Extras.SHOP_ID, mSelectedShop.getId());
-            setResult(SHOP_SELECTED, intent);
+        mDrawerLayout.closeDrawer(mShopDetailsView);
+    }
 
-            finish();
-        }
-        else
-        if (view == mCancelButton)
-        {
-            mDrawerLayout.closeDrawer(mShopDetailsView);
-        }
+    @Override
+    public void onShopDetailsOkClicked()
+    {
+        Intent intent = new Intent();
+        intent.putExtra(Extras.SHOP_ID, mSelectedShop.getId());
+        setResult(SHOP_SELECTED, intent);
+
+        finish();
     }
 
     private void updateMapPoints()
@@ -380,13 +371,6 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
     private void updateShopDetails()
     {
-        if (mSelectedShop != null)
-        {
-            mOkButton.setEnabled(true);
-        }
-        else
-        {
-            mOkButton.setEnabled(false);
-        }
+        mShopDetailsFragment.updateUI(mSelectedShop);
     }
 }

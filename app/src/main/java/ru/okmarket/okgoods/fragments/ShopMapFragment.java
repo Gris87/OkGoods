@@ -25,6 +25,7 @@ public class ShopMapFragment extends Fragment implements View.OnClickListener
 
     public ShopMapFragment()
     {
+        // Nothing
     }
 
     @Override

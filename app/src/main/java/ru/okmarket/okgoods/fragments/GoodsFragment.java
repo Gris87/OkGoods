@@ -23,6 +23,7 @@ public class GoodsFragment extends Fragment
 
     public GoodsFragment()
     {
+        // Nothing
     }
 
     @Override
