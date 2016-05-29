@@ -1,5 +1,6 @@
 package ru.okmarket.okgoods.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,8 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.ShopsAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.other.Preferences;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.yandex.yandexmapkit.MapController;
@@ -37,9 +41,13 @@ import ru.yandex.yandexmapkit.overlay.location.MyLocationOverlay;
 import ru.yandex.yandexmapkit.overlay.location.OnMyLocationListener;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
-public class SelectShopActivity extends AppCompatActivity implements OnMyLocationListener, OnBalloonListener, AdapterView.OnItemClickListener
+public class SelectShopActivity extends AppCompatActivity implements OnMyLocationListener, OnBalloonListener, AdapterView.OnItemClickListener, View.OnTouchListener, View.OnClickListener
 {
     private static final String TAG = "SelectShopActivity";
+
+
+
+    public static final int SHOP_SELECTED = 1;
 
 
 
@@ -52,6 +60,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     private ListView              mShopsListView     = null;
     private ShopsAdapter          mShopsAdapter      = null;
     private RelativeLayout        mShopDetailsView   = null;
+    private Button                mOkButton          = null;
+    private Button                mCancelButton      = null;
     private ShopInfo              mSelectedShop      = null;
     private boolean               mMovedToCurrentPos = false;
 
@@ -71,6 +81,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         mDrawerLayout    = (DrawerLayout)  findViewById(R.id.drawer_layout);
         mShopsListView   = (ListView)      findViewById(R.id.shopsListView);
         mShopDetailsView = (RelativeLayout)findViewById(R.id.shopDetailsView);
+        mOkButton        = (Button)        findViewById(R.id.okButton);
+        mCancelButton    = (Button)        findViewById(R.id.cancelButton);
 
 
 
@@ -135,8 +147,16 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
+        mShopDetailsView.setOnTouchListener(this);
+
+
+
+        mOkButton.setOnClickListener(this);
+        mCancelButton.setOnClickListener(this);
+
+
+
         updateMapPoints();
-        updateShopDetails();
     }
 
     @Override
@@ -290,6 +310,35 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         }
     }
 
+    @Override
+    public boolean onTouch(View view, MotionEvent event)
+    {
+        if (view == mShopDetailsView)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        if (view == mOkButton)
+        {
+            Intent intent = new Intent();
+            intent.putExtra(Extras.SHOP_ID, mSelectedShop.getId());
+            setResult(SHOP_SELECTED, intent);
+
+            finish();
+        }
+        else
+        if (view == mCancelButton)
+        {
+            mDrawerLayout.closeDrawer(mShopDetailsView);
+        }
+    }
+
     private void updateMapPoints()
     {
         mShopsOverlay.clearOverlayItems();
@@ -310,6 +359,9 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
                 mShopsOverlay.addOverlayItem(overlayItem);
             }
         }
+
+        mSelectedShop = null;
+        updateShopDetails();
     }
 
     private void toggleShopDetails()
@@ -328,5 +380,13 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
     private void updateShopDetails()
     {
+        if (mSelectedShop != null)
+        {
+            mOkButton.setEnabled(true);
+        }
+        else
+        {
+            mOkButton.setEnabled(false);
+        }
     }
 }
