@@ -13,11 +13,11 @@
 
     <fragment
         android:id="@+id/goodsFragment"
+        android:name="ru.okmarket.okgoods.fragments.GoodsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        tools:layout="@layout/fragment_goods"
-        class="ru.okmarket.okgoods.fragments.GoodsFragment"/>
+        tools:layout="@layout/fragment_goods" />
 
     <FrameLayout
         android:layout_width="2dp"
@@ -26,10 +26,10 @@
 
     <fragment
         android:id="@+id/shopMapFragment"
+        android:name="ru.okmarket.okgoods.fragments.ShopMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        tools:layout="@layout/fragment_shop_map"
-        class="ru.okmarket.okgoods.fragments.ShopMapFragment"/>
+        tools:layout="@layout/fragment_shop_map" />
 
 </LinearLayout>

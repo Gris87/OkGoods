@@ -15,6 +15,14 @@
     <string name="filter">Фильтр</string>
     <string name="shop_details">Информация о магазине</string>
     <string name="nearest_shop">Ближайший магазин</string>
+    <string name="shop_is_not_selected">Магазин не выбран</string>
+    <string name="phone">Телефон:</string>
+    <string name="work_hours">Часы работы:</string>
+    <string name="square">Площадь:</string>
+    <string name="opening_date">Дата открытия:</string>
+    <string name="parking_places">Парковочные места:</string>
+    <string name="number_of_cashboxes">Количество касс:</string>
+    <string name="services">Услуги:</string>
     <string name="city_moscow">Москва</string>
     <string name="city_st_petersburg">Санкт-Петербург</string>
     <string name="city_astrakhan">Астрахань</string>
