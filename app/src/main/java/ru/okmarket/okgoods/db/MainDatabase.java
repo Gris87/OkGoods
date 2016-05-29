@@ -3121,8 +3121,8 @@ public class MainDatabase extends SQLiteOpenHelper
             shop.setCityId(cursor.getInt(cityIdColumnIndex));
             shop.setName(cursor.getString(nameColumnIndex));
             shop.setIsHypermarket(cursor.getInt(isHypermarketColumnIndex) == SHOP_HYPERMARKET);
-            shop.setLatitude(cursor.getInt(latitudeColumnIndex));
-            shop.setLongitude(cursor.getInt(longitudeColumnIndex));
+            shop.setLatitude(cursor.getDouble(latitudeColumnIndex));
+            shop.setLongitude(cursor.getDouble(longitudeColumnIndex));
             shop.setPhone(cursor.getString(phoneColumnIndex));
             shop.setWorkHours(cursor.getString(workHoursColumnIndex));
             shop.setSquare(cursor.getInt(squareColumnIndex));

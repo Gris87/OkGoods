@@ -4,10 +4,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,10 +18,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
-
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
@@ -32,7 +25,6 @@ import ru.okmarket.okgoods.adapters.ShopsAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.other.Preferences;
 import ru.okmarket.okgoods.other.ShopInfo;
-import ru.okmarket.okgoods.util.AppLog;
 import ru.yandex.yandexmapkit.MapController;
 import ru.yandex.yandexmapkit.MapView;
 import ru.yandex.yandexmapkit.OverlayManager;
@@ -40,9 +32,12 @@ import ru.yandex.yandexmapkit.overlay.Overlay;
 import ru.yandex.yandexmapkit.overlay.OverlayItem;
 import ru.yandex.yandexmapkit.overlay.balloon.BalloonItem;
 import ru.yandex.yandexmapkit.overlay.balloon.OnBalloonListener;
+import ru.yandex.yandexmapkit.overlay.location.MyLocationItem;
+import ru.yandex.yandexmapkit.overlay.location.MyLocationOverlay;
+import ru.yandex.yandexmapkit.overlay.location.OnMyLocationListener;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
-public class SelectShopActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnBalloonListener, AdapterView.OnItemClickListener
+public class SelectShopActivity extends AppCompatActivity implements OnMyLocationListener, OnBalloonListener, AdapterView.OnItemClickListener
 {
     private static final String TAG = "SelectShopActivity";
 
@@ -52,7 +47,6 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
     private MapView               mMapView           = null;
     private Overlay               mShopsOverlay      = null;
     private Drawable              mOverlayDrawable   = null;
-    private GoogleApiClient       mGoogleApiClient   = null;
     private DrawerLayout          mDrawerLayout      = null;
     private ActionBarDrawerToggle mDrawerToggle      = null;
     private ListView              mShopsListView     = null;
@@ -93,22 +87,17 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
 
 
 
-        MapController  mapController  = mMapView.getMapController();
-        OverlayManager overlayManager = mapController.getOverlayManager();
+        MapController     mapController     = mMapView.getMapController();
+        OverlayManager    overlayManager    = mapController.getOverlayManager();
+        MyLocationOverlay myLocationOverlay = overlayManager.getMyLocation();
 
         mMapView.showBuiltInScreenButtons(true);
         mShopsOverlay = new Overlay(mapController);
         mOverlayDrawable = getResources().getDrawable(R.drawable.ok_overlay);
 
         overlayManager.addOverlay(mShopsOverlay);
-
-
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+        myLocationOverlay.setAutoScroll(false);
+        myLocationOverlay.addMyLocationListener(this);
 
 
 
@@ -122,7 +111,19 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
                 mToolbar,
                 R.string.show_list,
                 R.string.hide_list
-        );
+        )
+        {
+            @Override
+            public void onDrawerOpened(View drawerView)
+            {
+                super.onDrawerOpened(drawerView);
+
+                if (drawerView == mShopsListView)
+                {
+                    mDrawerLayout.closeDrawer(mShopDetailsView);
+                }
+            }
+        };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
@@ -136,22 +137,6 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
 
         updateMapPoints();
         updateShopDetails();
-    }
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop()
-    {
-        super.onStop();
-
-        mGoogleApiClient.disconnect();
     }
 
     @Override
@@ -208,6 +193,8 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
 
         if (id == R.id.menu_filter)
         {
+            // TODO: Implement it
+
             return true;
         }
 
@@ -237,40 +224,18 @@ public class SelectShopActivity extends AppCompatActivity implements GoogleApiCl
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle)
+    public void onMyLocationChange(MyLocationItem myLocationItem)
     {
-        try
+        GeoPoint geoPoint = myLocationItem.getGeoPoint();
+
+        if (!mMovedToCurrentPos)
         {
-            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            mMovedToCurrentPos = true;
 
-            if (location != null)
-            {
-                if (!mMovedToCurrentPos)
-                {
-                    mMovedToCurrentPos = true;
-
-                    mMapView.getMapController().setPositionAnimationTo(new GeoPoint((int) location.getLatitude(), (int) location.getLongitude()));
-                }
-
-                mShopsAdapter.findNearestShop(location.getLatitude(), location.getLongitude());
-            }
+            mMapView.getMapController().setPositionNoAnimationTo(geoPoint);
         }
-        catch (SecurityException e)
-        {
-            AppLog.e(TAG, "Failed to get current location", e);
-        }
-    }
 
-    @Override
-    public void onConnectionSuspended(int i)
-    {
-        AppLog.w(TAG, "Getting current location suspended: " + String.valueOf(i));
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
-    {
-        AppLog.e(TAG, "Failed to get current location: " + String.valueOf(connectionResult));
+        mShopsAdapter.findNearestShop(geoPoint.getLat(), geoPoint.getLon());
     }
 
     @Override
