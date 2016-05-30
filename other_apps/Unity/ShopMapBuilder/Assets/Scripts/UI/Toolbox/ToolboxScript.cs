@@ -9,11 +9,9 @@ namespace UI.Toolbox
 {
     public class ToolboxScript : MonoBehaviour
     {
-        private GridLayoutGroup mGridLayoutGroup;
-        private Button          mButton;
-        private ColorBlock      mNormalColorBlock;
-        private ColorBlock      mSelectedColorBlock;
-        private float           mPreviousButtonWidth;
+        private GridLayoutGroup        mGridLayoutGroup;
+        private CustomToolButtonScript mButton;
+        private float                  mPreviousButtonWidth;
 
 
 
@@ -27,29 +25,13 @@ namespace UI.Toolbox
             mGridLayoutGroup = GetComponent<GridLayoutGroup>();
 
             mButton              = null;
-            mNormalColorBlock    = new ColorBlock();
-            mSelectedColorBlock  = new ColorBlock();
             mPreviousButtonWidth = 0;
-
-            mNormalColorBlock.normalColor        = new Color(1f,   1f,   1f,   1f);
-            mNormalColorBlock.highlightedColor   = new Color(0.9f, 0.9f, 0.9f, 1f);
-            mNormalColorBlock.pressedColor       = new Color(0.7f, 0.7f, 0.7f, 1f);
-            mNormalColorBlock.disabledColor      = new Color(0.7f, 0.7f, 0.7f, 0.5f);
-            mNormalColorBlock.colorMultiplier    = 1f;
-            mNormalColorBlock.fadeDuration       = 0.1f;
-
-            mSelectedColorBlock.normalColor      = new Color(0.5f, 0.5f, 1f,   1f);
-            mSelectedColorBlock.highlightedColor = new Color(0.4f, 0.4f, 0.9f, 1f);
-            mSelectedColorBlock.pressedColor     = new Color(0.2f, 0.2f, 0.7f, 1f);
-            mSelectedColorBlock.disabledColor    = new Color(0.2f, 0.2f, 0.7f, 0.5f);
-            mSelectedColorBlock.colorMultiplier  = 1f;
-            mSelectedColorBlock.fadeDuration     = 0.1f;
 
 
 
             for (int i = 0; i < transform.childCount; ++i)
             {
-                Button button = transform.GetChild(i).GetComponent<Button>();
+                CustomToolButtonScript button = transform.GetChild(i).GetComponent<CustomToolButtonScript>();
 
                 if (button != null)
                 {
@@ -59,7 +41,7 @@ namespace UI.Toolbox
                     }
                     else
                     {
-                        button.colors = mNormalColorBlock;
+                        button.OnDeacivate();
                     }
                 }
             }
@@ -73,7 +55,7 @@ namespace UI.Toolbox
             DebugEx.VeryVeryVerbose("ToolboxScript.Update()");
             
             Bounds toolBoxBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(transform);
-            float buttonWidth = (toolBoxBounds.max.x - toolBoxBounds.min.x - 8 * (mGridLayoutGroup.constraintCount - 1)) / mGridLayoutGroup.constraintCount;
+            float  buttonWidth   = (toolBoxBounds.max.x - toolBoxBounds.min.x - 8 * (mGridLayoutGroup.constraintCount - 1)) / mGridLayoutGroup.constraintCount;
 
             if (mPreviousButtonWidth != buttonWidth)
             {
@@ -87,18 +69,21 @@ namespace UI.Toolbox
         /// Selects the button.
         /// </summary>
         /// <param name="button">Button.</param>
-        public void SelectButton(Button button)
+        public void SelectButton(CustomToolButtonScript button)
         {
-            if (mButton != null)
+            if (mButton != button)
             {
-                mButton.colors = mNormalColorBlock;
-            }
+                if (mButton != null)
+                {
+                    mButton.OnDeacivate();
+                }
 
-            mButton = button;
+                mButton = button;
 
-            if (mButton != null)
-            {
-                mButton.colors = mSelectedColorBlock;
+                if (mButton != null)
+                {
+                    mButton.OnAcivate();
+                }
             }
         }
     }

@@ -50,7 +50,8 @@ namespace Other
         private static int                 sLastUpdate;
         private static float               sX;
         private static float               sY;
-        private static List<RaycastResult> sHits;
+        private static RaycastHit[]        sHits;
+        private static List<RaycastResult> sHitResults;
 
 
 
@@ -65,6 +66,7 @@ namespace Other
             sX          = -1;
             sY          = -1;
             sHits       = null;
+            sHitResults = null;
         }
 
         /// <summary>
@@ -83,7 +85,8 @@ namespace Other
                 sX = mousePos.x;
                 sY = Screen.height - mousePos.y;
 
-                sHits = null;
+                sHits       = null;
+                sHitResults = null;
             }
         }
 
@@ -97,13 +100,32 @@ namespace Other
 
             UpdatePosition();
 
-            if (sHits == null)
+            if (sHitResults == null)
             {
                 PointerEventData pointerEvent = new PointerEventData(EventSystem.current);
                 pointerEvent.position = InputControl.mousePosition;
 
-                sHits = new List<RaycastResult>();
-                EventSystem.current.RaycastAll(pointerEvent, sHits);
+                sHitResults = new List<RaycastResult>();
+                EventSystem.current.RaycastAll(pointerEvent, sHitResults);
+            }
+
+            hits.AddRange(sHitResults);
+        }
+
+        /// <summary>
+        /// Raycasts all.
+        /// </summary>
+        /// <param name="hits">List of raycast hits.</param>
+        public static void RaycastAll(List<RaycastHit> hits)
+        {
+            DebugEx.VeryVeryVerbose("Mouse.RaycastAll()");
+
+            UpdatePosition();
+
+            if (sHits == null)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(InputControl.mousePosition);
+                sHits = Physics.RaycastAll(ray);
             }
 
             hits.AddRange(sHits);

@@ -22,4 +22,14 @@ public static class Constants
     /// The speed of main camera while run button pressed.
     /// </summary>
     public const int MAIN_CAMERA_RUN_SPEED = 30;
+
+    /// <summary>
+    /// The rotation speed of main camera.
+    /// </summary>
+    public const float MAIN_CAMERA_ROTATE_SPEED = 0.5f;
+
+    /// <summary>
+    /// The height level of main camera.
+    /// </summary>
+    public const float MAIN_CAMERA_HEIGHT = 10;
 }
