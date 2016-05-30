@@ -12,7 +12,7 @@
 
     <item android:id="@+id/menu_shop_details"
         android:icon="@drawable/menu_overflow"
-        android:title="@string/shop_details"
+        android:title="@string/details_for_shop"
         android:orderInCategory="200"
         app:showAsAction="ifRoom"/>
 

@@ -13,9 +13,9 @@
     <string name="show_list">Show list</string>
     <string name="hide_list">Hide list</string>
     <string name="filter">Filter</string>
-    <string name="shop_details">Shop details</string>
+    <string name="details_for_shop">Shop details</string>
     <string name="nearest_shop">The nearest shop</string>
-    <string name="shop_is_not_selected">The shop is not selected</string>
+    <string name="undefined_shop">Undefined shop</string>
     <string name="phone">Phone:</string>
     <string name="work_hours">Work hours:</string>
     <string name="square">Square:</string>
@@ -24,7 +24,6 @@
     <string name="number_of_cashboxes">Number of cashboxes:</string>
     <string name="services">Services:</string>
     <string name="photos">Photos:</string>
-    <string name="no_value" translatable="false">--------</string>
     <string name="city_moscow">Moscow</string>
     <string name="city_st_petersburg">St. Petersburg</string>
     <string name="city_astrakhan">Astrakhan</string>
@@ -182,4 +181,6 @@
     <string name="pref_description_general_city">Select your city</string>
     <string name="pref_title_notifications_show_notification">Show notification</string>
     <string name="pref_description_notifications_show_notification">Enables notification</string>
+
+    <string name="no_value" translatable="false">--------</string>
 </resources>
