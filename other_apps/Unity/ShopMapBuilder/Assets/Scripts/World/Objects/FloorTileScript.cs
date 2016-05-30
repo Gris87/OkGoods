@@ -15,7 +15,9 @@ namespace World.Objects
     {
         private static Mesh     sPlaneMesh;
         private static Material sGrassMaterial;
+        private static Material sGrassSelectedMaterial;
         private static Material sFloorMaterial;
+        private static Material sFloorSelectedMaterial;
 
 
 
@@ -89,8 +91,10 @@ namespace World.Objects
         {
             DebugEx.Verbose("FloorScript.GetMaterials()");
 
-            sGrassMaterial = Resources.Load<Material>("Materials/Grass");
-            sFloorMaterial = Resources.Load<Material>("Materials/Floor");
+            sGrassMaterial         = Resources.Load<Material>("Materials/Grass");
+            sGrassSelectedMaterial = Resources.Load<Material>("Materials/GrassSelected");
+            sFloorMaterial         = Resources.Load<Material>("Materials/Floor");
+            sFloorSelectedMaterial = Resources.Load<Material>("Materials/FloorSelected");
         }
 
         /// <summary>
@@ -120,16 +124,19 @@ namespace World.Objects
 
             meshFilter.mesh         = sPlaneMesh;
             meshCollider.sharedMesh = sPlaneMesh;
+            SetRenderer(meshRenderer);
 
 
 
             if (parent.floorId == 1)
             {
-                meshRenderer.material = sGrassMaterial;
+                SetDeselectedMaterial(sGrassMaterial);
+                SetSelectedMaterial(sGrassSelectedMaterial);
             }
             else
             {
-                meshRenderer.material = sFloorMaterial;
+                SetDeselectedMaterial(sFloorMaterial);
+                SetSelectedMaterial(sFloorSelectedMaterial);
             }
         }
     }

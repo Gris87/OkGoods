@@ -46,19 +46,36 @@ namespace UI.Toolbox
         {
             base.OnObjectSelected(selectedObject);
 
-            DebugEx.VerboseFormat("SelectButtonScript.OnObjectSelected(selectedObject = {0})", selectedObject);
+            DebugEx.VeryVerboseFormat("SelectButtonScript.OnObjectSelected(selectedObject = {0})", selectedObject);
 
             if (mSelectedObject != null)
             {
-
+                mSelectedObject.Deselect();
             }
 
             mSelectedObject = selectedObject;
 
             if (mSelectedObject != null)
             {
-
+                mSelectedObject.Select();
             }
+        }
+
+        /// <summary>
+        /// Raises the nothing selected event.
+        /// </summary>
+        protected override void OnNothingSelected()
+        {
+            base.OnNothingSelected();
+
+            DebugEx.VeryVeryVerbose("SelectButtonScript.OnNothingSelected()");
+
+            if (mSelectedObject != null)
+            {
+                mSelectedObject.Deselect();
+            }
+
+            mSelectedObject = null;
         }
     }
 }

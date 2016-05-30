@@ -16,7 +16,7 @@ namespace World.Common
         /// </summary>
         protected virtual void Start()
         {
-            DebugEx.VeryVerbose("ObjectWithProperties.Start()");
+            DebugEx.VeryVeryVerbose("ObjectWithProperties.Start()");
         }
     }
 }

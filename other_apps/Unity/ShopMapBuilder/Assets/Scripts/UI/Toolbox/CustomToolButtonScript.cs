@@ -172,7 +172,7 @@ namespace UI.Toolbox
         /// <param name="selectedFloorTile">Selected floor tile.</param>
         protected virtual void OnFloorSelected(FloorTileScript selectedFloorTile)
         {
-            DebugEx.VeryVerboseFormat("CustomToolButtonScript.OnFloorSelected(floorTile = {0})", selectedFloorTile);
+            DebugEx.VeryVeryVerboseFormat("CustomToolButtonScript.OnFloorSelected(floorTile = {0})", selectedFloorTile);
 
             mSomethingSelected = true;
         }
@@ -183,7 +183,7 @@ namespace UI.Toolbox
         /// <param name="selectedObject">Selected object.</param>
         protected virtual void OnObjectSelected(SelectableObject selectedObject)
         {
-            DebugEx.VeryVerboseFormat("CustomToolButtonScript.OnObjectSelected(selectedObject = {0})", selectedObject);
+            DebugEx.VeryVeryVerboseFormat("CustomToolButtonScript.OnObjectSelected(selectedObject = {0})", selectedObject);
 
             mSomethingSelected = true;
         }
@@ -193,7 +193,7 @@ namespace UI.Toolbox
         /// </summary>
         protected virtual void OnNothingSelected()
         {
-            DebugEx.VeryVerbose("CustomToolButtonScript.OnNothingSelected()");
+            DebugEx.VeryVeryVerbose("CustomToolButtonScript.OnNothingSelected()");
 
             if (!mSelectionMode)
             {
