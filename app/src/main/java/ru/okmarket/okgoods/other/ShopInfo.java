@@ -1,8 +1,11 @@
 package ru.okmarket.okgoods.other;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class ShopInfo
+public class ShopInfo implements Parcelable
 {
     private static final String TAG = "ShopInfo";
 
@@ -175,5 +178,62 @@ public class ShopInfo
     public void setServicesSet(int servicesSet)
     {
         mServicesSet = servicesSet;
+    }
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags)
+    {
+        out.writeInt(mId);
+        out.writeInt(mCityId);
+        out.writeString(mName);
+        out.writeByte(mIsHypermarket ? (byte)1 : (byte)0);
+        out.writeDouble(mLatitude);
+        out.writeDouble(mLongitude);
+        out.writeString(mPhone);
+        out.writeString(mWorkHours);
+        out.writeInt(mSquare);
+        out.writeLong(mOpeningDate != null ? mOpeningDate.getTime() : -1);
+        out.writeInt(mParkingPlaces);
+        out.writeInt(mNumberOfCashboxes);
+        out.writeInt(mServicesSet);
+    }
+
+    public static final Parcelable.Creator<ShopInfo> CREATOR = new Parcelable.Creator<ShopInfo>()
+    {
+        @Override
+        public ShopInfo createFromParcel(Parcel in)
+        {
+            return new ShopInfo(in);
+        }
+
+        @Override
+        public ShopInfo[] newArray(int size)
+        {
+            return new ShopInfo[size];
+        }
+    };
+
+    private ShopInfo(Parcel in)
+    {
+        mId                = in.readInt();
+        mCityId            = in.readInt();
+        mName              = in.readString();
+        mIsHypermarket     = (in.readByte() == (byte)1);
+        mLatitude          = in.readDouble();
+        mLongitude         = in.readDouble();
+        mPhone             = in.readString();
+        mWorkHours         = in.readString();
+        mSquare            = in.readInt();
+        long openingDate   = in.readLong();
+        mOpeningDate       = openingDate != -1 ? new Date(openingDate) : null;
+        mParkingPlaces     = in.readInt();
+        mNumberOfCashboxes = in.readInt();
+        mServicesSet       = in.readInt();
     }
 }

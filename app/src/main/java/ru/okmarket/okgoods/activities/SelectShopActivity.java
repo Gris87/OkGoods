@@ -51,6 +51,13 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
+    private static final String SAVED_STATE_SELECTED_SHOP        = "SELECTED_SHOP";
+    private static final String SAVED_STATE_MOVED_TO_CURRENT_POS = "MOVED_TO_CURRENT_POS";
+    private static final String SAVED_STATE_MAP_CENTER           = "MAP_CENTER";
+    private static final String SAVED_STATE_MAP_ZOOM             = "MAP_ZOOM";
+
+
+
     private Toolbar               mToolbar             = null;
     private MapView               mMapView             = null;
     private Overlay               mShopsOverlay        = null;
@@ -158,6 +165,28 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         super.onPostCreate(savedInstanceState);
 
         mDrawerToggle.syncState();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+
+
+        outState.putParcelable(SAVED_STATE_SELECTED_SHOP,        mSelectedShop);
+        outState.putBoolean(   SAVED_STATE_MOVED_TO_CURRENT_POS, mMovedToCurrentPos);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        mSelectedShop = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_SHOP);
+        updateShopDetails();
+
+        mMovedToCurrentPos = savedInstanceState.getBoolean(SAVED_STATE_MOVED_TO_CURRENT_POS);
     }
 
     @Override

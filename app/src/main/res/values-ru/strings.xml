@@ -24,6 +24,8 @@
     <string name="number_of_cashboxes">Количество касс:</string>
     <string name="services">Услуги:</string>
     <string name="photos">Фото:</string>
+    <string name="all_day">Круглосуточно</string>
+    <string name="square_value">%1d м&#178;</string>
     <string name="city_moscow">Москва</string>
     <string name="city_st_petersburg">Санкт-Петербург</string>
     <string name="city_astrakhan">Астрахань</string>

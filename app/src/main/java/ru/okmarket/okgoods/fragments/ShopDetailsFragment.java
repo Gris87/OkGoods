@@ -3,6 +3,7 @@ package ru.okmarket.okgoods.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import ru.okmarket.okgoods.R;
@@ -127,24 +129,13 @@ public class ShopDetailsFragment extends Fragment implements View.OnClickListene
     {
         if (shop != null)
         {
-            mNameTextView.setText(shop.getName());
-            mPhoneTextView.setText(shop.getPhone());
-            mWorkHoursTextView.setText(shop.getWorkHours());
-            mSquareTextView.setText(String.valueOf(shop.getSquare()));
-
-            if (shop.getOpeningDate() != null)
-            {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
-
-                mOpeningDateTextView.setText(dateFormat.format(shop.getOpeningDate()));
-            }
-            else
-            {
-                mOpeningDateTextView.setText(R.string.no_value);
-            }
-
-            mParkingPlacesTextView.setText(String.valueOf(shop.getParkingPlaces()));
-            mNumberOfCashboxesTextView.setText(String.valueOf(shop.getNumberOfCashboxes()));
+            setName(             shop.getName());
+            setPhone(            shop.getPhone());
+            setWorkHours(        shop.getWorkHours());
+            setSquare(           shop.getSquare());
+            setOpeningDate(      shop.getOpeningDate());
+            setParkingPlaces(    shop.getParkingPlaces());
+            setNumberOfCashboxes(shop.getNumberOfCashboxes());
 
             mServiceClearingSettlementImageView.setVisibility(  (shop.getServicesSet() & MainDatabase.SERVICE_CLEARING_SETTLEMENT_MASK)     != 0 ? View.VISIBLE : View.GONE);
             mServiceCosmeticsImageView.setVisibility(           (shop.getServicesSet() & MainDatabase.SERVICE_COSMETICS_MASK)               != 0 ? View.VISIBLE : View.GONE);
@@ -167,13 +158,13 @@ public class ShopDetailsFragment extends Fragment implements View.OnClickListene
         }
         else
         {
-            mNameTextView.setText(             R.string.undefined_shop);
-            mPhoneTextView.setText(            R.string.no_value);
-            mWorkHoursTextView.setText(        R.string.no_value);
-            mSquareTextView.setText(           R.string.no_value);
-            mOpeningDateTextView.setText(      R.string.no_value);
-            mParkingPlacesTextView.setText(    R.string.no_value);
-            mNumberOfCashboxesTextView.setText(R.string.no_value);
+            setName(             null);
+            setPhone(            null);
+            setWorkHours(        null);
+            setSquare(           0);
+            setOpeningDate(      null);
+            setParkingPlaces(    0);
+            setNumberOfCashboxes(0);
 
             mServiceClearingSettlementImageView.setVisibility(  View.GONE);
             mServiceCosmeticsImageView.setVisibility(           View.GONE);
@@ -193,6 +184,106 @@ public class ShopDetailsFragment extends Fragment implements View.OnClickListene
             mPhotosLinearLayout.removeAllViews();
 
             mOkButton.setEnabled(false);
+        }
+    }
+
+    private void setName(String name)
+    {
+        if (!TextUtils.isEmpty(name))
+        {
+            mNameTextView.setText(name);
+        }
+        else
+        {
+            mNameTextView.setText(R.string.undefined_shop);
+        }
+    }
+
+    private void setPhone(String phone)
+    {
+        if (!TextUtils.isEmpty(phone))
+        {
+            int index = phone.indexOf(',');
+
+            if (index >= 0)
+            {
+                phone = phone.substring(0, index).trim();
+            }
+
+            mPhoneTextView.setText(phone);
+        }
+        else
+        {
+            mPhoneTextView.setText(R.string.no_value);
+        }
+    }
+
+    private void setWorkHours(String workHours)
+    {
+        if (!TextUtils.isEmpty(workHours))
+        {
+            if (workHours.equals("0:00 - 24:00"))
+            {
+                mWorkHoursTextView.setText(R.string.all_day);
+            }
+            else
+            {
+                mWorkHoursTextView.setText(workHours);
+            }
+        }
+        else
+        {
+            mWorkHoursTextView.setText(R.string.no_value);
+        }
+    }
+
+    private void setSquare(int square)
+    {
+        if (square > 0)
+        {
+            mSquareTextView.setText(String.format(getContext().getString(R.string.square_value), square));
+        }
+        else
+        {
+            mSquareTextView.setText(R.string.no_value);
+        }
+    }
+
+    private void setOpeningDate(Date openingDate)
+    {
+        if (openingDate != null)
+        {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
+
+            mOpeningDateTextView.setText(dateFormat.format(openingDate));
+        }
+        else
+        {
+            mOpeningDateTextView.setText(R.string.no_value);
+        }
+    }
+
+    private void setParkingPlaces(int parkingPlaces)
+    {
+        if (parkingPlaces > 0)
+        {
+            mParkingPlacesTextView.setText(String.valueOf(parkingPlaces));
+        }
+        else
+        {
+            mParkingPlacesTextView.setText(R.string.no_value);
+        }
+    }
+
+    private void setNumberOfCashboxes(int numberOfCashboxes)
+    {
+        if (numberOfCashboxes > 0)
+        {
+            mNumberOfCashboxesTextView.setText(String.valueOf(numberOfCashboxes));
+        }
+        else
+        {
+            mNumberOfCashboxesTextView.setText(R.string.no_value);
         }
     }
 

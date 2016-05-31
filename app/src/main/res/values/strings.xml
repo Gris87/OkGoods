@@ -24,6 +24,8 @@
     <string name="number_of_cashboxes">Number of cashboxes:</string>
     <string name="services">Services:</string>
     <string name="photos">Photos:</string>
+    <string name="all_day">All day</string>
+    <string name="square_value">%1d m&#178;</string>
     <string name="city_moscow">Moscow</string>
     <string name="city_st_petersburg">St. Petersburg</string>
     <string name="city_astrakhan">Astrakhan</string>
