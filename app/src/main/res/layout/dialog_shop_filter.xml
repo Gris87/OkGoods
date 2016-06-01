@@ -1,12 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/nameTextView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/undefined_shop"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <CheckBox
+            android:id="@+id/supermarketCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/supermarket" />
+
+        <CheckBox
+            android:id="@+id/hypermarketCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hypermarket" />
+
+        <CheckBox
+            android:id="@+id/allDayCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/all_day" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold"
+            android:text="@string/services" />
+
+        <android.support.v7.widget.GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            grid:alignmentMode="alignBounds"
+            grid:orientation="vertical"
+            grid:rowCount="3"
+            grid:useDefaultMargins="true">
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceClearingSettlementButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_clearing_settlement"
+                android:contentDescription="@string/service_clearing_settlement"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceCosmeticsButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_cosmetics"
+                android:contentDescription="@string/service_cosmetics"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/servicePlaygroundButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_playground"
+                android:contentDescription="@string/service_playground"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceFishIslandButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_fish_island"
+                android:contentDescription="@string/service_fish_island"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceBakeryButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_bakery"
+                android:contentDescription="@string/service_bakery"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceCookeryButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_cookery"
+                android:contentDescription="@string/service_cookery"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceTaxiOrderingButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_taxi_ordering"
+                android:contentDescription="@string/service_taxi_ordering"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/servicePharmacyButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_pharmacy"
+                android:contentDescription="@string/service_pharmacy"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceDegustationButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_degustation"
+                android:contentDescription="@string/service_degustation"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceOrderingFoodButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_ordering_food"
+                android:contentDescription="@string/service_ordering_food"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceCafeButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_cafe"
+                android:contentDescription="@string/service_cafe"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceGiftCardsButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_gift_cards"
+                android:contentDescription="@string/service_gift_cards"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/serviceParkingButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_parking"
+                android:contentDescription="@string/service_parking"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+            <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+                android:id="@+id/servicePointOfIssuingOrdersButton"
+                android:layout_width="@dimen/shop_filter_service_button_size"
+                android:layout_height="@dimen/shop_filter_service_button_size"
+                android:src="@drawable/service_point_of_issuing_orders"
+                android:contentDescription="@string/service_point_of_issuing_orders"
+                style="@style/ShopFilterServiceButtonStyle" />
+
+        </android.support.v7.widget.GridLayout>
+
+    </LinearLayout>
+
+</ScrollView>

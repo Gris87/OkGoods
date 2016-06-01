@@ -68,16 +68,16 @@ public class ShopsAdapter extends BaseAdapter
     {
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View resView = inflater.inflate(R.layout.list_item_shops, parent, false);
+        View rootView = inflater.inflate(R.layout.list_item_shops, parent, false);
 
         ViewHolder holder = new ViewHolder();
 
-        holder.mNameTextView         = (TextView) resView.findViewById(R.id.nameTextView);
-        holder.mNearestShopImageView = (ImageView)resView.findViewById(R.id.nearestShopImageView);
+        holder.mNameTextView         = (TextView) rootView.findViewById(R.id.nameTextView);
+        holder.mNearestShopImageView = (ImageView)rootView.findViewById(R.id.nearestShopImageView);
 
-        resView.setTag(holder);
+        rootView.setTag(holder);
 
-        return resView;
+        return rootView;
     }
 
     private void bindView(int position, View view)

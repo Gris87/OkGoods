@@ -22,4 +22,8 @@
         <item name="android:background">@drawable/tool_button</item>
     </style>
 
+    <style name="ShopFilterServiceButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
 </resources>
