@@ -45,6 +45,7 @@ import ru.yandex.yandexmapkit.utils.GeoPoint;
 
 public class SelectShopActivity extends AppCompatActivity implements OnMyLocationListener, OnBalloonListener, AdapterView.OnItemClickListener, View.OnTouchListener, ShopDetailsFragment.OnFragmentInteractionListener, ShopFilterDialog.OnFragmentInteractionListener
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "SelectShopActivity";
 
 
@@ -60,7 +61,6 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-    private Toolbar               mToolbar             = null;
     private MapView               mMapView             = null;
     private Overlay               mShopsOverlay        = null;
     private Drawable              mOverlayDrawable     = null;
@@ -84,7 +84,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-        mToolbar             = (Toolbar)            findViewById(R.id.toolbar);
+        Toolbar toolbar      = (Toolbar)            findViewById(R.id.toolbar);
         mMapView             = (MapView)            findViewById(R.id.map);
         mDrawerLayout        = (DrawerLayout)       findViewById(R.id.drawer_layout);
         mShopsListView       = (ListView)           findViewById(R.id.shopsListView);
@@ -102,7 +102,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(toolbar);
 
 
 
@@ -127,7 +127,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
-                mToolbar,
+                toolbar,
                 R.string.show_list,
                 R.string.hide_list
         )
@@ -187,13 +187,15 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     {
         super.onRestoreInstanceState(savedInstanceState);
 
-        MapController mapController = mMapView.getMapController();
-
-
-
         GeoPoint mapCenter = savedInstanceState.getParcelable(SAVED_STATE_MAP_CENTER);
-        mapController.setPositionNoAnimationTo(mapCenter);
-        mapController.setZoomCurrent(savedInstanceState.getFloat(SAVED_STATE_MAP_ZOOM));
+
+        if (mapCenter != null)
+        {
+            MapController mapController = mMapView.getMapController();
+
+            mapController.setPositionNoAnimationTo(mapCenter);
+            mapController.setZoomCurrent(savedInstanceState.getFloat(SAVED_STATE_MAP_ZOOM));
+        }
 
         mSelectedShop = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_SHOP);
         updateShopDetails();
@@ -348,6 +350,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     @Override
     public boolean onTouch(View view, MotionEvent event)
     {
+        // noinspection RedundantIfStatement
         if (view == mShopDetailsView)
         {
             return true;
