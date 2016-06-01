@@ -14,6 +14,7 @@ import ru.okmarket.okgoods.R;
 
 public class ShopMapFragment extends Fragment implements View.OnClickListener
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "ShopMapFragment";
 
 

@@ -22,6 +22,7 @@ import ru.okmarket.okgoods.other.ShopInfo;
 
 public class ShopDetailsFragment extends Fragment implements View.OnClickListener
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "ShopDetailsFragment";
 
 

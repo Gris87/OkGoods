@@ -9,6 +9,7 @@ import ru.okmarket.okgoods.fragments.ShopMapFragment;
 
 public class PagerAdapter extends FragmentPagerAdapter
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "PagerAdapter";
 
 

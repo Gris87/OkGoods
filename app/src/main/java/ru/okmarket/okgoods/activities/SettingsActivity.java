@@ -33,6 +33,7 @@ import java.util.List;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "SettingsActivity";
 
 

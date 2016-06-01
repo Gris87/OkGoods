@@ -14,6 +14,7 @@ import ru.okmarket.okgoods.db.MainDatabase;
 
 public class SelectCityDialog extends DialogFragment
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "SelectCityDialog";
 
 

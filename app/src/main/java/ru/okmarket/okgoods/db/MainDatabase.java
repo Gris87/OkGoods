@@ -19,6 +19,7 @@ import ru.okmarket.okgoods.util.AppLog;
 
 public class MainDatabase extends SQLiteOpenHelper
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "MainDatabase";
 
 

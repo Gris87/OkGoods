@@ -16,6 +16,7 @@ import ru.okmarket.okgoods.other.ShopInfo;
 
 public class ShopsAdapter extends BaseAdapter
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "ShopsAdapter";
 
 

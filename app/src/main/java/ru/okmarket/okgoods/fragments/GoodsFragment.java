@@ -12,6 +12,7 @@ import ru.okmarket.okgoods.R;
 
 public class GoodsFragment extends Fragment
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "GoodsFragment";
 
 

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 public class ImageButtonWithTooltip extends ImageButton implements View.OnLongClickListener
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "ImageButtonWithTooltip";
 
 

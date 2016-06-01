@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class ShopInfo implements Parcelable
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "ShopInfo";
 
 

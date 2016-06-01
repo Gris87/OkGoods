@@ -25,9 +25,11 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.ShopsAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.dialogs.ShopFilterDialog;
 import ru.okmarket.okgoods.fragments.ShopDetailsFragment;
 import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.other.Preferences;
+import ru.okmarket.okgoods.other.ShopFilter;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.yandex.yandexmapkit.MapController;
 import ru.yandex.yandexmapkit.MapView;
@@ -41,7 +43,7 @@ import ru.yandex.yandexmapkit.overlay.location.MyLocationOverlay;
 import ru.yandex.yandexmapkit.overlay.location.OnMyLocationListener;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
-public class SelectShopActivity extends AppCompatActivity implements OnMyLocationListener, OnBalloonListener, AdapterView.OnItemClickListener, View.OnTouchListener, ShopDetailsFragment.OnFragmentInteractionListener
+public class SelectShopActivity extends AppCompatActivity implements OnMyLocationListener, OnBalloonListener, AdapterView.OnItemClickListener, View.OnTouchListener, ShopDetailsFragment.OnFragmentInteractionListener, ShopFilterDialog.OnFragmentInteractionListener
 {
     private static final String TAG = "SelectShopActivity";
 
@@ -51,10 +53,10 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-    private static final String SAVED_STATE_SELECTED_SHOP        = "SELECTED_SHOP";
-    private static final String SAVED_STATE_MOVED_TO_CURRENT_POS = "MOVED_TO_CURRENT_POS";
     private static final String SAVED_STATE_MAP_CENTER           = "MAP_CENTER";
     private static final String SAVED_STATE_MAP_ZOOM             = "MAP_ZOOM";
+    private static final String SAVED_STATE_SELECTED_SHOP        = "SELECTED_SHOP";
+    private static final String SAVED_STATE_MOVED_TO_CURRENT_POS = "MOVED_TO_CURRENT_POS";
 
 
 
@@ -172,8 +174,10 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     {
         super.onSaveInstanceState(outState);
 
+        MapController mapController = mMapView.getMapController();
 
-
+        outState.putParcelable(SAVED_STATE_MAP_CENTER,           mapController.getMapCenter());
+        outState.putFloat(     SAVED_STATE_MAP_ZOOM,             mapController.getZoomCurrent());
         outState.putParcelable(SAVED_STATE_SELECTED_SHOP,        mSelectedShop);
         outState.putBoolean(   SAVED_STATE_MOVED_TO_CURRENT_POS, mMovedToCurrentPos);
     }
@@ -182,6 +186,14 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
         super.onRestoreInstanceState(savedInstanceState);
+
+        MapController mapController = mMapView.getMapController();
+
+
+
+        GeoPoint mapCenter = savedInstanceState.getParcelable(SAVED_STATE_MAP_CENTER);
+        mapController.setPositionNoAnimationTo(mapCenter);
+        mapController.setZoomCurrent(savedInstanceState.getFloat(SAVED_STATE_MAP_ZOOM));
 
         mSelectedShop = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_SHOP);
         updateShopDetails();
@@ -235,7 +247,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         if (id == R.id.menu_filter)
         {
-            // TODO: Implement it
+            ShopFilterDialog dialog = new ShopFilterDialog();
+            dialog.show(getSupportFragmentManager(), "ShopFilterDialog");
 
             return true;
         }
@@ -357,6 +370,12 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         setResult(SHOP_SELECTED, intent);
 
         finish();
+    }
+
+    @Override
+    public void onShopFilterApplied(ShopFilter filter)
+    {
+        // TODO: Implement it
     }
 
     private void updateMapPoints()

@@ -23,6 +23,7 @@ import ru.okmarket.okgoods.other.Preferences;
 
 public class MainActivity extends AppCompatActivity implements GoodsFragment.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener, SelectCityDialog.OnFragmentInteractionListener
 {
+    @SuppressWarnings("unused")
     private static final String TAG = "MainActivity";
 
 
