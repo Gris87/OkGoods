@@ -32,7 +32,7 @@ public class ShopFilter implements Parcelable
         return String.format(Locale.US, "{isHypermarket = %d, isSupermarket = %d, isAllDay = %d, servicesSet = %d}"
                                         , mIsHypermarket ? 1 : 0
                                         , mIsSupermarket ? 1 : 0
-                                        , mIsAllDay ? 1 : 0
+                                        , mIsAllDay      ? 1 : 0
                                         , mServicesSet
         );
     }
@@ -81,11 +81,7 @@ public class ShopFilter implements Parcelable
     {
         if (mIsHypermarket)
         {
-            if (mIsSupermarket)
-            {
-                // Nothing
-            }
-            else
+            if (!mIsSupermarket)
             {
                 if (!shop.isHypermarket())
                 {
@@ -102,23 +98,12 @@ public class ShopFilter implements Parcelable
                     return false;
                 }
             }
-            else
-            {
-                // Nothing
-            }
         }
 
-        if (mIsAllDay && !shop.getWorkHours().equals("0:00 - 24:00"))
-        {
-            return false;
-        }
+        return (!mIsAllDay        || shop.getWorkHours().equals("0:00 - 24:00"))
+               &&
+               (mServicesSet == 0 || (shop.getServicesSet() & mServicesSet) == mServicesSet);
 
-        if (mServicesSet != 0 && (shop.getServicesSet() & mServicesSet) != mServicesSet)
-        {
-            return false;
-        }
-
-        return true;
     }
 
     @Override

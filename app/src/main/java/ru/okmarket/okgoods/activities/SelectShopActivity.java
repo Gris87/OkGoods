@@ -31,6 +31,7 @@ import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.other.Preferences;
 import ru.okmarket.okgoods.other.ShopFilter;
 import ru.okmarket.okgoods.other.ShopInfo;
+import ru.okmarket.okgoods.util.AppLog;
 import ru.yandex.yandexmapkit.MapController;
 import ru.yandex.yandexmapkit.MapView;
 import ru.yandex.yandexmapkit.OverlayManager;
@@ -56,6 +57,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
     private static final String SAVED_STATE_MAP_CENTER           = "MAP_CENTER";
     private static final String SAVED_STATE_MAP_ZOOM             = "MAP_ZOOM";
+    private static final String SAVED_STATE_SHOP_FILTER          = "SHOP_FILTER";
     private static final String SAVED_STATE_SELECTED_SHOP        = "SELECTED_SHOP";
     private static final String SAVED_STATE_MOVED_TO_CURRENT_POS = "MOVED_TO_CURRENT_POS";
 
@@ -70,6 +72,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     private ShopsAdapter          mShopsAdapter        = null;
     private FrameLayout           mShopDetailsView     = null;
     private ShopDetailsFragment   mShopDetailsFragment = null;
+    private ShopFilter            mShopFilter          = null;
     private ShopInfo              mSelectedShop        = null;
     private boolean               mMovedToCurrentPos   = false;
 
@@ -158,6 +161,10 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
+        mShopFilter = new ShopFilter();
+
+
+
         updateMapPoints();
     }
 
@@ -178,6 +185,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         outState.putParcelable(SAVED_STATE_MAP_CENTER,           mapController.getMapCenter());
         outState.putFloat(     SAVED_STATE_MAP_ZOOM,             mapController.getZoomCurrent());
+        outState.putParcelable(SAVED_STATE_SHOP_FILTER,          mShopFilter);
         outState.putParcelable(SAVED_STATE_SELECTED_SHOP,        mSelectedShop);
         outState.putBoolean(   SAVED_STATE_MOVED_TO_CURRENT_POS, mMovedToCurrentPos);
     }
@@ -196,6 +204,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
             mapController.setPositionNoAnimationTo(mapCenter);
             mapController.setZoomCurrent(savedInstanceState.getFloat(SAVED_STATE_MAP_ZOOM));
         }
+
+        mShopFilter = savedInstanceState.getParcelable(SAVED_STATE_SHOP_FILTER);
 
         mSelectedShop = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_SHOP);
         updateShopDetails();
@@ -249,7 +259,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         if (id == R.id.menu_filter)
         {
-            ShopFilterDialog dialog = new ShopFilterDialog();
+            ShopFilterDialog dialog = ShopFilterDialog.newInstance(mShopFilter);
             dialog.show(getSupportFragmentManager(), "ShopFilterDialog");
 
             return true;
@@ -350,10 +360,13 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     @Override
     public boolean onTouch(View view, MotionEvent event)
     {
-        // noinspection RedundantIfStatement
         if (view == mShopDetailsView)
         {
             return true;
+        }
+        else
+        {
+            AppLog.wtf(TAG, "Unknown view");
         }
 
         return false;
@@ -378,7 +391,9 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     @Override
     public void onShopFilterApplied(ShopFilter filter)
     {
-        // TODO: Implement it
+        mShopFilter = filter;
+        mShopsAdapter.filter(mShopFilter);
+        updateMapPoints();
     }
 
     private void updateMapPoints()
