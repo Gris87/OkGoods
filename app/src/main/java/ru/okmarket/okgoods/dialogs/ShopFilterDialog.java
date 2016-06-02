@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
@@ -60,7 +62,28 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         args.putParcelable(ARG_SHOP_FILTER, filter);
         fragment.setArguments(args);
 
+        AppLog.e(TAG, "newInstance");
+
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        mShopFilter = getArguments().getParcelable(ARG_SHOP_FILTER);
+
+        AppLog.e(TAG, "onCreate");
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        AppLog.e(TAG, "onCreateView");
+
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -68,6 +91,8 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
     @SuppressLint("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
+        AppLog.e(TAG, "onCreateDialog");
+
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View rootView = inflater.inflate(R.layout.dialog_shop_filter, null, false);
@@ -89,8 +114,6 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         mServiceGiftCardsButton            = (ImageButtonWithTooltip)rootView.findViewById(R.id.serviceGiftCardsButton);
         mServiceParkingButton              = (ImageButtonWithTooltip)rootView.findViewById(R.id.serviceParkingButton);
         mServicePointOfIssuingOrdersButton = (ImageButtonWithTooltip)rootView.findViewById(R.id.servicePointOfIssuingOrdersButton);
-
-        mShopFilter = getArguments().getParcelable(ARG_SHOP_FILTER);
 
 
 

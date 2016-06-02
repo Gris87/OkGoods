@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -56,36 +57,25 @@ public class ImageButtonWithTooltip extends ImageButton implements View.OnLongCl
     @Override
     public boolean onLongClick(View view)
     {
-        int[] screenPos    = new int[2];
-        Rect  displayFrame = new Rect();
+        Context context = getContext();
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+
+        int[] screenPos = new int[2];
 
         getLocationOnScreen(screenPos);
-        getWindowVisibleDisplayFrame(displayFrame);
 
-        Context context = getContext();
-
-        int width   = getWidth();
-        int height  = getHeight();
-        int centerY = screenPos[1] + height / 2;
-        int centerX = screenPos[0] + width  / 2;
+        int centerX =                               screenPos[0] + getWidth()  / 2;
+        int centerY = displayMetrics.heightPixels - screenPos[1] + getHeight() / 2;
 
         if (ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_LTR)
         {
-            final int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            final int screenWidth = displayMetrics.widthPixels;
             centerX = screenWidth - centerX;
         }
 
         Toast toast = Toast.makeText(context, getContentDescription(), Toast.LENGTH_SHORT);
 
-        if (centerY < displayFrame.height())
-        {
-            toast.setGravity(Gravity.TOP | GravityCompat.END, centerX, height);
-        }
-        else
-        {
-            toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, height);
-        }
-
+        toast.setGravity(Gravity.BOTTOM | Gravity.START, centerX, centerY);
         toast.show();
 
 
