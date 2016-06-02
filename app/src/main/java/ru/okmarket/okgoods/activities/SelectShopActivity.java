@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +31,7 @@ import ru.okmarket.okgoods.other.Preferences;
 import ru.okmarket.okgoods.other.ShopFilter;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
+import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 import ru.yandex.yandexmapkit.MapController;
 import ru.yandex.yandexmapkit.MapView;
 import ru.yandex.yandexmapkit.OverlayManager;
@@ -64,20 +64,20 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-    private MapView               mMapView                    = null;
-    private Overlay               mShopsOverlay               = null;
-    private Drawable              mSupermarketOverlayDrawable = null;
-    private Drawable              mHypermarketOverlayDrawable = null;
-    private DrawerLayout          mDrawerLayout               = null;
-    private ActionBarDrawerToggle mDrawerToggle               = null;
-    private ListView              mShopsListView              = null;
-    private ShopsAdapter          mShopsAdapter               = null;
-    private FrameLayout           mShopDetailsView            = null;
-    private ShopDetailsFragment   mShopDetailsFragment        = null;
-    private ShopFilter            mShopFilter                 = null;
-    private ShopInfo              mSelectedShop               = null;
-    private double                mLastKnownPositionLatitude  = 0;
-    private double                mLastKnownPositionLongitude = 0;
+    private MapView                  mMapView                    = null;
+    private Overlay                  mShopsOverlay               = null;
+    private Drawable                 mSupermarketOverlayDrawable = null;
+    private Drawable                 mHypermarketOverlayDrawable = null;
+    private NoScrollableDrawerLayout mDrawerLayout               = null;
+    private ActionBarDrawerToggle    mDrawerToggle               = null;
+    private ListView                 mShopsListView              = null;
+    private ShopsAdapter             mShopsAdapter               = null;
+    private FrameLayout              mShopDetailsView            = null;
+    private ShopDetailsFragment      mShopDetailsFragment        = null;
+    private ShopFilter               mShopFilter                 = null;
+    private ShopInfo                 mSelectedShop               = null;
+    private double                   mLastKnownPositionLatitude  = 0;
+    private double                   mLastKnownPositionLongitude = 0;
 
 
 
@@ -90,12 +90,12 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-        Toolbar toolbar      = (Toolbar)            findViewById(R.id.toolbar);
-        mMapView             = (MapView)            findViewById(R.id.map);
-        mDrawerLayout        = (DrawerLayout)       findViewById(R.id.drawer_layout);
-        mShopsListView       = (ListView)           findViewById(R.id.shopsListView);
-        mShopDetailsView     = (FrameLayout)        findViewById(R.id.shopDetailsView);
-        mShopDetailsFragment = (ShopDetailsFragment)getSupportFragmentManager().findFragmentById(R.id.shopDetailsFragment);
+        Toolbar toolbar      = (Toolbar)                 findViewById(R.id.toolbar);
+        mMapView             = (MapView)                 findViewById(R.id.map);
+        mDrawerLayout        = (NoScrollableDrawerLayout)findViewById(R.id.drawer_layout);
+        mShopsListView       = (ListView)                findViewById(R.id.shopsListView);
+        mShopDetailsView     = (FrameLayout)             findViewById(R.id.shopDetailsView);
+        mShopDetailsFragment = (ShopDetailsFragment)     getSupportFragmentManager().findFragmentById(R.id.shopDetailsFragment);
 
 
 
@@ -392,6 +392,18 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         }
 
         return false;
+    }
+
+    @Override
+    public void onShopDetailsDisableScroll()
+    {
+        mDrawerLayout.disableScroll();
+    }
+
+    @Override
+    public void onShopDetailsEnableScroll()
+    {
+        mDrawerLayout.enableScroll();
     }
 
     @Override

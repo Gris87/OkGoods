@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,8 +20,9 @@ import java.util.Locale;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.other.ShopInfo;
+import ru.okmarket.okgoods.util.AppLog;
 
-public class ShopDetailsFragment extends Fragment implements View.OnClickListener
+public class ShopDetailsFragment extends Fragment implements View.OnTouchListener, View.OnClickListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "ShopDetailsFragment";
@@ -35,6 +37,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnClickListene
     private TextView                      mOpeningDateTextView                  = null;
     private TextView                      mParkingPlacesTextView                = null;
     private TextView                      mNumberOfCashboxesTextView            = null;
+    private View                          mServicesScrollView                   = null;
     private ImageView                     mServiceClearingSettlementImageView   = null;
     private ImageView                     mServiceCosmeticsImageView            = null;
     private ImageView                     mServicePlaygroundImageView           = null;
@@ -49,6 +52,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnClickListene
     private ImageView                     mServiceGiftCardsImageView            = null;
     private ImageView                     mServiceParkingImageView              = null;
     private ImageView                     mServicePointOfIssuingOrdersImageView = null;
+    private View                          mPhotosScrollView                     = null;
     private LinearLayout                  mPhotosLinearLayout                   = null;
     private Button                        mCancelButton                         = null;
     private Button                        mOkButton                             = null;
@@ -72,6 +76,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnClickListene
         mOpeningDateTextView                  = (TextView)    rootView.findViewById(R.id.openingDateTextView);
         mParkingPlacesTextView                = (TextView)    rootView.findViewById(R.id.parkingPlacesTextView);
         mNumberOfCashboxesTextView            = (TextView)    rootView.findViewById(R.id.numberOfCashboxesTextView);
+        mServicesScrollView                   =               rootView.findViewById(R.id.servicesScrollView);
         mServiceClearingSettlementImageView   = (ImageView)   rootView.findViewById(R.id.serviceClearingSettlementImageView);
         mServiceCosmeticsImageView            = (ImageView)   rootView.findViewById(R.id.serviceCosmeticsImageView);
         mServicePlaygroundImageView           = (ImageView)   rootView.findViewById(R.id.servicePlaygroundImageView);
@@ -86,14 +91,45 @@ public class ShopDetailsFragment extends Fragment implements View.OnClickListene
         mServiceGiftCardsImageView            = (ImageView)   rootView.findViewById(R.id.serviceGiftCardsImageView);
         mServiceParkingImageView              = (ImageView)   rootView.findViewById(R.id.serviceParkingImageView);
         mServicePointOfIssuingOrdersImageView = (ImageView)   rootView.findViewById(R.id.servicePointOfIssuingOrdersImageView);
+        mPhotosScrollView                     =               rootView.findViewById(R.id.photosScrollView);
         mPhotosLinearLayout                   = (LinearLayout)rootView.findViewById(R.id.photosLinearLayout);
         mCancelButton                         = (Button)      rootView.findViewById(R.id.cancelButton);
         mOkButton                             = (Button)      rootView.findViewById(R.id.okButton);
+
+        mServicesScrollView.setOnTouchListener(this);
+        mPhotosScrollView.setOnTouchListener(this);
 
         mCancelButton.setOnClickListener(this);
         mOkButton.setOnClickListener(this);
 
         return rootView;
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent event)
+    {
+        if (
+            view == mServicesScrollView
+            ||
+            view == mPhotosScrollView
+           )
+        {
+            if (event.getAction() == MotionEvent.ACTION_DOWN)
+            {
+                onDisableScroll();
+            }
+            else
+            if (event.getAction() == MotionEvent.ACTION_UP)
+            {
+                onEnableScroll();
+            }
+        }
+        else
+        {
+            AppLog.wtf(TAG, "Unknown view");
+        }
+
+        return false;
     }
 
     @Override
@@ -107,6 +143,26 @@ public class ShopDetailsFragment extends Fragment implements View.OnClickListene
         if (view == mOkButton)
         {
             onOkClicked();
+        }
+        else
+        {
+            AppLog.wtf(TAG, "Unknown view");
+        }
+    }
+
+    public void onDisableScroll()
+    {
+        if (mListener != null)
+        {
+            mListener.onShopDetailsDisableScroll();
+        }
+    }
+
+    public void onEnableScroll()
+    {
+        if (mListener != null)
+        {
+            mListener.onShopDetailsEnableScroll();
         }
     }
 
@@ -315,6 +371,8 @@ public class ShopDetailsFragment extends Fragment implements View.OnClickListene
 
     public interface OnFragmentInteractionListener
     {
+        void onShopDetailsDisableScroll();
+        void onShopDetailsEnableScroll();
         void onShopDetailsCancelClicked();
         void onShopDetailsOkClicked();
     }
