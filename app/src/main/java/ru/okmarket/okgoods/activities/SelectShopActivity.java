@@ -367,7 +367,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
             MapController mapController = mMapView.getMapController();
 
-            mapController.setPositionAnimationTo(new GeoPoint(mSelectedShop.getLatitude(), mSelectedShop.getLongitude()));
+            mapController.setPositionNoAnimationTo(new GeoPoint(mSelectedShop.getLatitude(), mSelectedShop.getLongitude()));
             mapController.setZoomCurrent(15);
 
             mDrawerLayout.closeDrawer(mShopsListView);

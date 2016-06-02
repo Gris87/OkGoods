@@ -12,7 +12,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp">
 
             <CheckBox
                 android:id="@+id/supermarketCheckBox"
@@ -34,11 +36,15 @@
             android:id="@+id/allDayCheckBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:text="@string/all_day" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
             android:text="@string/services" />
