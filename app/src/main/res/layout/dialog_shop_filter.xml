@@ -9,17 +9,26 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/supermarketCheckBox"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/supermarket" />
+            android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/hypermarketCheckBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/hypermarket" />
+            <CheckBox
+                android:id="@+id/supermarketCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/supermarket" />
+
+            <CheckBox
+                android:id="@+id/hypermarketCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/hypermarket" />
+
+        </LinearLayout>
 
         <CheckBox
             android:id="@+id/allDayCheckBox"
@@ -36,7 +45,7 @@
 
         <android.support.v7.widget.GridLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             grid:alignmentMode="alignBounds"
             grid:orientation="vertical"
             grid:rowCount="3"

@@ -55,26 +55,29 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-    private static final String SAVED_STATE_MAP_CENTER           = "MAP_CENTER";
-    private static final String SAVED_STATE_MAP_ZOOM             = "MAP_ZOOM";
-    private static final String SAVED_STATE_SHOP_FILTER          = "SHOP_FILTER";
-    private static final String SAVED_STATE_SELECTED_SHOP        = "SELECTED_SHOP";
-    private static final String SAVED_STATE_MOVED_TO_CURRENT_POS = "MOVED_TO_CURRENT_POS";
+    private static final String SAVED_STATE_MAP_CENTER                    = "MAP_CENTER";
+    private static final String SAVED_STATE_MAP_ZOOM                      = "MAP_ZOOM";
+    private static final String SAVED_STATE_SHOP_FILTER                   = "SHOP_FILTER";
+    private static final String SAVED_STATE_SELECTED_SHOP                 = "SELECTED_SHOP";
+    private static final String SAVED_STATE_LAST_KNOWN_POSITION_LATITUDE  = "LAST_KNOWN_POSITION_LATITUDE";
+    private static final String SAVED_STATE_LAST_KNOWN_POSITION_LONGITUDE = "LAST_KNOWN_POSITION_LONGITUDE";
 
 
 
-    private MapView               mMapView             = null;
-    private Overlay               mShopsOverlay        = null;
-    private Drawable              mOverlayDrawable     = null;
-    private DrawerLayout          mDrawerLayout        = null;
-    private ActionBarDrawerToggle mDrawerToggle        = null;
-    private ListView              mShopsListView       = null;
-    private ShopsAdapter          mShopsAdapter        = null;
-    private FrameLayout           mShopDetailsView     = null;
-    private ShopDetailsFragment   mShopDetailsFragment = null;
-    private ShopFilter            mShopFilter          = null;
-    private ShopInfo              mSelectedShop        = null;
-    private boolean               mMovedToCurrentPos   = false;
+    private MapView               mMapView                    = null;
+    private Overlay               mShopsOverlay               = null;
+    private Drawable              mSupermarketOverlayDrawable = null;
+    private Drawable              mHypermarketOverlayDrawable = null;
+    private DrawerLayout          mDrawerLayout               = null;
+    private ActionBarDrawerToggle mDrawerToggle               = null;
+    private ListView              mShopsListView              = null;
+    private ShopsAdapter          mShopsAdapter               = null;
+    private FrameLayout           mShopDetailsView            = null;
+    private ShopDetailsFragment   mShopDetailsFragment        = null;
+    private ShopFilter            mShopFilter                 = null;
+    private ShopInfo              mSelectedShop               = null;
+    private double                mLastKnownPositionLatitude  = 0;
+    private double                mLastKnownPositionLongitude = 0;
 
 
 
@@ -115,7 +118,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         mMapView.showBuiltInScreenButtons(true);
         mShopsOverlay = new Overlay(mapController);
-        mOverlayDrawable = getResources().getDrawable(R.drawable.ok_overlay);
+        mSupermarketOverlayDrawable = getResources().getDrawable(R.drawable.supermarket_overlay);
+        mHypermarketOverlayDrawable = getResources().getDrawable(R.drawable.hypermarket_overlay);
 
         overlayManager.addOverlay(mShopsOverlay);
         myLocationOverlay.setAutoScroll(false);
@@ -183,11 +187,12 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         MapController mapController = mMapView.getMapController();
 
-        outState.putParcelable(SAVED_STATE_MAP_CENTER,           mapController.getMapCenter());
-        outState.putFloat(     SAVED_STATE_MAP_ZOOM,             mapController.getZoomCurrent());
-        outState.putParcelable(SAVED_STATE_SHOP_FILTER,          mShopFilter);
-        outState.putParcelable(SAVED_STATE_SELECTED_SHOP,        mSelectedShop);
-        outState.putBoolean(   SAVED_STATE_MOVED_TO_CURRENT_POS, mMovedToCurrentPos);
+        outState.putParcelable(SAVED_STATE_MAP_CENTER,                    mapController.getMapCenter());
+        outState.putFloat(     SAVED_STATE_MAP_ZOOM,                      mapController.getZoomCurrent());
+        outState.putParcelable(SAVED_STATE_SHOP_FILTER,                   mShopFilter);
+        outState.putParcelable(SAVED_STATE_SELECTED_SHOP,                 mSelectedShop);
+        outState.putDouble(    SAVED_STATE_LAST_KNOWN_POSITION_LATITUDE,  mLastKnownPositionLatitude);
+        outState.putDouble(    SAVED_STATE_LAST_KNOWN_POSITION_LONGITUDE, mLastKnownPositionLongitude);
     }
 
     @Override
@@ -206,11 +211,20 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         }
 
         mShopFilter = savedInstanceState.getParcelable(SAVED_STATE_SHOP_FILTER);
+        mShopsAdapter.filter(mShopFilter);
+
+        updateMapPoints();
 
         mSelectedShop = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_SHOP);
         updateShopDetails();
 
-        mMovedToCurrentPos = savedInstanceState.getBoolean(SAVED_STATE_MOVED_TO_CURRENT_POS);
+        mLastKnownPositionLatitude  = savedInstanceState.getDouble(SAVED_STATE_LAST_KNOWN_POSITION_LATITUDE);
+        mLastKnownPositionLongitude = savedInstanceState.getDouble(SAVED_STATE_LAST_KNOWN_POSITION_LONGITUDE);
+
+        if (mLastKnownPositionLatitude != 0 && mLastKnownPositionLongitude != 0)
+        {
+            mShopsAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
+        }
     }
 
     @Override
@@ -295,14 +309,15 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     {
         GeoPoint geoPoint = myLocationItem.getGeoPoint();
 
-        if (!mMovedToCurrentPos)
+        if (mLastKnownPositionLatitude == 0 && mLastKnownPositionLongitude == 0)
         {
-            mMovedToCurrentPos = true;
-
             mMapView.getMapController().setPositionNoAnimationTo(geoPoint);
         }
 
-        mShopsAdapter.findNearestShop(geoPoint.getLat(), geoPoint.getLon());
+        mLastKnownPositionLatitude  = geoPoint.getLat();
+        mLastKnownPositionLongitude = geoPoint.getLon();
+
+        mShopsAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
     }
 
     @Override
@@ -350,10 +365,17 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
             mSelectedShop = (ShopInfo)mShopsAdapter.getItem(position);
             updateShopDetails();
 
-            mMapView.getMapController().setPositionAnimationTo(new GeoPoint(mSelectedShop.getLatitude(), mSelectedShop.getLongitude()));
+            MapController mapController = mMapView.getMapController();
+
+            mapController.setPositionAnimationTo(new GeoPoint(mSelectedShop.getLatitude(), mSelectedShop.getLongitude()));
+            mapController.setZoomCurrent(15);
 
             mDrawerLayout.closeDrawer(mShopsListView);
             mDrawerLayout.openDrawer(mShopDetailsView);
+        }
+        else
+        {
+            AppLog.wtf(TAG, "Unknown view");
         }
     }
 
@@ -382,7 +404,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     public void onShopDetailsOkClicked()
     {
         Intent intent = new Intent();
-        intent.putExtra(Extras.SHOP_ID, mSelectedShop.getId());
+        intent.putExtra(Extras.SHOP, mSelectedShop);
         setResult(SHOP_SELECTED, intent);
 
         finish();
@@ -393,7 +415,13 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     {
         mShopFilter = filter;
         mShopsAdapter.filter(mShopFilter);
+
         updateMapPoints();
+
+        if (mLastKnownPositionLatitude != 0 && mLastKnownPositionLongitude != 0)
+        {
+            mShopsAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
+        }
     }
 
     private void updateMapPoints()
@@ -407,7 +435,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
             if (shop.getLatitude() != 0 || shop.getLongitude() != 0)
             {
                 GeoPoint geoPoint = new GeoPoint(shop.getLatitude(), shop.getLongitude());
-                OverlayItem overlayItem = new OverlayItem(geoPoint, mOverlayDrawable);
+                OverlayItem overlayItem = new OverlayItem(geoPoint, shop.isHypermarket() ? mHypermarketOverlayDrawable : mSupermarketOverlayDrawable);
                 BalloonItem balloonItem = new BalloonItem(this, geoPoint);
                 balloonItem.setText(String.valueOf(i));
                 balloonItem.setOnBalloonListener(this);
@@ -416,6 +444,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
                 mShopsOverlay.addOverlayItem(overlayItem);
             }
         }
+
+        mMapView.getMapController().notifyRepaint();
 
         mSelectedShop = null;
         updateShopDetails();
