@@ -59,10 +59,8 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         ShopFilterDialog fragment = new ShopFilterDialog();
 
         Bundle args = new Bundle();
-        args.putParcelable(ARG_SHOP_FILTER, filter);
+        args.putParcelable(ARG_SHOP_FILTER, new ShopFilter(filter));
         fragment.setArguments(args);
-
-        AppLog.e(TAG, "newInstance");
 
         return fragment;
     }
@@ -73,17 +71,6 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         super.onCreate(savedInstanceState);
 
         mShopFilter = getArguments().getParcelable(ARG_SHOP_FILTER);
-
-        AppLog.e(TAG, "onCreate");
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
-        AppLog.e(TAG, "onCreateView");
-
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -91,8 +78,6 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
     @SuppressLint("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        AppLog.e(TAG, "onCreateDialog");
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View rootView = inflater.inflate(R.layout.dialog_shop_filter, null, false);

@@ -26,6 +26,14 @@ public class ShopFilter implements Parcelable
         mServicesSet   = 0;
     }
 
+    public ShopFilter(ShopFilter another)
+    {
+        mIsHypermarket = another.mIsHypermarket;
+        mIsSupermarket = another.mIsSupermarket;
+        mIsAllDay      = another.mIsAllDay;
+        mServicesSet   = another.mServicesSet;
+    }
+
     @Override
     public String toString()
     {
