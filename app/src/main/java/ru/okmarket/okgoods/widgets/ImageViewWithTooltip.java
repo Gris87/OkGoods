@@ -7,13 +7,13 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-public class ImageButtonWithTooltip extends ImageButton implements View.OnLongClickListener
+public class ImageViewWithTooltip extends ImageView implements View.OnLongClickListener
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "ImageButtonWithTooltip";
+    private static final String TAG = "ImageViewWithTooltip";
 
 
 
@@ -21,21 +21,21 @@ public class ImageButtonWithTooltip extends ImageButton implements View.OnLongCl
 
 
 
-    public ImageButtonWithTooltip(Context context)
+    public ImageViewWithTooltip(Context context)
     {
         super(context);
 
         init();
     }
 
-    public ImageButtonWithTooltip(Context context, AttributeSet attrs)
+    public ImageViewWithTooltip(Context context, AttributeSet attrs)
     {
         super(context, attrs);
 
         init();
     }
 
-    public ImageButtonWithTooltip(Context context, AttributeSet attrs, int defStyleAttr)
+    public ImageViewWithTooltip(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
 

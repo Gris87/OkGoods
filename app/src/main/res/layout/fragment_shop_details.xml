@@ -166,98 +166,98 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceClearingSettlementImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_clearing_settlement"
                     android:src="@drawable/service_clearing_settlement" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceCosmeticsImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_cosmetics"
                     android:src="@drawable/service_cosmetics" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/servicePlaygroundImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_playground"
                     android:src="@drawable/service_playground" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceFishIslandImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_fish_island"
                     android:src="@drawable/service_fish_island" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceBakeryImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_bakery"
                     android:src="@drawable/service_bakery" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceCookeryImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_cookery"
                     android:src="@drawable/service_cookery" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceTaxiOrderingImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_taxi_ordering"
                     android:src="@drawable/service_taxi_ordering" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/servicePharmacyImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_pharmacy"
                     android:src="@drawable/service_pharmacy" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceOrderingFoodImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_ordering_food"
                     android:src="@drawable/service_ordering_food" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceDegustationImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_degustation"
                     android:src="@drawable/service_degustation" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceCafeImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_cafe"
                     android:src="@drawable/service_cafe" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceGiftCardsImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_gift_cards"
                     android:src="@drawable/service_gift_cards" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceParkingImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/service_parking"
                     android:src="@drawable/service_parking" />
 
-                <ImageView
+                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/servicePointOfIssuingOrdersImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
