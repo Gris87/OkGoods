@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
@@ -276,15 +275,16 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         updateServiceFilterButton(mServicePointOfIssuingOrdersButton, MainDatabase.SERVICE_POINT_OF_ISSUING_ORDERS_MASK, R.drawable.service_point_of_issuing_orders, R.drawable.service_point_of_issuing_orders_disabled);
     }
 
-    @SuppressWarnings("deprecation")
     private void updateServiceFilterButton(ImageButtonWithTooltip button, int mask, int activeDrawable, int disabledDrawable)
     {
         if ((mShopFilter.getServicesSet() & mask) != 0)
         {
+            // noinspection deprecation
             button.setImageDrawable(getActivity().getResources().getDrawable(activeDrawable));
         }
         else
         {
+            // noinspection deprecation
             button.setImageDrawable(getActivity().getResources().getDrawable(disabledDrawable));
         }
     }

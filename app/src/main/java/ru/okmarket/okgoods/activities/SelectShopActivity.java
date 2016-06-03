@@ -82,7 +82,6 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
     @Override
-    @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -118,7 +117,10 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         mMapView.showBuiltInScreenButtons(true);
         mShopsOverlay = new Overlay(mapController);
+
+        // noinspection deprecation
         mSupermarketOverlayDrawable = getResources().getDrawable(R.drawable.supermarket_overlay);
+        // noinspection deprecation
         mHypermarketOverlayDrawable = getResources().getDrawable(R.drawable.hypermarket_overlay);
 
         overlayManager.addOverlay(mShopsOverlay);

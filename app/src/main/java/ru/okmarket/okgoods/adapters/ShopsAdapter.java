@@ -30,6 +30,7 @@ public class ShopsAdapter extends BaseAdapter
 
     private static class ViewHolder
     {
+        View      mView;
         TextView  mNameTextView;
         ImageView mNearestShopImageView;
     }
@@ -96,6 +97,9 @@ public class ShopsAdapter extends BaseAdapter
         {
             holder.mNearestShopImageView.setVisibility(View.GONE);
         }
+
+        // noinspection deprecation
+        holder.mView.setBackgroundColor(mContext.getResources().getColor(R.color.selectedShop));
     }
 
     @Override
