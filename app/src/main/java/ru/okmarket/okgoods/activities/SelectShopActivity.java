@@ -20,6 +20,8 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.ShopsAdapter;
@@ -64,20 +66,23 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-    private MapView                  mMapView                    = null;
-    private Overlay                  mShopsOverlay               = null;
-    private Drawable                 mSupermarketOverlayDrawable = null;
-    private Drawable                 mHypermarketOverlayDrawable = null;
-    private NoScrollableDrawerLayout mDrawerLayout               = null;
-    private ActionBarDrawerToggle    mDrawerToggle               = null;
-    private ListView                 mShopsListView              = null;
-    private ShopsAdapter             mShopsAdapter               = null;
-    private FrameLayout              mShopDetailsView            = null;
-    private ShopDetailsFragment      mShopDetailsFragment        = null;
-    private ShopFilter               mShopFilter                 = null;
-    private ShopInfo                 mSelectedShop               = null;
-    private double                   mLastKnownPositionLatitude  = 0;
-    private double                   mLastKnownPositionLongitude = 0;
+    private MapView                   mMapView                     = null;
+    private Overlay                   mShopsOverlay                = null;
+    private Map<Integer, OverlayItem> mShopsOverlayItems           = null;
+    private Drawable                  mSupermarketDrawable         = null;
+    private Drawable                  mHypermarketDrawable         = null;
+    private Drawable                  mSupermarketSelectedDrawable = null;
+    private Drawable                  mHypermarketSelectedDrawable = null;
+    private NoScrollableDrawerLayout  mDrawerLayout                = null;
+    private ActionBarDrawerToggle     mDrawerToggle                = null;
+    private ListView                  mShopsListView               = null;
+    private ShopsAdapter              mShopsAdapter                = null;
+    private FrameLayout               mShopDetailsView             = null;
+    private ShopDetailsFragment       mShopDetailsFragment         = null;
+    private ShopFilter                mShopFilter                  = null;
+    private ShopInfo                  mSelectedShop                = null;
+    private double                    mLastKnownPositionLatitude   = 0;
+    private double                    mLastKnownPositionLongitude  = 0;
 
 
 
@@ -117,11 +122,16 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         mMapView.showBuiltInScreenButtons(true);
         mShopsOverlay = new Overlay(mapController);
+        mShopsOverlayItems = new HashMap<>();
 
         // noinspection deprecation
-        mSupermarketOverlayDrawable = getResources().getDrawable(R.drawable.supermarket_overlay);
+        mSupermarketDrawable         = getResources().getDrawable(R.drawable.supermarket_overlay);
         // noinspection deprecation
-        mHypermarketOverlayDrawable = getResources().getDrawable(R.drawable.hypermarket_overlay);
+        mHypermarketDrawable         = getResources().getDrawable(R.drawable.hypermarket_overlay);
+        // noinspection deprecation
+        mSupermarketSelectedDrawable = getResources().getDrawable(R.drawable.supermarket_overlay_selected);
+        // noinspection deprecation
+        mHypermarketSelectedDrawable = getResources().getDrawable(R.drawable.hypermarket_overlay_selected);
 
         overlayManager.addOverlay(mShopsOverlay);
         myLocationOverlay.setAutoScroll(false);
@@ -438,6 +448,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     private void updateMapPoints()
     {
         mShopsOverlay.clearOverlayItems();
+        mShopsOverlayItems.clear();
 
         for (int i = 0; i < mShopsAdapter.getCount(); ++i)
         {
@@ -446,13 +457,14 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
             if (shop.getLatitude() != 0 || shop.getLongitude() != 0)
             {
                 GeoPoint geoPoint = new GeoPoint(shop.getLatitude(), shop.getLongitude());
-                OverlayItem overlayItem = new OverlayItem(geoPoint, shop.isHypermarket() ? mHypermarketOverlayDrawable : mSupermarketOverlayDrawable);
+                OverlayItem overlayItem = new OverlayItem(geoPoint, shop.isHypermarket() ? mHypermarketDrawable : mSupermarketDrawable);
                 BalloonItem balloonItem = new BalloonItem(this, geoPoint);
                 balloonItem.setText(String.valueOf(i));
                 balloonItem.setOnBalloonListener(this);
                 overlayItem.setBalloonItem(balloonItem);
 
                 mShopsOverlay.addOverlayItem(overlayItem);
+                mShopsOverlayItems.put(shop.getId(), overlayItem);
             }
         }
 
@@ -484,10 +496,30 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     {
         if (mSelectedShop != shop)
         {
-            mSelectedShop = shop;
-            updateShopDetails();
+            if (mSelectedShop != null)
+            {
+                OverlayItem overlayItem = mShopsOverlayItems.get(mSelectedShop.getId());
 
+                if (overlayItem != null)
+                {
+                    overlayItem.setDrawable(mSelectedShop.isHypermarket() ? mHypermarketDrawable : mSupermarketDrawable);
+                }
+            }
+
+            mSelectedShop = shop;
             mShopsAdapter.setSelectedShop(mSelectedShop);
+
+            if (mSelectedShop != null)
+            {
+                OverlayItem overlayItem = mShopsOverlayItems.get(mSelectedShop.getId());
+
+                if (overlayItem != null)
+                {
+                    overlayItem.setDrawable(mSelectedShop.isHypermarket() ? mHypermarketSelectedDrawable : mSupermarketSelectedDrawable);
+                }
+            }
+
+            updateShopDetails();
         }
     }
 }
