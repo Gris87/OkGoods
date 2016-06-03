@@ -51,6 +51,29 @@ public class ShopInfo implements Parcelable
         return mName;
     }
 
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == null)
+        {
+            return false;
+        }
+
+        if (object == this)
+        {
+            return true;
+        }
+
+        if (!(object instanceof ShopInfo))
+        {
+            return false;
+        }
+
+        ShopInfo shop = (ShopInfo)object;
+
+        return mId == shop.mId;
+    }
+
     public int getId()
     {
         return mId;

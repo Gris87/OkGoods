@@ -217,8 +217,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         updateMapPoints();
 
-        mSelectedShop = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_SHOP);
-        updateShopDetails();
+        ShopInfo shop = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_SHOP);
+        selectShop(shop);
 
         mLastKnownPositionLatitude  = savedInstanceState.getDouble(SAVED_STATE_LAST_KNOWN_POSITION_LATITUDE);
         mLastKnownPositionLongitude = savedInstanceState.getDouble(SAVED_STATE_LAST_KNOWN_POSITION_LONGITUDE);
@@ -332,9 +332,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     public void onBalloonShow(BalloonItem balloonItem)
     {
         int itemId = Integer.parseInt(String.valueOf(balloonItem.getText()));
-
-        mSelectedShop = (ShopInfo)mShopsAdapter.getItem(itemId);
-        updateShopDetails();
+        selectShop((ShopInfo)mShopsAdapter.getItem(itemId));
 
         mDrawerLayout.openDrawer(mShopDetailsView);
 
@@ -364,8 +362,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     {
         if (parent == mShopsListView)
         {
-            mSelectedShop = (ShopInfo)mShopsAdapter.getItem(position);
-            updateShopDetails();
+            selectShop((ShopInfo)mShopsAdapter.getItem(position));
 
             MapController mapController = mMapView.getMapController();
 
@@ -461,8 +458,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         mMapView.getMapController().notifyRepaint();
 
-        mSelectedShop = null;
-        updateShopDetails();
+        selectShop(null);
     }
 
     private void toggleShopDetails()
@@ -482,5 +478,16 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     private void updateShopDetails()
     {
         mShopDetailsFragment.updateUI(mSelectedShop);
+    }
+
+    private void selectShop(ShopInfo shop)
+    {
+        if (mSelectedShop != shop)
+        {
+            mSelectedShop = shop;
+            updateShopDetails();
+
+            mShopsAdapter.setSelectedShop(mSelectedShop);
+        }
     }
 }

@@ -25,12 +25,13 @@ public class ShopsAdapter extends BaseAdapter
     private ArrayList<ShopInfo> mOriginalShops = null;
     private ArrayList<ShopInfo> mShops         = null;
     private ShopInfo            mNearestShop   = null;
+    private ShopInfo            mSelectedShop  = null;
 
 
 
     private static class ViewHolder
     {
-        View      mView;
+        View      mBackgroundView;
         TextView  mNameTextView;
         ImageView mNearestShopImageView;
     }
@@ -43,6 +44,7 @@ public class ShopsAdapter extends BaseAdapter
         mOriginalShops = shops;
         mShops         = new ArrayList<>();
         mNearestShop   = null;
+        mSelectedShop  = null;
 
         filter(null);
     }
@@ -73,6 +75,7 @@ public class ShopsAdapter extends BaseAdapter
 
         ViewHolder holder = new ViewHolder();
 
+        holder.mBackgroundView       = rootView;
         holder.mNameTextView         = (TextView) rootView.findViewById(R.id.nameTextView);
         holder.mNearestShopImageView = (ImageView)rootView.findViewById(R.id.nearestShopImageView);
 
@@ -98,8 +101,16 @@ public class ShopsAdapter extends BaseAdapter
             holder.mNearestShopImageView.setVisibility(View.GONE);
         }
 
-        // noinspection deprecation
-        holder.mView.setBackgroundColor(mContext.getResources().getColor(R.color.selectedShop));
+        if (mSelectedShop != null && mSelectedShop.equals(shop))
+        {
+            // noinspection deprecation
+            holder.mBackgroundView.setBackgroundColor(mContext.getResources().getColor(R.color.selectedShop));
+        }
+        else
+        {
+            // noinspection deprecation
+            holder.mBackgroundView.setBackgroundColor(mContext.getResources().getColor(R.color.windowBackground));
+        }
     }
 
     @Override
@@ -189,6 +200,13 @@ public class ShopsAdapter extends BaseAdapter
                 mShops.add(shop);
             }
         }
+
+        notifyDataSetChanged();
+    }
+
+    public void setSelectedShop(ShopInfo shop)
+    {
+        mSelectedShop = shop;
 
         notifyDataSetChanged();
     }
