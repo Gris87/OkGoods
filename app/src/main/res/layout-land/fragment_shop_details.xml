@@ -21,7 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/nameTextView"
-        android:layout_above="@+id/servicesPhotosGridLayout"
+        android:layout_above="@+id/controlsLinearLayout"
+        android:layout_toLeftOf="@+id/servicesPhotosGridLayout"
+        android:layout_toStartOf="@+id/servicesPhotosGridLayout"
         grid:alignmentMode="alignBounds"
         grid:columnCount="2"
         grid:useDefaultMargins="true">
@@ -138,33 +140,33 @@
 
     <android.support.v7.widget.GridLayout
         android:id="@+id/servicesPhotosGridLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/nameTextView"
         android:layout_above="@+id/controlsLinearLayout"
         grid:alignmentMode="alignBounds"
-        grid:columnCount="2"
-        grid:useDefaultMargins="true">
+        grid:rowCount="2"
+        grid:useDefaultMargins="true"
+        grid:orientation="vertical">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            grid:layout_columnWeight="1"
-            grid:layout_gravity="fill_horizontal|center_vertical"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
             android:text="@string/services" />
 
-        <HorizontalScrollView
+        <ScrollView
             android:id="@+id/servicesScrollView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            grid:layout_columnWeight="2"
-            grid:layout_gravity="fill_horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                     android:id="@+id/serviceClearingSettlementImageView"
@@ -266,33 +268,29 @@
 
             </LinearLayout>
 
-        </HorizontalScrollView>
+        </ScrollView>
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            grid:layout_columnWeight="1"
-            grid:layout_gravity="fill_horizontal|center_vertical"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
             android:text="@string/photos" />
 
-        <HorizontalScrollView
+        <ScrollView
             android:id="@+id/photosScrollView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            grid:layout_columnWeight="2"
-            grid:layout_gravity="fill_horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/photosLinearLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:orientation="horizontal">
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
             </LinearLayout>
 
-        </HorizontalScrollView>
+        </ScrollView>
 
     </android.support.v7.widget.GridLayout>
 
