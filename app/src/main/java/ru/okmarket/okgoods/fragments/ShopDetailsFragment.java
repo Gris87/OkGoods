@@ -1,6 +1,7 @@
 package ru.okmarket.okgoods.fragments;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -9,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,6 +21,7 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
+import ru.okmarket.okgoods.widgets.ImageViewWithTooltip;
 
 public class ShopDetailsFragment extends Fragment implements View.OnTouchListener, View.OnClickListener
 {
@@ -38,24 +39,25 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     private TextView                      mParkingPlacesTextView                = null;
     private TextView                      mNumberOfCashboxesTextView            = null;
     private View                          mServicesScrollView                   = null;
-    private ImageView                     mServiceClearingSettlementImageView   = null;
-    private ImageView                     mServiceCosmeticsImageView            = null;
-    private ImageView                     mServicePlaygroundImageView           = null;
-    private ImageView                     mServiceFishIslandImageView           = null;
-    private ImageView                     mServiceBakeryImageView               = null;
-    private ImageView                     mServiceCookeryImageView              = null;
-    private ImageView                     mServiceTaxiOrderingImageView         = null;
-    private ImageView                     mServicePharmacyImageView             = null;
-    private ImageView                     mServiceOrderingFoodImageView         = null;
-    private ImageView                     mServiceDegustationImageView          = null;
-    private ImageView                     mServiceCafeImageView                 = null;
-    private ImageView                     mServiceGiftCardsImageView            = null;
-    private ImageView                     mServiceParkingImageView              = null;
-    private ImageView                     mServicePointOfIssuingOrdersImageView = null;
+    private ImageViewWithTooltip          mServiceClearingSettlementImageView   = null;
+    private ImageViewWithTooltip          mServiceCosmeticsImageView            = null;
+    private ImageViewWithTooltip          mServicePlaygroundImageView           = null;
+    private ImageViewWithTooltip          mServiceFishIslandImageView           = null;
+    private ImageViewWithTooltip          mServiceBakeryImageView               = null;
+    private ImageViewWithTooltip          mServiceCookeryImageView              = null;
+    private ImageViewWithTooltip          mServiceTaxiOrderingImageView         = null;
+    private ImageViewWithTooltip          mServicePharmacyImageView             = null;
+    private ImageViewWithTooltip          mServiceOrderingFoodImageView         = null;
+    private ImageViewWithTooltip          mServiceDegustationImageView          = null;
+    private ImageViewWithTooltip          mServiceCafeImageView                 = null;
+    private ImageViewWithTooltip          mServiceGiftCardsImageView            = null;
+    private ImageViewWithTooltip          mServiceParkingImageView              = null;
+    private ImageViewWithTooltip          mServicePointOfIssuingOrdersImageView = null;
     private View                          mPhotosScrollView                     = null;
     private LinearLayout                  mPhotosLinearLayout                   = null;
     private Button                        mCancelButton                         = null;
     private Button                        mOkButton                             = null;
+    private GetShopPhotosTask             mGetShopPhotosTask                    = null;
 
 
 
@@ -69,32 +71,38 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     {
         View rootView = inflater.inflate(R.layout.fragment_shop_details, container, false);
 
-        mNameTextView                         = (TextView)    rootView.findViewById(R.id.nameTextView);
-        mPhoneTextView                        = (TextView)    rootView.findViewById(R.id.phoneTextView);
-        mWorkHoursTextView                    = (TextView)    rootView.findViewById(R.id.workHoursTextView);
-        mSquareTextView                       = (TextView)    rootView.findViewById(R.id.squareTextView);
-        mOpeningDateTextView                  = (TextView)    rootView.findViewById(R.id.openingDateTextView);
-        mParkingPlacesTextView                = (TextView)    rootView.findViewById(R.id.parkingPlacesTextView);
-        mNumberOfCashboxesTextView            = (TextView)    rootView.findViewById(R.id.numberOfCashboxesTextView);
-        mServicesScrollView                   =               rootView.findViewById(R.id.servicesScrollView);
-        mServiceClearingSettlementImageView   = (ImageView)   rootView.findViewById(R.id.serviceClearingSettlementImageView);
-        mServiceCosmeticsImageView            = (ImageView)   rootView.findViewById(R.id.serviceCosmeticsImageView);
-        mServicePlaygroundImageView           = (ImageView)   rootView.findViewById(R.id.servicePlaygroundImageView);
-        mServiceFishIslandImageView           = (ImageView)   rootView.findViewById(R.id.serviceFishIslandImageView);
-        mServiceBakeryImageView               = (ImageView)   rootView.findViewById(R.id.serviceBakeryImageView);
-        mServiceCookeryImageView              = (ImageView)   rootView.findViewById(R.id.serviceCookeryImageView);
-        mServiceTaxiOrderingImageView         = (ImageView)   rootView.findViewById(R.id.serviceTaxiOrderingImageView);
-        mServicePharmacyImageView             = (ImageView)   rootView.findViewById(R.id.servicePharmacyImageView);
-        mServiceOrderingFoodImageView         = (ImageView)   rootView.findViewById(R.id.serviceOrderingFoodImageView);
-        mServiceDegustationImageView          = (ImageView)   rootView.findViewById(R.id.serviceDegustationImageView);
-        mServiceCafeImageView                 = (ImageView)   rootView.findViewById(R.id.serviceCafeImageView);
-        mServiceGiftCardsImageView            = (ImageView)   rootView.findViewById(R.id.serviceGiftCardsImageView);
-        mServiceParkingImageView              = (ImageView)   rootView.findViewById(R.id.serviceParkingImageView);
-        mServicePointOfIssuingOrdersImageView = (ImageView)   rootView.findViewById(R.id.servicePointOfIssuingOrdersImageView);
-        mPhotosScrollView                     =               rootView.findViewById(R.id.photosScrollView);
-        mPhotosLinearLayout                   = (LinearLayout)rootView.findViewById(R.id.photosLinearLayout);
-        mCancelButton                         = (Button)      rootView.findViewById(R.id.cancelButton);
-        mOkButton                             = (Button)      rootView.findViewById(R.id.okButton);
+
+
+        mNameTextView                         = (TextView)            rootView.findViewById(R.id.nameTextView);
+        mPhoneTextView                        = (TextView)            rootView.findViewById(R.id.phoneTextView);
+        mWorkHoursTextView                    = (TextView)            rootView.findViewById(R.id.workHoursTextView);
+        mSquareTextView                       = (TextView)            rootView.findViewById(R.id.squareTextView);
+        mOpeningDateTextView                  = (TextView)            rootView.findViewById(R.id.openingDateTextView);
+        mParkingPlacesTextView                = (TextView)            rootView.findViewById(R.id.parkingPlacesTextView);
+        mNumberOfCashboxesTextView            = (TextView)            rootView.findViewById(R.id.numberOfCashboxesTextView);
+        mServicesScrollView                   =                       rootView.findViewById(R.id.servicesScrollView);
+        mServiceClearingSettlementImageView   = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceClearingSettlementImageView);
+        mServiceCosmeticsImageView            = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceCosmeticsImageView);
+        mServicePlaygroundImageView           = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePlaygroundImageView);
+        mServiceFishIslandImageView           = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceFishIslandImageView);
+        mServiceBakeryImageView               = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceBakeryImageView);
+        mServiceCookeryImageView              = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceCookeryImageView);
+        mServiceTaxiOrderingImageView         = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceTaxiOrderingImageView);
+        mServicePharmacyImageView             = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePharmacyImageView);
+        mServiceOrderingFoodImageView         = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceOrderingFoodImageView);
+        mServiceDegustationImageView          = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceDegustationImageView);
+        mServiceCafeImageView                 = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceCafeImageView);
+        mServiceGiftCardsImageView            = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceGiftCardsImageView);
+        mServiceParkingImageView              = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceParkingImageView);
+        mServicePointOfIssuingOrdersImageView = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePointOfIssuingOrdersImageView);
+        mPhotosScrollView                     =                       rootView.findViewById(R.id.photosScrollView);
+        mPhotosLinearLayout                   = (LinearLayout)        rootView.findViewById(R.id.photosLinearLayout);
+        mCancelButton                         = (Button)              rootView.findViewById(R.id.cancelButton);
+        mOkButton                             = (Button)              rootView.findViewById(R.id.okButton);
+
+        mGetShopPhotosTask = null;
+
+
 
         mServicesScrollView.setOnTouchListener(this);
         mPhotosScrollView.setOnTouchListener(this);
@@ -102,7 +110,20 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         mCancelButton.setOnClickListener(this);
         mOkButton.setOnClickListener(this);
 
+
+
         return rootView;
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+        if (mGetShopPhotosTask != null)
+        {
+            mGetShopPhotosTask.cancel(true);
+        }
     }
 
     @Override
@@ -212,6 +233,16 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
             mPhotosLinearLayout.removeAllViews();
 
             mOkButton.setEnabled(true);
+
+
+
+            if (mGetShopPhotosTask != null)
+            {
+                mGetShopPhotosTask.cancel(true);
+            }
+
+            mGetShopPhotosTask = new GetShopPhotosTask();
+            mGetShopPhotosTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
         else
         {
@@ -241,6 +272,14 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
             mPhotosLinearLayout.removeAllViews();
 
             mOkButton.setEnabled(false);
+
+
+
+            if (mGetShopPhotosTask != null)
+            {
+                mGetShopPhotosTask.cancel(true);
+                mGetShopPhotosTask = null;
+            }
         }
     }
 
@@ -365,6 +404,37 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         super.onDetach();
 
         mListener = null;
+    }
+
+
+
+    private class GetShopPhotosTask extends AsyncTask<Void, Void, Boolean>
+    {
+        @Override
+        protected Boolean doInBackground(Void... params)
+        {
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                // Nothing
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result)
+        {
+            if (result)
+            {
+                // TODO: Implement it
+            }
+
+            mGetShopPhotosTask = null;
+        }
     }
 
 
