@@ -1,7 +1,6 @@
 package ru.okmarket.okgoods.fragments;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -13,12 +12,18 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.net.HttpClient;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.ImageViewWithTooltip;
@@ -57,7 +62,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     private LinearLayout                  mPhotosLinearLayout                   = null;
     private Button                        mCancelButton                         = null;
     private Button                        mOkButton                             = null;
-    private GetShopPhotosTask             mGetShopPhotosTask                    = null;
+    private HttpClient                    mHttpClient                           = null;
 
 
 
@@ -100,7 +105,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         mCancelButton                         = (Button)              rootView.findViewById(R.id.cancelButton);
         mOkButton                             = (Button)              rootView.findViewById(R.id.okButton);
 
-        mGetShopPhotosTask = null;
+        mHttpClient = HttpClient.getInstance(getActivity());
 
 
 
@@ -120,10 +125,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     {
         super.onDestroy();
 
-        if (mGetShopPhotosTask != null)
-        {
-            mGetShopPhotosTask.cancel(true);
-        }
+        mHttpClient.getRequestQueue().cancelAll(TAG);
     }
 
     @Override
@@ -236,13 +238,32 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
-            if (mGetShopPhotosTask != null)
-            {
-                mGetShopPhotosTask.cancel(true);
-            }
+            mHttpClient.getRequestQueue().cancelAll(TAG);
 
-            mGetShopPhotosTask = new GetShopPhotosTask();
-            mGetShopPhotosTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+
+            StringRequest request = new StringRequest(Request.Method.GET, "okmarket.ru/stores/" + String.valueOf(shop.getId()) + "/"
+                    , new Response.Listener<String>()
+                    {
+                        @Override
+                        public void onResponse(String response)
+                        {
+                            AppLog.e(TAG, response);
+                        }
+                    }
+                    ,  new Response.ErrorListener()
+                    {
+                        @Override
+                        public void onErrorResponse(VolleyError error)
+                        {
+                            AppLog.e(TAG, String.valueOf(error));
+                        }
+                    }
+            );
+
+            request.setTag(TAG);
+
+            mHttpClient.addToRequestQueue(request);
         }
         else
         {
@@ -275,11 +296,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
-            if (mGetShopPhotosTask != null)
-            {
-                mGetShopPhotosTask.cancel(true);
-                mGetShopPhotosTask = null;
-            }
+            mHttpClient.getRequestQueue().cancelAll(TAG);
         }
     }
 
@@ -404,37 +421,6 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         super.onDetach();
 
         mListener = null;
-    }
-
-
-
-    private class GetShopPhotosTask extends AsyncTask<Void, Void, Boolean>
-    {
-        @Override
-        protected Boolean doInBackground(Void... params)
-        {
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                // Nothing
-            }
-
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result)
-        {
-            if (result)
-            {
-                // TODO: Implement it
-            }
-
-            mGetShopPhotosTask = null;
-        }
     }
 
 
