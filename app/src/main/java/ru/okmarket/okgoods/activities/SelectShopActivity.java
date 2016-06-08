@@ -107,7 +107,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         MainDatabase mainDatabase = new MainDatabase(this);
         SQLiteDatabase db = mainDatabase.getReadableDatabase();
-        ArrayList<ShopInfo> shops = mainDatabase.getShops(db, mainDatabase.getCityId(prefs.getString(Preferences.SETTINGS_CITY, "MOSCOW")));
+        int cityId = mainDatabase.getCityId(prefs.getString(Preferences.SETTINGS_CITY, "MOSCOW"));
+        ArrayList<ShopInfo> shops = mainDatabase.getShops(db, cityId);
         db.close();
 
 
@@ -136,6 +137,9 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         overlayManager.addOverlay(mShopsOverlay);
         myLocationOverlay.setAutoScroll(false);
         myLocationOverlay.addMyLocationListener(this);
+
+        mapController.setPositionNoAnimationTo(MainDatabase.CITIES_COORDS[cityId - 1]);
+        mapController.setZoomCurrent(10);
 
 
 

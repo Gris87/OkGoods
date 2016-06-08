@@ -9,7 +9,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -43,7 +45,8 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     private TextView                      mOpeningDateTextView                  = null;
     private TextView                      mParkingPlacesTextView                = null;
     private TextView                      mNumberOfCashboxesTextView            = null;
-    private View                          mServicesScrollView                   = null;
+    private HorizontalScrollView          mServicesHorizontalScrollView         = null;
+    private ScrollView                    mServicesVerticalScrollView           = null;
     private ImageViewWithTooltip          mServiceClearingSettlementImageView   = null;
     private ImageViewWithTooltip          mServiceCosmeticsImageView            = null;
     private ImageViewWithTooltip          mServicePlaygroundImageView           = null;
@@ -58,7 +61,8 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     private ImageViewWithTooltip          mServiceGiftCardsImageView            = null;
     private ImageViewWithTooltip          mServiceParkingImageView              = null;
     private ImageViewWithTooltip          mServicePointOfIssuingOrdersImageView = null;
-    private View                          mPhotosScrollView                     = null;
+    private HorizontalScrollView          mPhotosHorizontalScrollView           = null;
+    private ScrollView                    mPhotosVerticalScrollView             = null;
     private LinearLayout                  mPhotosLinearLayout                   = null;
     private Button                        mCancelButton                         = null;
     private Button                        mOkButton                             = null;
@@ -85,7 +89,8 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         mOpeningDateTextView                  = (TextView)            rootView.findViewById(R.id.openingDateTextView);
         mParkingPlacesTextView                = (TextView)            rootView.findViewById(R.id.parkingPlacesTextView);
         mNumberOfCashboxesTextView            = (TextView)            rootView.findViewById(R.id.numberOfCashboxesTextView);
-        mServicesScrollView                   =                       rootView.findViewById(R.id.servicesScrollView);
+        mServicesHorizontalScrollView         = (HorizontalScrollView)rootView.findViewById(R.id.servicesHorizontalScrollView);
+        mServicesVerticalScrollView           = (ScrollView)          rootView.findViewById(R.id.servicesVerticalScrollView);
         mServiceClearingSettlementImageView   = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceClearingSettlementImageView);
         mServiceCosmeticsImageView            = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceCosmeticsImageView);
         mServicePlaygroundImageView           = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePlaygroundImageView);
@@ -100,7 +105,8 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         mServiceGiftCardsImageView            = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceGiftCardsImageView);
         mServiceParkingImageView              = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceParkingImageView);
         mServicePointOfIssuingOrdersImageView = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePointOfIssuingOrdersImageView);
-        mPhotosScrollView                     =                       rootView.findViewById(R.id.photosScrollView);
+        mPhotosHorizontalScrollView           = (HorizontalScrollView)rootView.findViewById(R.id.photosHorizontalScrollView);
+        mPhotosVerticalScrollView             = (ScrollView)          rootView.findViewById(R.id.photosVerticalScrollView);
         mPhotosLinearLayout                   = (LinearLayout)        rootView.findViewById(R.id.photosLinearLayout);
         mCancelButton                         = (Button)              rootView.findViewById(R.id.cancelButton);
         mOkButton                             = (Button)              rootView.findViewById(R.id.okButton);
@@ -109,8 +115,10 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
-        mServicesScrollView.setOnTouchListener(this);
-        mPhotosScrollView.setOnTouchListener(this);
+        mServicesHorizontalScrollView.setOnTouchListener(this);
+        mServicesVerticalScrollView.setOnTouchListener(this);
+        mPhotosHorizontalScrollView.setOnTouchListener(this);
+        mPhotosVerticalScrollView.setOnTouchListener(this);
 
         mCancelButton.setOnClickListener(this);
         mOkButton.setOnClickListener(this);
@@ -132,9 +140,13 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     public boolean onTouch(View view, MotionEvent event)
     {
         if (
-            view == mServicesScrollView
+            view == mServicesHorizontalScrollView
             ||
-            view == mPhotosScrollView
+            view == mServicesVerticalScrollView
+            ||
+            view == mPhotosHorizontalScrollView
+            ||
+            view == mPhotosVerticalScrollView
            )
         {
             if (event.getAction() == MotionEvent.ACTION_DOWN)
@@ -242,13 +254,38 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
-            StringRequest request = new StringRequest(Request.Method.GET, "okmarket.ru/stores/" + String.valueOf(shop.getId()) + "/"
+            StringRequest request = new StringRequest(Request.Method.GET, "http://okmarket.ru/stores/" + String.valueOf(shop.getId()) + "/"
                     , new Response.Listener<String>()
                     {
                         @Override
                         public void onResponse(String response)
                         {
-                            AppLog.e(TAG, response);
+                            int index = -1;
+
+                            do
+                            {
+                                index = response.indexOf("<img src=\"", index + 1);
+
+                                if (index < 0)
+                                {
+                                    break;
+                                }
+
+                                int index2 = response.indexOf('>', index + 10);
+
+                                if (index2 < 0)
+                                {
+                                    break;
+                                }
+
+                                String imageTag = response.substring(index, index2 + 1);
+                                index = index2 + 1;
+
+                                if (imageTag.contains("id=\"sd-gallery"))
+                                {
+                                    AppLog.e(TAG, imageTag);
+                                }
+                            } while (true);
                         }
                     }
                     ,  new Response.ErrorListener()
@@ -256,7 +293,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
                         @Override
                         public void onErrorResponse(VolleyError error)
                         {
-                            AppLog.e(TAG, String.valueOf(error));
+                            AppLog.w(TAG, "Failed to get photos for shop: " + mNameTextView.getText());
                         }
                     }
             );

@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">0dp</dimen>
     <dimen name="toolbar_size">48dp</dimen>
     <dimen name="shop_filter_service_button_size">48dp</dimen>
+    <dimen name="service_image_size">48dp</dimen>
+    <dimen name="shop_photo_size">100dp</dimen>
 </resources>

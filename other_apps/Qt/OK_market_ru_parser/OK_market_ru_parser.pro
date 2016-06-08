@@ -54,12 +54,14 @@ CONFIG (debug, debug|release) {
 SOURCES  += \
             src/main.cpp \
             src/main/mainwindow.cpp \
+            src/other/cityinfo.cpp \
             src/other/shopinfo.cpp \
             src/threads/parserthread.cpp \
             src/threads/threads.cpp
 
 HEADERS  += \
             src/main/mainwindow.h \
+            src/other/cityinfo.h \
             src/other/shopinfo.h \
             src/threads/parserthread.h \
             src/threads/threads.h

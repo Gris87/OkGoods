@@ -14,6 +14,7 @@ import java.util.Locale;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
+import ru.yandex.yandexmapkit.utils.GeoPoint;
 
 public class MainDatabase extends SQLiteOpenHelper
 {
@@ -166,6 +167,37 @@ public class MainDatabase extends SQLiteOpenHelper
             , "TYUMEN"
             , "UFA"
             , "CHEREPOVETS"
+    };
+
+    public static final GeoPoint[] CITIES_COORDS = {
+              new GeoPoint(55.8134869867940, 37.5976455649660) // MOSCOW
+            , new GeoPoint(59.9374542637080, 30.3234307832030) // ST_PETERSBURG
+            , new GeoPoint(46.3564272990710, 48.0775193124990) // ASTRAKHAN
+            , new GeoPoint(48.7588838328550, 44.6116960800780) // VOLGOGRAD
+            , new GeoPoint(51.6905640064470, 39.2030335820310) // VORONEZH
+            , new GeoPoint(56.8628738020240, 60.5890345078110) // EKATERINBURG
+            , new GeoPoint(57.0003480000000, 40.9739210000000) // IVANOVO
+            , new GeoPoint(52.2863870000000, 104.280660000000) // IRKUTSK
+            , new GeoPoint(45.0402160000000, 38.9759960000000) // KRASNODAR
+            , new GeoPoint(56.0374865326440, 92.9706480273430) // KRASNOYARSK
+            , new GeoPoint(52.6018593827200, 39.5809860898430) // LIPETSK
+            , new GeoPoint(68.9532796507940, 33.0992592382810) // MURMANSK
+            , new GeoPoint(56.3016995214610, 44.0087325820310) // NIZHNIY_NOVGOROD
+            , new GeoPoint(55.0404525613240, 82.9465225292970) // NOVOSIBIRSK
+            , new GeoPoint(47.4249672530710, 40.0670841425780) // NOVOCHERKASSK
+            , new GeoPoint(55.0272269611070, 73.3352530156250) // OMSK
+            , new GeoPoint(51.8218458871590, 55.2178046093750) // ORENBURG
+            , new GeoPoint(47.2727800051510, 39.7217494658200) // ROSTOV_ON_DON
+            , new GeoPoint(51.5938737160690, 46.0121853437490) // SARATOV
+            , new GeoPoint(43.6119105532960, 39.7337908360580) // SOCHI
+            , new GeoPoint(45.0021357740430, 41.9330161108390) // STAVROPOL
+            , new GeoPoint(53.6286724572690, 55.9481993228750) // STERLITAMAK
+            , new GeoPoint(61.2623194322230, 73.3938007407220) // SURGUT
+            , new GeoPoint(61.6939771607590, 50.8056932590320) // SYKTYVKAR
+            , new GeoPoint(53.5212984359520, 49.2866844169910) // TOLYATTI
+            , new GeoPoint(57.1082250271220, 65.6084857148430) // TYUMEN
+            , new GeoPoint(54.7720531355310, 56.0663189902330) // UFA
+            , new GeoPoint(59.1062657254020, 37.9103532275380) // CHEREPOVETS
     };
 
     public static final int SERVICE_ID_CLEARING_SETTLEMENT     = 1;
@@ -1816,7 +1848,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 SHOP_HYPERMARKET,                                                                               // COLUMN_IS_HYPERMARKET
                 48.799876441969,                                                                                // COLUMN_LATITUDE
                 44.604719934008,                                                                                // COLUMN_LONGITUDE
-                "+7 (8442) 968-150",                                                                            // COLUMN_PHONE
+                "+7 (8442) 968-151",                                                                            // COLUMN_PHONE
                 "9:00 - 23:00",                                                                                 // COLUMN_WORK_HOURS
                 0,                                                                                              // COLUMN_SQUARE
                 "",                                                                                             // COLUMN_OPENING_DATE
@@ -1841,7 +1873,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 SHOP_SUPERMARKET,                                                                               // COLUMN_IS_HYPERMARKET
                 48.704442124489,                                                                                // COLUMN_LATITUDE
                 44.509524508598,                                                                                // COLUMN_LONGITUDE
-                "+7 (8442) 968-136",                                                                            // COLUMN_PHONE
+                "+7 (8442) 968-121",                                                                            // COLUMN_PHONE
                 "9:00 - 23:00",                                                                                 // COLUMN_WORK_HOURS
                 0,                                                                                              // COLUMN_SQUARE
                 "",                                                                                             // COLUMN_OPENING_DATE
@@ -1861,7 +1893,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 SHOP_SUPERMARKET,                                                                                   // COLUMN_IS_HYPERMARKET
                 48.697141727939,                                                                                    // COLUMN_LATITUDE
                 44.501582075394,                                                                                    // COLUMN_LONGITUDE
-                "+7 (8442) 96-81-76",                                                                               // COLUMN_PHONE
+                "+7 (8442) 968-171",                                                                                // COLUMN_PHONE
                 "9:00 - 23:00",                                                                                     // COLUMN_WORK_HOURS
                 0,                                                                                                  // COLUMN_SQUARE
                 "",                                                                                                 // COLUMN_OPENING_DATE

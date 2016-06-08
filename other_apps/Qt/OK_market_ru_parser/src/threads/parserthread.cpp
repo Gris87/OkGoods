@@ -256,8 +256,10 @@ bool ParserThread::requestCitiesAndServices()
 
             if (index >= 0)
             {
-                QString city = line.mid(14, index - 14);
-                mCities.append(city);
+                CityInfo cityInfo;
+                cityInfo.name = line.mid(14, index - 14);
+
+                mCities.append(cityInfo);
             }
             else
             {
@@ -371,10 +373,12 @@ bool ParserThread::requestShops()
     {
         emit progressChanged(REQUEST_CITIES_AND_SERVICES_PROGRESS + (i + 1) * (REQUEST_SHOP_STEP_1_PROGRESS - REQUEST_CITIES_AND_SERVICES_PROGRESS) / mCities.length(), TOTAL_PROGRESS);
 
+        CityInfo& cityInfo = mCities[i];
+
 
 
         cookies.clear();
-        cookies.append(QNetworkCookie("BITRIX_SM_CURRENT_CITY", QUrl::toPercentEncoding(mCities.at(i))));
+        cookies.append(QNetworkCookie("BITRIX_SM_CURRENT_CITY", QUrl::toPercentEncoding(cityInfo.name)));
 
         QNetworkRequest request(QUrl("http://okmarket.ru/stores/"));
         request.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookies));
@@ -390,6 +394,51 @@ bool ParserThread::requestShops()
         {
             QString line = reply->readLine().trimmed();
 
+            if (line.contains("cityData"))
+            {
+                int index = line.indexOf("\"coords\"");
+
+                if (index >= 0)
+                {
+                    int index2 = line.indexOf("[", index + 8);
+
+                    if (index2 >= 0)
+                    {
+                        int index3 = line.indexOf("]", index2 + 1);
+
+                        if (index3 >= 0)
+                        {
+                            int index4 = line.indexOf(",", index2 + 1);
+
+                            if (index4 > index2 && index4 < index3)
+                            {
+                                QString latitude  = line.mid(index2 + 1, index4 - index2 - 2).replace("\"", "");
+                                QString longitude = line.mid(index4 + 1, index3 - index4 - 2).replace("\"", "");
+
+                                cityInfo.latitude  = latitude.toDouble();
+                                cityInfo.longitude = longitude.toDouble();
+                            }
+                            else
+                            {
+                                addError(tr("Failed to get coordinates for city \"%1\"").arg(cityInfo.name));
+                            }
+                        }
+                        else
+                        {
+                            addError(tr("Failed to get coordinates for city \"%1\"").arg(cityInfo.name));
+                        }
+                    }
+                    else
+                    {
+                        addError(tr("Failed to get coordinates for city \"%1\"").arg(cityInfo.name));
+                    }
+                }
+                else
+                {
+                    addError(tr("Failed to get coordinates for city \"%1\"").arg(cityInfo.name));
+                }
+            }
+            else
             if (line.startsWith("<a href=\"/stores/") && line.contains("shop-list-item"))
             {
                 int index = line.indexOf("\"", 17);
@@ -414,7 +463,7 @@ bool ParserThread::requestShops()
                     }
                     else
                     {
-                        addError(tr("Incorrect shop id \"%1\" in city \"%2\"").arg(shopId).arg(mCities.at(i)));
+                        addError(tr("Incorrect shop id \"%1\" in city \"%2\"").arg(shopId).arg(cityInfo.name));
                     }
                 }
                 else
@@ -427,6 +476,18 @@ bool ParserThread::requestShops()
         if (mTerminated)
         {
             return false;
+        }
+
+
+
+        if (cityInfo.latitude == 0)
+        {
+            addError(tr("Incorrect latitude \"%1\" for city \"%2\"").arg(cityInfo.latitude).arg(cityInfo.name));
+        }
+
+        if (cityInfo.longitude == 0)
+        {
+            addError(tr("Incorrect longitude \"%1\" for city \"%2\"").arg(cityInfo.longitude).arg(cityInfo.name));
         }
     }
 
@@ -461,7 +522,7 @@ bool ParserThread::requestShops()
         if (previousCity != shop.city_id)
         {
             cookies.clear();
-            cookies.append(QNetworkCookie("BITRIX_SM_CURRENT_CITY", QUrl::toPercentEncoding(mCities.at(shop.city_id - 1))));
+            cookies.append(QNetworkCookie("BITRIX_SM_CURRENT_CITY", QUrl::toPercentEncoding(mCities.at(shop.city_id - 1).name)));
 
             previousCity = shop.city_id;
         }
@@ -562,7 +623,7 @@ bool ParserThread::requestShops()
                             }
                             else
                             {
-                                addError(tr("Unexpected property value \"%1\" for property \"%2\" in shop \"%3\" (%4). It is expected that square is specified in square meters").arg(propertyValue).arg(property).arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                                addError(tr("Unexpected property value \"%1\" for property \"%2\" in shop \"%3\" (%4). It is expected that square is specified in square meters").arg(propertyValue).arg(property).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
                             }
 
                             shop.square = removeLetters(propertyValue).toULongLong();
@@ -584,12 +645,12 @@ bool ParserThread::requestShops()
                         }
                         else
                         {
-                            addError(tr("Incorrect property \"%1\" in shop \"%2\" (%3)").arg(property).arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                            addError(tr("Incorrect property \"%1\" in shop \"%2\" (%3)").arg(property).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
                         }
                     }
                     else
                     {
-                        addError(tr("Failed to read value for property \"%1\" in shop \"%2\" (%3)").arg(property).arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                        addError(tr("Failed to read value for property \"%1\" in shop \"%2\" (%3)").arg(property).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
                     }
                 }
                 else
@@ -601,7 +662,7 @@ bool ParserThread::requestShops()
                         property != "Как добраться"
                    )
                 {
-                    addError(tr("Unknown property \"%1\" in shop \"%2\" (%3)").arg(property).arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                    addError(tr("Unknown property \"%1\" in shop \"%2\" (%3)").arg(property).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
                 }
             }
             else
@@ -631,22 +692,22 @@ bool ParserThread::requestShops()
                             }
                             else
                             {
-                                addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                                addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
                             }
                         }
                         else
                         {
-                            addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                            addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
                         }
                     }
                     else
                     {
-                        addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                        addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
                     }
                 }
                 else
                 {
-                    addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                    addError(tr("Failed to get coordinates for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
                 }
 
                 shop.is_hypermarket = line.contains("\"giper\":\"Y\"");
@@ -672,7 +733,7 @@ bool ParserThread::requestShops()
                             }
                             else
                             {
-                                addError(tr("Unexpected service \"%1\" for shop \"%2\" (%3)").arg(service).arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                                addError(tr("Unexpected service \"%1\" for shop \"%2\" (%3)").arg(service).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
                             }
                         }
                     }
@@ -699,74 +760,74 @@ bool ParserThread::requestShops()
 
         if (shop.name == "")
         {
-            addError(tr("Incorrect shop name in city \"%1\"").arg(mCities.at(shop.city_id - 1)));
+            addError(tr("Incorrect shop name in city \"%1\"").arg(mCities.at(shop.city_id - 1).name));
         }
 
         if (shop.is_hypermarket)
         {
             if (!shop.name.startsWith("Гипермаркет"))
             {
-                addError(tr("Shop name \"%1\" (2) is not specifying that shop is hypermarket").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                addError(tr("Shop name \"%1\" (2) is not specifying that shop is hypermarket").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
             }
         }
         else
         {
             if (!shop.name.startsWith("Супермаркет"))
             {
-                addError(tr("Shop name \"%1\" (2) is not specifying that shop is supermarket").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                addError(tr("Shop name \"%1\" (2) is not specifying that shop is supermarket").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
             }
         }
 
         if (shop.latitude == 0)
         {
-            addError(tr("Incorrect latitude \"%1\" for shop \"%2\" (%3)").arg(shop.latitude).arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+            addError(tr("Incorrect latitude \"%1\" for shop \"%2\" (%3)").arg(shop.latitude).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
         }
 
         if (shop.longitude == 0)
         {
-            addError(tr("Incorrect longitude \"%1\" for shop \"%2\" (%3)").arg(shop.longitude).arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+            addError(tr("Incorrect longitude \"%1\" for shop \"%2\" (%3)").arg(shop.longitude).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
         }
 
         if (shop.phone == "")
         {
-            addError(tr("Incorrect phone for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+            addError(tr("Incorrect phone for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
         }
 
         if (shop.work_hours == "")
         {
-            addError(tr("Incorrect work hours for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+            addError(tr("Incorrect work hours for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
         }
 
         if (shop.square == 0)
         {
-            addError(tr("Incorrect square \"%1\" for shop \"%2\" (%3)").arg(shop.square).arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+            addError(tr("Incorrect square \"%1\" for shop \"%2\" (%3)").arg(shop.square).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
         }
 
         if (!shop.opening_date.isValid())
         {
-            addError(tr("Incorrect opening date for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+            addError(tr("Incorrect opening date for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
         }
 
         if ((shop.parking_places > 0) != (shop.services_set.contains("Парковка")))
         {
             if (shop.parking_places > 0)
             {
-                addError(tr("Parking places \"%1\" specified for shop \"%2\" (%3) while parking service is not available").arg(shop.parking_places).arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                addError(tr("Parking places \"%1\" specified for shop \"%2\" (%3) while parking service is not available").arg(shop.parking_places).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
             }
             else
             {
-                addError(tr("Parking places is not specified for shop \"%1\" (%2) while parking service is available").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+                addError(tr("Parking places is not specified for shop \"%1\" (%2) while parking service is available").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
             }
         }
 
         if (shop.number_of_cashboxes == 0)
         {
-            addError(tr("Incorrect number of cashboxes \"%1\" for shop \"%2\" (%3)").arg(shop.number_of_cashboxes).arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+            addError(tr("Incorrect number of cashboxes \"%1\" for shop \"%2\" (%3)").arg(shop.number_of_cashboxes).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
         }
 
         if (shop.services_set.length() == 0)
         {
-            addError(tr("Incorrect services set for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1)));
+            addError(tr("Incorrect services set for shop \"%1\" (%2)").arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
         }
 
 
@@ -831,7 +892,7 @@ void ParserThread::generateIDs()
 
     for (int i = 0; i < mCities.length(); ++i)
     {
-        QString city = mCities.at(i);
+        QString city = mCities.at(i).name;
         QString cityId;
 
         if (city == "Москва")
@@ -995,7 +1056,7 @@ void ParserThread::updateRussianStringsXmlCities(QStringList &fileContents)
 
     for (int i = 0; i < mCities.length(); ++i)
     {
-        newLines.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + precedeTranslations(mCities.at(i)) + "</string>");
+        newLines.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + precedeTranslations(mCities.at(i).name) + "</string>");
     }
 
 
@@ -1179,7 +1240,7 @@ void ParserThread::updateEnglishStringsXmlCities(QStringList &fileContents)
 
     for (int i = 0; i < mCities.length(); ++i)
     {
-        QString city = mCities.at(i);
+        QString city = mCities.at(i).name;
 
         if (city == "Москва")
         {
@@ -1507,6 +1568,17 @@ void ParserThread::updateMainDatabaseJavaCitiesIDs(QStringList &fileContents)
 
     newLines.append("    };");
 
+    newLines.append("");
+    newLines.append("    public static final GeoPoint[] CITIES_COORDS = {");
+    newLines.append(QString("              new GeoPoint(%1, %2) // %3").arg(mCities.at(0).latitude, -16, 'f', 12, QChar('0')).arg(mCities.at(0).longitude, -16, 'f', 12, QChar('0')).arg(mCitiesIDs.at(0).toUpper()));
+
+    for (int i = 1; i < mCities.length(); ++i)
+    {
+        newLines.append(QString("            , new GeoPoint(%1, %2) // %3").arg(mCities.at(i).latitude, -16, 'f', 12, QChar('0')).arg(mCities.at(i).longitude, -16, 'f', 12, QChar('0')).arg(mCitiesIDs.at(i).toUpper()));
+    }
+
+    newLines.append("    };");
+
 
 
     int start = -1;
@@ -1543,7 +1615,7 @@ void ParserThread::updateMainDatabaseJavaCitiesIDs(QStringList &fileContents)
         {
             QString line = fileContents.at(i).trimmed();
 
-            if (line == "public static final String[] CITIES = {")
+            if (line == "public static final GeoPoint[] CITIES_COORDS = {")
             {
                 found = true;
             }

@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QFile>
 
+#include "src/other/cityinfo.h"
 #include "src/other/shopinfo.h"
 
 
@@ -62,7 +63,7 @@ private:
     quint16         mProxyPort;
     QStringList     mErrors;
     QString         mProjectDir;
-    QStringList     mCities;
+    QList<CityInfo> mCities;
     QStringList     mServices;
     QList<ShopInfo> mShops;
     QStringList     mCitiesIDs;

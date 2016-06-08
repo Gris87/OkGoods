@@ -22,8 +22,10 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/nameTextView"
         android:layout_above="@+id/controlsLinearLayout"
-        android:layout_toLeftOf="@+id/servicesPhotosGridLayout"
-        android:layout_toStartOf="@+id/servicesPhotosGridLayout"
+        android:layout_toLeftOf="@+id/servicesLayout"
+        android:layout_toStartOf="@+id/servicesLayout"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         grid:alignmentMode="alignBounds"
         grid:columnCount="2"
         grid:useDefaultMargins="true">
@@ -138,18 +140,19 @@
 
     </android.support.v7.widget.GridLayout>
 
-    <android.support.v7.widget.GridLayout
-        android:id="@+id/servicesPhotosGridLayout"
+    <LinearLayout
+        android:id="@+id/servicesLayout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/nameTextView"
         android:layout_above="@+id/controlsLinearLayout"
-        grid:alignmentMode="alignBounds"
-        grid:rowCount="2"
-        grid:useDefaultMargins="true"
-        grid:orientation="vertical">
+        android:layout_toLeftOf="@+id/photosLayout"
+        android:layout_toStartOf="@+id/photosLayout"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -158,117 +161,142 @@
             android:textStyle="bold"
             android:text="@string/services" />
 
-        <ScrollView
-            android:id="@+id/servicesScrollView"
+        <HorizontalScrollView
+            android:id="@+id/servicesHorizontalScrollView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
 
-            <LinearLayout
+            <ScrollView
+                android:id="@+id/servicesVerticalScrollView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceClearingSettlementImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_clearing_settlement"
-                    android:src="@drawable/service_clearing_settlement" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceCosmeticsImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_cosmetics"
-                    android:src="@drawable/service_cosmetics" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceClearingSettlementImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_clearing_settlement"
+                        android:src="@drawable/service_clearing_settlement" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/servicePlaygroundImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_playground"
-                    android:src="@drawable/service_playground" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceCosmeticsImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_cosmetics"
+                        android:src="@drawable/service_cosmetics" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceFishIslandImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_fish_island"
-                    android:src="@drawable/service_fish_island" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/servicePlaygroundImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_playground"
+                        android:src="@drawable/service_playground" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceBakeryImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_bakery"
-                    android:src="@drawable/service_bakery" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceFishIslandImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_fish_island"
+                        android:src="@drawable/service_fish_island" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceCookeryImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_cookery"
-                    android:src="@drawable/service_cookery" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceBakeryImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_bakery"
+                        android:src="@drawable/service_bakery" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceTaxiOrderingImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_taxi_ordering"
-                    android:src="@drawable/service_taxi_ordering" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceCookeryImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_cookery"
+                        android:src="@drawable/service_cookery" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/servicePharmacyImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_pharmacy"
-                    android:src="@drawable/service_pharmacy" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceTaxiOrderingImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_taxi_ordering"
+                        android:src="@drawable/service_taxi_ordering" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceOrderingFoodImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_ordering_food"
-                    android:src="@drawable/service_ordering_food" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/servicePharmacyImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_pharmacy"
+                        android:src="@drawable/service_pharmacy" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceDegustationImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_degustation"
-                    android:src="@drawable/service_degustation" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceOrderingFoodImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_ordering_food"
+                        android:src="@drawable/service_ordering_food" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceCafeImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_cafe"
-                    android:src="@drawable/service_cafe" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceDegustationImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_degustation"
+                        android:src="@drawable/service_degustation" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceGiftCardsImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_gift_cards"
-                    android:src="@drawable/service_gift_cards" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceCafeImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_cafe"
+                        android:src="@drawable/service_cafe" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/serviceParkingImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_parking"
-                    android:src="@drawable/service_parking" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceGiftCardsImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_gift_cards"
+                        android:src="@drawable/service_gift_cards" />
 
-                <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
-                    android:id="@+id/servicePointOfIssuingOrdersImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:contentDescription="@string/service_point_of_issuing_orders"
-                    android:src="@drawable/service_point_of_issuing_orders" />
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/serviceParkingImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_parking"
+                        android:src="@drawable/service_parking" />
 
-            </LinearLayout>
+                    <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
+                        android:id="@+id/servicePointOfIssuingOrdersImageView"
+                        android:layout_width="@dimen/service_image_size"
+                        android:layout_height="@dimen/service_image_size"
+                        android:contentDescription="@string/service_point_of_issuing_orders"
+                        android:src="@drawable/service_point_of_issuing_orders" />
 
-        </ScrollView>
+                </LinearLayout>
+
+            </ScrollView>
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/photosLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/nameTextView"
+        android:layout_above="@+id/controlsLinearLayout"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -277,22 +305,30 @@
             android:textStyle="bold"
             android:text="@string/photos" />
 
-        <ScrollView
-            android:id="@+id/photosScrollView"
+        <HorizontalScrollView
+            android:id="@+id/photosHorizontalScrollView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
 
-            <LinearLayout
-                android:id="@+id/photosLinearLayout"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <ScrollView
+                android:id="@+id/photosVerticalScrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/photosLinearLayout"
+                    android:layout_width="@dimen/shop_photo_size"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-        </ScrollView>
+                </LinearLayout>
 
-    </android.support.v7.widget.GridLayout>
+            </ScrollView>
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/controlsLinearLayout"
