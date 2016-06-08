@@ -10,8 +10,8 @@
         android:layout_toLeftOf="@+id/nearestShopImageView"
         android:layout_toStartOf="@+id/nearestShopImageView"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
         android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -22,9 +22,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginRight="@dimen/common_margin"
+        android:layout_marginEnd="@dimen/common_margin"
+        android:layout_marginTop="@dimen/common_margin"
         android:contentDescription="@string/nearest_shop"
         android:src="@drawable/nearest_shop" />
 

@@ -146,6 +146,7 @@
         grid:useDefaultMargins="true">
 
         <TextView
+            android:id="@+id/servicesTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             grid:layout_columnWeight="1"
@@ -276,6 +277,7 @@
         </HorizontalScrollView>
 
         <TextView
+            android:id="@+id/photosTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             grid:layout_columnWeight="1"
