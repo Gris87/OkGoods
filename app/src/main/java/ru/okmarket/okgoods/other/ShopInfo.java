@@ -84,6 +84,7 @@ public class ShopInfo implements Parcelable
         mId = id;
     }
 
+    @SuppressWarnings("unused")
     public int getCityId()
     {
         return mCityId;

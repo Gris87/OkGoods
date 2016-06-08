@@ -167,6 +167,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
             }
         };
 
+        // noinspection deprecation
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 
@@ -498,32 +499,29 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
     private void selectShop(ShopInfo shop)
     {
-        if (mSelectedShop != shop)
+        if (mSelectedShop != null)
         {
-            if (mSelectedShop != null)
+            OverlayItem overlayItem = mShopsOverlayItems.get(mSelectedShop.getId());
+
+            if (overlayItem != null)
             {
-                OverlayItem overlayItem = mShopsOverlayItems.get(mSelectedShop.getId());
-
-                if (overlayItem != null)
-                {
-                    overlayItem.setDrawable(mSelectedShop.isHypermarket() ? mHypermarketDrawable : mSupermarketDrawable);
-                }
+                overlayItem.setDrawable(mSelectedShop.isHypermarket() ? mHypermarketDrawable : mSupermarketDrawable);
             }
-
-            mSelectedShop = shop;
-            mShopsAdapter.setSelectedShop(mSelectedShop);
-
-            if (mSelectedShop != null)
-            {
-                OverlayItem overlayItem = mShopsOverlayItems.get(mSelectedShop.getId());
-
-                if (overlayItem != null)
-                {
-                    overlayItem.setDrawable(mSelectedShop.isHypermarket() ? mHypermarketSelectedDrawable : mSupermarketSelectedDrawable);
-                }
-            }
-
-            updateShopDetails();
         }
+
+        mSelectedShop = shop;
+        mShopsAdapter.setSelectedShop(mSelectedShop);
+
+        if (mSelectedShop != null)
+        {
+            OverlayItem overlayItem = mShopsOverlayItems.get(mSelectedShop.getId());
+
+            if (overlayItem != null)
+            {
+                overlayItem.setDrawable(mSelectedShop.isHypermarket() ? mHypermarketSelectedDrawable : mSupermarketSelectedDrawable);
+            }
+        }
+
+        updateShopDetails();
     }
 }

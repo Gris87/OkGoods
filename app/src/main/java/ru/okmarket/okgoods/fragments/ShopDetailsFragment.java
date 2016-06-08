@@ -119,6 +119,22 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         mServicesVerticalScrollView.setOnTouchListener(this);
         mPhotosHorizontalScrollView.setOnTouchListener(this);
         mPhotosVerticalScrollView.setOnTouchListener(this);
+        mServiceClearingSettlementImageView.setOnTouchListener(this);
+        mServiceCosmeticsImageView.setOnTouchListener(this);
+        mServicePlaygroundImageView.setOnTouchListener(this);
+        mServiceFishIslandImageView.setOnTouchListener(this);
+        mServiceBakeryImageView.setOnTouchListener(this);
+        mServiceCookeryImageView.setOnTouchListener(this);
+        mServiceTaxiOrderingImageView.setOnTouchListener(this);
+        mServicePharmacyImageView.setOnTouchListener(this);
+        mServiceOrderingFoodImageView.setOnTouchListener(this);
+        mServiceDegustationImageView.setOnTouchListener(this);
+        mServiceCafeImageView.setOnTouchListener(this);
+        mServiceGiftCardsImageView.setOnTouchListener(this);
+        mServiceParkingImageView.setOnTouchListener(this);
+        mServicePointOfIssuingOrdersImageView.setOnTouchListener(this);
+
+
 
         mCancelButton.setOnClickListener(this);
         mOkButton.setOnClickListener(this);
@@ -139,29 +155,14 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     @Override
     public boolean onTouch(View view, MotionEvent event)
     {
-        if (
-            view == mServicesHorizontalScrollView
-            ||
-            view == mServicesVerticalScrollView
-            ||
-            view == mPhotosHorizontalScrollView
-            ||
-            view == mPhotosVerticalScrollView
-           )
+        if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
-            if (event.getAction() == MotionEvent.ACTION_DOWN)
-            {
-                onDisableScroll();
-            }
-            else
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                onEnableScroll();
-            }
+            onDisableScroll();
         }
         else
+        if (event.getAction() == MotionEvent.ACTION_UP)
         {
-            AppLog.wtf(TAG, "Unknown view");
+            onEnableScroll();
         }
 
         return false;
