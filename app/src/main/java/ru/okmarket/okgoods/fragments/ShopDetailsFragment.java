@@ -285,6 +285,15 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
                                 if (imageTag.contains("id=\"sd-gallery"))
                                 {
                                     AppLog.e(TAG, imageTag);
+
+                                    index2 = imageTag.indexOf("\"", 10);
+
+                                    if (index2 >= 0)
+                                    {
+                                        String photoUrl = "http://okmarket.ru" + imageTag.substring(10, index2);
+
+                                        AppLog.e(TAG, photoUrl);
+                                    }
                                 }
                             } while (true);
                         }
