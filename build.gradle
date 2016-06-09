@@ -22,6 +22,7 @@ allprojects
     {
         jcenter()
         maven { url 'https://github.com/yandexmobile/yandexmapkit-android/raw/maven/' }
+        maven { url "https://jitpack.io" }
     }
 }
 
