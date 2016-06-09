@@ -18,5 +18,6 @@ CachedImage
 Release keys
 Free money everywhere
 Find more free money
+Google analytics
 Walls in 3D
 Stairs
