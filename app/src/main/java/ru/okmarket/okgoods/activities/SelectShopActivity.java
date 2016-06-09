@@ -427,7 +427,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     @Override
     public void onShopDetailsPhotoClicked(ArrayList<String> urls, int selectedIndex)
     {
-        Intent intent = new Intent(this, SettingsActivity.class);
+        Intent intent = new Intent(this, PhotoViewerActivity.class);
 
         intent.putStringArrayListExtra(Extras.URLS,           urls);
         intent.putExtra(               Extras.SELECTED_INDEX, selectedIndex);
