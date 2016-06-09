@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import java.util.Locale;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.adapters.PagerAdapter;
+import ru.okmarket.okgoods.adapters.MainPagerAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.dialogs.SelectCityDialog;
 import ru.okmarket.okgoods.fragments.GoodsFragment;
@@ -33,12 +33,12 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
 
 
 
-    private MainDatabase    mMainDatabase    = null;
-    private SQLiteDatabase  mDB              = null;
-    private ViewPager       mPager           = null;
-    private PagerAdapter    mPagerAdapter    = null;
-    private GoodsFragment   mGoodsFragment   = null;
-    private ShopMapFragment mShopMapFragment = null;
+    private MainDatabase     mMainDatabase    = null;
+    private SQLiteDatabase   mDB              = null;
+    private ViewPager        mPager           = null;
+    private MainPagerAdapter mPagerAdapter    = null;
+    private GoodsFragment    mGoodsFragment   = null;
+    private ShopMapFragment  mShopMapFragment = null;
 
 
 
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
 
         if (mPager != null)
         {
-            mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+            mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
 
             mPager.setAdapter(mPagerAdapter);
         }

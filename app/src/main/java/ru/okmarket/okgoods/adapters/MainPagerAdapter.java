@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import ru.okmarket.okgoods.fragments.GoodsFragment;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
 
-public class PagerAdapter extends FragmentPagerAdapter
+public class MainPagerAdapter extends FragmentPagerAdapter
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "PagerAdapter";
+    private static final String TAG = "MainPagerAdapter";
 
 
 
@@ -24,7 +24,7 @@ public class PagerAdapter extends FragmentPagerAdapter
 
 
 
-    public PagerAdapter(FragmentManager fragmentManager)
+    public MainPagerAdapter(FragmentManager fragmentManager)
     {
         super(fragmentManager);
 

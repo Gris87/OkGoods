@@ -14,10 +14,10 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.other.ShopFilter;
 import ru.okmarket.okgoods.other.ShopInfo;
 
-public class ShopsAdapter extends BaseAdapter
+public class ShopsListAdapter extends BaseAdapter
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "ShopsAdapter";
+    private static final String TAG = "ShopsListAdapter";
 
 
 
@@ -38,7 +38,7 @@ public class ShopsAdapter extends BaseAdapter
 
 
 
-    public ShopsAdapter(Context context, ArrayList<ShopInfo> shops)
+    public ShopsListAdapter(Context context, ArrayList<ShopInfo> shops)
     {
         mContext       = context;
         mOriginalShops = shops;

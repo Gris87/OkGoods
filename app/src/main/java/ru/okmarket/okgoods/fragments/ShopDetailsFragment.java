@@ -21,7 +21,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -204,6 +206,14 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         }
     }
 
+    public void onPhotoClicked(ArrayList<String> urls, int selectedIndex)
+    {
+        if (mListener != null)
+        {
+            mListener.onShopDetailsPhotoClicked(urls, selectedIndex);
+        }
+    }
+
     public void onCancelClicked()
     {
         if (mListener != null)
@@ -274,7 +284,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
-                            boolean first = true;
+                            final ArrayList<String> urls = new ArrayList<>();
 
                             int index = -1;
 
@@ -303,24 +313,34 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
                                     if (index2 >= 0)
                                     {
-                                        String photoUrl = "http://okmarket.ru" + imageTag.substring(10, index2);
-
-                                        NetworkImageView imageView = new NetworkImageView(getActivity());
-                                        imageView.setImageUrl(photoUrl, mHttpClient.getImageLoader());
-
-                                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
-
-                                        if (!first)
-                                        {
-                                            layoutParams.setMargins(margin, 0, 0, 0);
-                                        }
-
-                                        mPhotosLinearLayout.addView(imageView, layoutParams);
-
-                                        first = false;
+                                        urls.add("http://okmarket.ru" + imageTag.substring(10, index2));
                                     }
                                 }
                             } while (true);
+
+                            for (int i = 0; i < urls.size(); ++i)
+                            {
+                                NetworkImageView imageView = new NetworkImageView(getActivity());
+                                imageView.setImageUrl(urls.get(i), mHttpClient.getImageLoader());
+
+                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
+
+                                if (i > 0)
+                                {
+                                    layoutParams.setMargins(margin, 0, 0, 0);
+                                }
+
+                                imageView.setOnClickListener(new View.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(View view)
+                                    {
+                                        onPhotoClicked(urls, mPhotosLinearLayout.indexOfChild(view));
+                                    }
+                                });
+
+                                mPhotosLinearLayout.addView(imageView, layoutParams);
+                            }
                         }
                     }
                     ,  new Response.ErrorListener()
@@ -504,6 +524,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     {
         void onShopDetailsDisableScroll();
         void onShopDetailsEnableScroll();
+        void onShopDetailsPhotoClicked(ArrayList<String> urls, int selectedIndex);
         void onShopDetailsCancelClicked();
         void onShopDetailsOkClicked();
     }

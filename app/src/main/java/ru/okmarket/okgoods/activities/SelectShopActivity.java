@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.adapters.ShopsAdapter;
+import ru.okmarket.okgoods.adapters.ShopsListAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.dialogs.ShopFilterDialog;
 import ru.okmarket.okgoods.fragments.ShopDetailsFragment;
@@ -53,6 +53,10 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
+    private static final int PHOTO_VIEWER = 1;
+
+
+
     public static final int SHOP_SELECTED = 1;
 
 
@@ -76,7 +80,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     private NoScrollableDrawerLayout  mDrawerLayout                = null;
     private ActionBarDrawerToggle     mDrawerToggle                = null;
     private ListView                  mShopsListView               = null;
-    private ShopsAdapter              mShopsAdapter                = null;
+    private ShopsListAdapter          mShopsListAdapter            = null;
     private FrameLayout               mShopDetailsView             = null;
     private ShopDetailsFragment       mShopDetailsFragment         = null;
     private ShopFilter                mShopFilter                  = null;
@@ -172,8 +176,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
-        mShopsAdapter = new ShopsAdapter(this, shops);
-        mShopsListView.setAdapter(mShopsAdapter);
+        mShopsListAdapter = new ShopsListAdapter(this, shops);
+        mShopsListView.setAdapter(mShopsListAdapter);
         mShopsListView.setOnItemClickListener(this);
 
 
@@ -228,7 +232,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         }
 
         mShopFilter = savedInstanceState.getParcelable(SAVED_STATE_SHOP_FILTER);
-        mShopsAdapter.filter(mShopFilter);
+        mShopsListAdapter.filter(mShopFilter);
 
         updateMapPoints();
 
@@ -240,7 +244,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         if (mLastKnownPositionLatitude != 0 && mLastKnownPositionLongitude != 0)
         {
-            mShopsAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
+            mShopsListAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
         }
     }
 
@@ -334,7 +338,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         mLastKnownPositionLatitude  = geoPoint.getLat();
         mLastKnownPositionLongitude = geoPoint.getLon();
 
-        mShopsAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
+        mShopsListAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
     }
 
     @Override
@@ -347,7 +351,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     public void onBalloonShow(BalloonItem balloonItem)
     {
         int itemId = Integer.parseInt(String.valueOf(balloonItem.getText()));
-        selectShop((ShopInfo)mShopsAdapter.getItem(itemId));
+        selectShop((ShopInfo)mShopsListAdapter.getItem(itemId));
 
         mDrawerLayout.openDrawer(mShopDetailsView);
 
@@ -377,7 +381,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     {
         if (parent == mShopsListView)
         {
-            selectShop((ShopInfo)mShopsAdapter.getItem(position));
+            selectShop((ShopInfo)mShopsListAdapter.getItem(position));
 
             MapController mapController = mMapView.getMapController();
 
@@ -421,6 +425,17 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     }
 
     @Override
+    public void onShopDetailsPhotoClicked(ArrayList<String> urls, int selectedIndex)
+    {
+        Intent intent = new Intent(this, SettingsActivity.class);
+
+        intent.putStringArrayListExtra(Extras.URLS,           urls);
+        intent.putExtra(               Extras.SELECTED_INDEX, selectedIndex);
+
+        startActivityForResult(intent, PHOTO_VIEWER);
+    }
+
+    @Override
     public void onShopDetailsCancelClicked()
     {
         mDrawerLayout.closeDrawer(mShopDetailsView);
@@ -440,13 +455,13 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     public void onShopFilterApplied(ShopFilter filter)
     {
         mShopFilter = filter;
-        mShopsAdapter.filter(mShopFilter);
+        mShopsListAdapter.filter(mShopFilter);
 
         updateMapPoints();
 
         if (mLastKnownPositionLatitude != 0 && mLastKnownPositionLongitude != 0)
         {
-            mShopsAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
+            mShopsListAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
         }
     }
 
@@ -455,9 +470,9 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         mShopsOverlay.clearOverlayItems();
         mShopsOverlayItems.clear();
 
-        for (int i = 0; i < mShopsAdapter.getCount(); ++i)
+        for (int i = 0; i < mShopsListAdapter.getCount(); ++i)
         {
-            ShopInfo shop = (ShopInfo)mShopsAdapter.getItem(i);
+            ShopInfo shop = (ShopInfo)mShopsListAdapter.getItem(i);
 
             if (shop.getLatitude() != 0 || shop.getLongitude() != 0)
             {
@@ -510,7 +525,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         }
 
         mSelectedShop = shop;
-        mShopsAdapter.setSelectedShop(mSelectedShop);
+        mShopsListAdapter.setSelectedShop(mSelectedShop);
 
         if (mSelectedShop != null)
         {
