@@ -18,10 +18,8 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +30,7 @@ import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.net.HttpClient;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
+import ru.okmarket.okgoods.widgets.CachedImageView;
 import ru.okmarket.okgoods.widgets.ImageViewWithTooltip;
 
 public class ShopDetailsFragment extends Fragment implements View.OnTouchListener, View.OnClickListener
@@ -320,14 +319,21 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
                             for (int i = 0; i < urls.size(); ++i)
                             {
-                                NetworkImageView imageView = new NetworkImageView(getActivity());
+                                CachedImageView imageView = new CachedImageView(getActivity());
                                 imageView.setImageUrl(urls.get(i), mHttpClient.getImageLoader());
 
                                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
 
                                 if (i > 0)
                                 {
-                                    layoutParams.setMargins(margin, 0, 0, 0);
+                                    if (mPhotosLinearLayout.getOrientation() == LinearLayout.HORIZONTAL)
+                                    {
+                                        layoutParams.setMargins(margin, 0, 0, 0);
+                                    }
+                                    else
+                                    {
+                                        layoutParams.setMargins(0, margin, 0, 0);
+                                    }
                                 }
 
                                 imageView.setOnClickListener(new View.OnClickListener()
