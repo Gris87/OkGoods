@@ -13,11 +13,6 @@ public class CachedPhotoView extends CachedImageView
 
 
 
-    public CachedPhotoView(Context context, AttributeSet attrs, int defStyleAttr)
-    {
-        super(context, attrs, defStyleAttr);
-    }
-
     public CachedPhotoView(Context context)
     {
         super(context);
@@ -28,11 +23,14 @@ public class CachedPhotoView extends CachedImageView
         super(context, attrs);
     }
 
+    public CachedPhotoView(Context context, AttributeSet attrs, int defStyleAttr)
+    {
+        super(context, attrs, defStyleAttr);
+    }
+
     @Override
     protected View createContentView()
     {
-        PhotoView res = new PhotoView(getContext());
-
-        return res;
+        return new PhotoView(getContext());
     }
 }

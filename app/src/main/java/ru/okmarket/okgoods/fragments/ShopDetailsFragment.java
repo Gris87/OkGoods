@@ -336,6 +336,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
                                     }
                                 }
 
+                                imageView.setOnTouchListener(ShopDetailsFragment.this);
                                 imageView.setOnClickListener(new View.OnClickListener()
                                 {
                                     @Override

@@ -1,9 +1,12 @@
 package ru.okmarket.okgoods.widgets;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,6 +18,11 @@ public class CachedImageView extends FrameLayout
 {
     @SuppressWarnings("unused")
     private static final String TAG = "CachedImageView";
+
+
+
+    private static final int PROGRESS_VIEW_SIZE_DIP = 32;
+    private static final int ERROR_VIEW_SIZE_DIP    = 32;
 
 
 
@@ -52,34 +60,39 @@ public class CachedImageView extends FrameLayout
 
     private void init()
     {
+        Resources resources = getContext().getResources();
+
+        int progressViewSize = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PROGRESS_VIEW_SIZE_DIP, resources.getDisplayMetrics());
+        int errorViewSize    = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ERROR_VIEW_SIZE_DIP,    resources.getDisplayMetrics());
+
+
+
         mProgressView = createProgressView();
         mErrorView    = createErrorView();
         mContentView  = createContentView();
 
-        addView(mProgressView);
-        addView(mErrorView);
-        addView(mContentView);
+        addView(mProgressView, new LayoutParams(progressViewSize,          progressViewSize,          Gravity.CENTER));
+        addView(mErrorView,    new LayoutParams(errorViewSize,             errorViewSize,             Gravity.CENTER));
+        addView(mContentView,  new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER));
+
+
+
+        hideAll();
     }
 
     protected View createProgressView()
     {
-        ProgressBar res = new ProgressBar(getContext());
-
-        return res;
+        return new ProgressBar(getContext());
     }
 
     protected View createErrorView()
     {
-        ImageView res = new ImageView(getContext());
-
-        return res;
+        return new ImageView(getContext());
     }
 
     protected View createContentView()
     {
-        ImageView res = new ImageView(getContext());
-
-        return res;
+        return new ImageView(getContext());
     }
 
     public void setImageUrl(String url, ImageLoader imageLoader)
@@ -102,7 +115,7 @@ public class CachedImageView extends FrameLayout
 
     private void loadImageIfNecessary(final boolean isInLayoutPass)
     {
-
+        showProgressView();
     }
 
     private void setDefaultImageOrNull()
@@ -148,9 +161,47 @@ public class CachedImageView extends FrameLayout
     }
 
     @Override
+    public void setOnTouchListener(OnTouchListener listener)
+    {
+        super.setOnTouchListener(listener);
+
+        mProgressView.setOnTouchListener(listener);
+        mErrorView.setOnTouchListener(listener);
+        mContentView.setOnTouchListener(listener);
+    }
+
+    @Override
     public void setOnClickListener(OnClickListener listener)
     {
         mContentView.setOnClickListener(listener);
+    }
+
+    private void hideAll()
+    {
+        mProgressView.setVisibility(View.GONE);
+        mErrorView.setVisibility(View.GONE);
+        mContentView.setVisibility(View.GONE);
+    }
+
+    private void showProgressView()
+    {
+        mProgressView.setVisibility(View.VISIBLE);
+        mErrorView.setVisibility(View.GONE);
+        mContentView.setVisibility(View.GONE);
+    }
+
+    private void showErrorView()
+    {
+        mProgressView.setVisibility(View.GONE);
+        mErrorView.setVisibility(View.VISIBLE);
+        mContentView.setVisibility(View.GONE);
+    }
+
+    private void showContentView()
+    {
+        mProgressView.setVisibility(View.GONE);
+        mErrorView.setVisibility(View.GONE);
+        mContentView.setVisibility(View.VISIBLE);
     }
 
     @SuppressWarnings("unused")
