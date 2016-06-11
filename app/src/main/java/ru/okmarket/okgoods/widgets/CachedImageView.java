@@ -7,6 +7,7 @@ import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -14,7 +15,7 @@ import android.widget.ProgressBar;
 
 import com.android.volley.toolbox.ImageLoader;
 
-public class CachedImageView extends FrameLayout
+public class CachedImageView extends FrameLayout implements View.OnTouchListener, View.OnClickListener, View.OnLongClickListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "CachedImageView";
@@ -26,14 +27,17 @@ public class CachedImageView extends FrameLayout
 
 
 
-    private View                       mProgressView   = null;
-    private View                       mErrorView      = null;
-    private View                       mContentView    = null;
-    private String                     mUrl            = null;
-    private int                        mDefaultImageId = 0;
-    private int                        mErrorImageId   = 0;
-    private ImageLoader                mImageLoader    = null;
-    private ImageLoader.ImageContainer mImageContainer = null;
+    private View                       mProgressView        = null;
+    private View                       mErrorView           = null;
+    private View                       mContentView         = null;
+    private String                     mUrl                 = null;
+    private int                        mDefaultImageId      = 0;
+    private int                        mErrorImageId        = 0;
+    private ImageLoader                mImageLoader         = null;
+    private ImageLoader.ImageContainer mImageContainer      = null;
+    private OnTouchListener            mOnTouchListener     = null;
+    private OnClickListener            mOnClickListener     = null;
+    private OnLongClickListener        mOnLongClickListener = null;
 
 
 
@@ -163,17 +167,50 @@ public class CachedImageView extends FrameLayout
     @Override
     public void setOnTouchListener(OnTouchListener listener)
     {
-        super.setOnTouchListener(listener);
+        mOnTouchListener = listener;
 
-        mProgressView.setOnTouchListener(listener);
-        mErrorView.setOnTouchListener(listener);
-        mContentView.setOnTouchListener(listener);
+        super.setOnTouchListener(this);
+
+        mProgressView.setOnTouchListener(this);
+        mErrorView.setOnTouchListener(this);
+        mContentView.setOnTouchListener(this);
     }
 
     @Override
     public void setOnClickListener(OnClickListener listener)
     {
-        mContentView.setOnClickListener(listener);
+        mOnClickListener = listener;
+
+        mContentView.setOnClickListener(this);
+    }
+
+    @Override
+    public void setOnLongClickListener(OnLongClickListener listener)
+    {
+        mOnLongClickListener = listener;
+
+        mContentView.setOnLongClickListener(this);
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent event)
+    {
+        return mOnTouchListener != null && mOnTouchListener.onTouch(this, event);
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        if (mOnClickListener != null)
+        {
+            mOnClickListener.onClick(this);
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View view)
+    {
+        return mOnLongClickListener != null && mOnLongClickListener.onLongClick(this);
     }
 
     private void hideAll()
