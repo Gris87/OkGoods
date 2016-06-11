@@ -320,6 +320,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
                             for (int i = 0; i < urls.size(); ++i)
                             {
                                 CachedImageView imageView = new CachedImageView(getActivity());
+                                imageView.setErrorImageResId(R.drawable.download_error);
                                 imageView.setImageUrl(urls.get(i), mHttpClient.getImageLoader());
 
                                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);

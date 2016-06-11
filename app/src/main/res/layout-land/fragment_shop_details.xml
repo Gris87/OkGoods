@@ -309,13 +309,13 @@
 
         <HorizontalScrollView
             android:id="@+id/photosHorizontalScrollView"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/shop_photo_size"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/common_margin">
 
             <ScrollView
                 android:id="@+id/photosVerticalScrollView"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/shop_photo_size"
                 android:layout_height="wrap_content">
 
                 <LinearLayout

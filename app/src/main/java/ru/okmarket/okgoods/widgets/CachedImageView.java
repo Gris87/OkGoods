@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.annotation.DrawableRes;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 
 public class CachedImageView extends FrameLayout implements View.OnTouchListener, View.OnClickListener, View.OnLongClickListener
@@ -119,7 +121,96 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
 
     private void loadImageIfNecessary(final boolean isInLayoutPass)
     {
-        showProgressView();
+        int width  = getWidth();
+        int height = getHeight();
+
+        boolean wrapWidth = false;
+        boolean wrapHeight = false;
+
+        if (getLayoutParams() != null)
+        {
+            wrapWidth  = getLayoutParams().width  == LayoutParams.WRAP_CONTENT;
+            wrapHeight = getLayoutParams().height == LayoutParams.WRAP_CONTENT;
+        }
+
+        boolean isFullyWrapContent = wrapWidth && wrapHeight;
+
+        if (width == 0 && height == 0 && !isFullyWrapContent)
+        {
+            showContentView();
+
+            return;
+        }
+
+        if (TextUtils.isEmpty(mUrl))
+        {
+            if (mImageContainer != null)
+            {
+                mImageContainer.cancelRequest();
+                mImageContainer = null;
+            }
+
+            setDefaultImageOrNull();
+            showContentView();
+
+            return;
+        }
+
+        if (mImageContainer != null && mImageContainer.getRequestUrl() != null)
+        {
+            if (mImageContainer.getRequestUrl().equals(mUrl))
+            {
+                return;
+            }
+            else
+            {
+                mImageContainer.cancelRequest();
+            }
+        }
+
+        if (!mImageLoader.isCached(mUrl, 0, 0))
+        {
+            showProgressView();
+        }
+
+        mImageContainer = mImageLoader.get(mUrl, new ImageLoader.ImageListener()
+        {
+            @Override
+            public void onResponse(final ImageLoader.ImageContainer response, boolean isImmediate)
+            {
+                if (isImmediate && isInLayoutPass)
+                {
+                    post(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            onResponse(response, false);
+                        }
+                    });
+
+                    return;
+                }
+
+                if (response.getBitmap() != null)
+                {
+                    setImageBitmap(response.getBitmap());
+                }
+                else
+                if (mDefaultImageId != 0)
+                {
+                    setImageResource(mDefaultImageId);
+                }
+
+                showContentView();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                showErrorView();
+            }
+        });
     }
 
     private void setDefaultImageOrNull()
