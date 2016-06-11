@@ -24,8 +24,10 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
 
 
 
-    private static final int PROGRESS_VIEW_SIZE_DIP = 32;
-    private static final int ERROR_VIEW_SIZE_DIP    = 32;
+    private static final int     PROGRESS_VIEW_SIZE_DIP = 32;
+    private static final int     ERROR_VIEW_SIZE_DIP    = 32;
+    private static final boolean USE_FADE_IN_ANIMATION  = true;
+    private static final int     FADE_IN_DURATION       = 1000;
 
 
 
@@ -137,8 +139,6 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
 
         if (width == 0 && height == 0 && !isFullyWrapContent)
         {
-            showContentView();
-
             return;
         }
 
@@ -195,6 +195,12 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
                 if (response.getBitmap() != null)
                 {
                     setImageBitmap(response.getBitmap());
+
+                    if (USE_FADE_IN_ANIMATION)
+                    {
+                        mContentView.setAlpha(0);
+                        mContentView.animate().alpha(1).setDuration(FADE_IN_DURATION);
+                    }
                 }
                 else
                 if (mDefaultImageId != 0)

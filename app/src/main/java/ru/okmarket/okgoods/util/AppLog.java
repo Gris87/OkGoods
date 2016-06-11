@@ -73,45 +73,36 @@ public class AppLog
     {
         try
         {
-            int a = 0;
-            int b = 5 / a;
+            throw new Exception("Logged stacktrace");
         }
         catch (Exception e)
         {
             return Log.e(tag, msg, e);
         }
-
-        return -1;
     }
 
     public static int wtf(String tag, String msg, Throwable tr)
     {
         try
         {
-            int a = 0;
-            int b = 5 / a;
+            throw new Exception("Logged stacktrace");
         }
         catch (Exception e)
         {
             return Log.e(tag, msg + '\n' + Log.getStackTraceString(tr), e);
         }
-
-        return -1;
     }
 
     public static int wtf(String tag, Throwable tr)
     {
         try
         {
-            int a = 0;
-            int b = 5 / a;
+            throw new Exception("Logged stacktrace");
         }
         catch (Exception e)
         {
             return Log.e(tag, Log.getStackTraceString(tr), e);
         }
-
-        return -1;
     }
 
     public static String getStackTraceString(Throwable tr)
