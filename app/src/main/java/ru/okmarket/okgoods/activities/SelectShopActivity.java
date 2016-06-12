@@ -57,6 +57,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
 
+    public static final int NOTHING       = 0;
     public static final int SHOP_SELECTED = 1;
 
 

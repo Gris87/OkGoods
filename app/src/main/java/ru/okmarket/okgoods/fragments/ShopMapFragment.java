@@ -54,7 +54,7 @@ public class ShopMapFragment extends Fragment implements View.OnClickListener
         setSelectedShopText(getContext().getResources().getString(R.string.select_shop));
     }
 
-    private void setSelectedShopText(String text)
+    public void setSelectedShopText(String text)
     {
         SpannableString content = new SpannableString(text);
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);

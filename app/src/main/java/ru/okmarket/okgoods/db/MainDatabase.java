@@ -3182,4 +3182,67 @@ public class MainDatabase extends SQLiteOpenHelper
 
         return res;
     }
+
+    public ShopInfo getShop(SQLiteDatabase db, int shopId)
+    {
+        ShopInfo res = null;
+
+        Cursor cursor = db.query(SHOPS_TABLE_NAME, SHOPS_COLUMNS, COLUMN_ID + " = ?", new String[] { String.valueOf(shopId) }, null, null, null);
+
+
+
+        int idColumnIndex                = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int cityIdColumnIndex            = cursor.getColumnIndexOrThrow(COLUMN_CITY_ID);
+        int nameColumnIndex              = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+        int isHypermarketColumnIndex     = cursor.getColumnIndexOrThrow(COLUMN_IS_HYPERMARKET);
+        int latitudeColumnIndex          = cursor.getColumnIndexOrThrow(COLUMN_LATITUDE);
+        int longitudeColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_LONGITUDE);
+        int phoneColumnIndex             = cursor.getColumnIndexOrThrow(COLUMN_PHONE);
+        int workHoursColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_WORK_HOURS);
+        int squareColumnIndex            = cursor.getColumnIndexOrThrow(COLUMN_SQUARE);
+        int openingDateColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_OPENING_DATE);
+        int parkingPlacesColumnIndex     = cursor.getColumnIndexOrThrow(COLUMN_PARKING_PLACES);
+        int numberOfCashboxesColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_NUMBER_OF_CASHBOXES);
+        int servicesSetColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_SERVICES_SET);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
+
+
+
+        cursor.moveToFirst();
+
+        if (!cursor.isAfterLast())
+        {
+            res = new ShopInfo();
+
+            res.setId(cursor.getInt(idColumnIndex));
+            res.setCityId(cursor.getInt(cityIdColumnIndex));
+            res.setName(cursor.getString(nameColumnIndex));
+            res.setIsHypermarket(cursor.getInt(isHypermarketColumnIndex) == SHOP_HYPERMARKET);
+            res.setLatitude(cursor.getDouble(latitudeColumnIndex));
+            res.setLongitude(cursor.getDouble(longitudeColumnIndex));
+            res.setPhone(cursor.getString(phoneColumnIndex));
+            res.setWorkHours(cursor.getString(workHoursColumnIndex));
+            res.setSquare(cursor.getInt(squareColumnIndex));
+
+            try
+            {
+                res.setOpeningDate(dateFormat.parse(cursor.getString(openingDateColumnIndex)));
+            }
+            catch (ParseException e)
+            {
+                res.setOpeningDate(null);
+            }
+
+            res.setParkingPlaces(cursor.getInt(parkingPlacesColumnIndex));
+            res.setNumberOfCashboxes(cursor.getInt(numberOfCashboxesColumnIndex));
+            res.setServicesSet(cursor.getInt(servicesSetColumnIndex));
+        }
+
+        cursor.close();
+
+
+
+        return res;
+    }
 }
