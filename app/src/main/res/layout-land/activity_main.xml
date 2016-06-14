@@ -14,9 +14,9 @@
     <fragment
         android:id="@+id/goodsFragment"
         android:name="ru.okmarket.okgoods.fragments.GoodsFragment"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="60"
         tools:layout="@layout/fragment_goods" />
 
     <FrameLayout
@@ -27,9 +27,9 @@
     <fragment
         android:id="@+id/shopMapFragment"
         android:name="ru.okmarket.okgoods.fragments.ShopMapFragment"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="40"
         tools:layout="@layout/fragment_shop_map" />
 
 </LinearLayout>

@@ -54,17 +54,13 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        mMainDatabase = new MainDatabase(MainActivity.this);
+        mDB           = mMainDatabase.getWritableDatabase();
+
+
+
         setContentView(R.layout.activity_main);
-
-
-
-        mMainDatabase    = null;
-        mDB              = null;
-        mPager           = null;
-        mPagerAdapter    = null;
-        mGoodsFragment   = null;
-        mShopMapFragment = null;
-        mSelectedShop    = null;
 
 
 
@@ -79,15 +75,8 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
 
 
 
-        mMainDatabase = new MainDatabase(MainActivity.this);
-        mDB           = mMainDatabase.getWritableDatabase();
-
-
-
         if (savedInstanceState == null)
         {
-            verifyContextPreferences();
-
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
             if (!prefs.contains(Preferences.SETTINGS_CITY))
@@ -95,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
                 SelectCityDialog dialog = new SelectCityDialog();
                 dialog.show(getSupportFragmentManager(), "SelectCityDialog");
             }
+
+            verifyContextPreferences();
         }
     }
 
@@ -108,8 +99,6 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
             mDB.close();
         }
     }
-
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState)
@@ -208,9 +197,20 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
             else
             if (resultCode == SelectShopActivity.SHOP_SELECTED)
             {
-                ShopInfo shop = data.getParcelableExtra(Extras.SHOP);
+                mSelectedShop = data.getParcelableExtra(Extras.SHOP);
 
-                setSelectedShop(shop);
+
+
+                SharedPreferences prefs = getSharedPreferences(Preferences.CONTEXT_FILE_NAME, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+
+                editor.putInt(Preferences.CONTEXT_SELECTED_SHOP, mSelectedShop.getId());
+
+                editor.apply();
+
+
+
+                updateSelectedShop();
             }
             else
             {
@@ -261,24 +261,6 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
         }
     }
 
-    private void setSelectedShop(ShopInfo selectedShop)
-    {
-        mSelectedShop = selectedShop;
-
-
-
-        SharedPreferences prefs = getSharedPreferences(Preferences.CONTEXT_FILE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        editor.putInt(Preferences.CONTEXT_SELECTED_SHOP, mSelectedShop != null ? mSelectedShop.getId() : 0);
-
-        editor.apply();
-
-
-
-        updateSelectedShop();
-    }
-
     private void updateSelectedShop()
     {
         if (mShopMapFragment != null)
@@ -297,17 +279,23 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
     @Override
     public void onGoodsFragmentCreated(GoodsFragment fragment)
     {
-        mGoodsFragment = fragment;
+        if (mGoodsFragment == null)
+        {
+            mGoodsFragment = fragment;
 
-        setSupportActionBar(mGoodsFragment.getToolbar());
+            setSupportActionBar(mGoodsFragment.getToolbar());
+        }
     }
 
     @Override
     public void onShopMapFragmentCreated(ShopMapFragment fragment)
     {
-        mShopMapFragment = fragment;
+        if (mShopMapFragment == null)
+        {
+            mShopMapFragment = fragment;
 
-        updateSelectedShop();
+            updateSelectedShop();
+        }
     }
 
     @Override
