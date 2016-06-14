@@ -302,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
     public void onShopMapSelectShopClicked()
     {
         Intent intent = new Intent(this, SelectShopActivity.class);
+        intent.putExtra(Extras.SHOP, mSelectedShop);
         startActivityForResult(intent, SELECT_SHOP);
     }
 

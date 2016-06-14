@@ -192,6 +192,13 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
         updateMapPoints();
+
+
+
+        Intent intent = getIntent();
+
+        ShopInfo shop = intent.getParcelableExtra(Extras.SHOP);
+        selectShop(shop);
     }
 
     @Override
@@ -333,7 +340,10 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         if (mLastKnownPositionLatitude == 0 && mLastKnownPositionLongitude == 0)
         {
-            mMapView.getMapController().setPositionNoAnimationTo(geoPoint);
+            MapController mapController = mMapView.getMapController();
+
+            mapController.setPositionNoAnimationTo(geoPoint);
+            mapController.setZoomCurrent(13);
         }
 
         mLastKnownPositionLatitude  = geoPoint.getLat();
