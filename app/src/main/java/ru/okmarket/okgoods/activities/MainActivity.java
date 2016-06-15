@@ -3,28 +3,30 @@ package ru.okmarket.okgoods.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
-import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import java.util.Locale;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.adapters.MainPagerAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.dialogs.SelectCityDialog;
-import ru.okmarket.okgoods.fragments.GoodsFragment;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
 import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.other.Preferences;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
+import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
-public class MainActivity extends AppCompatActivity implements GoodsFragment.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener, SelectCityDialog.OnFragmentInteractionListener
+public class MainActivity extends AppCompatActivity implements ShopMapFragment.OnFragmentInteractionListener, SelectCityDialog.OnFragmentInteractionListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "MainActivity";
@@ -40,13 +42,13 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
 
 
 
-    private MainDatabase     mMainDatabase    = null;
-    private SQLiteDatabase   mDB              = null;
-    private ViewPager        mPager           = null;
-    private MainPagerAdapter mPagerAdapter    = null;
-    private GoodsFragment    mGoodsFragment   = null;
-    private ShopMapFragment  mShopMapFragment = null;
-    private ShopInfo         mSelectedShop    = null;
+    private NoScrollableDrawerLayout mDrawerLayout    = null;
+    private ActionBarDrawerToggle    mDrawerToggle    = null;
+    private FrameLayout              mShopMapView     = null;
+    private ShopMapFragment          mShopMapFragment = null;
+    private MainDatabase             mMainDatabase    = null;
+    private SQLiteDatabase           mDB              = null;
+    private ShopInfo                 mSelectedShop    = null;
 
 
 
@@ -54,24 +56,36 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
+
+        Toolbar toolbar  = (Toolbar)                 findViewById(R.id.toolbar);
+        mDrawerLayout    = (NoScrollableDrawerLayout)findViewById(R.id.drawer_layout);
+        mShopMapView     = (FrameLayout)             findViewById(R.id.shopMapView);
+        mShopMapFragment = (ShopMapFragment)         getSupportFragmentManager().findFragmentById(R.id.shopMapFragment);
+
+
 
         mMainDatabase = new MainDatabase(MainActivity.this);
         mDB           = mMainDatabase.getWritableDatabase();
 
 
 
-        setContentView(R.layout.activity_main);
+        setSupportActionBar(toolbar);
 
+        mShopMapView.getLayoutParams().width = getResources().getDisplayMetrics().widthPixels * 80 / 100;
 
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawerLayout,
+                toolbar,
+                R.string.show_map,
+                R.string.hide_map
+        );
 
-        mPager = (ViewPager)findViewById(R.id.pager);
-
-        if (mPager != null)
-        {
-            mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
-
-            mPager.setAdapter(mPagerAdapter);
-        }
+        // noinspection deprecation
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 
 
@@ -87,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
 
             verifyContextPreferences();
         }
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+
+        mDrawerToggle.syncState();
     }
 
     @Override
@@ -119,6 +141,27 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (mDrawerLayout.isDrawerOpen(mShopMapView))
+        {
+            mDrawerLayout.closeDrawer(mShopMapView);
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -129,6 +172,11 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        if (mDrawerToggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
+
         int id = item.getItemId();
 
         if (id == R.id.menu_add_good)
@@ -137,6 +185,11 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
         }
 
         if (id == R.id.menu_delete_goods)
+        {
+            return true;
+        }
+
+        if (id == R.id.menu_start)
         {
             return true;
         }
@@ -263,38 +316,13 @@ public class MainActivity extends AppCompatActivity implements GoodsFragment.OnF
 
     private void updateSelectedShop()
     {
-        if (mShopMapFragment != null)
+        if (mSelectedShop != null)
         {
-            if (mSelectedShop != null)
-            {
-                mShopMapFragment.setSelectedShopText(mSelectedShop.getName());
-            }
-            else
-            {
-                mShopMapFragment.resetSelectedShop();
-            }
+            mShopMapFragment.setSelectedShopText(mSelectedShop.getName());
         }
-    }
-
-    @Override
-    public void onGoodsFragmentCreated(GoodsFragment fragment)
-    {
-        if (mGoodsFragment == null)
+        else
         {
-            mGoodsFragment = fragment;
-
-            setSupportActionBar(mGoodsFragment.getToolbar());
-        }
-    }
-
-    @Override
-    public void onShopMapFragmentCreated(ShopMapFragment fragment)
-    {
-        if (mShopMapFragment == null)
-        {
-            mShopMapFragment = fragment;
-
-            updateSelectedShop();
+            mShopMapFragment.resetSelectedShop();
         }
     }
 

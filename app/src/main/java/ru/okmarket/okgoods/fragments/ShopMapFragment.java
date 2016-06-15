@@ -46,7 +46,6 @@ public class ShopMapFragment extends Fragment implements View.OnClickListener
         mSelectedShopTextView.setOnClickListener(this);
 
         resetSelectedShop();
-        onFragmentCreated();
     }
 
     public void resetSelectedShop()
@@ -67,14 +66,6 @@ public class ShopMapFragment extends Fragment implements View.OnClickListener
         if (view == mSelectedShopTextView)
         {
             onSelectShopClicked();
-        }
-    }
-
-    public void onFragmentCreated()
-    {
-        if (mListener != null)
-        {
-            mListener.onShopMapFragmentCreated(this);
         }
     }
 
@@ -113,7 +104,6 @@ public class ShopMapFragment extends Fragment implements View.OnClickListener
 
     public interface OnFragmentInteractionListener
     {
-        void onShopMapFragmentCreated(ShopMapFragment fragment);
         void onShopMapSelectShopClicked();
     }
 }

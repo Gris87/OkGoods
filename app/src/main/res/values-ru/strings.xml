@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Покупки в О\'КЕЙ</string>
+
     <string name="add_good">Добавить товар</string>
     <string name="delete_goods">Удалить товары</string>
     <string name="start">Старт</string>
@@ -8,8 +9,11 @@
     <string name="update_db">Обновить базу данных</string>
     <string name="settings">Настройки</string>
     <string name="exit">Выход</string>
+    <string name="show_map">Показать карту</string>
+    <string name="hide_map">Скрыть карту</string>
     <string name="shop">Магазин:</string>
     <string name="select_shop">Выбрать магазин</string>
+
     <string name="show_list">Показать список</string>
     <string name="hide_list">Скрыть список</string>
     <string name="filter">Фильтр</string>
@@ -28,6 +32,7 @@
     <string name="square_value">%1d м&#178;</string>
     <string name="hypermarket">Гипермаркет</string>
     <string name="supermarket">Супермаркет</string>
+
     <string name="city_moscow">Москва</string>
     <string name="city_st_petersburg">Санкт-Петербург</string>
     <string name="city_astrakhan">Астрахань</string>
@@ -56,6 +61,7 @@
     <string name="city_tyumen">Тюмень</string>
     <string name="city_ufa">Уфа</string>
     <string name="city_cherepovets">Череповец</string>
+
     <string name="service_clearing_settlement">Оплата карточкой</string>
     <string name="service_cosmetics">Бутик косметики</string>
     <string name="service_playground">Детская площадка</string>
@@ -70,6 +76,7 @@
     <string name="service_gift_cards">Подарочные карты</string>
     <string name="service_parking">Парковка</string>
     <string name="service_point_of_issuing_orders">ПВЗ интернет-магазина</string>
+
     <string name="shop_moscow_hypermarket_ok_rostokino">Гипермаркет О\'КЕЙ «Ростокино»</string>
     <string name="shop_moscow_supermarket_ok_moscow_leninskiy">Супермаркет О\'КЕЙ «Москва Ленинский»</string>
     <string name="shop_moscow_hypermarket_ok_pyatnitskoe_7km">Гипермаркет О’КЕЙ «Пятницкое 7км»</string>
@@ -177,8 +184,10 @@
     <string name="shop_ufa_hypermarket_ok_ufa_iyun">Гипермаркет О’КЕЙ «Уфа Июнь»</string>
     <string name="shop_ufa_hypermarket_ok_ufa_planeta">Гипермаркет О’КЕЙ «Уфа Планета»</string>
     <string name="shop_cherepovets_hypermarket_ok_cherepovets_raakhe">Гипермаркет О\'КЕЙ «Череповец Раахе»</string>
+
     <string name="title_activity_settings">Настройки</string>
     <string name="title_activity_select_shop">Выбор магазина</string>
+
     <string name="pref_header_general">Основные</string>
     <string name="pref_header_notifications">Уведомления</string>
     <string name="pref_title_general_city">Город</string>

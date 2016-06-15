@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OK Goods</string>
+
     <string name="add_good">Add good</string>
     <string name="delete_goods">Delete goods</string>
     <string name="start">Start</string>
@@ -8,8 +9,11 @@
     <string name="update_db">Update database</string>
     <string name="settings">Settings</string>
     <string name="exit">Exit</string>
+    <string name="show_map">Show map</string>
+    <string name="hide_map">Hide map</string>
     <string name="shop">Shop:</string>
     <string name="select_shop">Select shop</string>
+
     <string name="show_list">Show list</string>
     <string name="hide_list">Hide list</string>
     <string name="filter">Filter</string>
@@ -28,6 +32,7 @@
     <string name="square_value">%1d m&#178;</string>
     <string name="hypermarket">Hypermarket</string>
     <string name="supermarket">Supermarket</string>
+
     <string name="city_moscow">Moscow</string>
     <string name="city_st_petersburg">St. Petersburg</string>
     <string name="city_astrakhan">Astrakhan</string>
@@ -56,6 +61,7 @@
     <string name="city_tyumen">Tyumen</string>
     <string name="city_ufa">Ufa</string>
     <string name="city_cherepovets">Cherepovets</string>
+
     <string name="service_clearing_settlement">Clearing settlement</string>
     <string name="service_cosmetics">Cosmetics</string>
     <string name="service_playground">Playground</string>
@@ -70,6 +76,7 @@
     <string name="service_gift_cards">Gift cards</string>
     <string name="service_parking">Parking</string>
     <string name="service_point_of_issuing_orders">Point of issuing orders</string>
+
     <string name="shop_moscow_hypermarket_ok_rostokino">Hypermarket OK «Rostokino»</string>
     <string name="shop_moscow_supermarket_ok_moscow_leninskiy">Supermarket OK «Moscow Leninskiy»</string>
     <string name="shop_moscow_hypermarket_ok_pyatnitskoe_7km">Hypermarket OK «Pyatnitskoe 7km»</string>
@@ -177,8 +184,10 @@
     <string name="shop_ufa_hypermarket_ok_ufa_iyun">Hypermarket OK «Ufa Iyun»</string>
     <string name="shop_ufa_hypermarket_ok_ufa_planeta">Hypermarket OK «Ufa Planeta»</string>
     <string name="shop_cherepovets_hypermarket_ok_cherepovets_raakhe">Hypermarket OK «Cherepovets Raakhe»</string>
+
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_select_shop">Select shop</string>
+
     <string name="pref_header_general">General</string>
     <string name="pref_header_notifications">Notifications</string>
     <string name="pref_title_general_city">City</string>
