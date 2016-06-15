@@ -31,13 +31,13 @@
 
 
     <ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout
-        android:id="@+id/drawer_layout"
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="end">
 
         <ru.yandex.yandexmapkit.MapView
-            android:id="@+id/map"
+            android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:apiKey="oFLmlTN7o4WKqoqtg8WSRJe-kh3uNWvFONhsUBz~baYzPKDfXgHp6C-wPZ0-OLgup9s6rsl4Fzn-iWsAvz8BDDDy3fb6cbSB4vlQSloXo3A=" />

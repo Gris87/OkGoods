@@ -185,6 +185,7 @@
     <string name="shop_ufa_hypermarket_ok_ufa_planeta">Гипермаркет О’КЕЙ «Уфа Планета»</string>
     <string name="shop_cherepovets_hypermarket_ok_cherepovets_raakhe">Гипермаркет О\'КЕЙ «Череповец Раахе»</string>
 
+    <string name="title_activity_main">О\'КЕЙ</string>
     <string name="title_activity_settings">Настройки</string>
     <string name="title_activity_select_shop">Выбор магазина</string>
 

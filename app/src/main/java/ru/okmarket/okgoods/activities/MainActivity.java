@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements ShopMapFragment.O
 
 
         Toolbar toolbar  = (Toolbar)                 findViewById(R.id.toolbar);
-        mDrawerLayout    = (NoScrollableDrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerLayout    = (NoScrollableDrawerLayout)findViewById(R.id.drawerLayout);
         mShopMapView     = (FrameLayout)             findViewById(R.id.shopMapView);
         mShopMapFragment = (ShopMapFragment)         getSupportFragmentManager().findFragmentById(R.id.shopMapFragment);
 

@@ -13,7 +13,7 @@
     tools:context="ru.okmarket.okgoods.activities.MainActivity">
 
     <ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout
-        android:id="@+id/drawer_layout"
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="start">

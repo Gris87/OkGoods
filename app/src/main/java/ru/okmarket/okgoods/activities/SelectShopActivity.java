@@ -100,8 +100,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
         Toolbar toolbar      = (Toolbar)                 findViewById(R.id.toolbar);
-        mMapView             = (MapView)                 findViewById(R.id.map);
-        mDrawerLayout        = (NoScrollableDrawerLayout)findViewById(R.id.drawer_layout);
+        mMapView             = (MapView)                 findViewById(R.id.mapView);
+        mDrawerLayout        = (NoScrollableDrawerLayout)findViewById(R.id.drawerLayout);
         mShopsListView       = (ListView)                findViewById(R.id.shopsListView);
         mShopDetailsView     = (FrameLayout)             findViewById(R.id.shopDetailsView);
         mShopDetailsFragment = (ShopDetailsFragment)     getSupportFragmentManager().findFragmentById(R.id.shopDetailsFragment);
