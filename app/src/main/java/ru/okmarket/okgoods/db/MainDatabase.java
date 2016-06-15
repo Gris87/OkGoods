@@ -41,71 +41,142 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String COLUMN_PARKING_PLACES      = "_parking_places";
     public static final String COLUMN_NUMBER_OF_CASHBOXES = "_number_of_cashboxes";
     public static final String COLUMN_SERVICES_SET        = "_services_set";
+    public static final String COLUMN_ENABLED             = "_enabled";
+    public static final String COLUMN_CATEGORY_ID         = "_category_id";
+    public static final String COLUMN_COST                = "_cost";
+    public static final String COLUMN_UNIT                = "_unit";
+    public static final String COLUMN_UNIT_TYPE           = "_unit_type";
+    public static final String COLUMN_GOOD_ID             = "_good_id";
+    public static final String COLUMN_COUNT               = "_count";
+    public static final String COLUMN_DATE                = "_date";
+    public static final String COLUMN_SHOP_ID             = "_shop_id";
+    public static final String COLUMN_TOTAL               = "_total";
+    public static final String COLUMN_HISTORY_ID          = "_history_id";
 
 
 
-    public static final String[] CITIES_COLUMNS =   {
-                                                        COLUMN_ID,
-                                                        COLUMN_NAME
-                                                    };
+    public static final String[] CITIES_COLUMNS =           {
+                                                                COLUMN_ID,
+                                                                COLUMN_NAME
+                                                            };
 
-    public static final String[] SERVICES_COLUMNS = {
-                                                        COLUMN_ID,
-                                                        COLUMN_NAME
-                                                    };
+    public static final String[] SERVICES_COLUMNS =         {
+                                                                COLUMN_ID,
+                                                                COLUMN_NAME
+                                                            };
 
-    public static final String[] SHOPS_COLUMNS =    {
-                                                        COLUMN_ID,
-                                                        COLUMN_CITY_ID,
-                                                        COLUMN_NAME,
-                                                        COLUMN_IS_HYPERMARKET,
-                                                        COLUMN_LATITUDE,
-                                                        COLUMN_LONGITUDE,
-                                                        COLUMN_PHONE,
-                                                        COLUMN_WORK_HOURS,
-                                                        COLUMN_SQUARE,
-                                                        COLUMN_OPENING_DATE,
-                                                        COLUMN_PARKING_PLACES,
-                                                        COLUMN_NUMBER_OF_CASHBOXES,
-                                                        COLUMN_SERVICES_SET
-                                                    };
+    public static final String[] SHOPS_COLUMNS =            {
+                                                                COLUMN_ID,
+                                                                COLUMN_CITY_ID,
+                                                                COLUMN_NAME,
+                                                                COLUMN_IS_HYPERMARKET,
+                                                                COLUMN_LATITUDE,
+                                                                COLUMN_LONGITUDE,
+                                                                COLUMN_PHONE,
+                                                                COLUMN_WORK_HOURS,
+                                                                COLUMN_SQUARE,
+                                                                COLUMN_OPENING_DATE,
+                                                                COLUMN_PARKING_PLACES,
+                                                                COLUMN_NUMBER_OF_CASHBOXES,
+                                                                COLUMN_SERVICES_SET
+                                                            };
+
+    public static final String[] GOODS_CATEGORIES_COLUMNS = {
+                                                                COLUMN_ID,
+                                                                COLUMN_NAME,
+                                                                COLUMN_ENABLED
+                                                            };
+
+    public static final String[] GOODS_COLUMNS =            {
+                                                                COLUMN_ID,
+                                                                COLUMN_CATEGORY_ID,
+                                                                COLUMN_NAME,
+                                                                COLUMN_COST,
+                                                                COLUMN_UNIT,
+                                                                COLUMN_UNIT_TYPE,
+                                                                COLUMN_ENABLED
+                                                            };
+
+    public static final String[] SELECTED_GOODS_COLUMNS =   {
+                                                                COLUMN_ID,
+                                                                COLUMN_GOOD_ID,
+                                                                COLUMN_COUNT
+                                                            };
+
+    public static final String[] HISTORY_COLUMNS =          {
+                                                                COLUMN_ID,
+                                                                COLUMN_DATE,
+                                                                COLUMN_SHOP_ID,
+                                                                COLUMN_TOTAL
+                                                            };
+
+    public static final String[] HISTORY_DETAILS_COLUMNS =  {
+                                                                COLUMN_ID,
+                                                                COLUMN_HISTORY_ID,
+                                                                COLUMN_GOOD_ID,
+                                                                COLUMN_COST,
+                                                                COLUMN_COUNT
+                                                            };
 
 
 
-    public static final String CITIES_TABLE_NAME   = "cities";
-    public static final String SERVICES_TABLE_NAME = "services";
-    public static final String SHOPS_TABLE_NAME    = "shops";
+    public static final String CITIES_TABLE_NAME           = "cities";
+    public static final String SERVICES_TABLE_NAME         = "services";
+    public static final String SHOPS_TABLE_NAME            = "shops";
+    public static final String GOODS_CATEGORIES_TABLE_NAME = "goods_categories";
+    public static final String GOODS_TABLE_NAME            = "goods";
+    public static final String SELECTED_GOODS_TABLE_NAME   = "selected_goods";
+    public static final String HISTORY_TABLE_NAME          = "history";
+    public static final String HISTORY_DETAILS_TABLE_NAME  = "history_details";
 
 
 
-    private static final String CITIES_TABLE_CREATE = "CREATE TABLE " + CITIES_TABLE_NAME + " " +
-                                                      "(" +
-                                                           COLUMN_ID   + " INTEGER PRIMARY KEY, " +
-                                                           COLUMN_NAME + " TEXT NOT NULL "        +
-                                                      ");";
+    private static final String CITIES_TABLE_CREATE =           "CREATE TABLE " + CITIES_TABLE_NAME + " " +
+                                                                "(" +
+                                                                    COLUMN_ID   + " INTEGER PRIMARY KEY, " +
+                                                                    COLUMN_NAME + " TEXT NOT NULL "        +
+                                                                ");";
 
-    private static final String SERVICES_TABLE_CREATE = "CREATE TABLE " + SERVICES_TABLE_NAME + " " +
-                                                        "(" +
-                                                             COLUMN_ID   + " INTEGER PRIMARY KEY, " +
-                                                             COLUMN_NAME + " TEXT NOT NULL "        +
-                                                        ");";
+    private static final String SERVICES_TABLE_CREATE =         "CREATE TABLE " + SERVICES_TABLE_NAME + " " +
+                                                                "(" +
+                                                                    COLUMN_ID   + " INTEGER PRIMARY KEY, " +
+                                                                    COLUMN_NAME + " TEXT NOT NULL "        +
+                                                                ");";
 
-    private static final String SHOPS_TABLE_CREATE = "CREATE TABLE " + SHOPS_TABLE_NAME + " " +
-                                                     "(" +
-                                                          COLUMN_ID                  + " INTEGER PRIMARY KEY, "                                                                            +
-                                                          COLUMN_CITY_ID             + " INTEGER NOT NULL REFERENCES " + CITIES_TABLE_NAME + "(" + COLUMN_ID + "), "                       +
-                                                          COLUMN_NAME                + " TEXT NOT NULL, "                                                                                  +
-                                                          COLUMN_IS_HYPERMARKET      + " INTEGER NOT NULL, "                                                                               +
-                                                          COLUMN_LATITUDE            + " REAL NOT NULL CHECK (" + COLUMN_LATITUDE  + " >= -90)  CHECK (" + COLUMN_LATITUDE  + " <= 90), "  +
-                                                          COLUMN_LONGITUDE           + " REAL NOT NULL CHECK (" + COLUMN_LONGITUDE + " >= -180) CHECK (" + COLUMN_LONGITUDE + " <= 180), " +
-                                                          COLUMN_PHONE               + " TEXT NOT NULL, "                                                                                  +
-                                                          COLUMN_WORK_HOURS          + " TEXT NOT NULL, "                                                                                  +
-                                                          COLUMN_SQUARE              + " INTEGER NOT NULL, "                                                                               +
-                                                          COLUMN_OPENING_DATE        + " TEXT NOT NULL, "                                                                                  +
-                                                          COLUMN_PARKING_PLACES      + " INTEGER NOT NULL, "                                                                               +
-                                                          COLUMN_NUMBER_OF_CASHBOXES + " INTEGER NOT NULL, "                                                                               +
-                                                          COLUMN_SERVICES_SET        + " INTEGER NOT NULL "                                                                                +
-                                                     ");";
+    private static final String SHOPS_TABLE_CREATE =            "CREATE TABLE " + SHOPS_TABLE_NAME + " " +
+                                                                "(" +
+                                                                    COLUMN_ID                  + " INTEGER PRIMARY KEY, "                                                                            +
+                                                                    COLUMN_CITY_ID             + " INTEGER NOT NULL REFERENCES " + CITIES_TABLE_NAME + "(" + COLUMN_ID + "), "                       +
+                                                                    COLUMN_NAME                + " TEXT NOT NULL, "                                                                                  +
+                                                                    COLUMN_IS_HYPERMARKET      + " INTEGER NOT NULL, "                                                                               +
+                                                                    COLUMN_LATITUDE            + " REAL NOT NULL CHECK (" + COLUMN_LATITUDE  + " >= -90)  CHECK (" + COLUMN_LATITUDE  + " <= 90), "  +
+                                                                    COLUMN_LONGITUDE           + " REAL NOT NULL CHECK (" + COLUMN_LONGITUDE + " >= -180) CHECK (" + COLUMN_LONGITUDE + " <= 180), " +
+                                                                    COLUMN_PHONE               + " TEXT NOT NULL, "                                                                                  +
+                                                                    COLUMN_WORK_HOURS          + " TEXT NOT NULL, "                                                                                  +
+                                                                    COLUMN_SQUARE              + " INTEGER NOT NULL, "                                                                               +
+                                                                    COLUMN_OPENING_DATE        + " TEXT NOT NULL, "                                                                                  +
+                                                                    COLUMN_PARKING_PLACES      + " INTEGER NOT NULL, "                                                                               +
+                                                                    COLUMN_NUMBER_OF_CASHBOXES + " INTEGER NOT NULL, "                                                                               +
+                                                                    COLUMN_SERVICES_SET        + " INTEGER NOT NULL "                                                                                +
+                                                                ");";
+
+    private static final String GOODS_CATEGORIES_TABLE_CREATE = "CREATE TABLE " + GOODS_CATEGORIES_TABLE_NAME + " " +
+                                                                "(" +
+                                                                    COLUMN_ID      + " INTEGER PRIMARY KEY, " +
+                                                                    COLUMN_NAME    + " TEXT NOT NULL, "       +
+                                                                    COLUMN_ENABLED + " INTEGER NOT NULL "     +
+                                                                ");";
+
+    private static final String GOODS_TABLE_CREATE =            "CREATE TABLE " + GOODS_TABLE_NAME + " " +
+                                                                "(" +
+                                                                    COLUMN_ID          + " INTEGER PRIMARY KEY, "                                                                +
+                                                                    COLUMN_CATEGORY_ID + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + "(" + COLUMN_ID + "), " +
+                                                                    COLUMN_NAME        + " TEXT NOT NULL, "                                                                      +
+                                                                    COLUMN_COST        + " REAL NOT NULL, "                                                                      +
+                                                                    COLUMN_UNIT        + " REAL NOT NULL, "                                                                      +
+                                                                    COLUMN_UNIT_TYPE   + " INTEGER NOT NULL, "                                                                   +
+                                                                    COLUMN_ENABLED     + " INTEGER NOT NULL "                                                                    +
+                                                                ");";
 
 
 
