@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import ru.okmarket.okgoods.BuildConfig;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
@@ -41,6 +42,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String COLUMN_PARKING_PLACES      = "_parking_places";
     public static final String COLUMN_NUMBER_OF_CASHBOXES = "_number_of_cashboxes";
     public static final String COLUMN_SERVICES_SET        = "_services_set";
+    public static final String COLUMN_UPDATE_TIME         = "_update_time";
     public static final String COLUMN_ENABLED             = "_enabled";
     public static final String COLUMN_CATEGORY_ID         = "_category_id";
     public static final String COLUMN_COST                = "_cost";
@@ -49,6 +51,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String COLUMN_GOOD_ID             = "_good_id";
     public static final String COLUMN_COUNT               = "_count";
     public static final String COLUMN_DATE                = "_date";
+    public static final String COLUMN_DURATION            = "_duration";
     public static final String COLUMN_SHOP_ID             = "_shop_id";
     public static final String COLUMN_TOTAL               = "_total";
     public static final String COLUMN_HISTORY_ID          = "_history_id";
@@ -56,11 +59,6 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
     public static final String[] CITIES_COLUMNS =           {
-                                                                COLUMN_ID,
-                                                                COLUMN_NAME
-                                                            };
-
-    public static final String[] SERVICES_COLUMNS =         {
                                                                 COLUMN_ID,
                                                                 COLUMN_NAME
                                                             };
@@ -84,6 +82,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String[] GOODS_CATEGORIES_COLUMNS = {
                                                                 COLUMN_ID,
                                                                 COLUMN_NAME,
+                                                                COLUMN_UPDATE_TIME,
                                                                 COLUMN_ENABLED
                                                             };
 
@@ -94,19 +93,22 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 COLUMN_COST,
                                                                 COLUMN_UNIT,
                                                                 COLUMN_UNIT_TYPE,
+                                                                COLUMN_UPDATE_TIME,
                                                                 COLUMN_ENABLED
                                                             };
 
     public static final String[] SELECTED_GOODS_COLUMNS =   {
                                                                 COLUMN_ID,
                                                                 COLUMN_GOOD_ID,
+                                                                COLUMN_CATEGORY_ID,
                                                                 COLUMN_COUNT
                                                             };
 
     public static final String[] HISTORY_COLUMNS =          {
                                                                 COLUMN_ID,
-                                                                COLUMN_DATE,
                                                                 COLUMN_SHOP_ID,
+                                                                COLUMN_DATE,
+                                                                COLUMN_DURATION,
                                                                 COLUMN_TOTAL
                                                             };
 
@@ -114,6 +116,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 COLUMN_ID,
                                                                 COLUMN_HISTORY_ID,
                                                                 COLUMN_GOOD_ID,
+                                                                COLUMN_CATEGORY_ID,
                                                                 COLUMN_COST,
                                                                 COLUMN_COUNT
                                                             };
@@ -121,7 +124,6 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
     public static final String CITIES_TABLE_NAME           = "cities";
-    public static final String SERVICES_TABLE_NAME         = "services";
     public static final String SHOPS_TABLE_NAME            = "shops";
     public static final String GOODS_CATEGORIES_TABLE_NAME = "goods_categories";
     public static final String GOODS_TABLE_NAME            = "goods";
@@ -132,12 +134,6 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
     private static final String CITIES_TABLE_CREATE =           "CREATE TABLE " + CITIES_TABLE_NAME + " " +
-                                                                "(" +
-                                                                    COLUMN_ID   + " INTEGER PRIMARY KEY, " +
-                                                                    COLUMN_NAME + " TEXT NOT NULL "        +
-                                                                ");";
-
-    private static final String SERVICES_TABLE_CREATE =         "CREATE TABLE " + SERVICES_TABLE_NAME + " " +
                                                                 "(" +
                                                                     COLUMN_ID   + " INTEGER PRIMARY KEY, " +
                                                                     COLUMN_NAME + " TEXT NOT NULL "        +
@@ -162,9 +158,10 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private static final String GOODS_CATEGORIES_TABLE_CREATE = "CREATE TABLE " + GOODS_CATEGORIES_TABLE_NAME + " " +
                                                                 "(" +
-                                                                    COLUMN_ID      + " INTEGER PRIMARY KEY, " +
-                                                                    COLUMN_NAME    + " TEXT NOT NULL, "       +
-                                                                    COLUMN_ENABLED + " INTEGER NOT NULL "     +
+                                                                    COLUMN_ID          + " INTEGER PRIMARY KEY, " +
+                                                                    COLUMN_NAME        + " TEXT NOT NULL, "       +
+                                                                    COLUMN_UPDATE_TIME + " INTEGER NOT NULL, "    +
+                                                                    COLUMN_ENABLED     + " INTEGER NOT NULL "     +
                                                                 ");";
 
     private static final String GOODS_TABLE_CREATE =            "CREATE TABLE " + GOODS_TABLE_NAME + " " +
@@ -175,7 +172,35 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                     COLUMN_COST        + " REAL NOT NULL, "                                                                      +
                                                                     COLUMN_UNIT        + " REAL NOT NULL, "                                                                      +
                                                                     COLUMN_UNIT_TYPE   + " INTEGER NOT NULL, "                                                                   +
+                                                                    COLUMN_UPDATE_TIME + " INTEGER NOT NULL, "                                                                   +
                                                                     COLUMN_ENABLED     + " INTEGER NOT NULL "                                                                    +
+                                                                ");";
+
+    private static final String SELECTED_GOODS_TABLE_CREATE =   "CREATE TABLE " + SELECTED_GOODS_TABLE_NAME + " " +
+                                                                "(" +
+                                                                    COLUMN_ID          + " INTEGER PRIMARY KEY, "                                                                +
+                                                                    COLUMN_GOOD_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_TABLE_NAME            + "(" + COLUMN_ID + "), " +
+                                                                    COLUMN_CATEGORY_ID + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + "(" + COLUMN_ID + "), " +
+                                                                    COLUMN_COUNT       + " REAL NOT NULL "                                                                       +
+                                                                ");";
+
+    private static final String HISTORY_TABLE_CREATE =          "CREATE TABLE " + HISTORY_TABLE_NAME + " " +
+                                                                "(" +
+                                                                    COLUMN_ID       + " INTEGER PRIMARY KEY, " +
+                                                                    COLUMN_SHOP_ID  + " INTEGER NOT NULL, "    +
+                                                                    COLUMN_DATE     + " TEXT NOT NULL, "       +
+                                                                    COLUMN_DURATION + " INTEGER NOT NULL, "    +
+                                                                    COLUMN_TOTAL    + " REAL NOT NULL "        +
+                                                                ");";
+
+    private static final String HISTORY_DETAILS_TABLE_CREATE =  "CREATE TABLE " + HISTORY_DETAILS_TABLE_NAME + " " +
+                                                                "(" +
+                                                                    COLUMN_ID          + " INTEGER PRIMARY KEY, "                                                                +
+                                                                    COLUMN_HISTORY_ID  + " INTEGER NOT NULL REFERENCES " + HISTORY_TABLE_NAME          + "(" + COLUMN_ID + "), " +
+                                                                    COLUMN_GOOD_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_TABLE_NAME            + "(" + COLUMN_ID + "), " +
+                                                                    COLUMN_CATEGORY_ID + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + "(" + COLUMN_ID + "), " +
+                                                                    COLUMN_COST        + " REAL NOT NULL, "                                                                      +
+                                                                    COLUMN_COUNT       + " REAL NOT NULL "                                                                       +
                                                                 ");";
 
 
@@ -270,21 +295,6 @@ public class MainDatabase extends SQLiteOpenHelper
             , new GeoPoint(54.7720531355310, 56.0663189902330) // UFA
             , new GeoPoint(59.1062657254020, 37.9103532275380) // CHEREPOVETS
     };
-
-    public static final int SERVICE_ID_CLEARING_SETTLEMENT     = 1;
-    public static final int SERVICE_ID_COSMETICS               = 2;
-    public static final int SERVICE_ID_PLAYGROUND              = 3;
-    public static final int SERVICE_ID_FISH_ISLAND             = 4;
-    public static final int SERVICE_ID_BAKERY                  = 5;
-    public static final int SERVICE_ID_COOKERY                 = 6;
-    public static final int SERVICE_ID_TAXI_ORDERING           = 7;
-    public static final int SERVICE_ID_PHARMACY                = 8;
-    public static final int SERVICE_ID_ORDERING_FOOD           = 9;
-    public static final int SERVICE_ID_DEGUSTATION             = 10;
-    public static final int SERVICE_ID_CAFE                    = 11;
-    public static final int SERVICE_ID_GIFT_CARDS              = 12;
-    public static final int SERVICE_ID_PARKING                 = 13;
-    public static final int SERVICE_ID_POINT_OF_ISSUING_ORDERS = 14;
 
     public static final int SERVICE_CLEARING_SETTLEMENT_MASK     = 0x00000001;
     public static final int SERVICE_COSMETICS_MASK               = 0x00000002;
@@ -412,6 +422,14 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final int SHOP_ID_UFA_HYPERMARKET_OK_UFA_PLANETA                                      = 571;
     public static final int SHOP_ID_CHEREPOVETS_HYPERMARKET_OK_CHEREPOVETS_RAAKHE                       = 565;
 
+    public static final int DISABLED      = 0;
+    public static final int ENABLED       = 1;
+    public static final int FORCE_ENABLED = 2;
+
+    public static final int UNIT_TYPE_NOTHING  = 0;
+    public static final int UNIT_TYPE_KILOGRAM = 1;
+    public static final int UNIT_TYPE_LITER    = 2;
+
 
 
     private Context mContext = null;
@@ -428,8 +446,11 @@ public class MainDatabase extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        createTables(db);
+        createStaticTables(db);
+        createDynamicTables(db);
+
         fillStaticTables(db);
+        fillDynamicTables(db);
     }
 
     @Override
@@ -441,24 +462,16 @@ public class MainDatabase extends SQLiteOpenHelper
         }
     }
 
-    private void createTables(SQLiteDatabase db)
-    {
-        createStaticTables(db);
-        createDynamicTables(db);
-    }
-
     private void createStaticTables(SQLiteDatabase db)
     {
         db.execSQL(CITIES_TABLE_CREATE);
-        db.execSQL(SERVICES_TABLE_CREATE);
         db.execSQL(SHOPS_TABLE_CREATE);
     }
 
     private void dropStaticTables(SQLiteDatabase db)
     {
-        db.execSQL("DROP TABLE IF EXISTS " + SHOPS_TABLE_NAME    + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + SERVICES_TABLE_NAME + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + CITIES_TABLE_NAME   + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + SHOPS_TABLE_NAME  + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + CITIES_TABLE_NAME + ";");
     }
 
     public void recreateStaticTables(SQLiteDatabase db)
@@ -470,13 +483,26 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private void createDynamicTables(SQLiteDatabase db)
     {
+        db.execSQL(GOODS_CATEGORIES_TABLE_CREATE);
+        db.execSQL(GOODS_TABLE_CREATE);
+        db.execSQL(SELECTED_GOODS_TABLE_CREATE);
+        db.execSQL(HISTORY_TABLE_CREATE);
+        db.execSQL(HISTORY_DETAILS_TABLE_CREATE);
     }
 
     private void fillStaticTables(SQLiteDatabase db)
     {
         fillCitiesTable(db);
-        fillServicesTable(db);
         fillShopsTable(db);
+    }
+
+    private void fillDynamicTables(SQLiteDatabase db)
+    {
+        fillGoodsCategoriesTable(db);
+        fillGoodsTable(db);
+        fillSelectedGoodsTable(db);
+        fillHistoryTable(db);
+        fillHistoryDetailsTable(db);
     }
 
     private void fillCitiesTable(SQLiteDatabase db)
@@ -509,24 +535,6 @@ public class MainDatabase extends SQLiteOpenHelper
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_TYUMEN,           mContext.getResources().getString(R.string.city_tyumen));
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_UFA,              mContext.getResources().getString(R.string.city_ufa));
         insertToTable(db, CITIES_TABLE_NAME, CITIES_COLUMNS, CITY_ID_CHEREPOVETS,      mContext.getResources().getString(R.string.city_cherepovets));
-    }
-
-    private void fillServicesTable(SQLiteDatabase db)
-    {
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_CLEARING_SETTLEMENT,     mContext.getResources().getString(R.string.service_clearing_settlement));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_COSMETICS,               mContext.getResources().getString(R.string.service_cosmetics));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_PLAYGROUND,              mContext.getResources().getString(R.string.service_playground));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_FISH_ISLAND,             mContext.getResources().getString(R.string.service_fish_island));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_BAKERY,                  mContext.getResources().getString(R.string.service_bakery));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_COOKERY,                 mContext.getResources().getString(R.string.service_cookery));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_TAXI_ORDERING,           mContext.getResources().getString(R.string.service_taxi_ordering));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_PHARMACY,                mContext.getResources().getString(R.string.service_pharmacy));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_ORDERING_FOOD,           mContext.getResources().getString(R.string.service_ordering_food));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_DEGUSTATION,             mContext.getResources().getString(R.string.service_degustation));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_CAFE,                    mContext.getResources().getString(R.string.service_cafe));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_GIFT_CARDS,              mContext.getResources().getString(R.string.service_gift_cards));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_PARKING,                 mContext.getResources().getString(R.string.service_parking));
-        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_POINT_OF_ISSUING_ORDERS, mContext.getResources().getString(R.string.service_point_of_issuing_orders));
     }
 
     private void fillShopsTable(SQLiteDatabase db)
@@ -3102,6 +3110,76 @@ public class MainDatabase extends SQLiteOpenHelper
                         SERVICE_GIFT_CARDS_MASK    |
                         SERVICE_PARKING_MASK
         );
+    }
+
+    private void fillGoodsCategoriesTable(SQLiteDatabase db)
+    {
+        insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 0, "", 0, DISABLED);
+
+        if (BuildConfig.DEBUG)
+        {
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 1, "Алкогольные напитки",         0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 2, "Крепкий алкоголь",            0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 3, "Водка",                       0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 4, "Легкий алкоголь",             0, DISABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 5, "Кондитерские изделия",        0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 6, "Мучные кондитерские изделия", 0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 7, "Вафли",                       0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 8, "К чаю",                       0, FORCE_ENABLED);
+        }
+    }
+
+    private void fillGoodsTable(SQLiteDatabase db)
+    {
+        insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 0, 0, "", 0.00, 0, UNIT_TYPE_NOTHING, DISABLED);
+
+        if (BuildConfig.DEBUG)
+        {
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 1, 3, "Водка Русский Стандарт Платинум алк.40% 0,5л",                  669.00, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 2, 3, "Водка Царская Оригинальная алк 40% 1л",                         913.40, 1,     UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 3, 3, "Водка Хортиця Классическая 0.5 л 40% об.",                      343.40, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 4, 3, "Водка Пять озер 40% 0.25 л",                                    171.90, 0.25,  UNIT_TYPE_LITER,    0, DISABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 5, 3, "Водка Русский Стандарт 40% 0.7л",                               752.40, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 6, 7, "Вафли Коровка топленое молоко 150г",                            42.90,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 7, 7, "Палочки вафельные Тореро с арахисом в шоколадной глазури 220г", 82.90,  0.22,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 8, 7, "Трубочка Тореро со сгущенкой 65г",                              22.90,  0.065, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 9, 0, "Наш любимый хлеб",                                              0.00,   0,     UNIT_TYPE_NOTHING,  0, FORCE_ENABLED);
+        }
+    }
+
+    private void fillSelectedGoodsTable(SQLiteDatabase db)
+    {
+        if (BuildConfig.DEBUG)
+        {
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 1, 1, 0, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 2, 3, 0, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 3, 4, 0, 3);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 4, 0, 4, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 5, 6, 0, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 6, 9, 0, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 7, 0, 8, 1);
+        }
+    }
+
+    private void fillHistoryTable(SQLiteDatabase db)
+    {
+        if (BuildConfig.DEBUG)
+        {
+            insertToTable(db, HISTORY_TABLE_NAME, HISTORY_COLUMNS, 1, SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_OZERKI,      "2016-01-01", 3200000, 2613.10);
+            insertToTable(db, HISTORY_TABLE_NAME, HISTORY_COLUMNS, 2, SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BALKANSKAYA, "2016-12-31", 4000000, 4219.50);
+        }
+    }
+
+    private void fillHistoryDetailsTable(SQLiteDatabase db)
+    {
+        if (BuildConfig.DEBUG)
+        {
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 1, 1, 4, 0, 234.10, 5);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 2, 1, 8, 0, 121.60, 8);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 3, 1, 0, 8, 0.00,   1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 4, 2, 5, 0, 974.10, 3);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 5, 2, 1, 0, 843.10, 2);
+        }
     }
 
     public void insertToTable(SQLiteDatabase db, String tableName, String[] columns, Object... values)

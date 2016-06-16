@@ -1,6 +1,4 @@
-Shop photos
 Ask for starting
-Fill with debug data
 Add/remove goods
 Add aproximate cost
 Check that we have goods
