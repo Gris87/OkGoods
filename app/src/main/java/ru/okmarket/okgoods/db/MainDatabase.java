@@ -370,6 +370,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_ZHUKOVA                                = 527;
     public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KOLPINO_TRUDYASHCHIKHSYA               = 529;
     public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KOLPINO_TVERSKAYA                      = 531;
+    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_PARTIZANA_GERMANA                      = 35988;
     public static final int SHOP_ID_ASTRAKHAN_HYPERMARKET_OK_ASTRAKHAN_ALIMPIK                          = 680;
     public static final int SHOP_ID_ASTRAKHAN_SUPERMARKET_OK_ASTRAKHAN_TRI_KOTA                         = 682;
     public static final int SHOP_ID_ASTRAKHAN_HYPERMARKET_OK_ASTRAKHAN_VOKZALNAYA                       = 684;
@@ -1845,6 +1846,32 @@ public class MainDatabase extends SQLiteOpenHelper
                         SERVICE_FISH_ISLAND_MASK |
                         SERVICE_BAKERY_MASK      |
                         SERVICE_COOKERY_MASK     |
+                        SERVICE_PARKING_MASK
+        );
+
+        insertToTable(db, SHOPS_TABLE_NAME, SHOPS_COLUMNS,
+                SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_PARTIZANA_GERMANA,                                             // COLUMN_ID
+                CITY_ID_ST_PETERSBURG,                                                                              // COLUMN_CITY_ID
+                mContext.getResources().getString(R.string.shop_st_petersburg_hypermarket_ok_partizana_germana),    // COLUMN_NAME
+                SHOP_HYPERMARKET,                                                                                   // COLUMN_IS_HYPERMARKET
+                59.843611753131,                                                                                    // COLUMN_LATITUDE
+                30.177683080704,                                                                                    // COLUMN_LONGITUDE
+                "",                                                                                                 // COLUMN_PHONE
+                "9:00-23:00",                                                                                       // COLUMN_WORK_HOURS
+                0,                                                                                                  // COLUMN_SQUARE
+                "15.06.2016",                                                                                       // COLUMN_OPENING_DATE
+                0,                                                                                                  // COLUMN_PARKING_PLACES
+                44,                                                                                                 // COLUMN_NUMBER_OF_CASHBOXES
+                SERVICE_CLEARING_SETTLEMENT_MASK   |                                                                // COLUMN_SERVICES_SET
+                        SERVICE_COSMETICS_MASK     |
+                        SERVICE_PLAYGROUND_MASK    |
+                        SERVICE_FISH_ISLAND_MASK   |
+                        SERVICE_BAKERY_MASK        |
+                        SERVICE_COOKERY_MASK       |
+                        SERVICE_TAXI_ORDERING_MASK |
+                        SERVICE_ORDERING_FOOD_MASK |
+                        SERVICE_DEGUSTATION_MASK   |
+                        SERVICE_GIFT_CARDS_MASK    |
                         SERVICE_PARKING_MASK
         );
 

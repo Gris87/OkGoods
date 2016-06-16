@@ -53,7 +53,6 @@ private:
     void updateMainDatabaseJavaCitiesFilling(QStringList &fileContents);
     void updateMainDatabaseJavaServices(QStringList &fileContents);
     void updateMainDatabaseJavaServicesIDs(QStringList &fileContents);
-    void updateMainDatabaseJavaServicesFilling(QStringList &fileContents);
     void updateMainDatabaseJavaShops(QStringList &fileContents);
     void updateMainDatabaseJavaShopsIDs(QStringList &fileContents);
     void updateMainDatabaseJavaShopsFilling(QStringList &fileContents);

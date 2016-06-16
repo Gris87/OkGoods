@@ -1730,7 +1730,6 @@ void ParserThread::updateMainDatabaseJavaCitiesFilling(QStringList &fileContents
 void ParserThread::updateMainDatabaseJavaServices(QStringList &fileContents)
 {
     updateMainDatabaseJavaServicesIDs(fileContents);
-    updateMainDatabaseJavaServicesFilling(fileContents);
 }
 
 void ParserThread::updateMainDatabaseJavaServicesIDs(QStringList &fileContents)
@@ -1753,13 +1752,6 @@ void ParserThread::updateMainDatabaseJavaServicesIDs(QStringList &fileContents)
 
     for (int i = 0; i < mServices.length(); ++i)
     {
-        newLines.append(QString("    public static final int SERVICE_ID_%1 = %2;").arg(mServicesIDs.at(i).toUpper(), -maxLength, QChar(' ')).arg(i + 1));
-    }
-
-    newLines.append("");
-
-    for (int i = 0; i < mServices.length(); ++i)
-    {
         newLines.append(QString("    public static final int SERVICE_%1 = 0x%2;").arg(mServicesIDs.at(i).toUpper() + "_MASK", -maxLength - 5, QChar(' ')).arg(1 << i, 8, 16, QChar('0')));
     }
 
@@ -1770,7 +1762,9 @@ void ParserThread::updateMainDatabaseJavaServicesIDs(QStringList &fileContents)
 
     for (int i = 0; i < fileContents.length(); ++i)
     {
-        if (fileContents.at(i).trimmed().startsWith("public static final int SERVICE_ID_"))
+        QString line = fileContents.at(i).trimmed();
+
+        if (line.startsWith("public static final int SERVICE_") && line.contains("_MASK"))
         {
             if (start < 0)
             {
@@ -1783,105 +1777,6 @@ void ParserThread::updateMainDatabaseJavaServicesIDs(QStringList &fileContents)
         {
             if (end >= 0)
             {
-                break;
-            }
-        }
-    }
-
-
-
-    if (start >= 0 && start <= end)
-    {
-        int newEnd = -1;
-
-        for (int i = end + 1; i < fileContents.length(); ++i)
-        {
-            QString line = fileContents.at(i).trimmed();
-
-            if (line.startsWith("public static final int SERVICE_") && line.contains("_MASK"))
-            {
-                newEnd = i;
-            }
-            else
-            {
-                if (newEnd >= 0)
-                {
-                    break;
-                }
-            }
-        }
-
-        end = newEnd;
-    }
-
-
-
-    if (start >= 0 && start <= end)
-    {
-        for (int i = end; i >= start; --i)
-        {
-            fileContents.removeAt(i);
-        }
-
-        for (int i = 0; i < newLines.length(); ++i)
-        {
-            fileContents.insert(start + i, newLines.at(i));
-        }
-    }
-    else
-    {
-        addError(tr("Failed to modify services in MainDatabase.java"));
-    }
-}
-
-void ParserThread::updateMainDatabaseJavaServicesFilling(QStringList &fileContents)
-{
-    int maxLength = 0;
-
-    for (int i = 0; i < mServices.length(); ++i)
-    {
-        int serviceLength = mServicesIDs.at(i).length();
-
-        if (serviceLength > maxLength)
-        {
-            maxLength = serviceLength;
-        }
-    }
-
-
-
-    QStringList newLines;
-
-    for (int i = 0; i < mServices.length(); ++i)
-    {
-        newLines.append(QString("        insertToTable(db, SERVICES_TABLE_NAME, SERVICES_COLUMNS, SERVICE_ID_%1 mContext.getResources().getString(R.string.service_%2));").arg(mServicesIDs.at(i).toUpper() + ",", -maxLength - 1, QChar(' ')).arg(mServicesIDs.at(i)));
-    }
-
-
-
-    int start = -1;
-    int end   = -1;
-
-    for (int i = 0; i < fileContents.length(); ++i)
-    {
-        if (fileContents.at(i).trimmed().startsWith("private void fillServicesTable("))
-        {
-            start = i + 2;
-
-            break;
-        }
-    }
-
-
-
-    if (start >= 0)
-    {
-        for (int i = start; i < fileContents.length(); ++i)
-        {
-            if (fileContents.at(i).trimmed() == "}")
-            {
-                end = i - 1;
-
                 break;
             }
         }
