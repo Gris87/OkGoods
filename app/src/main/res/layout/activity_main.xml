@@ -46,7 +46,7 @@
 
         <FrameLayout
             android:id="@+id/shopMapView"
-            android:layout_width="300dp"
+            android:layout_width="@dimen/common_drawer_layout_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@color/windowBackground">

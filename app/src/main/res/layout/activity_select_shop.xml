@@ -44,14 +44,14 @@
 
         <ListView
             android:id="@+id/shopsListView"
-            android:layout_width="300dp"
+            android:layout_width="@dimen/common_drawer_layout_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@color/windowBackground"/>
 
         <FrameLayout
             android:id="@+id/shopDetailsView"
-            android:layout_width="300dp"
+            android:layout_width="@dimen/common_drawer_layout_width"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:background="@color/windowBackground">

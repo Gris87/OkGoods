@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import java.util.Locale;
@@ -26,7 +28,7 @@ import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
-public class MainActivity extends AppCompatActivity implements ShopMapFragment.OnFragmentInteractionListener, SelectCityDialog.OnFragmentInteractionListener
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener, ShopMapFragment.OnFragmentInteractionListener, SelectCityDialog.OnFragmentInteractionListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "MainActivity";
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements ShopMapFragment.O
 
     private static final int SETTINGS    = 1;
     private static final int SELECT_SHOP = 2;
+    private static final int HISTORY     = 3;
 
 
 
@@ -87,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements ShopMapFragment.O
 
         // noinspection deprecation
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        mShopMapView.setOnTouchListener(this);
 
 
 
@@ -204,6 +209,9 @@ public class MainActivity extends AppCompatActivity implements ShopMapFragment.O
 
         if (id == R.id.menu_history)
         {
+            Intent intent = new Intent(this, HistoryActivity.class);
+            startActivityForResult(intent, HISTORY);
+
             return true;
         }
 
@@ -228,6 +236,21 @@ public class MainActivity extends AppCompatActivity implements ShopMapFragment.O
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent event)
+    {
+        if (view == mShopMapView)
+        {
+            return true;
+        }
+        else
+        {
+            AppLog.wtf(TAG, "Unknown view");
+        }
+
+        return false;
     }
 
     @Override
@@ -270,6 +293,12 @@ public class MainActivity extends AppCompatActivity implements ShopMapFragment.O
             {
                 AppLog.wtf(TAG, "Unknown result code: " + String.valueOf(resultCode));
             }
+        }
+        else
+        // noinspection StatementWithEmptyBody
+        if (requestCode == HISTORY)
+        {
+            // Nothing
         }
         else
         {

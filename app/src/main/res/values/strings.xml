@@ -188,6 +188,8 @@
     <string name="title_activity_main">OK</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_select_shop">Select shop</string>
+    <string name="title_activity_history">History</string>
+    <string name="title_activity_history_details">History details</string>
 
     <string name="pref_header_general">General</string>
     <string name="pref_header_notifications">Notifications</string>
