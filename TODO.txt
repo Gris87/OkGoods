@@ -1,18 +1,19 @@
 Ask for starting
-Add/remove goods
+Add goods
+Remove goods
 Add aproximate cost
 Check that we have goods
 Check that shop selected
+Do not change shop when started
 Change UI on start
 Change UI on stop
-Allow to remove goods
-Fade out for removed good
+Allow to complete good
+Fade out for completed good
 Add to history
 Show history
 Show the way
 Walk on the shop map
 Get real data
-CachedImage
 Release keys
 Free money everywhere
 Find more free money
