@@ -31,7 +31,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.okmarket.okgoods.activities.MainActivity" />
+                android:value=".activities.MainActivity" />
 
         </activity>
 
@@ -55,7 +55,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.okmarket.okgoods.activities.MainActivity" />
+                android:value=".activities.MainActivity" />
 
         </activity>
 

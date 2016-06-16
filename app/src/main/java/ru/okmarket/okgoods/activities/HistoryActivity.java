@@ -17,7 +17,6 @@ import android.view.MenuItem;
 
 import ru.okmarket.okgoods.R;
 
-import ru.okmarket.okgoods.activities.dummy.DummyContent;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 
 import java.util.List;
@@ -34,13 +33,21 @@ public class HistoryActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
+
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        // Show the Up button in the action bar.
+
+
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
+
+        if (actionBar != null)
+        {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -48,17 +55,15 @@ public class HistoryActivity extends AppCompatActivity
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
-        if (findViewById(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
+        if (findViewById(R.id.item_detail_container) != null)
+        {
             mTwoPane = true;
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int id = item.getItemId();
 
         if (id == android.R.id.home)

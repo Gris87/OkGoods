@@ -21,7 +21,7 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.detailToolbar);
 
 
 

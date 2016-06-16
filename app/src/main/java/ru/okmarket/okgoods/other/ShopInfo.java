@@ -48,7 +48,7 @@ public class ShopInfo implements Parcelable
     @Override
     public String toString()
     {
-        return mName;
+        return String.valueOf(mName);
     }
 
     @Override

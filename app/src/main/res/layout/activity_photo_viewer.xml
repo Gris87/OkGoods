@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ru.okmarket.okgoods.activities.PhotoViewerActivity">
+    tools:context=".activities.PhotoViewerActivity">
 
     <ru.okmarket.okgoods.widgets.PhotoViewPager
         android:id="@+id/photoViewPager"

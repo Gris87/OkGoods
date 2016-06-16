@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ru.okmarket.okgoods.fragments.ShopMapFragment">
+    tools:context=".fragments.ShopMapFragment">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -18,16 +18,16 @@
 
             <CheckBox
                 android:id="@+id/supermarketCheckBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="50"
                 android:text="@string/supermarket" />
 
             <CheckBox
                 android:id="@+id/hypermarketCheckBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="50"
                 android:text="@string/hypermarket" />
 
         </LinearLayout>
