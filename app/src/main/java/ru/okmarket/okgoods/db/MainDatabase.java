@@ -13,6 +13,8 @@ import java.util.Locale;
 
 import ru.okmarket.okgoods.BuildConfig;
 import ru.okmarket.okgoods.R;
+import ru.okmarket.okgoods.other.HistoryDetailsInfo;
+import ru.okmarket.okgoods.other.HistoryInfo;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
@@ -3192,8 +3194,8 @@ public class MainDatabase extends SQLiteOpenHelper
     {
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, HISTORY_TABLE_NAME, HISTORY_COLUMNS, 1, SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_OZERKI,      "2016-01-01", 3200000, 2613.10);
-            insertToTable(db, HISTORY_TABLE_NAME, HISTORY_COLUMNS, 2, SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BALKANSKAYA, "2016-12-31", 4000000, 4219.50);
+            insertToTable(db, HISTORY_TABLE_NAME, HISTORY_COLUMNS, 1, SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_OZERKI,      "01.01.2016", 3200000, 2613.10);
+            insertToTable(db, HISTORY_TABLE_NAME, HISTORY_COLUMNS, 2, SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BALKANSKAYA, "31.12.2016", 4000000, 4219.50);
         }
     }
 
@@ -3416,6 +3418,36 @@ public class MainDatabase extends SQLiteOpenHelper
         }
 
         cursor.close();
+
+
+
+        return res;
+    }
+
+    public ArrayList<HistoryInfo> getHistory(SQLiteDatabase db)
+    {
+        ArrayList<HistoryInfo> res = new ArrayList<>();
+
+
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + HISTORY_TABLE_NAME +
+                                    ";", null);
+
+        while (!cursor.isAfterLast())
+        {
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+
+
+        return res;
+    }
+
+    public ArrayList<HistoryDetailsInfo> getHistoryDetails(SQLiteDatabase db, int historyId)
+    {
+        ArrayList<HistoryDetailsInfo> res = new ArrayList<>();
 
 
 

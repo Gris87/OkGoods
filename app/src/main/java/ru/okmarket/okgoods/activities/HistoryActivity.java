@@ -2,6 +2,7 @@ package ru.okmarket.okgoods.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,15 +16,22 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import ru.okmarket.okgoods.R;
 
+import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
-
-import java.util.List;
+import ru.okmarket.okgoods.other.HistoryInfo;
 
 public class HistoryActivity extends AppCompatActivity
 {
-    private boolean mTwoPane;
+    @SuppressWarnings("unused")
+    private static final String TAG = "HistoryActivity";
+
+
+
+    private HistoryDetailsFragment mHistoryDetailsFragment = null;
 
 
 
@@ -35,14 +43,12 @@ public class HistoryActivity extends AppCompatActivity
 
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar         = (Toolbar)               findViewById(R.id.toolbar);
+        mHistoryDetailsFragment = (HistoryDetailsFragment)getSupportFragmentManager().findFragmentById(R.id.historyDetailsFragment);
 
 
 
         setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-
-
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -51,14 +57,9 @@ public class HistoryActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        View recyclerView = findViewById(R.id.item_list);
+        View recyclerView = findViewById(R.id.historyRecyclerView);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
-
-        if (findViewById(R.id.item_detail_container) != null)
-        {
-            mTwoPane = true;
-        }
     }
 
     @Override
@@ -76,36 +77,55 @@ public class HistoryActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView)
+    {
+        MainDatabase   mainDatabase = new MainDatabase(this);
+        SQLiteDatabase db           = mainDatabase.getReadableDatabase();
+
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mainDatabase.getHistory(db)));
+
+        db.close();
     }
 
-    public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
-            mValues = items;
+    public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>
+    {
+        private final ArrayList<HistoryInfo> mItems;
+
+
+
+        public SimpleItemRecyclerViewAdapter(ArrayList<HistoryInfo> items)
+        {
+            mItems = items;
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_item_history, parent, false);
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history, parent, false);
+
             return new ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+        public void onBindViewHolder(final ViewHolder holder, int position)
+        {
+            holder.mItem = mItems.get(position);
 
-            holder.mView.setOnClickListener(new View.OnClickListener() {
+            holder.mShopNameTextView.setText(holder.mItem.getShopName());
+            holder.mDateTextView.setText(holder.mItem.getDate());
+            holder.mDurationTextView.setText(String.valueOf(holder.mItem.getDuration()));
+            holder.mTotalTextView.setText(String.valueOf(holder.mItem.getTotal()));
+
+            holder.mView.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
-                    if (mTwoPane) {
+                public void onClick(View v)
+                {
+                    /*
+                    if (mTwoPane)
+                    {
                         Bundle arguments = new Bundle();
                         arguments.putString(HistoryDetailsFragment.ARG_ITEM_ID, holder.mItem.id);
                         HistoryDetailsFragment fragment = new HistoryDetailsFragment();
@@ -113,38 +133,45 @@ public class HistoryActivity extends AppCompatActivity
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.item_detail_container, fragment)
                                 .commit();
-                    } else {
+                    }
+                    else
+                    {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, HistoryDetailsActivity.class);
                         intent.putExtra(HistoryDetailsFragment.ARG_ITEM_ID, holder.mItem.id);
 
                         context.startActivity(intent);
                     }
+                    */
                 }
             });
         }
 
         @Override
-        public int getItemCount() {
-            return mValues.size();
+        public int getItemCount()
+        {
+            return mItems.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+        public class ViewHolder extends RecyclerView.ViewHolder
+        {
+            public HistoryInfo mItem;
+            public View        mView;
+            public TextView    mShopNameTextView;
+            public TextView    mDateTextView;
+            public TextView    mDurationTextView;
+            public TextView    mTotalTextView;
 
-            public ViewHolder(View view) {
+
+            public ViewHolder(View view)
+            {
                 super(view);
-                mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
-            }
 
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                mView             = view;
+                mShopNameTextView = (TextView)view.findViewById(R.id.shopNameTextView);
+                mDateTextView     = (TextView)view.findViewById(R.id.dateTextView);
+                mDurationTextView = (TextView)view.findViewById(R.id.durationTextView);
+                mTotalTextView    = (TextView)view.findViewById(R.id.totalTextView);
             }
         }
     }

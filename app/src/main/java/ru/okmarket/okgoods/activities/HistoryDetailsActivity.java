@@ -13,6 +13,15 @@ import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 
 public class HistoryDetailsActivity extends AppCompatActivity
 {
+    @SuppressWarnings("unused")
+    private static final String TAG = "HistoryDetailsActivity";
+
+
+
+    private HistoryDetailsFragment mHistoryDetailsFragment = null;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -21,7 +30,8 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detailToolbar);
+        Toolbar toolbar         = (Toolbar)               findViewById(R.id.detailToolbar);
+        mHistoryDetailsFragment = (HistoryDetailsFragment)getSupportFragmentManager().findFragmentById(R.id.historyDetailsFragment);
 
 
 
@@ -32,22 +42,6 @@ public class HistoryDetailsActivity extends AppCompatActivity
         if (actionBar != null)
         {
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-
-
-
-        if (savedInstanceState == null)
-        {
-            HistoryDetailsFragment fragment = new HistoryDetailsFragment();
-
-            Bundle arguments = new Bundle();
-            arguments.putString(HistoryDetailsFragment.ARG_ITEM_ID, getIntent().getStringExtra(HistoryDetailsFragment.ARG_ITEM_ID));
-            fragment.setArguments(arguments);
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.item_detail_container, fragment)
-                    .commit();
         }
     }
 
