@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import ru.okmarket.okgoods.R;
 
 import ru.okmarket.okgoods.activities.dummy.DummyContent;
+import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 
 import java.util.List;
 

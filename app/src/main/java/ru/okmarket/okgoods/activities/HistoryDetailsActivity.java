@@ -9,6 +9,7 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
 import ru.okmarket.okgoods.R;
+import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 
 public class HistoryDetailsActivity extends AppCompatActivity
 {

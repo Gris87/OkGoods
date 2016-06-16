@@ -1,4 +1,4 @@
-package ru.okmarket.okgoods.activities;
+package ru.okmarket.okgoods.fragments;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
