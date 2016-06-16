@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements ShopMapFragment.O
 
 
         setSupportActionBar(toolbar);
+        setTitle(R.string.title_activity_main);
 
         mShopMapView.getLayoutParams().width = getResources().getDisplayMetrics().widthPixels * 80 / 100;
 
