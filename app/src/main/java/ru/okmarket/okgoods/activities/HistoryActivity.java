@@ -114,12 +114,12 @@ public class HistoryActivity extends AppCompatActivity
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position)
         {
-            holder.mItem = mItems.get(position);
+            final HistoryInfo item = mItems.get(position);
 
-            holder.mShopNameTextView.setText(holder.mItem.getShopName());
-            holder.mDateTextView.setText(holder.mItem.getDate());
-            holder.mDurationTextView.setText(getString(R.string.time, holder.mItem.getDurationString()));
-            holder.mTotalTextView.setText(getString(R.string.rub_currency, holder.mItem.getTotal()));
+            holder.mShopNameTextView.setText(item.getShopName());
+            holder.mDateTextView.setText(item.getDate());
+            holder.mDurationTextView.setText(getString(R.string.time, item.getDurationString()));
+            holder.mTotalTextView.setText(getString(R.string.rub_currency, item.getTotal()));
 
             holder.mView.setOnClickListener(new View.OnClickListener()
             {
@@ -129,7 +129,7 @@ public class HistoryActivity extends AppCompatActivity
                     MainDatabase   mainDatabase = new MainDatabase(HistoryActivity.this);
                     SQLiteDatabase db           = mainDatabase.getReadableDatabase();
 
-                    ArrayList<HistoryDetailsInfo> details = mainDatabase.getHistoryDetails(db, holder.mItem.getId());
+                    ArrayList<HistoryDetailsInfo> details = mainDatabase.getHistoryDetails(db, item.getId());
 
                     db.close();
 
@@ -156,12 +156,11 @@ public class HistoryActivity extends AppCompatActivity
 
         public class ViewHolder extends RecyclerView.ViewHolder
         {
-            public HistoryInfo mItem;
-            public View        mView;
-            public TextView    mShopNameTextView;
-            public TextView    mDateTextView;
-            public TextView    mDurationTextView;
-            public TextView    mTotalTextView;
+            public View     mView;
+            public TextView mShopNameTextView;
+            public TextView mDateTextView;
+            public TextView mDurationTextView;
+            public TextView mTotalTextView;
 
 
             public ViewHolder(View view)

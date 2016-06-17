@@ -8,8 +8,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
+import ru.okmarket.okgoods.other.Extras;
+import ru.okmarket.okgoods.other.HistoryDetailsInfo;
 
 public class HistoryDetailsActivity extends AppCompatActivity
 {
@@ -43,6 +47,12 @@ public class HistoryDetailsActivity extends AppCompatActivity
         {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+
+
+        Intent intent = getIntent();
+        ArrayList<HistoryDetailsInfo> details = intent.getParcelableArrayListExtra(Extras.HISTORY_DETAILS);
+        mHistoryDetailsFragment.setHistoryDetails(details);
     }
 
     @Override

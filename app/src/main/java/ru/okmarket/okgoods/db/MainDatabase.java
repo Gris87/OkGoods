@@ -3261,6 +3261,8 @@ public class MainDatabase extends SQLiteOpenHelper
         {
             res[i] = cursor.getString(nameColumnIndex);
 
+
+
             ++i;
             cursor.moveToNext();
         }
@@ -3351,6 +3353,8 @@ public class MainDatabase extends SQLiteOpenHelper
 
             res.add(shop);
 
+
+
             cursor.moveToNext();
         }
 
@@ -3438,8 +3442,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                         HISTORY_TABLE_NAME + "." + COLUMN_TOTAL                                                    + " "  +
                                     "FROM " + HISTORY_TABLE_NAME                                                                   + " "  +
                                     "INNER JOIN " + SHOPS_TABLE_NAME                                                               + " "  +
-                                    "ON " + HISTORY_TABLE_NAME + "." + COLUMN_SHOP_ID + " = " +
-                SHOPS_TABLE_NAME + "." + COLUMN_ID +
+                                    "ON " + HISTORY_TABLE_NAME + "." + COLUMN_SHOP_ID + " = " + SHOPS_TABLE_NAME + "." + COLUMN_ID +
                                     ";", null);
 
 
@@ -3466,6 +3469,8 @@ public class MainDatabase extends SQLiteOpenHelper
 
             res.add(history);
 
+
+
             cursor.moveToNext();
         }
 
@@ -3479,6 +3484,59 @@ public class MainDatabase extends SQLiteOpenHelper
     public ArrayList<HistoryDetailsInfo> getHistoryDetails(SQLiteDatabase db, int historyId)
     {
         ArrayList<HistoryDetailsInfo> res = new ArrayList<>();
+
+
+
+        Cursor cursor = db.rawQuery("SELECT"                                                                                                              + " "  +
+                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_ID                                                                     + ", " +
+                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_GOOD_ID                                                                + ", " +
+                                        GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                 + ", " +
+                                        GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                             + ", " +
+                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_COST                                                                   + ", " +
+                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_COUNT                                                                  + " "  +
+                                    "FROM " + HISTORY_DETAILS_TABLE_NAME                                                                                  + " "  +
+                                    "INNER JOIN " + GOODS_TABLE_NAME                                                                                      + " "  +
+                                    "ON " + HISTORY_DETAILS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
+                                    "INNER JOIN " + GOODS_CATEGORIES_TABLE_NAME                                                                           + " "  +
+                                    "ON " + HISTORY_DETAILS_TABLE_NAME + "." + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ID +
+                                    ";", null);
+
+
+
+        int idColumnIndex           = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int goodIdColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_GOOD_ID);
+        int goodNameColumnIndex     = cursor.getColumnIndexOrThrow("good_name");
+        int categoryNameColumnIndex = cursor.getColumnIndexOrThrow("category_name");
+        int costColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_COST);
+        int countColumnIndex        = cursor.getColumnIndexOrThrow(COLUMN_COUNT);
+
+
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            String goodName     = cursor.getString(goodNameColumnIndex);
+            String categoryName = cursor.getString(categoryNameColumnIndex);
+
+
+
+            HistoryDetailsInfo details = new HistoryDetailsInfo();
+
+            details.setId(      cursor.getInt(idColumnIndex));
+            details.setGoodId(  cursor.getInt(goodIdColumnIndex));
+            details.setGoodName(TextUtils.isEmpty(goodName) ? categoryName : goodName);
+            details.setCost(    cursor.getDouble(costColumnIndex));
+            details.setCount(   cursor.getDouble(countColumnIndex));
+
+            res.add(details);
+
+
+
+            cursor.moveToNext();
+        }
+
+        cursor.close();
 
 
 

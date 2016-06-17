@@ -58,9 +58,9 @@ public class HistoryDetailsInfo implements Parcelable
             return false;
         }
 
-        HistoryDetailsInfo historyDetails = (HistoryDetailsInfo)object;
+        HistoryDetailsInfo details = (HistoryDetailsInfo)object;
 
-        return mId == historyDetails.mId;
+        return mId == details.mId;
     }
 
     public int getId()
