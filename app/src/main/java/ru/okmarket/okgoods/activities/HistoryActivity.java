@@ -24,6 +24,7 @@ import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.other.HistoryDetailsInfo;
 import ru.okmarket.okgoods.other.HistoryInfo;
+import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 
 public class HistoryActivity extends AppCompatActivity
 {
@@ -44,8 +45,13 @@ public class HistoryActivity extends AppCompatActivity
 
 
 
-        Toolbar toolbar         = (Toolbar)               findViewById(R.id.toolbar);
-        mHistoryDetailsFragment = (HistoryDetailsFragment)getSupportFragmentManager().findFragmentById(R.id.historyDetailsFragment);
+        Toolbar toolbar           = (Toolbar)               findViewById(R.id.toolbar);
+        RecyclerView recyclerView = (RecyclerView)          findViewById(R.id.historyRecyclerView);
+        mHistoryDetailsFragment   = (HistoryDetailsFragment)getSupportFragmentManager().findFragmentById(R.id.historyDetailsFragment);
+
+
+
+        assert recyclerView != null;
 
 
 
@@ -58,9 +64,15 @@ public class HistoryActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        View recyclerView = findViewById(R.id.historyRecyclerView);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+
+
+        MainDatabase   mainDatabase = new MainDatabase(this);
+        SQLiteDatabase db           = mainDatabase.getReadableDatabase();
+
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mainDatabase.getHistory(db)));
+
+        db.close();
     }
 
     @Override
@@ -76,16 +88,6 @@ public class HistoryActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView)
-    {
-        MainDatabase   mainDatabase = new MainDatabase(this);
-        SQLiteDatabase db           = mainDatabase.getReadableDatabase();
-
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mainDatabase.getHistory(db)));
-
-        db.close();
     }
 
 

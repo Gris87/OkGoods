@@ -24,9 +24,8 @@
 
         <TextView
             android:id="@+id/dateTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:singleLine="true" />
 
@@ -34,7 +33,7 @@
             android:id="@+id/durationTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
+            android:layout_weight="100"
             android:layout_marginLeft="@dimen/common_margin"
             android:layout_marginRight="@dimen/common_margin"
             android:textAppearance="?android:attr/textAppearanceSmall"
