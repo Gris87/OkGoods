@@ -32,7 +32,7 @@ public class HistoryInfo implements Parcelable
     @Override
     public String toString()
     {
-        return String.format(Locale.US, "{shopName = %1$s, date = %2$s, duration = %3$d, total = %4$5.2f}"
+        return String.format(Locale.US, "{shopName = %1$s, date = %2$s, duration = %3$d, total = %4$.2f}"
                 , String.valueOf(mShopName)
                 , String.valueOf(mDate)
                 , mDuration

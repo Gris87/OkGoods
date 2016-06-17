@@ -34,8 +34,8 @@
     <string name="supermarket">Supermarket</string>
 
     <string name="time">Time: %1$s</string>
-    <string name="rub_currency">%1$5.2f rub.</string>
-    <string name="rub_currency_count">%1$5.2f rub. x %2$5.2f</string>
+    <string name="rub_currency">%1$.2f rub.</string>
+    <string name="rub_currency_count">%1$.2f rub. x %2$.1f</string>
     <string name="category">Category</string>
 
     <string name="city_moscow">Moscow</string>

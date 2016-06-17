@@ -34,8 +34,8 @@
     <string name="supermarket">Супермаркет</string>
 
     <string name="time">Время: %1$s</string>
-    <string name="rub_currency">%1$5.2f руб.</string>
-    <string name="rub_currency_count">%1$5.2f руб. x %2$5.2f</string>
+    <string name="rub_currency">%1$.2f руб.</string>
+    <string name="rub_currency_count">%1$.2f руб. x %2$.1f</string>
     <string name="category">Категория</string>
 
     <string name="city_moscow">Москва</string>
