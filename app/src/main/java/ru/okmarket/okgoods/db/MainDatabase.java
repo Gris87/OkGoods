@@ -3160,7 +3160,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private void fillGoodsTable(SQLiteDatabase db)
     {
-        insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 0, 0, "", 0.00, 0, UNIT_TYPE_NOTHING, DISABLED);
+        insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 0, 0, "", 0.00, 0, UNIT_TYPE_NOTHING, 0, DISABLED);
 
         if (BuildConfig.DEBUG)
         {
@@ -3442,7 +3442,8 @@ public class MainDatabase extends SQLiteOpenHelper
                                         HISTORY_TABLE_NAME + "." + COLUMN_TOTAL                                                    + " "  +
                                     "FROM " + HISTORY_TABLE_NAME                                                                   + " "  +
                                     "INNER JOIN " + SHOPS_TABLE_NAME                                                               + " "  +
-                                    "ON " + HISTORY_TABLE_NAME + "." + COLUMN_SHOP_ID + " = " + SHOPS_TABLE_NAME + "." + COLUMN_ID +
+                                    "ON " + HISTORY_TABLE_NAME + "." + COLUMN_SHOP_ID + " = " + SHOPS_TABLE_NAME + "." + COLUMN_ID + " "  +
+                                    "ORDER BY " + HISTORY_TABLE_NAME + "." + COLUMN_ID + " DESC"                                   +
                                     ";", null);
 
 
@@ -3498,8 +3499,9 @@ public class MainDatabase extends SQLiteOpenHelper
                                     "INNER JOIN " + GOODS_TABLE_NAME                                                                                      + " "  +
                                     "ON " + HISTORY_DETAILS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
                                     "INNER JOIN " + GOODS_CATEGORIES_TABLE_NAME                                                                           + " "  +
-                                    "ON " + HISTORY_DETAILS_TABLE_NAME + "." + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ID +
-                                    ";", null);
+                                    "ON " + HISTORY_DETAILS_TABLE_NAME + "." + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ID + " "  +
+                                    "WHERE " + HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_HISTORY_ID + " = ?"                                             +
+                                    ";", new String[] { String.valueOf(historyId) } );
 
 
 

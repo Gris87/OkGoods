@@ -19,8 +19,8 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
 
 
 
-    private Context                       mContext;
-    private ArrayList<HistoryDetailsInfo> mItems;
+    private Context                       mContext = null;
+    private ArrayList<HistoryDetailsInfo> mItems   = null;
 
 
 
