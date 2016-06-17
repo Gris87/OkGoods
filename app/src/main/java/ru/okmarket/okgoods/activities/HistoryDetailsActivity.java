@@ -51,7 +51,11 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
 
         Intent intent = getIntent();
+
+        String history                        = intent.getStringExtra(Extras.HISTORY);
         ArrayList<HistoryDetailsInfo> details = intent.getParcelableArrayListExtra(Extras.HISTORY_DETAILS);
+
+        setTitle(history);
         mHistoryDetailsFragment.setHistoryDetails(details);
     }
 

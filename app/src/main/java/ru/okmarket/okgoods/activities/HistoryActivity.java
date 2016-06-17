@@ -29,6 +29,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
 
 
+    private static final String SAVED_STATE_HISTORY_DETAILS = "HISTORY_DETAILS";
+
+
+
     private HistoryDetailsFragment mHistoryDetailsFragment = null;
 
 
@@ -77,6 +81,29 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        if (mHistoryDetailsFragment != null)
+        {
+            outState.putParcelableArrayList(SAVED_STATE_HISTORY_DETAILS, mHistoryDetailsFragment.getHistoryDetails());
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (mHistoryDetailsFragment != null)
+        {
+            ArrayList<HistoryDetailsInfo> details = savedInstanceState.getParcelableArrayList(SAVED_STATE_HISTORY_DETAILS);
+            mHistoryDetailsFragment.setHistoryDetails(details);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
@@ -110,6 +137,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         else
         {
             Intent intent = new Intent(HistoryActivity.this, HistoryDetailsActivity.class);
+
+            intent.putExtra(Extras.HISTORY,         history.getDate() + " " + history.getShopName());
             intent.putExtra(Extras.HISTORY_DETAILS, details);
 
             startActivity(intent);

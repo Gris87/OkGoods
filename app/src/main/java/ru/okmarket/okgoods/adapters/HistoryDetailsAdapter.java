@@ -68,6 +68,11 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         notifyDataSetChanged();
     }
 
+    public ArrayList<HistoryDetailsInfo> getItems()
+    {
+        return mItems;
+    }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder

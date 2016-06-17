@@ -53,4 +53,9 @@ public class HistoryDetailsFragment extends Fragment
     {
         mAdapter.setItems(details);
     }
+
+    public ArrayList<HistoryDetailsInfo> getHistoryDetails()
+    {
+        return mAdapter.getItems();
+    }
 }
