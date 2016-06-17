@@ -1,6 +1,5 @@
 package ru.okmarket.okgoods.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -22,6 +21,8 @@ import ru.okmarket.okgoods.R;
 
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
+import ru.okmarket.okgoods.other.Extras;
+import ru.okmarket.okgoods.other.HistoryDetailsInfo;
 import ru.okmarket.okgoods.other.HistoryInfo;
 
 public class HistoryActivity extends AppCompatActivity
@@ -115,34 +116,32 @@ public class HistoryActivity extends AppCompatActivity
 
             holder.mShopNameTextView.setText(holder.mItem.getShopName());
             holder.mDateTextView.setText(holder.mItem.getDate());
-            holder.mDurationTextView.setText(String.valueOf(holder.mItem.getDuration()));
-            holder.mTotalTextView.setText(String.valueOf(holder.mItem.getTotal()));
+            holder.mDurationTextView.setText(getString(R.string.time, holder.mItem.getDurationString()));
+            holder.mTotalTextView.setText(getString(R.string.rub_currency, holder.mItem.getTotal()));
 
             holder.mView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
-                public void onClick(View v)
+                public void onClick(View view)
                 {
-                    /*
-                    if (mTwoPane)
+                    MainDatabase   mainDatabase = new MainDatabase(HistoryActivity.this);
+                    SQLiteDatabase db           = mainDatabase.getReadableDatabase();
+
+                    ArrayList<HistoryDetailsInfo> details = mainDatabase.getHistoryDetails(db, holder.mItem.getId());
+
+                    db.close();
+
+                    if (mHistoryDetailsFragment != null)
                     {
-                        Bundle arguments = new Bundle();
-                        arguments.putString(HistoryDetailsFragment.ARG_ITEM_ID, holder.mItem.id);
-                        HistoryDetailsFragment fragment = new HistoryDetailsFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.item_detail_container, fragment)
-                                .commit();
+                        mHistoryDetailsFragment.setHistoryDetails(details);
                     }
                     else
                     {
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, HistoryDetailsActivity.class);
-                        intent.putExtra(HistoryDetailsFragment.ARG_ITEM_ID, holder.mItem.id);
+                        Intent intent = new Intent(HistoryActivity.this, HistoryDetailsActivity.class);
+                        intent.putExtra(Extras.HISTORY_DETAILS, details);
 
-                        context.startActivity(intent);
+                        startActivity(intent);
                     }
-                    */
                 }
             });
         }

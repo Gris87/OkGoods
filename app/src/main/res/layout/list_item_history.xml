@@ -12,6 +12,7 @@
         android:layout_marginLeft="@dimen/common_margin"
         android:layout_marginRight="@dimen/common_margin"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:singleLine="true"
         android:gravity="start|center_vertical" />
 
     <LinearLayout
@@ -25,24 +26,26 @@
             android:id="@+id/dateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="40"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_weight="50"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:singleLine="true" />
 
         <TextView
             android:id="@+id/durationTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="40"
+            android:layout_weight="50"
             android:layout_marginLeft="@dimen/common_margin"
             android:layout_marginRight="@dimen/common_margin"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:singleLine="true" />
 
         <TextView
             android:id="@+id/totalTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:singleLine="true"
             android:gravity="end" />
 
     </LinearLayout>

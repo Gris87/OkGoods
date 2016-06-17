@@ -37,7 +37,7 @@ public class ShopFilter implements Parcelable
     @Override
     public String toString()
     {
-        return String.format(Locale.US, "{isHypermarket = %d, isSupermarket = %d, isAllDay = %d, servicesSet = %d}"
+        return String.format(Locale.US, "{isHypermarket = %1$d, isSupermarket = %2$d, isAllDay = %3$d, servicesSet = %4$d}"
                                         , mIsHypermarket ? 1 : 0
                                         , mIsSupermarket ? 1 : 0
                                         , mIsAllDay      ? 1 : 0

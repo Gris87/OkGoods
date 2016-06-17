@@ -11,9 +11,15 @@ Allow to complete good
 Fade out for completed good
 Add to history
 Show history
+Options for history (Save/Count/Details)
 Show the way
 Walk on the shop map
 Get real data
+Detailed description
+Auto-update service
+Updater class with callbacks
+Show 10 second timer on update db action
+Auto-update options (Frequency, Wi-Fi)
 Release keys
 Free money everywhere
 Find more free money

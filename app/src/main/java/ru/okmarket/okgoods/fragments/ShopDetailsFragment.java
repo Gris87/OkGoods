@@ -457,7 +457,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     {
         if (square > 0)
         {
-            mSquareTextView.setText(String.format(getContext().getString(R.string.square_value), square));
+            mSquareTextView.setText(getString(R.string.square_value, square));
         }
         else
         {

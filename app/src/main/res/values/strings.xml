@@ -29,9 +29,12 @@
     <string name="services">Services:</string>
     <string name="photos">Photos:</string>
     <string name="all_day">All day</string>
-    <string name="square_value">%1d m&#178;</string>
+    <string name="square_value">%1$d m&#178;</string>
     <string name="hypermarket">Hypermarket</string>
     <string name="supermarket">Supermarket</string>
+
+    <string name="time">Time: %1$s</string>
+    <string name="rub_currency">%1$5.2f rub.</string>
 
     <string name="city_moscow">Moscow</string>
     <string name="city_st_petersburg">St. Petersburg</string>

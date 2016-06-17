@@ -32,7 +32,7 @@ public class HistoryInfo implements Parcelable
     @Override
     public String toString()
     {
-        return String.format(Locale.US, "{shopName = %s, date = %s, duration = %d, total = %f}"
+        return String.format(Locale.US, "{shopName = %1$s, date = %2$s, duration = %3$d, total = %4$5.2f}"
                 , String.valueOf(mShopName)
                 , String.valueOf(mDate)
                 , mDuration
@@ -101,6 +101,24 @@ public class HistoryInfo implements Parcelable
     public void setDuration(int duration)
     {
         mDuration = duration;
+    }
+
+    public String getDurationString()
+    {
+        int duration = mDuration;
+
+        int milliseconds = duration                  % 1000;
+        duration         = (duration - milliseconds) / 1000;
+
+        int seconds = duration             % 60;
+        duration    = (duration - seconds) / 60;
+
+        int minutes = duration             % 60;
+        duration    = (duration - minutes) / 60;
+
+        int hours = duration;
+
+        return String.format(Locale.US, "%1$02d:%2$02d:%3$02d", hours, minutes, seconds);
     }
 
     public double getTotal()

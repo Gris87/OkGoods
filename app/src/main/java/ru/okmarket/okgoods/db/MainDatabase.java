@@ -3326,15 +3326,15 @@ public class MainDatabase extends SQLiteOpenHelper
         {
             ShopInfo shop = new ShopInfo();
 
-            shop.setId(cursor.getInt(idColumnIndex));
-            shop.setCityId(cursor.getInt(cityIdColumnIndex));
-            shop.setName(cursor.getString(nameColumnIndex));
+            shop.setId(           cursor.getInt(idColumnIndex));
+            shop.setCityId(       cursor.getInt(cityIdColumnIndex));
+            shop.setName(         cursor.getString(nameColumnIndex));
             shop.setIsHypermarket(cursor.getInt(isHypermarketColumnIndex) == SHOP_HYPERMARKET);
-            shop.setLatitude(cursor.getDouble(latitudeColumnIndex));
-            shop.setLongitude(cursor.getDouble(longitudeColumnIndex));
-            shop.setPhone(cursor.getString(phoneColumnIndex));
-            shop.setWorkHours(cursor.getString(workHoursColumnIndex));
-            shop.setSquare(cursor.getInt(squareColumnIndex));
+            shop.setLatitude(     cursor.getDouble(latitudeColumnIndex));
+            shop.setLongitude(    cursor.getDouble(longitudeColumnIndex));
+            shop.setPhone(        cursor.getString(phoneColumnIndex));
+            shop.setWorkHours(    cursor.getString(workHoursColumnIndex));
+            shop.setSquare(       cursor.getInt(squareColumnIndex));
 
             try
             {
@@ -3345,9 +3345,9 @@ public class MainDatabase extends SQLiteOpenHelper
                 shop.setOpeningDate(null);
             }
 
-            shop.setParkingPlaces(cursor.getInt(parkingPlacesColumnIndex));
+            shop.setParkingPlaces(    cursor.getInt(parkingPlacesColumnIndex));
             shop.setNumberOfCashboxes(cursor.getInt(numberOfCashboxesColumnIndex));
-            shop.setServicesSet(cursor.getInt(servicesSetColumnIndex));
+            shop.setServicesSet(      cursor.getInt(servicesSetColumnIndex));
 
             res.add(shop);
 
@@ -3393,15 +3393,15 @@ public class MainDatabase extends SQLiteOpenHelper
         {
             res = new ShopInfo();
 
-            res.setId(cursor.getInt(idColumnIndex));
-            res.setCityId(cursor.getInt(cityIdColumnIndex));
-            res.setName(cursor.getString(nameColumnIndex));
+            res.setId(           cursor.getInt(idColumnIndex));
+            res.setCityId(       cursor.getInt(cityIdColumnIndex));
+            res.setName(         cursor.getString(nameColumnIndex));
             res.setIsHypermarket(cursor.getInt(isHypermarketColumnIndex) == SHOP_HYPERMARKET);
-            res.setLatitude(cursor.getDouble(latitudeColumnIndex));
-            res.setLongitude(cursor.getDouble(longitudeColumnIndex));
-            res.setPhone(cursor.getString(phoneColumnIndex));
-            res.setWorkHours(cursor.getString(workHoursColumnIndex));
-            res.setSquare(cursor.getInt(squareColumnIndex));
+            res.setLatitude(     cursor.getDouble(latitudeColumnIndex));
+            res.setLongitude(    cursor.getDouble(longitudeColumnIndex));
+            res.setPhone(        cursor.getString(phoneColumnIndex));
+            res.setWorkHours(    cursor.getString(workHoursColumnIndex));
+            res.setSquare(       cursor.getInt(squareColumnIndex));
 
             try
             {
@@ -3412,9 +3412,9 @@ public class MainDatabase extends SQLiteOpenHelper
                 res.setOpeningDate(null);
             }
 
-            res.setParkingPlaces(cursor.getInt(parkingPlacesColumnIndex));
+            res.setParkingPlaces(    cursor.getInt(parkingPlacesColumnIndex));
             res.setNumberOfCashboxes(cursor.getInt(numberOfCashboxesColumnIndex));
-            res.setServicesSet(cursor.getInt(servicesSetColumnIndex));
+            res.setServicesSet(      cursor.getInt(servicesSetColumnIndex));
         }
 
         cursor.close();
@@ -3430,11 +3430,42 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + HISTORY_TABLE_NAME +
+        Cursor cursor = db.rawQuery("SELECT"                                                                                       + " "  +
+                                        HISTORY_TABLE_NAME + "." + COLUMN_ID                                                       + ", " +
+                                        SHOPS_TABLE_NAME   + "." + COLUMN_NAME                                                     + ", " +
+                                        HISTORY_TABLE_NAME + "." + COLUMN_DATE                                                     + ", " +
+                                        HISTORY_TABLE_NAME + "." + COLUMN_DURATION                                                 + ", " +
+                                        HISTORY_TABLE_NAME + "." + COLUMN_TOTAL                                                    + " "  +
+                                    "FROM " + HISTORY_TABLE_NAME                                                                   + " "  +
+                                    "INNER JOIN " + SHOPS_TABLE_NAME                                                               + " "  +
+                                    "ON " + HISTORY_TABLE_NAME + "." + COLUMN_SHOP_ID + " = " +
+                SHOPS_TABLE_NAME + "." + COLUMN_ID +
                                     ";", null);
+
+
+
+        int idColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int shopNameColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+        int dateColumnIndex     = cursor.getColumnIndexOrThrow(COLUMN_DATE);
+        int durationColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_DURATION);
+        int totalColumnIndex    = cursor.getColumnIndexOrThrow(COLUMN_TOTAL);
+
+
+
+        cursor.moveToFirst();
 
         while (!cursor.isAfterLast())
         {
+            HistoryInfo history = new HistoryInfo();
+
+            history.setId(      cursor.getInt(idColumnIndex));
+            history.setShopName(cursor.getString(shopNameColumnIndex));
+            history.setDate(    cursor.getString(dateColumnIndex));
+            history.setDuration(cursor.getInt(durationColumnIndex));
+            history.setTotal(   cursor.getDouble(totalColumnIndex));
+
+            res.add(history);
+
             cursor.moveToNext();
         }
 
