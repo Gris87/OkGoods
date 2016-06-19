@@ -12,6 +12,8 @@ Fade out for completed good
 Add to history
 Show history
 Options for history (Save/Count/Details)
+Use history to add goods
+Priority for goods
 Show the way
 Walk on the shop map
 Get real data
