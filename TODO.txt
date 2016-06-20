@@ -1,4 +1,3 @@
-Set font size for history details
 Show goods
 Add goods
 Remove goods

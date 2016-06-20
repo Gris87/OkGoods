@@ -15,6 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
+            app:collapsedTitleTextAppearance="?android:attr/textAppearanceSmall"
+            app:expandedTitleTextAppearance="?android:attr/textAppearanceLarge"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
