@@ -3494,6 +3494,7 @@ public class MainDatabase extends SQLiteOpenHelper
         Cursor cursor = db.rawQuery("SELECT"                                                                                                              + " "  +
                                         HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_ID                                                                     + ", " +
                                         HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_GOOD_ID                                                                + ", " +
+                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_CATEGORY_ID                                                            + ", " +
                                         GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                 + ", " +
                                         GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                             + ", " +
                                         HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_COST                                                                   + ", " +
@@ -3510,6 +3511,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         int idColumnIndex           = cursor.getColumnIndexOrThrow(COLUMN_ID);
         int goodIdColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_GOOD_ID);
+        int categoryIdColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
         int goodNameColumnIndex     = cursor.getColumnIndexOrThrow("good_name");
         int categoryNameColumnIndex = cursor.getColumnIndexOrThrow("category_name");
         int costColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_COST);
@@ -3528,11 +3530,12 @@ public class MainDatabase extends SQLiteOpenHelper
 
             HistoryDetailsInfo details = new HistoryDetailsInfo();
 
-            details.setId(      cursor.getInt(idColumnIndex));
-            details.setGoodId(  cursor.getInt(goodIdColumnIndex));
-            details.setGoodName(TextUtils.isEmpty(goodName) ? categoryName : goodName);
-            details.setCost(    cursor.getDouble(costColumnIndex));
-            details.setCount(   cursor.getDouble(countColumnIndex));
+            details.setId(        cursor.getInt(idColumnIndex));
+            details.setGoodId(    cursor.getInt(goodIdColumnIndex));
+            details.setCategoryId(cursor.getInt(categoryIdColumnIndex));
+            details.setName(      !TextUtils.isEmpty(goodName) ? goodName : categoryName);
+            details.setCost(      cursor.getDouble(costColumnIndex));
+            details.setCount(     cursor.getDouble(countColumnIndex));
 
             res.add(details);
 
