@@ -242,7 +242,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
             setNumberOfCashboxes(shop.getNumberOfCashboxes());
 
             mServicesTextView.setVisibility(View.VISIBLE);
-            mPhotosTextView.setVisibility(View.VISIBLE);
+            mPhotosTextView.setVisibility(View.GONE);
 
             mServiceClearingSettlementImageView.setVisibility(  (shop.getServicesSet() & MainDatabase.SERVICE_CLEARING_SETTLEMENT_MASK)     != 0 ? View.VISIBLE : View.GONE);
             mServiceCosmeticsImageView.setVisibility(           (shop.getServicesSet() & MainDatabase.SERVICE_COSMETICS_MASK)               != 0 ? View.VISIBLE : View.GONE);
@@ -275,6 +275,10 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
                         @Override
                         public void onResponse(String response)
                         {
+                            mPhotosTextView.setVisibility(View.VISIBLE);
+
+
+
                             Resources resources = getResources();
 
                             int height = resources.getDimensionPixelSize(R.dimen.shop_photo_size);

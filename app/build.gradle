@@ -35,5 +35,6 @@ dependencies
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
+    compile 'net.opacapp:multiline-collapsingtoolbar:1.0.0'
     compile 'ru.yandex:yandexmapkit:2.4.2@aar'
 }

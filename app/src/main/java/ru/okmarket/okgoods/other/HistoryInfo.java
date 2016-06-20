@@ -13,6 +13,7 @@ public class HistoryInfo implements Parcelable
 
 
     private int     mId;
+    private int     mShopId;
     private String  mShopName;
     private String  mDate;
     private int     mDuration;
@@ -23,6 +24,7 @@ public class HistoryInfo implements Parcelable
     public HistoryInfo()
     {
         mId       = 0;
+        mShopId   = 0;
         mShopName = null;
         mDate     = null;
         mDuration = 0;
@@ -73,14 +75,24 @@ public class HistoryInfo implements Parcelable
         mId = id;
     }
 
+    public int getShopId()
+    {
+        return mShopId;
+    }
+
+    public void setShopId(int shopId)
+    {
+        mShopId = shopId;
+    }
+
     public String getShopName()
     {
         return mShopName;
     }
 
-    public void setShopName(String mShopName)
+    public void setShopName(String shopName)
     {
-        this.mShopName = mShopName;
+        mShopName = shopName;
     }
 
     public String getDate()
@@ -141,6 +153,7 @@ public class HistoryInfo implements Parcelable
     public void writeToParcel(Parcel out, int flags)
     {
         out.writeInt(mId);
+        out.writeInt(mShopId);
         out.writeString(mShopName);
         out.writeString(mDate);
         out.writeInt(mDuration);
@@ -165,6 +178,7 @@ public class HistoryInfo implements Parcelable
     private HistoryInfo(Parcel in)
     {
         mId       = in.readInt();
+        mShopId   = in.readInt();
         mShopName = in.readString();
         mDate     = in.readString();
         mDuration = in.readInt();

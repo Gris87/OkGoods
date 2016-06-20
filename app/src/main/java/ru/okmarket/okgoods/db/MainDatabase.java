@@ -3436,6 +3436,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         Cursor cursor = db.rawQuery("SELECT"                                                                                       + " "  +
                                         HISTORY_TABLE_NAME + "." + COLUMN_ID                                                       + ", " +
+                                        HISTORY_TABLE_NAME + "." + COLUMN_SHOP_ID                                                  + ", " +
                                         SHOPS_TABLE_NAME   + "." + COLUMN_NAME                                                     + ", " +
                                         HISTORY_TABLE_NAME + "." + COLUMN_DATE                                                     + ", " +
                                         HISTORY_TABLE_NAME + "." + COLUMN_DURATION                                                 + ", " +
@@ -3449,6 +3450,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
         int idColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int shopIdColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_SHOP_ID);
         int shopNameColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_NAME);
         int dateColumnIndex     = cursor.getColumnIndexOrThrow(COLUMN_DATE);
         int durationColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_DURATION);
@@ -3463,6 +3465,7 @@ public class MainDatabase extends SQLiteOpenHelper
             HistoryInfo history = new HistoryInfo();
 
             history.setId(      cursor.getInt(idColumnIndex));
+            history.setShopId(  cursor.getInt(shopIdColumnIndex));
             history.setShopName(cursor.getString(shopNameColumnIndex));
             history.setDate(    cursor.getString(dateColumnIndex));
             history.setDuration(cursor.getInt(durationColumnIndex));

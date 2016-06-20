@@ -35,6 +35,7 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
     private View                       mErrorView           = null;
     private View                       mContentView         = null;
     private String                     mUrl                 = null;
+    private boolean                    mCached              = false;
     private int                        mDefaultImageId      = 0;
     private int                        mErrorImageId        = 0;
     private ImageLoader                mImageLoader         = null;
@@ -168,7 +169,9 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
             }
         }
 
-        if (!mImageLoader.isCached(mUrl, 0, 0))
+        mCached = mImageLoader.isCached(mUrl, 0, 0);
+
+        if (!mCached)
         {
             showProgressView();
         }
@@ -198,8 +201,11 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
 
                     if (USE_FADE_IN_ANIMATION)
                     {
-                        mContentView.setAlpha(0);
-                        mContentView.animate().alpha(1).setDuration(FADE_IN_DURATION);
+                        if (!mCached)
+                        {
+                            mContentView.setAlpha(0);
+                            mContentView.animate().alpha(1).setDuration(FADE_IN_DURATION);
+                        }
                     }
                 }
                 else

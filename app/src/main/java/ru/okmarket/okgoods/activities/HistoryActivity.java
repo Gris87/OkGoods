@@ -138,6 +138,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         {
             Intent intent = new Intent(HistoryActivity.this, HistoryDetailsActivity.class);
 
+            intent.putExtra(Extras.SHOP,            history.getShopId());
             intent.putExtra(Extras.HISTORY,         history.getDate() + " " + history.getShopName());
             intent.putExtra(Extras.HISTORY_DETAILS, details);
 

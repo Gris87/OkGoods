@@ -1,3 +1,4 @@
+Fix issue with progress bar in CachedImageView
 Ask for starting
 Add goods
 Remove goods
@@ -10,9 +11,9 @@ Change UI on stop
 Allow to complete good
 Fade out for completed good
 Add to history
-Show history
 Options for history (Save/Count/Details)
 Use history to add goods
+Show good details in history
 Priority for goods
 Show the way
 Walk on the shop map

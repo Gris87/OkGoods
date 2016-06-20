@@ -45,13 +45,14 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
 
         holder.mGoodNameTextView.setText(item.getGoodName());
 
-        if (item.getGoodId() != 0)
+        if (item.getGoodId() > 0 && item.getCost() > 0 && item.getCount() > 0)
         {
+            holder.mCostTextView.setVisibility(View.VISIBLE);
             holder.mCostTextView.setText(mContext.getString(R.string.rub_currency_count, item.getCost(), item.getCount()));
         }
         else
         {
-            holder.mCostTextView.setText(mContext.getString(R.string.category));
+            holder.mCostTextView.setVisibility(View.GONE);
         }
     }
 

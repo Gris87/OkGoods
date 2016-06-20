@@ -11,7 +11,7 @@
         android:layout_weight="100"
         android:layout_marginLeft="@dimen/common_margin"
         android:layout_marginRight="@dimen/common_margin"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:singleLine="true"
         android:gravity="start|center_vertical" />
 
