@@ -1,5 +1,5 @@
-Fix issue with progress bar in CachedImageView
-Ask for starting
+Set font size for history details
+Show goods
 Add goods
 Remove goods
 Add aproximate cost

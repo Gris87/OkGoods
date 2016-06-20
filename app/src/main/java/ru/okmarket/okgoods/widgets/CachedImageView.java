@@ -17,6 +17,8 @@ import android.widget.ProgressBar;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 
+import ru.okmarket.okgoods.util.AppLog;
+
 public class CachedImageView extends FrameLayout implements View.OnTouchListener, View.OnClickListener, View.OnLongClickListener
 {
     @SuppressWarnings("unused")
@@ -207,19 +209,23 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
                             mContentView.animate().alpha(1).setDuration(FADE_IN_DURATION);
                         }
                     }
+
+                    showContentView();
                 }
                 else
                 if (mDefaultImageId != 0)
                 {
                     setImageResource(mDefaultImageId);
-                }
 
-                showContentView();
+                    showContentView();
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error)
             {
+                AppLog.w(TAG, "Failed to load image: " + mUrl);
+
                 showErrorView();
             }
         });
