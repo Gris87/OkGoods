@@ -13,6 +13,8 @@ Add to history
 Options for history (Save/Count/Details)
 Use history to add goods
 Show good details in history
+Show good details in goods list
+Show good details in selected goods
 Priority for goods
 Show the way
 Walk on the shop map
