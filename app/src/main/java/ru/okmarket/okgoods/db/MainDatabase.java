@@ -3186,8 +3186,9 @@ public class MainDatabase extends SQLiteOpenHelper
             insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 3, 4, 0, 3);
             insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 4, 0, 4, 1);
             insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 5, 6, 0, 1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 6, 9, 0, 1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 7, 0, 8, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 6, 0, 6, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 7, 9, 0, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 8, 0, 8, 1);
         }
     }
 

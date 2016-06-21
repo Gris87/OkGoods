@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -49,6 +50,8 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     private TextView                      mParkingPlacesTextView                = null;
     private TextView                      mNumberOfCashboxesTextView            = null;
     private TextView                      mServicesTextView                     = null;
+    private HorizontalScrollView          mServicesHorizontalScrollView         = null;
+    private ScrollView                    mServicesVerticalScrollView           = null;
     private ImageViewWithTooltip          mServiceClearingSettlementImageView   = null;
     private ImageViewWithTooltip          mServiceCosmeticsImageView            = null;
     private ImageViewWithTooltip          mServicePlaygroundImageView           = null;
@@ -64,6 +67,9 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     private ImageViewWithTooltip          mServiceParkingImageView              = null;
     private ImageViewWithTooltip          mServicePointOfIssuingOrdersImageView = null;
     private TextView                      mPhotosTextView                       = null;
+    private ProgressBar                   mPhotosProgressBar                    = null;
+    private HorizontalScrollView          mPhotosHorizontalScrollView           = null;
+    private ScrollView                    mPhotosVerticalScrollView             = null;
     private LinearLayout                  mPhotosLinearLayout                   = null;
     private Button                        mCancelButton                         = null;
     private Button                        mOkButton                             = null;
@@ -83,45 +89,44 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
-        mNameTextView                                     = (TextView)            rootView.findViewById(R.id.nameTextView);
-        mPhoneTextView                                    = (TextView)            rootView.findViewById(R.id.phoneTextView);
-        mWorkHoursTextView                                = (TextView)            rootView.findViewById(R.id.workHoursTextView);
-        mSquareTextView                                   = (TextView)            rootView.findViewById(R.id.squareTextView);
-        mOpeningDateTextView                              = (TextView)            rootView.findViewById(R.id.openingDateTextView);
-        mParkingPlacesTextView                            = (TextView)            rootView.findViewById(R.id.parkingPlacesTextView);
-        mNumberOfCashboxesTextView                        = (TextView)            rootView.findViewById(R.id.numberOfCashboxesTextView);
-        mServicesTextView                                 = (TextView)            rootView.findViewById(R.id.servicesTextView);
-        HorizontalScrollView servicesHorizontalScrollView = (HorizontalScrollView)rootView.findViewById(R.id.servicesHorizontalScrollView);
-        ScrollView           servicesVerticalScrollView   = (ScrollView)          rootView.findViewById(R.id.servicesVerticalScrollView);
-        mServiceClearingSettlementImageView               = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceClearingSettlementImageView);
-        mServiceCosmeticsImageView                        = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceCosmeticsImageView);
-        mServicePlaygroundImageView                       = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePlaygroundImageView);
-        mServiceFishIslandImageView                       = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceFishIslandImageView);
-        mServiceBakeryImageView                           = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceBakeryImageView);
-        mServiceCookeryImageView                          = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceCookeryImageView);
-        mServiceTaxiOrderingImageView                     = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceTaxiOrderingImageView);
-        mServicePharmacyImageView                         = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePharmacyImageView);
-        mServiceOrderingFoodImageView                     = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceOrderingFoodImageView);
-        mServiceDegustationImageView                      = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceDegustationImageView);
-        mServiceCafeImageView                             = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceCafeImageView);
-        mServiceGiftCardsImageView                        = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceGiftCardsImageView);
-        mServiceParkingImageView                          = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceParkingImageView);
-        mServicePointOfIssuingOrdersImageView             = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePointOfIssuingOrdersImageView);
-        mPhotosTextView                                   = (TextView)            rootView.findViewById(R.id.photosTextView);
-        HorizontalScrollView photosHorizontalScrollView   = (HorizontalScrollView)rootView.findViewById(R.id.photosHorizontalScrollView);
-        ScrollView           photosVerticalScrollView     = (ScrollView)          rootView.findViewById(R.id.photosVerticalScrollView);
-        mPhotosLinearLayout                               = (LinearLayout)        rootView.findViewById(R.id.photosLinearLayout);
-        mCancelButton                                     = (Button)              rootView.findViewById(R.id.cancelButton);
-        mOkButton                                         = (Button)              rootView.findViewById(R.id.okButton);
+        mNameTextView                         = (TextView)            rootView.findViewById(R.id.nameTextView);
+        mPhoneTextView                        = (TextView)            rootView.findViewById(R.id.phoneTextView);
+        mWorkHoursTextView                    = (TextView)            rootView.findViewById(R.id.workHoursTextView);
+        mSquareTextView                       = (TextView)            rootView.findViewById(R.id.squareTextView);
+        mOpeningDateTextView                  = (TextView)            rootView.findViewById(R.id.openingDateTextView);
+        mParkingPlacesTextView                = (TextView)            rootView.findViewById(R.id.parkingPlacesTextView);
+        mNumberOfCashboxesTextView            = (TextView)            rootView.findViewById(R.id.numberOfCashboxesTextView);
+        mServicesTextView                     = (TextView)            rootView.findViewById(R.id.servicesTextView);
+        mServicesHorizontalScrollView         = (HorizontalScrollView)rootView.findViewById(R.id.servicesHorizontalScrollView);
+        mServicesVerticalScrollView           = (ScrollView)          rootView.findViewById(R.id.servicesVerticalScrollView);
+        mServiceClearingSettlementImageView   = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceClearingSettlementImageView);
+        mServiceCosmeticsImageView            = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceCosmeticsImageView);
+        mServicePlaygroundImageView           = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePlaygroundImageView);
+        mServiceFishIslandImageView           = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceFishIslandImageView);
+        mServiceBakeryImageView               = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceBakeryImageView);
+        mServiceCookeryImageView              = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceCookeryImageView);
+        mServiceTaxiOrderingImageView         = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceTaxiOrderingImageView);
+        mServicePharmacyImageView             = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePharmacyImageView);
+        mServiceOrderingFoodImageView         = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceOrderingFoodImageView);
+        mServiceDegustationImageView          = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceDegustationImageView);
+        mServiceCafeImageView                 = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceCafeImageView);
+        mServiceGiftCardsImageView            = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceGiftCardsImageView);
+        mServiceParkingImageView              = (ImageViewWithTooltip)rootView.findViewById(R.id.serviceParkingImageView);
+        mServicePointOfIssuingOrdersImageView = (ImageViewWithTooltip)rootView.findViewById(R.id.servicePointOfIssuingOrdersImageView);
+        mPhotosTextView                       = (TextView)            rootView.findViewById(R.id.photosTextView);
+        mPhotosProgressBar                    = (ProgressBar)         rootView.findViewById(R.id.photosProgressBar);
+        mPhotosHorizontalScrollView           = (HorizontalScrollView)rootView.findViewById(R.id.photosHorizontalScrollView);
+        mPhotosVerticalScrollView             = (ScrollView)          rootView.findViewById(R.id.photosVerticalScrollView);
+        mPhotosLinearLayout                   = (LinearLayout)        rootView.findViewById(R.id.photosLinearLayout);
+        mCancelButton                         = (Button)              rootView.findViewById(R.id.cancelButton);
+        mOkButton                             = (Button)              rootView.findViewById(R.id.okButton);
 
         mHttpClient = HttpClient.getInstance(getActivity());
 
 
 
-        servicesHorizontalScrollView.setOnTouchListener(this);
-        servicesVerticalScrollView.setOnTouchListener(this);
-        photosHorizontalScrollView.setOnTouchListener(this);
-        photosVerticalScrollView.setOnTouchListener(this);
+        mServicesHorizontalScrollView.setOnTouchListener(this);
+        mServicesVerticalScrollView.setOnTouchListener(this);
         mServiceClearingSettlementImageView.setOnTouchListener(this);
         mServiceCosmeticsImageView.setOnTouchListener(this);
         mServicePlaygroundImageView.setOnTouchListener(this);
@@ -136,6 +141,8 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         mServiceGiftCardsImageView.setOnTouchListener(this);
         mServiceParkingImageView.setOnTouchListener(this);
         mServicePointOfIssuingOrdersImageView.setOnTouchListener(this);
+        mPhotosHorizontalScrollView.setOnTouchListener(this);
+        mPhotosVerticalScrollView.setOnTouchListener(this);
 
 
 
@@ -241,8 +248,13 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
             setParkingPlaces(    shop.getParkingPlaces());
             setNumberOfCashboxes(shop.getNumberOfCashboxes());
 
-            mServicesTextView.setVisibility(View.VISIBLE);
-            mPhotosTextView.setVisibility(View.VISIBLE);
+            mServicesTextView.setVisibility(            View.VISIBLE);
+            mServicesHorizontalScrollView.setVisibility(View.VISIBLE);
+            mServicesVerticalScrollView.setVisibility(  View.VISIBLE);
+            mPhotosTextView.setVisibility(              View.VISIBLE);
+            mPhotosProgressBar.setVisibility(           View.VISIBLE);
+            mPhotosHorizontalScrollView.setVisibility(  View.GONE);
+            mPhotosVerticalScrollView.setVisibility(    View.GONE);
 
             mServiceClearingSettlementImageView.setVisibility(  (shop.getServicesSet() & MainDatabase.SERVICE_CLEARING_SETTLEMENT_MASK)     != 0 ? View.VISIBLE : View.GONE);
             mServiceCosmeticsImageView.setVisibility(           (shop.getServicesSet() & MainDatabase.SERVICE_COSMETICS_MASK)               != 0 ? View.VISIBLE : View.GONE);
@@ -275,6 +287,12 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
                         @Override
                         public void onResponse(String response)
                         {
+                            mPhotosProgressBar.setVisibility(         View.GONE);
+                            mPhotosHorizontalScrollView.setVisibility(View.VISIBLE);
+                            mPhotosVerticalScrollView.setVisibility(  View.VISIBLE);
+
+
+
                             Resources resources = getResources();
 
                             int height = resources.getDimensionPixelSize(R.dimen.shop_photo_size);
@@ -357,6 +375,8 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
                         public void onErrorResponse(VolleyError error)
                         {
                             AppLog.w(TAG, "Failed to get photos for shop: " + mNameTextView.getText());
+
+                            mPhotosProgressBar.setVisibility(View.GONE);
                         }
                     }
             );
@@ -375,23 +395,13 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
             setParkingPlaces(    0);
             setNumberOfCashboxes(0);
 
-            mServicesTextView.setVisibility(View.GONE);
-            mPhotosTextView.setVisibility(View.GONE);
-
-            mServiceClearingSettlementImageView.setVisibility(  View.GONE);
-            mServiceCosmeticsImageView.setVisibility(           View.GONE);
-            mServicePlaygroundImageView.setVisibility(          View.GONE);
-            mServiceFishIslandImageView.setVisibility(          View.GONE);
-            mServiceBakeryImageView.setVisibility(              View.GONE);
-            mServiceCookeryImageView.setVisibility(             View.GONE);
-            mServiceTaxiOrderingImageView.setVisibility(        View.GONE);
-            mServicePharmacyImageView.setVisibility(            View.GONE);
-            mServiceOrderingFoodImageView.setVisibility(        View.GONE);
-            mServiceDegustationImageView.setVisibility(         View.GONE);
-            mServiceCafeImageView.setVisibility(                View.GONE);
-            mServiceGiftCardsImageView.setVisibility(           View.GONE);
-            mServiceParkingImageView.setVisibility(             View.GONE);
-            mServicePointOfIssuingOrdersImageView.setVisibility(View.GONE);
+            mServicesTextView.setVisibility(            View.GONE);
+            mServicesHorizontalScrollView.setVisibility(View.GONE);
+            mServicesVerticalScrollView.setVisibility(  View.GONE);
+            mPhotosTextView.setVisibility(              View.GONE);
+            mPhotosProgressBar.setVisibility(           View.GONE);
+            mPhotosHorizontalScrollView.setVisibility(  View.GONE);
+            mPhotosVerticalScrollView.setVisibility(    View.GONE);
 
             mPhotosLinearLayout.removeAllViews();
 

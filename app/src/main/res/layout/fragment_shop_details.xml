@@ -284,29 +284,41 @@
             android:textStyle="bold"
             android:text="@string/photos" />
 
-        <HorizontalScrollView
-            android:id="@+id/photosHorizontalScrollView"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/shop_photo_size"
             grid:layout_columnWeight="100"
             grid:layout_gravity="fill_horizontal">
 
-            <ScrollView
-                android:id="@+id/photosVerticalScrollView"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/shop_photo_size">
+            <ProgressBar
+                android:id="@+id/photosProgressBar"
+                android:layout_width="@dimen/progress_bar_size"
+                android:layout_height="@dimen/progress_bar_size"
+                android:layout_gravity="start|center_vertical"/>
 
-                <LinearLayout
-                    android:id="@+id/photosLinearLayout"
+            <HorizontalScrollView
+                android:id="@+id/photosHorizontalScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ScrollView
+                    android:id="@+id/photosVerticalScrollView"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/shop_photo_size"
-                    android:orientation="horizontal">
+                    android:layout_height="@dimen/shop_photo_size">
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/photosLinearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/shop_photo_size"
+                        android:orientation="horizontal">
 
-            </ScrollView>
+                    </LinearLayout>
 
-        </HorizontalScrollView>
+                </ScrollView>
+
+            </HorizontalScrollView>
+
+        </FrameLayout>
 
     </android.support.v7.widget.GridLayout>
 

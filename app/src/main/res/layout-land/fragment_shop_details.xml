@@ -307,28 +307,40 @@
             android:textStyle="bold"
             android:text="@string/photos" />
 
-        <HorizontalScrollView
-            android:id="@+id/photosHorizontalScrollView"
+        <FrameLayout
             android:layout_width="@dimen/shop_photo_size"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/common_margin">
 
-            <ScrollView
-                android:id="@+id/photosVerticalScrollView"
-                android:layout_width="@dimen/shop_photo_size"
-                android:layout_height="wrap_content">
+            <ProgressBar
+                android:id="@+id/photosProgressBar"
+                android:layout_width="@dimen/progress_bar_size"
+                android:layout_height="@dimen/progress_bar_size"
+                android:layout_gravity="center_horizontal|top"/>
 
-                <LinearLayout
-                    android:id="@+id/photosLinearLayout"
+            <HorizontalScrollView
+                android:id="@+id/photosHorizontalScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ScrollView
+                    android:id="@+id/photosVerticalScrollView"
                     android:layout_width="@dimen/shop_photo_size"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/photosLinearLayout"
+                        android:layout_width="@dimen/shop_photo_size"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-            </ScrollView>
+                    </LinearLayout>
 
-        </HorizontalScrollView>
+                </ScrollView>
+
+            </HorizontalScrollView>
+
+        </FrameLayout>
 
     </LinearLayout>
 
