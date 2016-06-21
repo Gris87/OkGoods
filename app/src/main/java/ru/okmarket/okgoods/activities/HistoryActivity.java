@@ -49,8 +49,6 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         RecyclerView recyclerView = (RecyclerView)          findViewById(R.id.historyRecyclerView);
         mHistoryDetailsFragment   = (HistoryDetailsFragment)getSupportFragmentManager().findFragmentById(R.id.historyDetailsFragment);
 
-
-
         assert recyclerView != null;
 
 

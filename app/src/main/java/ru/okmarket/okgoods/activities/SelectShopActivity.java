@@ -172,8 +172,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
             }
         };
 
-        // noinspection deprecation
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
 
 

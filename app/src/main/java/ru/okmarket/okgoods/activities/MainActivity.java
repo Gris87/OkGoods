@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.widget.FrameLayout;
 import java.util.Locale;
 
 import ru.okmarket.okgoods.R;
+import ru.okmarket.okgoods.adapters.SelectedGoodAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.dialogs.SelectCityDialog;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
@@ -26,6 +28,7 @@ import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.other.Preferences;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
+import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener, ShopMapFragment.OnFragmentInteractionListener, SelectCityDialog.OnFragmentInteractionListener
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     private NoScrollableDrawerLayout mDrawerLayout    = null;
     private ActionBarDrawerToggle    mDrawerToggle    = null;
+    private SelectedGoodAdapter      mAdapter         = null;
     private FrameLayout              mShopMapView     = null;
     private ShopMapFragment          mShopMapFragment = null;
     private MainDatabase             mMainDatabase    = null;
@@ -63,10 +67,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
 
-        Toolbar toolbar  = (Toolbar)                 findViewById(R.id.toolbar);
-        mDrawerLayout    = (NoScrollableDrawerLayout)findViewById(R.id.drawerLayout);
-        mShopMapView     = (FrameLayout)             findViewById(R.id.shopMapView);
-        mShopMapFragment = (ShopMapFragment)         getSupportFragmentManager().findFragmentById(R.id.shopMapFragment);
+        Toolbar toolbar           = (Toolbar)                 findViewById(R.id.toolbar);
+        mDrawerLayout             = (NoScrollableDrawerLayout)findViewById(R.id.drawerLayout);
+        RecyclerView recyclerView = (RecyclerView)            findViewById(R.id.selectedGoodsRecyclerView);
+        mShopMapView              = (FrameLayout)             findViewById(R.id.shopMapView);
+        mShopMapFragment          = (ShopMapFragment)         getSupportFragmentManager().findFragmentById(R.id.shopMapFragment);
+
+        assert recyclerView != null;
 
 
 
@@ -78,6 +85,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         setSupportActionBar(toolbar);
         setTitle(R.string.title_activity_main);
 
+
+
+        mAdapter = new SelectedGoodAdapter(this, mMainDatabase, mDB);
+
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.setAdapter(mAdapter);
+
+
+
         mShopMapView.getLayoutParams().width = getResources().getDisplayMetrics().widthPixels * 80 / 100;
 
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -88,8 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 R.string.hide_map
         );
 
-        // noinspection deprecation
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         mShopMapView.setOnTouchListener(this);
 
@@ -295,10 +310,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
         }
         else
-        // noinspection StatementWithEmptyBody
         if (requestCode == HISTORY)
         {
-            // Nothing
+            mAdapter.updateFromDatabase();
         }
         else
         {

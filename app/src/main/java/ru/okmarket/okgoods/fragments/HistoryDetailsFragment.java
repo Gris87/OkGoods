@@ -39,6 +39,8 @@ public class HistoryDetailsFragment extends Fragment
 
         RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.historyDetailsRecyclerView);
 
+        assert recyclerView != null;
+
 
 
         mAdapter = new HistoryDetailsAdapter(getActivity());

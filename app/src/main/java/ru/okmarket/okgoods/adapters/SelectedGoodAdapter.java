@@ -1,6 +1,7 @@
 package ru.okmarket.okgoods.adapters;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,30 +11,37 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.other.HistoryDetailsInfo;
+import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.other.SelectedGoodInfo;
 
-public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAdapter.ViewHolder>
+public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapter.ViewHolder>
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "HistoryDetailsAdapter";
+    private static final String TAG = "SelectedGoodAdapter";
 
 
 
-    private Context                       mContext = null;
-    private ArrayList<HistoryDetailsInfo> mItems   = null;
+    private Context                     mContext      = null;
+    private MainDatabase                mMainDatabase = null;
+    private SQLiteDatabase              mDB           = null;
+    private ArrayList<SelectedGoodInfo> mItems        = null;
 
 
 
-    public HistoryDetailsAdapter(Context context)
+    public SelectedGoodAdapter(Context context, MainDatabase mainDatabase, SQLiteDatabase db)
     {
-        mContext = context;
-        mItems   = new ArrayList<>();
+        mContext      = context;
+        mMainDatabase = mainDatabase;
+        mDB           = db;
+        mItems        = new ArrayList<>();
+
+        updateFromDatabase();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_details, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_selected_good, parent, false);
 
         return new ViewHolder(view);
     }
@@ -41,7 +49,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position)
     {
-        final HistoryDetailsInfo item = mItems.get(position);
+        final SelectedGoodInfo item = mItems.get(position);
 
         holder.mGoodNameTextView.setText(item.getName());
 
@@ -62,16 +70,11 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         return mItems.size();
     }
 
-    public void setItems(ArrayList<HistoryDetailsInfo> items)
+    public void updateFromDatabase()
     {
-        mItems = items;
+        mItems = mMainDatabase.getSelectedGoods(mDB);
 
         notifyDataSetChanged();
-    }
-
-    public ArrayList<HistoryDetailsInfo> getItems()
-    {
-        return mItems;
     }
 
 

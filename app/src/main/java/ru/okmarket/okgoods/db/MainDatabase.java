@@ -15,6 +15,7 @@ import ru.okmarket.okgoods.BuildConfig;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.other.HistoryDetailsInfo;
 import ru.okmarket.okgoods.other.HistoryInfo;
+import ru.okmarket.okgoods.other.SelectedGoodInfo;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
@@ -3529,6 +3530,71 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
             HistoryDetailsInfo details = new HistoryDetailsInfo();
+
+            details.setId(        cursor.getInt(idColumnIndex));
+            details.setGoodId(    cursor.getInt(goodIdColumnIndex));
+            details.setCategoryId(cursor.getInt(categoryIdColumnIndex));
+            details.setName(      !TextUtils.isEmpty(goodName) ? goodName : categoryName);
+            details.setCost(      cursor.getDouble(costColumnIndex));
+            details.setCount(     cursor.getDouble(countColumnIndex));
+
+            res.add(details);
+
+
+
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+
+
+        return res;
+    }
+
+    public ArrayList<SelectedGoodInfo> getSelectedGoods(SQLiteDatabase db)
+    {
+        ArrayList<SelectedGoodInfo> res = new ArrayList<>();
+
+
+
+        Cursor cursor = db.rawQuery("SELECT"                                                                                                             + " "  +
+                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_ID                                                                    + ", " +
+                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_GOOD_ID                                                               + ", " +
+                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_CATEGORY_ID                                                           + ", " +
+                                        GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                + ", " +
+                                        GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                            + ", " +
+                                        GOODS_TABLE_NAME            + "." + COLUMN_COST                                                                  + ", " +
+                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_COUNT                                                                 + " "  +
+                                    "FROM " + SELECTED_GOODS_TABLE_NAME                                                                                  + " "  +
+                                    "INNER JOIN " + GOODS_TABLE_NAME                                                                                     + " "  +
+                                    "ON " + SELECTED_GOODS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
+                                    "INNER JOIN " + GOODS_CATEGORIES_TABLE_NAME                                                                          + " "  +
+                                    "ON " + SELECTED_GOODS_TABLE_NAME + "." + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ID + " "  +
+                                    ";", null );
+
+
+
+        int idColumnIndex           = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int goodIdColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_GOOD_ID);
+        int categoryIdColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
+        int goodNameColumnIndex     = cursor.getColumnIndexOrThrow("good_name");
+        int categoryNameColumnIndex = cursor.getColumnIndexOrThrow("category_name");
+        int costColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_COST);
+        int countColumnIndex        = cursor.getColumnIndexOrThrow(COLUMN_COUNT);
+
+
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            String goodName     = cursor.getString(goodNameColumnIndex);
+            String categoryName = cursor.getString(categoryNameColumnIndex);
+
+
+
+            SelectedGoodInfo details = new SelectedGoodInfo();
 
             details.setId(        cursor.getInt(idColumnIndex));
             details.setGoodId(    cursor.getInt(goodIdColumnIndex));
