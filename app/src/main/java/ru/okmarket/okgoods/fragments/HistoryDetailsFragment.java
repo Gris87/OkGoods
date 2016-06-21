@@ -14,7 +14,7 @@ import ru.okmarket.okgoods.adapters.HistoryDetailsAdapter;
 import ru.okmarket.okgoods.other.HistoryDetailsInfo;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 
-public class HistoryDetailsFragment extends Fragment
+public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAdapter.OnItemClickListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryDetailsFragment";
@@ -44,6 +44,7 @@ public class HistoryDetailsFragment extends Fragment
 
 
         mAdapter = new HistoryDetailsAdapter(getActivity());
+        mAdapter.setOnItemClickListener(this);
 
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setAdapter(mAdapter);
@@ -59,5 +60,11 @@ public class HistoryDetailsFragment extends Fragment
     public ArrayList<HistoryDetailsInfo> getHistoryDetails()
     {
         return mAdapter.getItems();
+    }
+
+    @Override
+    public void onHistoryDetailsClicked(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsInfo details)
+    {
+
     }
 }

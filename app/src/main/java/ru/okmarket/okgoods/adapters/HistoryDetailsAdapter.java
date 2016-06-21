@@ -19,15 +19,17 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
 
 
 
-    private Context                       mContext = null;
-    private ArrayList<HistoryDetailsInfo> mItems   = null;
+    private Context                       mContext             = null;
+    private ArrayList<HistoryDetailsInfo> mItems               = null;
+    private OnItemClickListener           mOnItemClickListener = null;
 
 
 
     public HistoryDetailsAdapter(Context context)
     {
-        mContext = context;
-        mItems   = new ArrayList<>();
+        mContext             = context;
+        mItems               = new ArrayList<>();
+        mOnItemClickListener = null;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
+    public void onBindViewHolder(final ViewHolder holder, int position)
     {
         final HistoryDetailsInfo item = mItems.get(position);
 
@@ -54,6 +56,18 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         {
             holder.mCostTextView.setVisibility(View.GONE);
         }
+
+        holder.mView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (mOnItemClickListener != null)
+                {
+                    mOnItemClickListener.onHistoryDetailsClicked(holder, item);
+                }
+            }
+        });
     }
 
     @Override
@@ -74,10 +88,15 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         return mItems;
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        mOnItemClickListener = listener;
+    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
+        public View     mView;
         public TextView mGoodNameTextView;
         public TextView mCostTextView;
 
@@ -87,8 +106,16 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         {
             super(view);
 
+            mView             = view;
             mGoodNameTextView = (TextView)view.findViewById(R.id.goodNameTextView);
             mCostTextView     = (TextView)view.findViewById(R.id.costTextView);
         }
+    }
+
+
+
+    public interface OnItemClickListener
+    {
+        void onHistoryDetailsClicked(ViewHolder viewHolder, HistoryDetailsInfo details);
     }
 }

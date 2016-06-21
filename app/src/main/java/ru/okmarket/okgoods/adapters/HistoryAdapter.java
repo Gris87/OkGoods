@@ -41,7 +41,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
+    public void onBindViewHolder(final ViewHolder holder, int position)
     {
         final HistoryInfo item = mItems.get(position);
 
@@ -57,7 +57,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             {
                 if (mOnItemClickListener != null)
                 {
-                    mOnItemClickListener.onHistoryClicked(item);
+                    mOnItemClickListener.onHistoryClicked(holder, item);
                 }
             }
         });
@@ -102,6 +102,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     public interface OnItemClickListener
     {
-        void onHistoryClicked(HistoryInfo history);
+        void onHistoryClicked(ViewHolder viewHolder, HistoryInfo history);
     }
 }

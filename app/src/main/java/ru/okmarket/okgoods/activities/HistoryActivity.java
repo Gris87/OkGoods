@@ -117,7 +117,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     }
 
     @Override
-    public void onHistoryClicked(HistoryInfo history)
+    public void onHistoryClicked(HistoryAdapter.ViewHolder viewHolder, HistoryInfo history)
     {
         MainDatabase   mainDatabase = new MainDatabase(HistoryActivity.this);
         SQLiteDatabase db           = mainDatabase.getReadableDatabase();
