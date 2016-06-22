@@ -12,16 +12,19 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.HistoryDetailsAdapter;
 import ru.okmarket.okgoods.other.HistoryDetailsInfo;
+import ru.okmarket.okgoods.util.AnimationUtils;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 
-public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAdapter.OnItemClickListener
+public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAdapter.OnItemClickListener, HistoryDetailsAdapter.OnBindViewHolderListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryDetailsFragment";
 
 
 
-    private HistoryDetailsAdapter mAdapter = null;
+    private HistoryDetailsAdapter            mAdapter                    = null;
+    private HistoryDetailsAdapter.ViewHolder mSelectedViewHolder         = null;
+    private HistoryDetailsInfo               mSelectedHistoryDetailsInfo = null;
 
 
 
@@ -45,6 +48,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
 
         mAdapter = new HistoryDetailsAdapter(getActivity());
         mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnBindViewHolderListener(this);
 
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setAdapter(mAdapter);
@@ -65,6 +69,62 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     @Override
     public void onHistoryDetailsClicked(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsInfo details)
     {
+        if (mSelectedHistoryDetailsInfo == details)
+        {
+            selectHistoryDetails(null, null);
+        }
+        else
+        {
+            selectHistoryDetails(viewHolder, details);
+        }
+    }
 
+    @Override
+    public void onHistoryDetailsBindViewHolder(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsInfo details)
+    {
+        if (mSelectedViewHolder == viewHolder)
+        {
+            mSelectedViewHolder = null;
+        }
+
+        if (mSelectedHistoryDetailsInfo == details)
+        {
+            mSelectedViewHolder = viewHolder;
+
+            expandSelectedViewHolder(true);
+        }
+    }
+
+    private void selectHistoryDetails(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsInfo details)
+    {
+        if (mSelectedViewHolder != null)
+        {
+            collapseSelectedViewHolder();
+        }
+
+        mSelectedViewHolder         = viewHolder;
+        mSelectedHistoryDetailsInfo = details;
+
+        if (mSelectedViewHolder != null)
+        {
+            expandSelectedViewHolder(false);
+        }
+    }
+
+    private void expandSelectedViewHolder(boolean immediately)
+    {
+        if (immediately)
+        {
+            mSelectedViewHolder.mExpandedView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            AnimationUtils.expand(mSelectedViewHolder.mExpandedView);
+        }
+    }
+
+    private void collapseSelectedViewHolder()
+    {
+        AnimationUtils.collapse(mSelectedViewHolder.mExpandedView);
     }
 }

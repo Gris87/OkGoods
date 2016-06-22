@@ -19,17 +19,19 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
 
 
 
-    private Context                       mContext             = null;
-    private ArrayList<HistoryDetailsInfo> mItems               = null;
-    private OnItemClickListener           mOnItemClickListener = null;
+    private Context                       mContext                  = null;
+    private ArrayList<HistoryDetailsInfo> mItems                    = null;
+    private OnItemClickListener           mOnItemClickListener      = null;
+    private OnBindViewHolderListener      mOnBindViewHolderListener = null;
 
 
 
     public HistoryDetailsAdapter(Context context)
     {
-        mContext             = context;
-        mItems               = new ArrayList<>();
-        mOnItemClickListener = null;
+        mContext                  = context;
+        mItems                    = new ArrayList<>();
+        mOnItemClickListener      = null;
+        mOnBindViewHolderListener = null;
     }
 
     @Override
@@ -70,6 +72,11 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
                 }
             }
         });
+
+        if (mOnBindViewHolderListener != null)
+        {
+            mOnBindViewHolderListener.onHistoryDetailsBindViewHolder(holder, item);
+        }
     }
 
     @Override
@@ -94,6 +101,12 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
     {
         mOnItemClickListener = listener;
     }
+
+    public void setOnBindViewHolderListener(OnBindViewHolderListener listener)
+    {
+        mOnBindViewHolderListener = listener;
+    }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder
@@ -121,5 +134,10 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
     public interface OnItemClickListener
     {
         void onHistoryDetailsClicked(ViewHolder viewHolder, HistoryDetailsInfo details);
+    }
+
+    public interface OnBindViewHolderListener
+    {
+        void onHistoryDetailsBindViewHolder(ViewHolder viewHolder, HistoryDetailsInfo details);
     }
 }

@@ -21,19 +21,21 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
 
 
 
-    private Context                     mContext      = null;
-    private MainDatabase                mMainDatabase = null;
-    private SQLiteDatabase              mDB           = null;
-    private ArrayList<SelectedGoodInfo> mItems        = null;
+    private Context                     mContext             = null;
+    private MainDatabase                mMainDatabase        = null;
+    private SQLiteDatabase              mDB                  = null;
+    private ArrayList<SelectedGoodInfo> mItems               = null;
+    private OnItemClickListener         mOnItemClickListener = null;
 
 
 
     public SelectedGoodAdapter(Context context, MainDatabase mainDatabase, SQLiteDatabase db)
     {
-        mContext      = context;
-        mMainDatabase = mainDatabase;
-        mDB           = db;
-        mItems        = new ArrayList<>();
+        mContext             = context;
+        mMainDatabase        = mainDatabase;
+        mDB                  = db;
+        mItems               = new ArrayList<>();
+        mOnItemClickListener = null;
 
         updateFromDatabase();
     }
@@ -47,7 +49,7 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
+    public void onBindViewHolder(final ViewHolder holder, int position)
     {
         final SelectedGoodInfo item = mItems.get(position);
 
@@ -62,6 +64,20 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
         {
             holder.mCostTextView.setVisibility(View.GONE);
         }
+
+        holder.mExpandedView.setVisibility(View.GONE);
+
+        holder.mView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (mOnItemClickListener != null)
+                {
+                    mOnItemClickListener.onSelectedGoodClicked(holder, item);
+                }
+            }
+        });
     }
 
     @Override
@@ -77,12 +93,19 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
         notifyDataSetChanged();
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        mOnItemClickListener = listener;
+    }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
+        public View     mView;
         public TextView mGoodNameTextView;
         public TextView mCostTextView;
+        public View     mExpandedView;
 
 
 
@@ -90,8 +113,17 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
         {
             super(view);
 
+            mView             = view;
             mGoodNameTextView = (TextView)view.findViewById(R.id.goodNameTextView);
             mCostTextView     = (TextView)view.findViewById(R.id.costTextView);
+            mExpandedView     =           view.findViewById(R.id.expandedView);
         }
+    }
+
+
+
+    public interface OnItemClickListener
+    {
+        void onSelectedGoodClicked(ViewHolder viewHolder, SelectedGoodInfo good);
     }
 }

@@ -26,12 +26,13 @@ import ru.okmarket.okgoods.dialogs.SelectCityDialog;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
 import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.other.Preferences;
+import ru.okmarket.okgoods.other.SelectedGoodInfo;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener, ShopMapFragment.OnFragmentInteractionListener, SelectCityDialog.OnFragmentInteractionListener
+public class MainActivity extends AppCompatActivity implements SelectCityDialog.OnFragmentInteractionListener, View.OnTouchListener, ShopMapFragment.OnFragmentInteractionListener, SelectedGoodAdapter.OnItemClickListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "MainActivity";
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
         mAdapter = new SelectedGoodAdapter(this, mMainDatabase, mDB);
+        mAdapter.setOnItemClickListener(this);
 
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setAdapter(mAdapter);
@@ -371,14 +373,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     @Override
-    public void onShopMapSelectShopClicked()
-    {
-        Intent intent = new Intent(this, SelectShopActivity.class);
-        intent.putExtra(Extras.SHOP, mSelectedShop);
-        startActivityForResult(intent, SELECT_SHOP);
-    }
-
-    @Override
     public void onCitySelected(String cityId)
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -387,5 +381,19 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         editor.putString(Preferences.SETTINGS_CITY, cityId);
 
         editor.apply();
+    }
+
+    @Override
+    public void onShopMapSelectShopClicked()
+    {
+        Intent intent = new Intent(this, SelectShopActivity.class);
+        intent.putExtra(Extras.SHOP, mSelectedShop);
+        startActivityForResult(intent, SELECT_SHOP);
+    }
+
+    @Override
+    public void onSelectedGoodClicked(SelectedGoodAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
+    {
+        // TODO: Implement it
     }
 }
