@@ -21,16 +21,14 @@
             android:layout_marginRight="@dimen/common_margin"
             android:layout_marginEnd="@dimen/common_margin"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:singleLine="true"
-            android:text="HELLO" />
+            android:singleLine="true" />
 
         <TextView
             android:id="@+id/costTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:singleLine="true"
-            android:text="HELLO" />
+            android:singleLine="true" />
 
     </LinearLayout>
 
@@ -52,8 +50,7 @@
             android:layout_marginEnd="@dimen/common_margin"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:singleLine="true"
-            android:gravity="start|center_vertical"
-            android:text="HELLO" />
+            android:gravity="start|center_vertical" />
 
         <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
             android:id="@+id/goodDetailsButton"
