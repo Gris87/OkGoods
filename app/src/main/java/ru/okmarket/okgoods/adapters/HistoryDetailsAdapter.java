@@ -57,6 +57,8 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
             holder.mCostTextView.setVisibility(View.GONE);
         }
 
+        holder.mExpandedView.setVisibility(View.GONE);
+
         holder.mView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -99,6 +101,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         public View     mView;
         public TextView mGoodNameTextView;
         public TextView mCostTextView;
+        public View     mExpandedView;
 
 
 
@@ -109,6 +112,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
             mView             = view;
             mGoodNameTextView = (TextView)view.findViewById(R.id.goodNameTextView);
             mCostTextView     = (TextView)view.findViewById(R.id.costTextView);
+            mExpandedView     =           view.findViewById(R.id.expandedView);
         }
     }
 

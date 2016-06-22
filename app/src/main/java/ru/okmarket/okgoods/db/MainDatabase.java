@@ -3165,15 +3165,26 @@ public class MainDatabase extends SQLiteOpenHelper
 
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 1, 3, "Водка Русский Стандарт Платинум алк.40% 0,5л",                  669.00, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 2, 3, "Водка Царская Оригинальная алк 40% 1л",                         913.40, 1,     UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 3, 3, "Водка Хортиця Классическая 0.5 л 40% об.",                      343.40, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 4, 3, "Водка Пять озер 40% 0.25 л",                                    171.90, 0.25,  UNIT_TYPE_LITER,    0, DISABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 5, 3, "Водка Русский Стандарт 40% 0.7л",                               752.40, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 6, 7, "Вафли Коровка топленое молоко 150г",                            42.90,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 7, 7, "Палочки вафельные Тореро с арахисом в шоколадной глазури 220г", 82.90,  0.22,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 8, 7, "Трубочка Тореро со сгущенкой 65г",                              22.90,  0.065, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 9, 0, "Наш любимый хлеб",                                              0.00,   0,     UNIT_TYPE_NOTHING,  0, FORCE_ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 1,  3, "Водка Русский Стандарт Платинум алк.40% 0,5л",                        669.00, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 2,  3, "Водка Царская Оригинальная алк 40% 1л",                               913.40, 1,     UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 3,  3, "Водка Хортиця Классическая 0.5 л 40% об.",                            343.40, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 4,  3, "Водка Пять озер 40% 0.25 л",                                          171.90, 0.25,  UNIT_TYPE_LITER,    0, DISABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 5,  3, "Водка Русский Стандарт 40% 0.7л",                                     752.40, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 6,  7, "Вафли Коровка топленое молоко 150г",                                  42.90,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 7,  7, "Палочки вафельные Тореро с арахисом в шоколадной глазури 220г",       82.90,  0.22,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 8,  7, "Вафли ТЧН! с ароматом шоколада 200г",                                 29.90,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 9,  7, "Вафельные рулетики ОКЕЙ со вкусом и ароматом сгущенного молока 150г", 47.40,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 10, 7, "Трубочки вафельные Finetti с ореховой начинкой 45г",                  70.90,  0.045, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 11, 7, "Вафли Loacker хрустящие ванильные 175г",                              154.00, 0.175, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 12, 7, "Вафли Loacker хрустящие сливочные с какао-начинкой 175г",             154.00, 0.175, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 13, 7, "Вафли Коломенское Каприччио с шоколадной начинкой",                   58.00,  0.22,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 14, 7, "Вафли ТЧН! со сливочным ароматом 200г",                               27.90,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 15, 7, "Вафли ТЧН! с ароматом сгущённого молока 200г",                        27.90,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 16, 7, "Вафли Частная галерея сливочная карамель в шоколаде 300г",            174.99, 0.3,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 17, 7, "Вафли Яшкино сливочные. 200г",                                        35.40,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 18, 7, "Вафли Яшкино голландские карамельная начинка. 290г",                  61.50,  0.29,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 19, 7, "Рулетики вафельные Яшкино со вкусом сгущеного молока 160г",           52.90,  0.16,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 20, 0, "Наш любимый хлеб",                                                    0.00,   0,     UNIT_TYPE_NOTHING,  0, FORCE_ENABLED);
         }
     }
 
@@ -3181,14 +3192,26 @@ public class MainDatabase extends SQLiteOpenHelper
     {
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 1, 1, 0, 2);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 2, 3, 0, 1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 3, 4, 0, 3);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 4, 0, 4, 1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 5, 6, 0, 1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 6, 0, 6, 1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 7, 9, 0, 1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 8, 0, 8, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 1,  1,  0, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 2,  3,  0, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 3,  4,  0, 3);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 4,  0,  4, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 5,  6,  0, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 6,  0,  6, 4);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 7,  20, 0, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 8,  0,  8, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 9,  5,  0, 3);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 10, 2,  0, 4);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 11, 7,  0, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 12, 8,  0, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 13, 9,  3, 4);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 14, 10, 0, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 15, 11, 0, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 16, 12, 0, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 17, 13, 0, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 18, 14, 0, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 19, 15, 0, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 20, 16, 0, 1);
         }
     }
 
@@ -3196,7 +3219,7 @@ public class MainDatabase extends SQLiteOpenHelper
     {
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, HISTORY_TABLE_NAME, HISTORY_COLUMNS, 1, SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_OZERKI,      "01.01.2016", 3200000, 2613.10);
+            insertToTable(db, HISTORY_TABLE_NAME, HISTORY_COLUMNS, 1, SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_OZERKI,      "01.01.2016", 3200000, 3713.10);
             insertToTable(db, HISTORY_TABLE_NAME, HISTORY_COLUMNS, 2, SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BALKANSKAYA, "31.12.2016", 4000000, 4219.50);
         }
     }
@@ -3205,11 +3228,30 @@ public class MainDatabase extends SQLiteOpenHelper
     {
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 1, 1, 4, 0, 234.10, 5);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 2, 1, 8, 0, 121.60, 8);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 3, 1, 0, 8, 0.00,   1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 4, 2, 5, 0, 974.10, 3);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 5, 2, 1, 0, 843.10, 2);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 1,  1, 4,  0, 234.10, 5);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 2,  1, 8,  0, 121.60, 8);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 3,  1, 1,  0, 10.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 4,  1, 2,  0, 20.00,  3);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 5,  1, 3,  0, 30.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 6,  1, 5,  0, 40.00,  2);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 7,  1, 6,  0, 50.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 8,  1, 7,  0, 60.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 9,  1, 9,  0, 70.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 10, 1, 10, 0, 80.00,  2);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 11, 1, 11, 0, 90.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 12, 1, 12, 0, 10.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 13, 1, 13, 0, 20.00,  3);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 14, 1, 14, 0, 30.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 15, 1, 15, 0, 40.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 16, 1, 0,  3, 0.00,   1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 17, 1, 16, 0, 60.00,  2);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 18, 1, 17, 0, 70.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 19, 1, 18, 0, 80.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 20, 1, 19, 0, 90.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 21, 1, 20, 0, 10.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 22, 1, 0,  8, 0.00,   1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 23, 2, 5,  0, 974.10, 3);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 24, 2, 1,  0, 843.10, 2);
         }
     }
 
