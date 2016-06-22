@@ -52,6 +52,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         if (item.getGoodId() > 0 && item.getCost() > 0 && item.getCount() > 0)
         {
             holder.mCostTextView.setVisibility(View.VISIBLE);
+            holder.mCostTextView.setAlpha(1);
             holder.mCostTextView.setText(mContext.getString(R.string.rub_currency_count, item.getCost(), item.getCount()));
         }
         else
@@ -115,6 +116,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         public TextView mGoodNameTextView;
         public TextView mCostTextView;
         public View     mExpandedView;
+        public TextView mSecondCostTextView;
 
 
 
@@ -122,10 +124,11 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         {
             super(view);
 
-            mView             = view;
-            mGoodNameTextView = (TextView)view.findViewById(R.id.goodNameTextView);
-            mCostTextView     = (TextView)view.findViewById(R.id.costTextView);
-            mExpandedView     =           view.findViewById(R.id.expandedView);
+            mView               = view;
+            mGoodNameTextView   = (TextView)view.findViewById(R.id.goodNameTextView);
+            mCostTextView       = (TextView)view.findViewById(R.id.costTextView);
+            mExpandedView       =           view.findViewById(R.id.expandedView);
+            mSecondCostTextView = (TextView)view.findViewById(R.id.secondCostTextView);
         }
     }
 

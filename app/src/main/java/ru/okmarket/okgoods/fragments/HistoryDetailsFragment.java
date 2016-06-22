@@ -3,6 +3,7 @@ package ru.okmarket.okgoods.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,15 +117,29 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         if (immediately)
         {
             mSelectedViewHolder.mExpandedView.setVisibility(View.VISIBLE);
+            mSelectedViewHolder.mCostTextView.setVisibility(View.GONE);
+
+            mSelectedViewHolder.mExpandedView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
         else
         {
             AnimationUtils.expand(mSelectedViewHolder.mExpandedView);
+            AnimationUtils.fadeOut(mSelectedViewHolder.mCostTextView);
+        }
+
+        if (!TextUtils.isEmpty(mSelectedViewHolder.mCostTextView.getText()))
+        {
+            mSelectedViewHolder.mSecondCostTextView.setText(mSelectedViewHolder.mCostTextView.getText());
+        }
+        else
+        {
+
         }
     }
 
     private void collapseSelectedViewHolder()
     {
         AnimationUtils.collapse(mSelectedViewHolder.mExpandedView);
+        AnimationUtils.fadeIn(mSelectedViewHolder.mCostTextView);
     }
 }

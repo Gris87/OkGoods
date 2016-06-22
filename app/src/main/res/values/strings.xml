@@ -17,6 +17,10 @@
 
     <string name="rub_currency">%1$.2f rub.</string>
     <string name="rub_currency_count">%1$.2f rub. x %2$.1f</string>
+    <string name="add_good_to_list">Add good to list</string>
+    <string name="category">Category</string>
+    <string name="own_category">Own category</string>
+    <string name="own_good">Own good</string>
     <string name="good_details">Good details</string>
 
     <string name="add_good">Add good</string>
@@ -51,7 +55,6 @@
     <string name="supermarket">Supermarket</string>
 
     <string name="time">Time: %1$s</string>
-    <string name="add_good_to_list">Add good to list</string>
 
     <string name="city_moscow">Moscow</string>
     <string name="city_st_petersburg">St. Petersburg</string>

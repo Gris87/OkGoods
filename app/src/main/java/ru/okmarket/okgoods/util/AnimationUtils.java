@@ -77,4 +77,58 @@ public class AnimationUtils
         animation.setDuration((int)(initialHeight / view.getContext().getResources().getDisplayMetrics().density));
         view.startAnimation(animation);
     }
+
+    public static void fadeIn(final View view)
+    {
+        view.setVisibility(View.VISIBLE);
+        view.setAlpha(0);
+
+        Animation animation = new Animation()
+        {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation transformation)
+            {
+                view.setAlpha(interpolatedTime);
+            }
+
+            @Override
+            public boolean willChangeBounds()
+            {
+                return false;
+            }
+        };
+
+        animation.setDuration(1000);
+        view.startAnimation(animation);
+    }
+
+    public static void fadeOut(final View view)
+    {
+        view.setAlpha(1);
+
+        Animation animation = new Animation()
+        {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation transformation)
+            {
+                if (interpolatedTime == 1)
+                {
+                    view.setVisibility(View.GONE);
+                }
+                else
+                {
+                    view.setAlpha(1 - interpolatedTime);
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds()
+            {
+                return false;
+            }
+        };
+
+        animation.setDuration(1000);
+        view.startAnimation(animation);
+    }
 }

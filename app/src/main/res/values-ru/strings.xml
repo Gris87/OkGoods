@@ -17,6 +17,10 @@
 
     <string name="rub_currency">%1$.2f руб.</string>
     <string name="rub_currency_count">%1$.2f руб. x %2$.1f</string>
+    <string name="add_good_to_list">Добавить товар в список</string>
+    <string name="category">Категория</string>
+    <string name="own_category">Своя категория</string>
+    <string name="own_good">Свой товар</string>
     <string name="good_details">Описание товара</string>
 
     <string name="add_good">Добавить товар</string>
@@ -51,7 +55,6 @@
     <string name="supermarket">Супермаркет</string>
 
     <string name="time">Время: %1$s</string>
-    <string name="add_good_to_list">Добавить товар в список</string>
 
     <string name="city_moscow">Москва</string>
     <string name="city_st_petersburg">Санкт-Петербург</string>
