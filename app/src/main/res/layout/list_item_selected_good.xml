@@ -1,28 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/history_details_item_height"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/goodNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="100"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginTop="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
+        android:layout_marginBottom="@dimen/common_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/goodNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:layout_marginRight="@dimen/common_margin"
+            android:layout_marginEnd="@dimen/common_margin"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:singleLine="true"
+            android:text="HELLO" />
+
+        <TextView
+            android:id="@+id/costTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:singleLine="true"
+            android:text="HELLO" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/expandedView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/common_margin"
         android:layout_marginRight="@dimen/common_margin"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:singleLine="true"
-        android:gravity="start|center_vertical" />
+        android:layout_marginBottom="@dimen/common_margin"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/costTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/common_margin"
-        android:layout_marginEnd="@dimen/common_margin"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:singleLine="true"
-        android:gravity="start|center_vertical" />
+        <TextView
+            android:id="@+id/secondCostTextView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:layout_marginRight="@dimen/common_margin"
+            android:layout_marginEnd="@dimen/common_margin"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:singleLine="true"
+            android:gravity="start|center_vertical"
+            android:text="HELLO" />
+
+        <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+            android:id="@+id/goodDetailsButton"
+            android:layout_width="@dimen/good_details_button_size"
+            android:layout_height="@dimen/good_details_button_size"
+            android:src="@drawable/good_details"
+            android:contentDescription="@string/good_details" />
+
+    </LinearLayout>
 
 </LinearLayout>

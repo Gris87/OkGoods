@@ -2,6 +2,23 @@
 <resources>
     <string name="app_name">Покупки в О\'КЕЙ</string>
 
+    <string name="title_activity_main">О\'КЕЙ</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="title_activity_select_shop">Выбор магазина</string>
+    <string name="title_activity_history">История</string>
+    <string name="title_activity_history_details">Описание</string>
+
+    <string name="pref_header_general">Основные</string>
+    <string name="pref_header_notifications">Уведомления</string>
+    <string name="pref_title_general_city">Город</string>
+    <string name="pref_description_general_city">Выберите свой город</string>
+    <string name="pref_title_notifications_show_notification">Показывать уведомление</string>
+    <string name="pref_description_notifications_show_notification">Включает уведомление</string>
+
+    <string name="rub_currency">%1$.2f руб.</string>
+    <string name="rub_currency_count">%1$.2f руб. x %2$.1f</string>
+    <string name="good_details">Описание товара</string>
+
     <string name="add_good">Добавить товар</string>
     <string name="delete_goods">Удалить товары</string>
     <string name="start">Старт</string>
@@ -34,8 +51,7 @@
     <string name="supermarket">Супермаркет</string>
 
     <string name="time">Время: %1$s</string>
-    <string name="rub_currency">%1$.2f руб.</string>
-    <string name="rub_currency_count">%1$.2f руб. x %2$.1f</string>
+    <string name="add_good_to_list">Добавить товар в список</string>
 
     <string name="city_moscow">Москва</string>
     <string name="city_st_petersburg">Санкт-Петербург</string>
@@ -189,17 +205,4 @@
     <string name="shop_ufa_hypermarket_ok_ufa_iyun">Гипермаркет О’КЕЙ «Уфа Июнь»</string>
     <string name="shop_ufa_hypermarket_ok_ufa_planeta">Гипермаркет О’КЕЙ «Уфа Планета»</string>
     <string name="shop_cherepovets_hypermarket_ok_cherepovets_raakhe">Гипермаркет О\'КЕЙ «Череповец Раахе»</string>
-
-    <string name="title_activity_main">О\'КЕЙ</string>
-    <string name="title_activity_settings">Настройки</string>
-    <string name="title_activity_select_shop">Выбор магазина</string>
-    <string name="title_activity_history">История</string>
-    <string name="title_activity_history_details">Описание</string>
-
-    <string name="pref_header_general">Основные</string>
-    <string name="pref_header_notifications">Уведомления</string>
-    <string name="pref_title_general_city">Город</string>
-    <string name="pref_description_general_city">Выберите свой город</string>
-    <string name="pref_title_notifications_show_notification">Показывать уведомление</string>
-    <string name="pref_description_notifications_show_notification">Включает уведомление</string>
 </resources>
