@@ -30,6 +30,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
 
     private static final String SAVED_STATE_HISTORY_DETAILS = "HISTORY_DETAILS";
+    private static final String SAVED_STATE_TOTAL           = "TOTAL";
 
 
 
@@ -86,6 +87,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         if (mHistoryDetailsFragment != null)
         {
             outState.putParcelableArrayList(SAVED_STATE_HISTORY_DETAILS, mHistoryDetailsFragment.getHistoryDetails());
+            outState.putDouble(             SAVED_STATE_TOTAL,           mHistoryDetailsFragment.getTotal());
         }
     }
 
@@ -97,7 +99,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         if (mHistoryDetailsFragment != null)
         {
             ArrayList<HistoryDetailsInfo> details = savedInstanceState.getParcelableArrayList(SAVED_STATE_HISTORY_DETAILS);
+            double                        total   = savedInstanceState.getDouble(             SAVED_STATE_TOTAL);
+
             mHistoryDetailsFragment.setHistoryDetails(details);
+            mHistoryDetailsFragment.setTotal(total);
         }
     }
 
@@ -131,6 +136,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         if (mHistoryDetailsFragment != null)
         {
             mHistoryDetailsFragment.setHistoryDetails(details);
+            mHistoryDetailsFragment.setTotal(history.getTotal());
         }
         else
         {
@@ -139,6 +145,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
             intent.putExtra(Extras.SHOP,            history.getShopId());
             intent.putExtra(Extras.HISTORY,         history.getDate() + ". " + history.getShopName());
             intent.putExtra(Extras.HISTORY_DETAILS, details);
+            intent.putExtra(Extras.TOTAL,           history.getTotal());
 
             startActivity(intent);
         }

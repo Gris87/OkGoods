@@ -57,6 +57,7 @@ public class HistoryDetailsActivity extends AppCompatActivity
         int                           shopId  = intent.getIntExtra(                Extras.SHOP, 0);
         final String                  history = intent.getStringExtra(             Extras.HISTORY);
         ArrayList<HistoryDetailsInfo> details = intent.getParcelableArrayListExtra(Extras.HISTORY_DETAILS);
+        double                        total   = intent.getDoubleExtra(             Extras.TOTAL, 0);
 
 
 
@@ -74,6 +75,7 @@ public class HistoryDetailsActivity extends AppCompatActivity
         setTitle(history);
         ((ImageView)mShopImageView.getContentView()).setScaleType(ImageView.ScaleType.CENTER_CROP);
         historyDetailsFragment.setHistoryDetails(details);
+        historyDetailsFragment.setTotal(total);
 
 
 

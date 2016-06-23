@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -28,9 +29,13 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
 
 
 
+    private TextView                         mNoInformationTextView      = null;
+    private RecyclerView                     mRecyclerView               = null;
     private HistoryDetailsAdapter            mAdapter                    = null;
+    private TextView                         mTotalTextView              = null;
     private HistoryDetailsAdapter.ViewHolder mSelectedViewHolder         = null;
     private HistoryDetailsInfo               mSelectedHistoryDetailsInfo = null;
+    private double                           mTotal                      = 0;
 
 
 
@@ -46,9 +51,9 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
 
 
 
-        RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.historyDetailsRecyclerView);
-
-        assert recyclerView != null;
+        mNoInformationTextView = (TextView)    rootView.findViewById(R.id.noInformationTextView);
+        mRecyclerView          = (RecyclerView)rootView.findViewById(R.id.historyDetailsRecyclerView);
+        mTotalTextView         = (TextView)    rootView.findViewById(R.id.totalTextView);
 
 
 
@@ -56,8 +61,8 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnBindViewHolderListener(this);
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
     }
@@ -65,11 +70,34 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     public void setHistoryDetails(ArrayList<HistoryDetailsInfo> details)
     {
         mAdapter.setItems(details);
+
+        if (details.size() > 0)
+        {
+            mNoInformationTextView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(         View.VISIBLE);
+        }
+        else
+        {
+            mNoInformationTextView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(         View.GONE);
+        }
     }
 
     public ArrayList<HistoryDetailsInfo> getHistoryDetails()
     {
         return mAdapter.getItems();
+    }
+
+    public void setTotal(double total)
+    {
+        mTotal = total;
+
+        mTotalTextView.setText(getString(R.string.rub_currency, mTotal));
+    }
+
+    public double getTotal()
+    {
+        return mTotal;
     }
 
     @Override

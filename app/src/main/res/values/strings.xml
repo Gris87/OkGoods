@@ -22,6 +22,7 @@
     <string name="own_category">Own category</string>
     <string name="own_good">Own good</string>
     <string name="good_details">Good details</string>
+    <string name="total">Total:</string>
 
     <string name="add_good">Add good</string>
     <string name="delete_goods">Delete goods</string>
@@ -55,6 +56,7 @@
     <string name="supermarket">Supermarket</string>
 
     <string name="time">Time: %1$s</string>
+    <string name="no_information">No information</string>
 
     <string name="city_moscow">Moscow</string>
     <string name="city_st_petersburg">St. Petersburg</string>

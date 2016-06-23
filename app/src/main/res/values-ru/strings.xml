@@ -22,6 +22,7 @@
     <string name="own_category">Своя категория</string>
     <string name="own_good">Свой товар</string>
     <string name="good_details">Описание товара</string>
+    <string name="total">Итого:</string>
 
     <string name="add_good">Добавить товар</string>
     <string name="delete_goods">Удалить товары</string>
@@ -55,6 +56,7 @@
     <string name="supermarket">Супермаркет</string>
 
     <string name="time">Время: %1$s</string>
+    <string name="no_information">Нет информации</string>
 
     <string name="city_moscow">Москва</string>
     <string name="city_st_petersburg">Санкт-Петербург</string>
