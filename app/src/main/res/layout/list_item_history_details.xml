@@ -57,7 +57,7 @@
             android:layout_marginRight="@dimen/common_margin"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:singleLine="true"
-            android:gravity="start|center_vertical" />
+            android:gravity="end|center_vertical" />
 
         <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
             android:id="@+id/goodDetailsButton"

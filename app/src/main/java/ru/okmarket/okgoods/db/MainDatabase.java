@@ -3542,7 +3542,9 @@ public class MainDatabase extends SQLiteOpenHelper
                                         GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                 + ", " +
                                         GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                             + ", " +
                                         HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_COST                                                                   + ", " +
-                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_COUNT                                                                  + " "  +
+                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_COUNT                                                                  + ", " +
+                                        GOODS_TABLE_NAME            + "." + COLUMN_ENABLED + " AS good_enabled"                                           + ", " +
+                                        GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ENABLED + " AS category_enabled"                                       + " "  +
                                     "FROM " + HISTORY_DETAILS_TABLE_NAME                                                                                  + " "  +
                                     "INNER JOIN " + GOODS_TABLE_NAME                                                                                      + " "  +
                                     "ON " + HISTORY_DETAILS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
@@ -3553,13 +3555,15 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
 
-        int idColumnIndex           = cursor.getColumnIndexOrThrow(COLUMN_ID);
-        int goodIdColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_GOOD_ID);
-        int categoryIdColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
-        int goodNameColumnIndex     = cursor.getColumnIndexOrThrow("good_name");
-        int categoryNameColumnIndex = cursor.getColumnIndexOrThrow("category_name");
-        int costColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_COST);
-        int countColumnIndex        = cursor.getColumnIndexOrThrow(COLUMN_COUNT);
+        int idColumnIndex              = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int goodIdColumnIndex          = cursor.getColumnIndexOrThrow(COLUMN_GOOD_ID);
+        int categoryIdColumnIndex      = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
+        int goodNameColumnIndex        = cursor.getColumnIndexOrThrow("good_name");
+        int categoryNameColumnIndex    = cursor.getColumnIndexOrThrow("category_name");
+        int costColumnIndex            = cursor.getColumnIndexOrThrow(COLUMN_COST);
+        int countColumnIndex           = cursor.getColumnIndexOrThrow(COLUMN_COUNT);
+        int goodEnabledColumnIndex     = cursor.getColumnIndexOrThrow("good_enabled");
+        int categoryEnabledColumnIndex = cursor.getColumnIndexOrThrow("category_enabled");
 
 
 
@@ -3567,8 +3571,10 @@ public class MainDatabase extends SQLiteOpenHelper
 
         while (!cursor.isAfterLast())
         {
-            String goodName     = cursor.getString(goodNameColumnIndex);
-            String categoryName = cursor.getString(categoryNameColumnIndex);
+            String goodName        = cursor.getString(goodNameColumnIndex);
+            String categoryName    = cursor.getString(categoryNameColumnIndex);
+            int    goodEnabled     = cursor.getInt(goodEnabledColumnIndex);
+            int    categoryEnabled = cursor.getInt(categoryEnabledColumnIndex);
 
 
 
@@ -3577,9 +3583,10 @@ public class MainDatabase extends SQLiteOpenHelper
             details.setId(        cursor.getInt(idColumnIndex));
             details.setGoodId(    cursor.getInt(goodIdColumnIndex));
             details.setCategoryId(cursor.getInt(categoryIdColumnIndex));
-            details.setName(      !TextUtils.isEmpty(goodName) ? goodName : categoryName);
+            details.setName(      details.getGoodId() > 0 ? goodName : categoryName);
             details.setCost(      cursor.getDouble(costColumnIndex));
             details.setCount(     cursor.getDouble(countColumnIndex));
+            details.setEnabled(   details.getGoodId() > 0 ? goodEnabled : categoryEnabled);
 
             res.add(details);
 
@@ -3608,7 +3615,9 @@ public class MainDatabase extends SQLiteOpenHelper
                                         GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                + ", " +
                                         GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                            + ", " +
                                         GOODS_TABLE_NAME            + "." + COLUMN_COST                                                                  + ", " +
-                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_COUNT                                                                 + " "  +
+                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_COUNT                                                                 + ", " +
+                                        GOODS_TABLE_NAME            + "." + COLUMN_ENABLED + " AS good_enabled"                                          + ", " +
+                                        GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ENABLED + " AS category_enabled"                                      + " "  +
                                     "FROM " + SELECTED_GOODS_TABLE_NAME                                                                                  + " "  +
                                     "INNER JOIN " + GOODS_TABLE_NAME                                                                                     + " "  +
                                     "ON " + SELECTED_GOODS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
@@ -3618,13 +3627,15 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
 
-        int idColumnIndex           = cursor.getColumnIndexOrThrow(COLUMN_ID);
-        int goodIdColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_GOOD_ID);
-        int categoryIdColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
-        int goodNameColumnIndex     = cursor.getColumnIndexOrThrow("good_name");
-        int categoryNameColumnIndex = cursor.getColumnIndexOrThrow("category_name");
-        int costColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_COST);
-        int countColumnIndex        = cursor.getColumnIndexOrThrow(COLUMN_COUNT);
+        int idColumnIndex              = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int goodIdColumnIndex          = cursor.getColumnIndexOrThrow(COLUMN_GOOD_ID);
+        int categoryIdColumnIndex      = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
+        int goodNameColumnIndex        = cursor.getColumnIndexOrThrow("good_name");
+        int categoryNameColumnIndex    = cursor.getColumnIndexOrThrow("category_name");
+        int costColumnIndex            = cursor.getColumnIndexOrThrow(COLUMN_COST);
+        int countColumnIndex           = cursor.getColumnIndexOrThrow(COLUMN_COUNT);
+        int goodEnabledColumnIndex     = cursor.getColumnIndexOrThrow("good_enabled");
+        int categoryEnabledColumnIndex = cursor.getColumnIndexOrThrow("category_enabled");
 
 
 
@@ -3632,21 +3643,24 @@ public class MainDatabase extends SQLiteOpenHelper
 
         while (!cursor.isAfterLast())
         {
-            String goodName     = cursor.getString(goodNameColumnIndex);
-            String categoryName = cursor.getString(categoryNameColumnIndex);
+            String goodName        = cursor.getString(goodNameColumnIndex);
+            String categoryName    = cursor.getString(categoryNameColumnIndex);
+            int    goodEnabled     = cursor.getInt(goodEnabledColumnIndex);
+            int    categoryEnabled = cursor.getInt(categoryEnabledColumnIndex);
 
 
 
-            SelectedGoodInfo details = new SelectedGoodInfo();
+            SelectedGoodInfo good = new SelectedGoodInfo();
 
-            details.setId(        cursor.getInt(idColumnIndex));
-            details.setGoodId(    cursor.getInt(goodIdColumnIndex));
-            details.setCategoryId(cursor.getInt(categoryIdColumnIndex));
-            details.setName(      !TextUtils.isEmpty(goodName) ? goodName : categoryName);
-            details.setCost(      cursor.getDouble(costColumnIndex));
-            details.setCount(     cursor.getDouble(countColumnIndex));
+            good.setId(        cursor.getInt(idColumnIndex));
+            good.setGoodId(    cursor.getInt(goodIdColumnIndex));
+            good.setCategoryId(cursor.getInt(categoryIdColumnIndex));
+            good.setName(      good.getGoodId() > 0 ? goodName : categoryName);
+            good.setCost(      cursor.getDouble(costColumnIndex));
+            good.setCount(     cursor.getDouble(countColumnIndex));
+            good.setEnabled(   good.getGoodId() > 0 ? goodEnabled : categoryEnabled);
 
-            res.add(details);
+            res.add(good);
 
 
 

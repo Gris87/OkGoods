@@ -11,10 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import java.util.Locale;
@@ -28,14 +30,20 @@ import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.other.Preferences;
 import ru.okmarket.okgoods.other.SelectedGoodInfo;
 import ru.okmarket.okgoods.other.ShopInfo;
+import ru.okmarket.okgoods.util.AnimationUtils;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
-public class MainActivity extends AppCompatActivity implements SelectCityDialog.OnFragmentInteractionListener, View.OnTouchListener, ShopMapFragment.OnFragmentInteractionListener, SelectedGoodAdapter.OnItemClickListener
+public class MainActivity extends AppCompatActivity implements SelectCityDialog.OnFragmentInteractionListener, View.OnTouchListener, ShopMapFragment.OnFragmentInteractionListener, SelectedGoodAdapter.OnItemClickListener, SelectedGoodAdapter.OnBindViewHolderListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "MainActivity";
+
+
+
+    private static final float EXPAND_ANIMATION_SPEED  = 0.5f;
+    private static final int   FADE_ANIMATION_DURATION = 150;
 
 
 
@@ -49,14 +57,16 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
 
 
 
-    private NoScrollableDrawerLayout mDrawerLayout    = null;
-    private ActionBarDrawerToggle    mDrawerToggle    = null;
-    private SelectedGoodAdapter      mAdapter         = null;
-    private FrameLayout              mShopMapView     = null;
-    private ShopMapFragment          mShopMapFragment = null;
-    private MainDatabase             mMainDatabase    = null;
-    private SQLiteDatabase           mDB              = null;
-    private ShopInfo                 mSelectedShop    = null;
+    private NoScrollableDrawerLayout       mDrawerLayout             = null;
+    private ActionBarDrawerToggle          mDrawerToggle             = null;
+    private SelectedGoodAdapter            mAdapter                  = null;
+    private FrameLayout                    mShopMapView              = null;
+    private ShopMapFragment                mShopMapFragment          = null;
+    private MainDatabase                   mMainDatabase             = null;
+    private SQLiteDatabase                 mDB                       = null;
+    private ShopInfo                       mSelectedShop             = null;
+    private SelectedGoodAdapter.ViewHolder mSelectedViewHolder       = null;
+    private SelectedGoodInfo               mSelectedSelectedGoodInfo = null;
 
 
 
@@ -90,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
 
         mAdapter = new SelectedGoodAdapter(this, mMainDatabase, mDB);
         mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnBindViewHolderListener(this);
 
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setAdapter(mAdapter);
@@ -394,6 +405,100 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
     @Override
     public void onSelectedGoodClicked(SelectedGoodAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
     {
-        // TODO: Implement it
+        if (mSelectedSelectedGoodInfo == good)
+        {
+            selectSelectedGood(null, null);
+        }
+        else
+        {
+            selectSelectedGood(viewHolder, good);
+        }
+    }
+
+    @Override
+    public void onSelectedGoodBindViewHolder(SelectedGoodAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
+    {
+        if (mSelectedViewHolder == viewHolder)
+        {
+            mSelectedViewHolder = null;
+        }
+
+        if (mSelectedSelectedGoodInfo == good)
+        {
+            mSelectedViewHolder = viewHolder;
+
+            expandSelectedViewHolder(true);
+        }
+    }
+
+    private void selectSelectedGood(SelectedGoodAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
+    {
+        if (mSelectedViewHolder != null)
+        {
+            collapseSelectedViewHolder();
+        }
+
+        mSelectedViewHolder       = viewHolder;
+        mSelectedSelectedGoodInfo = good;
+
+        if (mSelectedViewHolder != null)
+        {
+            expandSelectedViewHolder(false);
+        }
+    }
+
+    private void expandSelectedViewHolder(boolean immediately)
+    {
+        if (immediately)
+        {
+            mSelectedViewHolder.mExpandedView.setVisibility(View.VISIBLE);
+            mSelectedViewHolder.mCostTextView.setVisibility(View.GONE);
+
+            mSelectedViewHolder.mExpandedView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+        else
+        {
+            AnimationUtils.expand(mSelectedViewHolder.mExpandedView,  EXPAND_ANIMATION_SPEED);
+            AnimationUtils.fadeOut(mSelectedViewHolder.mCostTextView, FADE_ANIMATION_DURATION);
+        }
+
+        mSelectedViewHolder.mGoodNameTextView.setHorizontallyScrolling(true);
+        mSelectedViewHolder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(true);
+        mSelectedViewHolder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        mSelectedViewHolder.mGoodNameTextView.setSelected(true);
+
+        if (!TextUtils.isEmpty(mSelectedViewHolder.mCostTextView.getText()))
+        {
+            mSelectedViewHolder.mSecondCostTextView.setText(mSelectedViewHolder.mCostTextView.getText());
+        }
+        else
+        {
+            if (mSelectedSelectedGoodInfo.isOwn())
+            {
+                if (mSelectedSelectedGoodInfo.getGoodId() > 0)
+                {
+                    mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_good);
+                }
+                else
+                {
+                    mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_category);
+                }
+            }
+            else
+            {
+                mSelectedViewHolder.mSecondCostTextView.setText(R.string.category);
+            }
+        }
+    }
+
+    private void collapseSelectedViewHolder()
+    {
+        AnimationUtils.collapse(mSelectedViewHolder.mExpandedView, EXPAND_ANIMATION_SPEED);
+        AnimationUtils.fadeIn(mSelectedViewHolder.mCostTextView,   FADE_ANIMATION_DURATION);
+
+        mSelectedViewHolder.mGoodNameTextView.setHorizontallyScrolling(false);
+        mSelectedViewHolder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(false);
+        mSelectedViewHolder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.END);
+        mSelectedViewHolder.mGoodNameTextView.setSelected(false);
     }
 }

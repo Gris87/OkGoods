@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
+import java.util.Locale;
+
 public class AnimationUtils
 {
     @SuppressWarnings("unused")
@@ -12,8 +14,13 @@ public class AnimationUtils
 
 
 
-    public static void expand(final View view)
+    public static void expand(final View view, float speed)
     {
+        if (speed <= 0)
+        {
+            throw new IllegalArgumentException(String.format(Locale.US, "speed (%1$.2f) should be positive", speed));
+        }
+
         view.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         final int targetHeight = view.getMeasuredHeight();
 
@@ -40,13 +47,18 @@ public class AnimationUtils
             }
         };
 
-        // 1dp/ms
-        animation.setDuration((int)(targetHeight / view.getContext().getResources().getDisplayMetrics().density));
+        // 1dp/ms * speed
+        animation.setDuration((int)(targetHeight / view.getContext().getResources().getDisplayMetrics().density / speed));
         view.startAnimation(animation);
     }
 
-    public static void collapse(final View view)
+    public static void collapse(final View view, float speed)
     {
+        if (speed <= 0)
+        {
+            throw new IllegalArgumentException(String.format(Locale.US, "speed (%1$.2f) should be positive", speed));
+        }
+
         final int initialHeight = view.getMeasuredHeight();
 
         Animation animation = new Animation()
@@ -73,13 +85,18 @@ public class AnimationUtils
             }
         };
 
-        // 1dp/ms
-        animation.setDuration((int)(initialHeight / view.getContext().getResources().getDisplayMetrics().density));
+        // 1dp/ms * speed
+        animation.setDuration((int)(initialHeight / view.getContext().getResources().getDisplayMetrics().density / speed));
         view.startAnimation(animation);
     }
 
-    public static void fadeIn(final View view)
+    public static void fadeIn(final View view, int duration)
     {
+        if (duration <= 0)
+        {
+            throw new IllegalArgumentException(String.format(Locale.US, "duration (%1$d) should be positive", duration));
+        }
+
         view.setVisibility(View.VISIBLE);
         view.setAlpha(0);
 
@@ -98,12 +115,17 @@ public class AnimationUtils
             }
         };
 
-        animation.setDuration(1000);
+        animation.setDuration(duration);
         view.startAnimation(animation);
     }
 
-    public static void fadeOut(final View view)
+    public static void fadeOut(final View view, int duration)
     {
+        if (duration <= 0)
+        {
+            throw new IllegalArgumentException(String.format(Locale.US, "duration (%1$d) should be positive", duration));
+        }
+
         view.setAlpha(1);
 
         Animation animation = new Animation()
@@ -128,7 +150,7 @@ public class AnimationUtils
             }
         };
 
-        animation.setDuration(1000);
+        animation.setDuration(duration);
         view.startAnimation(animation);
     }
 }

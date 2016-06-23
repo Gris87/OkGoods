@@ -23,6 +23,11 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
 
 
 
+    private static final float EXPAND_ANIMATION_SPEED  = 0.5f;
+    private static final int   FADE_ANIMATION_DURATION = 150;
+
+
+
     private HistoryDetailsAdapter            mAdapter                    = null;
     private HistoryDetailsAdapter.ViewHolder mSelectedViewHolder         = null;
     private HistoryDetailsInfo               mSelectedHistoryDetailsInfo = null;
@@ -123,9 +128,14 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         }
         else
         {
-            AnimationUtils.expand(mSelectedViewHolder.mExpandedView);
-            AnimationUtils.fadeOut(mSelectedViewHolder.mCostTextView);
+            AnimationUtils.expand(mSelectedViewHolder.mExpandedView,  EXPAND_ANIMATION_SPEED);
+            AnimationUtils.fadeOut(mSelectedViewHolder.mCostTextView, FADE_ANIMATION_DURATION);
         }
+
+        mSelectedViewHolder.mGoodNameTextView.setHorizontallyScrolling(true);
+        mSelectedViewHolder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(true);
+        mSelectedViewHolder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        mSelectedViewHolder.mGoodNameTextView.setSelected(true);
 
         if (!TextUtils.isEmpty(mSelectedViewHolder.mCostTextView.getText()))
         {
@@ -133,13 +143,32 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         }
         else
         {
-
+            if (mSelectedHistoryDetailsInfo.isOwn())
+            {
+                if (mSelectedHistoryDetailsInfo.getGoodId() > 0)
+                {
+                    mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_good);
+                }
+                else
+                {
+                    mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_category);
+                }
+            }
+            else
+            {
+                mSelectedViewHolder.mSecondCostTextView.setText(R.string.category);
+            }
         }
     }
 
     private void collapseSelectedViewHolder()
     {
-        AnimationUtils.collapse(mSelectedViewHolder.mExpandedView);
-        AnimationUtils.fadeIn(mSelectedViewHolder.mCostTextView);
+        AnimationUtils.collapse(mSelectedViewHolder.mExpandedView, EXPAND_ANIMATION_SPEED);
+        AnimationUtils.fadeIn(mSelectedViewHolder.mCostTextView,   FADE_ANIMATION_DURATION);
+
+        mSelectedViewHolder.mGoodNameTextView.setHorizontallyScrolling(false);
+        mSelectedViewHolder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(false);
+        mSelectedViewHolder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.END);
+        mSelectedViewHolder.mGoodNameTextView.setSelected(false);
     }
 }

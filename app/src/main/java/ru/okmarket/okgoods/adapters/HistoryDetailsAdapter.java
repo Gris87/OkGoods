@@ -2,6 +2,7 @@ package ru.okmarket.okgoods.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,11 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         final HistoryDetailsInfo item = mItems.get(position);
 
         holder.mGoodNameTextView.setText(item.getName());
+        holder.mGoodNameTextView.setHorizontallyScrolling(false);
+        holder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(false);
+        holder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.END);
+        holder.mGoodNameTextView.setMarqueeRepeatLimit(-1);
+        holder.mGoodNameTextView.setSelected(false);
 
         if (item.getGoodId() > 0 && item.getCost() > 0 && item.getCount() > 0)
         {

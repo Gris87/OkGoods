@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.util.Locale;
 
+import ru.okmarket.okgoods.db.MainDatabase;
+
 public class HistoryDetailsInfo implements Parcelable
 {
     @SuppressWarnings("unused")
@@ -18,6 +20,7 @@ public class HistoryDetailsInfo implements Parcelable
     private String  mName;
     private double  mCost;
     private double  mCount;
+    private int     mEnabled;
 
 
 
@@ -29,16 +32,18 @@ public class HistoryDetailsInfo implements Parcelable
         mName       = null;
         mCost       = 0;
         mCount      = 0;
+        mEnabled    = 0;
     }
 
     @Override
     public String toString()
     {
-        return String.format(Locale.US, "{id = %1$d, name = %2$s, cost = %3$.2f, count = %4$.2f}"
+        return String.format(Locale.US, "{id = %1$d, name = %2$s, cost = %3$.2f, count = %4$.2f, enabled = %5$d}"
                 , mId
                 , String.valueOf(mName)
                 , mCost
                 , mCount
+                , mEnabled
         );
     }
 
@@ -125,6 +130,26 @@ public class HistoryDetailsInfo implements Parcelable
         mCount = count;
     }
 
+    public int getEnabled()
+    {
+        return mEnabled;
+    }
+
+    public void setEnabled(int enabled)
+    {
+        mEnabled = enabled;
+    }
+
+    public boolean isEnabled()
+    {
+        return mEnabled != MainDatabase.DISABLED;
+    }
+
+    public boolean isOwn()
+    {
+        return mEnabled == MainDatabase.FORCE_ENABLED;
+    }
+
     @Override
     public int describeContents()
     {
@@ -140,6 +165,7 @@ public class HistoryDetailsInfo implements Parcelable
         out.writeString(mName);
         out.writeDouble(mCost);
         out.writeDouble(mCount);
+        out.writeInt(mEnabled);
     }
 
     public static final Parcelable.Creator<HistoryDetailsInfo> CREATOR = new Parcelable.Creator<HistoryDetailsInfo>()
@@ -165,5 +191,6 @@ public class HistoryDetailsInfo implements Parcelable
         mName       = in.readString();
         mCost       = in.readDouble();
         mCount      = in.readDouble();
+        mEnabled    = in.readInt();
     }
 }

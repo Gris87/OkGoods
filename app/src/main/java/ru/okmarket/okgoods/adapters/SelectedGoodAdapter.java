@@ -3,6 +3,7 @@ package ru.okmarket.okgoods.adapters;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,21 +22,23 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
 
 
 
-    private Context                     mContext             = null;
-    private MainDatabase                mMainDatabase        = null;
-    private SQLiteDatabase              mDB                  = null;
-    private ArrayList<SelectedGoodInfo> mItems               = null;
-    private OnItemClickListener         mOnItemClickListener = null;
+    private Context                     mContext                  = null;
+    private MainDatabase                mMainDatabase             = null;
+    private SQLiteDatabase              mDB                       = null;
+    private ArrayList<SelectedGoodInfo> mItems                    = null;
+    private OnItemClickListener         mOnItemClickListener      = null;
+    private OnBindViewHolderListener    mOnBindViewHolderListener = null;
 
 
 
     public SelectedGoodAdapter(Context context, MainDatabase mainDatabase, SQLiteDatabase db)
     {
-        mContext             = context;
-        mMainDatabase        = mainDatabase;
-        mDB                  = db;
-        mItems               = new ArrayList<>();
-        mOnItemClickListener = null;
+        mContext                  = context;
+        mMainDatabase             = mainDatabase;
+        mDB                       = db;
+        mItems                    = new ArrayList<>();
+        mOnItemClickListener      = null;
+        mOnBindViewHolderListener = null;
 
         updateFromDatabase();
     }
@@ -54,10 +57,16 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
         final SelectedGoodInfo item = mItems.get(position);
 
         holder.mGoodNameTextView.setText(item.getName());
+        holder.mGoodNameTextView.setHorizontallyScrolling(false);
+        holder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(false);
+        holder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.END);
+        holder.mGoodNameTextView.setMarqueeRepeatLimit(-1);
+        holder.mGoodNameTextView.setSelected(false);
 
         if (item.getGoodId() > 0 && item.getCost() > 0 && item.getCount() > 0)
         {
             holder.mCostTextView.setVisibility(View.VISIBLE);
+            holder.mCostTextView.setAlpha(1);
             holder.mCostTextView.setText(mContext.getString(R.string.rub_currency_count, item.getCost(), item.getCount()));
         }
         else
@@ -78,6 +87,11 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
                 }
             }
         });
+
+        if (mOnBindViewHolderListener != null)
+        {
+            mOnBindViewHolderListener.onSelectedGoodBindViewHolder(holder, item);
+        }
     }
 
     @Override
@@ -98,6 +112,11 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
         mOnItemClickListener = listener;
     }
 
+    public void setOnBindViewHolderListener(OnBindViewHolderListener listener)
+    {
+        mOnBindViewHolderListener = listener;
+    }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder
@@ -106,6 +125,7 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
         public TextView mGoodNameTextView;
         public TextView mCostTextView;
         public View     mExpandedView;
+        public TextView mSecondCostTextView;
 
 
 
@@ -113,10 +133,11 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
         {
             super(view);
 
-            mView             = view;
-            mGoodNameTextView = (TextView)view.findViewById(R.id.goodNameTextView);
-            mCostTextView     = (TextView)view.findViewById(R.id.costTextView);
-            mExpandedView     =           view.findViewById(R.id.expandedView);
+            mView               = view;
+            mGoodNameTextView   = (TextView)view.findViewById(R.id.goodNameTextView);
+            mCostTextView       = (TextView)view.findViewById(R.id.costTextView);
+            mExpandedView       =           view.findViewById(R.id.expandedView);
+            mSecondCostTextView = (TextView)view.findViewById(R.id.secondCostTextView);
         }
     }
 
@@ -125,5 +146,10 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
     public interface OnItemClickListener
     {
         void onSelectedGoodClicked(ViewHolder viewHolder, SelectedGoodInfo good);
+    }
+
+    public interface OnBindViewHolderListener
+    {
+        void onSelectedGoodBindViewHolder(ViewHolder viewHolder, SelectedGoodInfo good);
     }
 }
