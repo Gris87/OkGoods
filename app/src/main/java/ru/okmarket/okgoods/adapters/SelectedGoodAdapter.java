@@ -72,6 +72,7 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
         else
         {
             holder.mCostTextView.setVisibility(View.GONE);
+            holder.mCostTextView.setText("");
         }
 
         holder.mExpandedView.setVisibility(View.GONE);

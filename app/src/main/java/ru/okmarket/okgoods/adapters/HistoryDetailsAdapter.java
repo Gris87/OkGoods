@@ -64,6 +64,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         else
         {
             holder.mCostTextView.setVisibility(View.GONE);
+            holder.mCostTextView.setText("");
         }
 
         holder.mExpandedView.setVisibility(View.GONE);
