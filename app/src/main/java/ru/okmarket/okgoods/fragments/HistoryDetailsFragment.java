@@ -29,13 +29,13 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
 
 
 
-    private TextView                         mNoInformationTextView      = null;
-    private RecyclerView                     mRecyclerView               = null;
-    private HistoryDetailsAdapter            mAdapter                    = null;
-    private TextView                         mTotalTextView              = null;
-    private HistoryDetailsAdapter.ViewHolder mSelectedViewHolder         = null;
-    private HistoryDetailsInfo               mSelectedHistoryDetailsInfo = null;
-    private double                           mTotal                      = 0;
+    private TextView                         mNoInformationTextView  = null;
+    private RecyclerView                     mRecyclerView           = null;
+    private HistoryDetailsAdapter            mAdapter                = null;
+    private TextView                         mTotalTextView          = null;
+    private HistoryDetailsAdapter.ViewHolder mSelectedViewHolder     = null;
+    private HistoryDetailsInfo               mSelectedHistoryDetails = null;
+    private double                           mTotal                  = 0;
 
 
 
@@ -88,6 +88,16 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         return mAdapter.getItems();
     }
 
+    public void setSelectedHistoryDetails(HistoryDetailsInfo details)
+    {
+        mSelectedHistoryDetails = details;
+    }
+
+    public HistoryDetailsInfo getSelectedHistoryDetails()
+    {
+        return mSelectedHistoryDetails;
+    }
+
     public void setTotal(double total)
     {
         mTotal = total;
@@ -103,7 +113,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     @Override
     public void onHistoryDetailsClicked(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsInfo details)
     {
-        if (mSelectedHistoryDetailsInfo == details)
+        if (details.equals(mSelectedHistoryDetails))
         {
             selectHistoryDetails(null, null);
         }
@@ -121,7 +131,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
             mSelectedViewHolder = null;
         }
 
-        if (mSelectedHistoryDetailsInfo == details)
+        if (details.equals(mSelectedHistoryDetails))
         {
             mSelectedViewHolder = viewHolder;
 
@@ -136,8 +146,8 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
             collapseSelectedViewHolder();
         }
 
-        mSelectedViewHolder         = viewHolder;
-        mSelectedHistoryDetailsInfo = details;
+        mSelectedViewHolder     = viewHolder;
+        mSelectedHistoryDetails = details;
 
         if (mSelectedViewHolder != null)
         {
@@ -171,9 +181,9 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         }
         else
         {
-            if (mSelectedHistoryDetailsInfo.isOwn())
+            if (mSelectedHistoryDetails.isOwn())
             {
-                if (mSelectedHistoryDetailsInfo.getGoodId() > 0)
+                if (mSelectedHistoryDetails.getGoodId() > 0)
                 {
                     mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_good);
                 }

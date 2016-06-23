@@ -29,8 +29,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
 
 
-    private static final String SAVED_STATE_HISTORY_DETAILS = "HISTORY_DETAILS";
-    private static final String SAVED_STATE_TOTAL           = "TOTAL";
+    private static final String SAVED_STATE_HISTORY_DETAILS  = "HISTORY_DETAILS";
+    private static final String SAVED_STATE_SELECTED_DETAILS = "SELECTED_DETAILS";
+    private static final String SAVED_STATE_TOTAL            = "TOTAL";
 
 
 
@@ -86,8 +87,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
         if (mHistoryDetailsFragment != null)
         {
-            outState.putParcelableArrayList(SAVED_STATE_HISTORY_DETAILS, mHistoryDetailsFragment.getHistoryDetails());
-            outState.putDouble(             SAVED_STATE_TOTAL,           mHistoryDetailsFragment.getTotal());
+            outState.putParcelableArrayList(SAVED_STATE_HISTORY_DETAILS,  mHistoryDetailsFragment.getHistoryDetails());
+            outState.putParcelable(         SAVED_STATE_SELECTED_DETAILS, mHistoryDetailsFragment.getSelectedHistoryDetails());
+            outState.putDouble(             SAVED_STATE_TOTAL,            mHistoryDetailsFragment.getTotal());
         }
     }
 
@@ -98,10 +100,12 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
         if (mHistoryDetailsFragment != null)
         {
-            ArrayList<HistoryDetailsInfo> details = savedInstanceState.getParcelableArrayList(SAVED_STATE_HISTORY_DETAILS);
-            double                        total   = savedInstanceState.getDouble(             SAVED_STATE_TOTAL);
+            ArrayList<HistoryDetailsInfo> details         = savedInstanceState.getParcelableArrayList(SAVED_STATE_HISTORY_DETAILS);
+            HistoryDetailsInfo            selectedDetails = savedInstanceState.getParcelable(         SAVED_STATE_SELECTED_DETAILS);
+            double                        total           = savedInstanceState.getDouble(             SAVED_STATE_TOTAL);
 
             mHistoryDetailsFragment.setHistoryDetails(details);
+            mHistoryDetailsFragment.setSelectedHistoryDetails(selectedDetails);
             mHistoryDetailsFragment.setTotal(total);
         }
     }
@@ -136,6 +140,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         if (mHistoryDetailsFragment != null)
         {
             mHistoryDetailsFragment.setHistoryDetails(details);
+            mHistoryDetailsFragment.setSelectedHistoryDetails(null);
             mHistoryDetailsFragment.setTotal(history.getTotal());
         }
         else

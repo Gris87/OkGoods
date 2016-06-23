@@ -54,19 +54,20 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
 
 
     private static final String SAVED_STATE_SELECTED_SHOP = "SELECTED_SHOP";
+    private static final String SAVED_STATE_SELECTED_GOOD = "SELECTED_GOOD";
 
 
 
-    private NoScrollableDrawerLayout       mDrawerLayout             = null;
-    private ActionBarDrawerToggle          mDrawerToggle             = null;
-    private SelectedGoodAdapter            mAdapter                  = null;
-    private FrameLayout                    mShopMapView              = null;
-    private ShopMapFragment                mShopMapFragment          = null;
-    private MainDatabase                   mMainDatabase             = null;
-    private SQLiteDatabase                 mDB                       = null;
-    private ShopInfo                       mSelectedShop             = null;
-    private SelectedGoodAdapter.ViewHolder mSelectedViewHolder       = null;
-    private SelectedGoodInfo               mSelectedSelectedGoodInfo = null;
+    private NoScrollableDrawerLayout       mDrawerLayout       = null;
+    private ActionBarDrawerToggle          mDrawerToggle       = null;
+    private SelectedGoodAdapter            mAdapter            = null;
+    private FrameLayout                    mShopMapView        = null;
+    private ShopMapFragment                mShopMapFragment    = null;
+    private MainDatabase                   mMainDatabase       = null;
+    private SQLiteDatabase                 mDB                 = null;
+    private ShopInfo                       mSelectedShop       = null;
+    private SelectedGoodAdapter.ViewHolder mSelectedViewHolder = null;
+    private SelectedGoodInfo               mSelectedGood       = null;
 
 
 
@@ -162,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
         super.onSaveInstanceState(outState);
 
         outState.putParcelable(SAVED_STATE_SELECTED_SHOP, mSelectedShop);
+        outState.putParcelable(SAVED_STATE_SELECTED_GOOD, mSelectedGood);
     }
 
     @Override
@@ -170,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
         super.onRestoreInstanceState(savedInstanceState);
 
         mSelectedShop = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_SHOP);
+        mSelectedGood = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_GOOD);
 
         updateSelectedShop();
     }
@@ -405,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
     @Override
     public void onSelectedGoodClicked(SelectedGoodAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
     {
-        if (mSelectedSelectedGoodInfo == good)
+        if (good.equals(mSelectedGood))
         {
             selectSelectedGood(null, null);
         }
@@ -423,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
             mSelectedViewHolder = null;
         }
 
-        if (mSelectedSelectedGoodInfo == good)
+        if (good.equals(mSelectedGood))
         {
             mSelectedViewHolder = viewHolder;
 
@@ -438,8 +441,8 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
             collapseSelectedViewHolder();
         }
 
-        mSelectedViewHolder       = viewHolder;
-        mSelectedSelectedGoodInfo = good;
+        mSelectedViewHolder = viewHolder;
+        mSelectedGood       = good;
 
         if (mSelectedViewHolder != null)
         {
@@ -473,9 +476,9 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
         }
         else
         {
-            if (mSelectedSelectedGoodInfo.isOwn())
+            if (mSelectedGood.isOwn())
             {
-                if (mSelectedSelectedGoodInfo.getGoodId() > 0)
+                if (mSelectedGood.getGoodId() > 0)
                 {
                     mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_good);
                 }

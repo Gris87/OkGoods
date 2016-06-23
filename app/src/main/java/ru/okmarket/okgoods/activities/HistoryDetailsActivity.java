@@ -31,8 +31,13 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
 
 
-    private CachedImageView mShopImageView = null;
-    private HttpClient      mHttpClient    = null;
+    private static final String SAVED_STATE_SELECTED_DETAILS = "SELECTED_DETAILS";
+
+
+
+    private CachedImageView        mShopImageView          = null;
+    private HistoryDetailsFragment mHistoryDetailsFragment = null;
+    private HttpClient             mHttpClient             = null;
 
 
 
@@ -44,9 +49,9 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
 
 
-        Toolbar toolbar                               = (Toolbar)               findViewById(R.id.toolbar);
-        mShopImageView                                = (CachedImageView)       findViewById(R.id.shopImageView);
-        HistoryDetailsFragment historyDetailsFragment = (HistoryDetailsFragment)getSupportFragmentManager().findFragmentById(R.id.historyDetailsFragment);
+        Toolbar toolbar         = (Toolbar)               findViewById(R.id.toolbar);
+        mShopImageView          = (CachedImageView)       findViewById(R.id.shopImageView);
+        mHistoryDetailsFragment = (HistoryDetailsFragment)getSupportFragmentManager().findFragmentById(R.id.historyDetailsFragment);
 
         mHttpClient = HttpClient.getInstance(this);
 
@@ -74,8 +79,9 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
         setTitle(history);
         ((ImageView)mShopImageView.getContentView()).setScaleType(ImageView.ScaleType.CENTER_CROP);
-        historyDetailsFragment.setHistoryDetails(details);
-        historyDetailsFragment.setTotal(total);
+        mHistoryDetailsFragment.setHistoryDetails(details);
+        mHistoryDetailsFragment.setSelectedHistoryDetails(null);
+        mHistoryDetailsFragment.setTotal(total);
 
 
 
@@ -143,6 +149,24 @@ public class HistoryDetailsActivity extends AppCompatActivity
         super.onDestroy();
 
         mHttpClient.getRequestQueue().cancelAll(TAG);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(SAVED_STATE_SELECTED_DETAILS, mHistoryDetailsFragment.getSelectedHistoryDetails());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        HistoryDetailsInfo selectedDetails = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_DETAILS);
+
+        mHistoryDetailsFragment.setSelectedHistoryDetails(selectedDetails);
     }
 
     @Override
