@@ -47,9 +47,10 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
 
 
 
-    private static final int SETTINGS    = 1;
-    private static final int SELECT_SHOP = 2;
-    private static final int HISTORY     = 3;
+    private static final int SETTINGS      = 1;
+    private static final int SELECT_SHOP   = 2;
+    private static final int HISTORY       = 3;
+    private static final int GOODS_CATALOG = 4;
 
 
 
@@ -218,6 +219,9 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
 
         if (id == R.id.menu_add_good)
         {
+            Intent intent = new Intent(this, GoodsCatalogActivity.class);
+            startActivityForResult(intent, GOODS_CATALOG);
+
             return true;
         }
 
@@ -329,6 +333,11 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
         if (requestCode == HISTORY)
         {
             mAdapter.updateFromDatabase();
+        }
+        else
+        if (requestCode == GOODS_CATALOG)
+        {
+            // TODO: Implement it
         }
         else
         {

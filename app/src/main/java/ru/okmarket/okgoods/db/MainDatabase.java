@@ -45,6 +45,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String COLUMN_PARKING_PLACES      = "_parking_places";
     public static final String COLUMN_NUMBER_OF_CASHBOXES = "_number_of_cashboxes";
     public static final String COLUMN_SERVICES_SET        = "_services_set";
+    public static final String COLUMN_PARENT_CATEGORY_ID  = "_parent_category_id";
     public static final String COLUMN_UPDATE_TIME         = "_update_time";
     public static final String COLUMN_ENABLED             = "_enabled";
     public static final String COLUMN_CATEGORY_ID         = "_category_id";
@@ -84,6 +85,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
     public static final String[] GOODS_CATEGORIES_COLUMNS = {
                                                                 COLUMN_ID,
+                                                                COLUMN_PARENT_CATEGORY_ID,
                                                                 COLUMN_NAME,
                                                                 COLUMN_UPDATE_TIME,
                                                                 COLUMN_ENABLED
@@ -161,10 +163,11 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private static final String GOODS_CATEGORIES_TABLE_CREATE = "CREATE TABLE " + GOODS_CATEGORIES_TABLE_NAME + " " +
                                                                 "(" +
-                                                                    COLUMN_ID          + " INTEGER PRIMARY KEY, " +
-                                                                    COLUMN_NAME        + " TEXT NOT NULL, "       +
-                                                                    COLUMN_UPDATE_TIME + " INTEGER NOT NULL, "    +
-                                                                    COLUMN_ENABLED     + " INTEGER NOT NULL "     +
+                                                                    COLUMN_ID                 + " INTEGER PRIMARY KEY, " +
+                                                                    COLUMN_PARENT_CATEGORY_ID + " INTEGER NOT NULL, "    +
+                                                                    COLUMN_NAME               + " TEXT NOT NULL, "       +
+                                                                    COLUMN_UPDATE_TIME        + " INTEGER NOT NULL, "    +
+                                                                    COLUMN_ENABLED            + " INTEGER NOT NULL "     +
                                                                 ");";
 
     private static final String GOODS_TABLE_CREATE =            "CREATE TABLE " + GOODS_TABLE_NAME + " " +
@@ -3144,18 +3147,18 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private void fillGoodsCategoriesTable(SQLiteDatabase db)
     {
-        insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 0, "", 0, DISABLED);
+        insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 0, -1, "", 0, DISABLED);
 
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 1, "Алкогольные напитки",         0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 2, "Крепкий алкоголь",            0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 3, "Водка",                       0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 4, "Легкий алкоголь",             0, DISABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 5, "Кондитерские изделия",        0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 6, "Мучные кондитерские изделия", 0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 7, "Вафли",                       0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 8, "К чаю",                       0, FORCE_ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 1, 0,  "Алкогольные напитки",         0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 2, 1,  "Крепкий алкоголь",            0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 3, 2,  "Водка",                       0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 4, 1,  "Легкий алкоголь",             0, DISABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 5, 0,  "Кондитерские изделия",        0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 6, 5,  "Мучные кондитерские изделия", 0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 7, 6,  "Вафли",                       0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 8, -1, "К чаю",                       0, FORCE_ENABLED);
         }
     }
 
@@ -3165,26 +3168,26 @@ public class MainDatabase extends SQLiteOpenHelper
 
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 1,  3, "Водка Русский Стандарт Платинум алк.40% 0,5л",                        669.00, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 2,  3, "Водка Царская Оригинальная алк 40% 1л",                               913.40, 1,     UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 3,  3, "Водка Хортиця Классическая 0.5 л 40% об.",                            343.40, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 4,  3, "Водка Пять озер 40% 0.25 л",                                          171.90, 0.25,  UNIT_TYPE_LITER,    0, DISABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 5,  3, "Водка Русский Стандарт 40% 0.7л",                                     752.40, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 6,  7, "Вафли Коровка топленое молоко 150г",                                  42.90,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 7,  7, "Палочки вафельные Тореро с арахисом в шоколадной глазури 220г",       82.90,  0.22,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 8,  7, "Вафли ТЧН! с ароматом шоколада 200г",                                 29.90,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 9,  7, "Вафельные рулетики ОКЕЙ со вкусом и ароматом сгущенного молока 150г", 47.40,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 10, 7, "Трубочки вафельные Finetti с ореховой начинкой 45г",                  70.90,  0.045, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 11, 7, "Вафли Loacker хрустящие ванильные 175г",                              154.00, 0.175, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 12, 7, "Вафли Loacker хрустящие сливочные с какао-начинкой 175г",             154.00, 0.175, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 13, 7, "Вафли Коломенское Каприччио с шоколадной начинкой",                   58.00,  0.22,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 14, 7, "Вафли ТЧН! со сливочным ароматом 200г",                               27.90,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 15, 7, "Вафли ТЧН! с ароматом сгущённого молока 200г",                        27.90,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 16, 7, "Вафли Частная галерея сливочная карамель в шоколаде 300г",            174.99, 0.3,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 17, 7, "Вафли Яшкино сливочные. 200г",                                        35.40,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 18, 7, "Вафли Яшкино голландские карамельная начинка. 290г",                  61.50,  0.29,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 19, 7, "Рулетики вафельные Яшкино со вкусом сгущеного молока 160г",           52.90,  0.16,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 20, 0, "Наш любимый хлеб",                                                    0.00,   0,     UNIT_TYPE_NOTHING,  0, FORCE_ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 1,  3,  "Водка Русский Стандарт Платинум алк.40% 0,5л",                        669.00, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 2,  3,  "Водка Царская Оригинальная алк 40% 1л",                               913.40, 1,     UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 3,  3,  "Водка Хортиця Классическая 0.5 л 40% об.",                            343.40, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 4,  3,  "Водка Пять озер 40% 0.25 л",                                          171.90, 0.25,  UNIT_TYPE_LITER,    0, DISABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 5,  3,  "Водка Русский Стандарт 40% 0.7л",                                     752.40, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 6,  7,  "Вафли Коровка топленое молоко 150г",                                  42.90,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 7,  7,  "Палочки вафельные Тореро с арахисом в шоколадной глазури 220г",       82.90,  0.22,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 8,  7,  "Вафли ТЧН! с ароматом шоколада 200г",                                 29.90,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 9,  7,  "Вафельные рулетики ОКЕЙ со вкусом и ароматом сгущенного молока 150г", 47.40,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 10, 7,  "Трубочки вафельные Finetti с ореховой начинкой 45г",                  70.90,  0.045, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 11, 7,  "Вафли Loacker хрустящие ванильные 175г",                              154.00, 0.175, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 12, 7,  "Вафли Loacker хрустящие сливочные с какао-начинкой 175г",             154.00, 0.175, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 13, 7,  "Вафли Коломенское Каприччио с шоколадной начинкой",                   58.00,  0.22,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 14, 7,  "Вафли ТЧН! со сливочным ароматом 200г",                               27.90,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 15, 7,  "Вафли ТЧН! с ароматом сгущённого молока 200г",                        27.90,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 16, 7,  "Вафли Частная галерея сливочная карамель в шоколаде 300г",            174.99, 0.3,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 17, 7,  "Вафли Яшкино сливочные. 200г",                                        35.40,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 18, 7,  "Вафли Яшкино голландские карамельная начинка. 290г",                  61.50,  0.29,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 19, 7,  "Рулетики вафельные Яшкино со вкусом сгущеного молока 160г",           52.90,  0.16,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 20, -1, "Наш любимый хлеб",                                                    0.00,   0,     UNIT_TYPE_NOTHING,  0, FORCE_ENABLED);
         }
     }
 
