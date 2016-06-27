@@ -76,7 +76,7 @@
 
         <activity
             android:name=".activities.GoodsCatalogActivity"
-            android:label="@string/title_activity_goods_activity"
+            android:label="@string/title_activity_goods_catalog"
             android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
