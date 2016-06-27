@@ -127,10 +127,16 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
 
         if (savedInstanceState == null)
         {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-            if (!prefs.contains(Preferences.SETTINGS_CITY))
+            SharedPreferences contextSharedPreferences = getSharedPreferences(Preferences.CONTEXT_FILE_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = contextSharedPreferences.edit();
+
+            if (!defaultSharedPreferences.contains(Preferences.SETTINGS_CITY))
             {
+                editor.putString(Preferences.CONTEXT_LOCALE, Locale.getDefault().toString());
+                editor.apply();
+
                 SelectCityDialog dialog = new SelectCityDialog();
                 dialog.show(getSupportFragmentManager(), "SelectCityDialog");
             }
