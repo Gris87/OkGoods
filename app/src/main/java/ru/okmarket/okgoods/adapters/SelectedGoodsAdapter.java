@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
-import ru.okmarket.okgoods.other.SelectedGoodInfo;
+import ru.okmarket.okgoods.db.entities.SelectedGoodInfo;
 
 public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdapter.ViewHolder>
 {

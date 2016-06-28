@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.HistoryDetailsAdapter;
-import ru.okmarket.okgoods.other.HistoryDetailsInfo;
+import ru.okmarket.okgoods.db.entities.HistoryDetailsInfo;
 import ru.okmarket.okgoods.util.AnimationUtils;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 

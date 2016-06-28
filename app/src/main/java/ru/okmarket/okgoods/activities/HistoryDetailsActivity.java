@@ -17,10 +17,10 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
+import ru.okmarket.okgoods.db.entities.HistoryDetailsInfo;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 import ru.okmarket.okgoods.net.HttpClient;
 import ru.okmarket.okgoods.other.Extras;
-import ru.okmarket.okgoods.other.HistoryDetailsInfo;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.CachedImageView;
 

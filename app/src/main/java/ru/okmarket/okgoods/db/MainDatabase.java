@@ -13,10 +13,10 @@ import java.util.Locale;
 
 import ru.okmarket.okgoods.BuildConfig;
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.other.HistoryDetailsInfo;
-import ru.okmarket.okgoods.other.HistoryInfo;
-import ru.okmarket.okgoods.other.SelectedGoodInfo;
-import ru.okmarket.okgoods.other.ShopInfo;
+import ru.okmarket.okgoods.db.entities.HistoryDetailsInfo;
+import ru.okmarket.okgoods.db.entities.HistoryInfo;
+import ru.okmarket.okgoods.db.entities.SelectedGoodInfo;
+import ru.okmarket.okgoods.db.entities.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 

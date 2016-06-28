@@ -1,4 +1,4 @@
-package ru.okmarket.okgoods.other;
+package ru.okmarket.okgoods.db.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,10 +7,10 @@ import java.util.Locale;
 
 import ru.okmarket.okgoods.db.MainDatabase;
 
-public class HistoryDetailsInfo implements Parcelable
+public class SelectedGoodInfo implements Parcelable
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "HistoryDetailsInfo";
+    private static final String TAG = "SelectedGoodInfo";
 
 
 
@@ -24,7 +24,7 @@ public class HistoryDetailsInfo implements Parcelable
 
 
 
-    public HistoryDetailsInfo()
+    public SelectedGoodInfo()
     {
         mId         = 0;
         mGoodId     = 0;
@@ -60,14 +60,14 @@ public class HistoryDetailsInfo implements Parcelable
             return true;
         }
 
-        if (!(object instanceof HistoryDetailsInfo))
+        if (!(object instanceof SelectedGoodInfo))
         {
             return false;
         }
 
-        HistoryDetailsInfo details = (HistoryDetailsInfo)object;
+        SelectedGoodInfo selectedGood = (SelectedGoodInfo)object;
 
-        return mId == details.mId;
+        return mId == selectedGood.mId;
     }
 
     public int getId()
@@ -80,7 +80,7 @@ public class HistoryDetailsInfo implements Parcelable
         mId = id;
     }
 
-    public int getGoodId() 
+    public int getGoodId()
     {
         return mGoodId;
     }
@@ -110,7 +110,7 @@ public class HistoryDetailsInfo implements Parcelable
         mName = name;
     }
 
-    public double getCost() 
+    public double getCost()
     {
         return mCost;
     }
@@ -168,22 +168,22 @@ public class HistoryDetailsInfo implements Parcelable
         out.writeInt(mEnabled);
     }
 
-    public static final Parcelable.Creator<HistoryDetailsInfo> CREATOR = new Parcelable.Creator<HistoryDetailsInfo>()
+    public static final Parcelable.Creator<SelectedGoodInfo> CREATOR = new Parcelable.Creator<SelectedGoodInfo>()
     {
         @Override
-        public HistoryDetailsInfo createFromParcel(Parcel in)
+        public SelectedGoodInfo createFromParcel(Parcel in)
         {
-            return new HistoryDetailsInfo(in);
+            return new SelectedGoodInfo(in);
         }
 
         @Override
-        public HistoryDetailsInfo[] newArray(int size)
+        public SelectedGoodInfo[] newArray(int size)
         {
-            return new HistoryDetailsInfo[size];
+            return new SelectedGoodInfo[size];
         }
     };
 
-    private HistoryDetailsInfo(Parcel in)
+    private SelectedGoodInfo(Parcel in)
     {
         mId         = in.readInt();
         mGoodId     = in.readInt();

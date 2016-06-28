@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.HistoryAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.db.entities.HistoryDetailsInfo;
+import ru.okmarket.okgoods.db.entities.HistoryInfo;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 import ru.okmarket.okgoods.other.Extras;
-import ru.okmarket.okgoods.other.HistoryDetailsInfo;
-import ru.okmarket.okgoods.other.HistoryInfo;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 
 public class HistoryActivity extends AppCompatActivity implements HistoryAdapter.OnItemClickListener

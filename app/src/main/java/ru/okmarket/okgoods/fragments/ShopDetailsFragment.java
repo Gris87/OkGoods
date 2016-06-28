@@ -28,8 +28,8 @@ import java.util.Locale;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.db.entities.ShopInfo;
 import ru.okmarket.okgoods.net.HttpClient;
-import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.CachedImageView;
 import ru.okmarket.okgoods.widgets.ImageViewWithTooltip;

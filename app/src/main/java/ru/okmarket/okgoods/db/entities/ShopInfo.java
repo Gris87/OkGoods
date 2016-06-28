@@ -1,4 +1,4 @@
-package ru.okmarket.okgoods.other;
+package ru.okmarket.okgoods.db.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;

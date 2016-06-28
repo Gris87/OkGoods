@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.other.HistoryInfo;
+import ru.okmarket.okgoods.db.entities.HistoryInfo;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>
 {

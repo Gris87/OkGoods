@@ -11,8 +11,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
+import ru.okmarket.okgoods.db.entities.ShopInfo;
 import ru.okmarket.okgoods.other.ShopFilter;
-import ru.okmarket.okgoods.other.ShopInfo;
 
 public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
 {

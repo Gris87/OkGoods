@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.other.HistoryDetailsInfo;
+import ru.okmarket.okgoods.db.entities.HistoryDetailsInfo;
 
 public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAdapter.ViewHolder>
 {

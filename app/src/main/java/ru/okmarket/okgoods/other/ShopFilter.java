@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.util.Locale;
 
+import ru.okmarket.okgoods.db.entities.ShopInfo;
+
 public class ShopFilter implements Parcelable
 {
     @SuppressWarnings("unused")
