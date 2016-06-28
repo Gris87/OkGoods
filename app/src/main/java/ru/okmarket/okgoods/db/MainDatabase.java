@@ -45,7 +45,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String COLUMN_PARKING_PLACES      = "_parking_places";
     public static final String COLUMN_NUMBER_OF_CASHBOXES = "_number_of_cashboxes";
     public static final String COLUMN_SERVICES_SET        = "_services_set";
-    public static final String COLUMN_PARENT_CATEGORY_ID  = "_parent_category_id";
+    public static final String COLUMN_PARENT_ID           = "_parent_id";
     public static final String COLUMN_UPDATE_TIME         = "_update_time";
     public static final String COLUMN_ENABLED             = "_enabled";
     public static final String COLUMN_CATEGORY_ID         = "_category_id";
@@ -85,7 +85,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
     public static final String[] GOODS_CATEGORIES_COLUMNS = {
                                                                 COLUMN_ID,
-                                                                COLUMN_PARENT_CATEGORY_ID,
+                                                                COLUMN_PARENT_ID,
                                                                 COLUMN_NAME,
                                                                 COLUMN_UPDATE_TIME,
                                                                 COLUMN_ENABLED
@@ -163,11 +163,11 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private static final String GOODS_CATEGORIES_TABLE_CREATE = "CREATE TABLE " + GOODS_CATEGORIES_TABLE_NAME + " " +
                                                                 "(" +
-                                                                    COLUMN_ID                 + " INTEGER PRIMARY KEY, " +
-                                                                    COLUMN_PARENT_CATEGORY_ID + " INTEGER NOT NULL, "    +
-                                                                    COLUMN_NAME               + " TEXT NOT NULL, "       +
-                                                                    COLUMN_UPDATE_TIME        + " INTEGER NOT NULL, "    +
-                                                                    COLUMN_ENABLED            + " INTEGER NOT NULL "     +
+                                                                    COLUMN_ID          + " INTEGER PRIMARY KEY, " +
+                                                                    COLUMN_PARENT_ID   + " INTEGER NOT NULL, "    +
+                                                                    COLUMN_NAME        + " TEXT NOT NULL, "       +
+                                                                    COLUMN_UPDATE_TIME + " INTEGER NOT NULL, "    +
+                                                                    COLUMN_ENABLED     + " INTEGER NOT NULL "     +
                                                                 ");";
 
     private static final String GOODS_TABLE_CREATE =            "CREATE TABLE " + GOODS_TABLE_NAME + " " +
