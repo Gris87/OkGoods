@@ -29,3 +29,4 @@ Find more free money
 Google analytics
 Walls in 3D
 Stairs
+Check for noinspection, @SuppressWarnings, tools:ignore

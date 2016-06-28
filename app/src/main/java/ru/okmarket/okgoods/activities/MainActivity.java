@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -35,7 +35,7 @@ import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
-public class MainActivity extends AppCompatActivity implements SelectCityDialog.OnFragmentInteractionListener, View.OnTouchListener, ShopMapFragment.OnFragmentInteractionListener, SelectedGoodAdapter.OnItemClickListener, SelectedGoodAdapter.OnBindViewHolderListener
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener, SelectCityDialog.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener, SelectedGoodAdapter.OnItemClickListener, SelectedGoodAdapter.OnBindViewHolderListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "MainActivity";
@@ -341,6 +341,7 @@ public class MainActivity extends AppCompatActivity implements SelectCityDialog.
             mAdapter.updateFromDatabase();
         }
         else
+        // noinspection StatementWithEmptyBody
         if (requestCode == GOODS_CATALOG)
         {
             // TODO: Implement it

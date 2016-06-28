@@ -59,6 +59,9 @@
     <string name="time">Time: %1$s</string>
     <string name="no_information">No information</string>
 
+    <string name="show_catalog">Show catalog</string>
+    <string name="hide_catalog">Hide catalog</string>
+
     <string name="city_moscow">Moscow</string>
     <string name="city_st_petersburg">St. Petersburg</string>
     <string name="city_astrakhan">Astrakhan</string>
