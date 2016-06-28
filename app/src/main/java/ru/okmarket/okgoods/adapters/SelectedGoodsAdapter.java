@@ -15,10 +15,10 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.other.SelectedGoodInfo;
 
-public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapter.ViewHolder>
+public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdapter.ViewHolder>
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "SelectedGoodAdapter";
+    private static final String TAG = "SelectedGoodsAdapter";
 
 
 
@@ -31,7 +31,7 @@ public class SelectedGoodAdapter extends RecyclerView.Adapter<SelectedGoodAdapte
 
 
 
-    public SelectedGoodAdapter(Context context, MainDatabase mainDatabase, SQLiteDatabase db)
+    public SelectedGoodsAdapter(Context context, MainDatabase mainDatabase, SQLiteDatabase db)
     {
         mContext                  = context;
         mMainDatabase             = mainDatabase;

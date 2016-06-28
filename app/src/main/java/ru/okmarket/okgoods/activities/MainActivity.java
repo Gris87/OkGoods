@@ -22,7 +22,7 @@ import android.widget.FrameLayout;
 import java.util.Locale;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.adapters.SelectedGoodAdapter;
+import ru.okmarket.okgoods.adapters.SelectedGoodsAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.dialogs.SelectCityDialog;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
@@ -35,7 +35,7 @@ import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener, SelectCityDialog.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener, SelectedGoodAdapter.OnItemClickListener, SelectedGoodAdapter.OnBindViewHolderListener
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener, SelectCityDialog.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener, SelectedGoodsAdapter.OnItemClickListener, SelectedGoodsAdapter.OnBindViewHolderListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "MainActivity";
@@ -59,16 +59,16 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
 
-    private NoScrollableDrawerLayout       mDrawerLayout       = null;
-    private ActionBarDrawerToggle          mDrawerToggle       = null;
-    private SelectedGoodAdapter            mAdapter            = null;
-    private FrameLayout                    mShopMapView        = null;
-    private ShopMapFragment                mShopMapFragment    = null;
-    private MainDatabase                   mMainDatabase       = null;
-    private SQLiteDatabase                 mDB                 = null;
-    private ShopInfo                       mSelectedShop       = null;
-    private SelectedGoodAdapter.ViewHolder mSelectedViewHolder = null;
-    private SelectedGoodInfo               mSelectedGood       = null;
+    private NoScrollableDrawerLayout        mDrawerLayout       = null;
+    private ActionBarDrawerToggle           mDrawerToggle       = null;
+    private SelectedGoodsAdapter            mAdapter            = null;
+    private FrameLayout                     mShopMapView        = null;
+    private ShopMapFragment                 mShopMapFragment    = null;
+    private MainDatabase                    mMainDatabase       = null;
+    private SQLiteDatabase                  mDB                 = null;
+    private ShopInfo                        mSelectedShop       = null;
+    private SelectedGoodsAdapter.ViewHolder mSelectedViewHolder = null;
+    private SelectedGoodInfo                mSelectedGood       = null;
 
 
 
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
 
-        mAdapter = new SelectedGoodAdapter(this, mMainDatabase, mDB);
+        mAdapter = new SelectedGoodsAdapter(this, mMainDatabase, mDB);
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnBindViewHolderListener(this);
 
@@ -422,7 +422,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     @Override
-    public void onSelectedGoodClicked(SelectedGoodAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
+    public void onSelectedGoodClicked(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
     {
         if (good.equals(mSelectedGood))
         {
@@ -435,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     @Override
-    public void onSelectedGoodBindViewHolder(SelectedGoodAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
+    public void onSelectedGoodBindViewHolder(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
     {
         if (mSelectedViewHolder == viewHolder)
         {
@@ -450,7 +450,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    private void selectSelectedGood(SelectedGoodAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
+    private void selectSelectedGood(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
     {
         if (mSelectedViewHolder != null)
         {
