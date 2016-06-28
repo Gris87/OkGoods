@@ -13,6 +13,8 @@ import java.util.Locale;
 
 import ru.okmarket.okgoods.BuildConfig;
 import ru.okmarket.okgoods.R;
+import ru.okmarket.okgoods.db.entities.GoodEntity;
+import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 import ru.okmarket.okgoods.db.entities.HistoryEntity;
 import ru.okmarket.okgoods.db.entities.SelectedGoodEntity;
@@ -3477,22 +3479,147 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
+    public ArrayList<GoodsCategoryEntity> getGoodsCategories(SQLiteDatabase db, boolean allowDisabled)
+    {
+        ArrayList<GoodsCategoryEntity> res = new ArrayList<>();
+
+
+
+        Cursor cursor;
+
+        if (allowDisabled)
+        {
+            cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, COLUMN_ENABLED + " != ?", new String[] { String.valueOf(FORCE_ENABLED) }, null, null, null);
+        }
+        else
+        {
+            cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, COLUMN_ENABLED + " = ?", new String[] { String.valueOf(ENABLED) }, null, null, null);
+        }
+
+
+
+        int idColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int parentIdColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_PARENT_ID);
+        int nameColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+        int updateTimeColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_UPDATE_TIME);
+        int enabledColumnIndex    = cursor.getColumnIndexOrThrow(COLUMN_ENABLED);
+
+
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            GoodsCategoryEntity category = new GoodsCategoryEntity();
+
+            category.setId(        cursor.getInt(idColumnIndex));
+            category.setParentId(  cursor.getInt(parentIdColumnIndex));
+            category.setName(      cursor.getString(nameColumnIndex));
+            category.setUpdateTime(cursor.getInt(updateTimeColumnIndex));
+            category.setEnabled(   cursor.getInt(enabledColumnIndex));
+
+            res.add(category);
+
+
+
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+
+
+        return res;
+    }
+
+    public ArrayList<GoodsCategoryEntity> getGoodsCategoriesTree(SQLiteDatabase db, int rootCategoryId)
+    {
+        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, false);
+
+        return categories;
+    }
+
+    public ArrayList<GoodEntity> getGoods(SQLiteDatabase db, int categoryId)
+    {
+        ArrayList<GoodEntity> res = new ArrayList<>();
+
+
+
+        Cursor cursor;
+
+        if (categoryId >= 0)
+        {
+            cursor = db.query(GOODS_TABLE_NAME, GOODS_COLUMNS, COLUMN_CATEGORY_ID + " = ? AND " + COLUMN_ENABLED + " = ?"
+                    , new String[]
+                            {
+                                    String.valueOf(categoryId),
+                                    String.valueOf(ENABLED)
+                            }
+                    , null, null, null);
+        }
+        else
+        {
+            cursor = db.query(GOODS_TABLE_NAME, GOODS_COLUMNS, COLUMN_ENABLED + " != ?", new String[] { String.valueOf(FORCE_ENABLED) }, null, null, null);
+        }
+
+
+
+        int idColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int categoryIdColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
+        int nameColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+        int costColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_COST);
+        int unitColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_UNIT);
+        int unitTypeColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_UNIT_TYPE);
+        int updateTimeColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_UPDATE_TIME);
+        int enabledColumnIndex    = cursor.getColumnIndexOrThrow(COLUMN_ENABLED);
+
+
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            GoodEntity good = new GoodEntity();
+
+            good.setId(        cursor.getInt(idColumnIndex));
+            good.setCategoryId(cursor.getInt(categoryIdColumnIndex));
+            good.setName(      cursor.getString(nameColumnIndex));
+            good.setCost(      cursor.getDouble(costColumnIndex));
+            good.setUnit(      cursor.getDouble(unitColumnIndex));
+            good.setUnitType(  cursor.getInt(unitTypeColumnIndex));
+            good.setUpdateTime(cursor.getInt(updateTimeColumnIndex));
+            good.setEnabled(   cursor.getInt(enabledColumnIndex));
+
+            res.add(good);
+
+
+
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+
+
+        return res;
+    }
+
     public ArrayList<SelectedGoodEntity> getSelectedGoods(SQLiteDatabase db)
     {
         ArrayList<SelectedGoodEntity> res = new ArrayList<>();
 
 
 
-        Cursor cursor = db.rawQuery("SELECT"                                                                                                             + " "  +
-                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_ID                                                                    + ", " +
-                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_GOOD_ID                                                               + ", " +
-                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_CATEGORY_ID                                                           + ", " +
-                GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                + ", " +
-                GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                            + ", " +
-                GOODS_TABLE_NAME            + "." + COLUMN_COST                                                                  + ", " +
-                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_COUNT                                                                 + ", " +
-                GOODS_TABLE_NAME            + "." + COLUMN_ENABLED + " AS good_enabled"                                          + ", " +
-                GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ENABLED + " AS category_enabled"                                      + " "  +
+        Cursor cursor = db.rawQuery("SELECT"                                                                                         + " "  +
+                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_ID                                                                        + ", " +
+                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_GOOD_ID                                                                   + ", " +
+                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_CATEGORY_ID                                                               + ", " +
+                GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                    + ", " +
+                GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                                + ", " +
+                GOODS_TABLE_NAME            + "." + COLUMN_COST                                                                      + ", " +
+                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_COUNT                                                                     + ", " +
+                GOODS_TABLE_NAME            + "." + COLUMN_ENABLED + " AS good_enabled"                                              + ", " +
+                GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ENABLED + " AS category_enabled"                                          + " "  +
                 "FROM " + SELECTED_GOODS_TABLE_NAME                                                                                  + " "  +
                 "INNER JOIN " + GOODS_TABLE_NAME                                                                                     + " "  +
                 "ON " + SELECTED_GOODS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
