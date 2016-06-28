@@ -3,17 +3,16 @@ package ru.okmarket.okgoods.activities;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
-
 import ru.okmarket.okgoods.adapters.HistoryAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
