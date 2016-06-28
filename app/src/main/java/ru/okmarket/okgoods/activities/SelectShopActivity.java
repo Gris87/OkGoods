@@ -9,22 +9,21 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.adapters.ShopsListAdapter;
+import ru.okmarket.okgoods.adapters.ShopsAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.dialogs.ShopFilterDialog;
 import ru.okmarket.okgoods.fragments.ShopDetailsFragment;
@@ -33,6 +32,7 @@ import ru.okmarket.okgoods.other.Preferences;
 import ru.okmarket.okgoods.other.ShopFilter;
 import ru.okmarket.okgoods.other.ShopInfo;
 import ru.okmarket.okgoods.util.AppLog;
+import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 import ru.yandex.yandexmapkit.MapController;
 import ru.yandex.yandexmapkit.MapView;
@@ -46,7 +46,7 @@ import ru.yandex.yandexmapkit.overlay.location.MyLocationOverlay;
 import ru.yandex.yandexmapkit.overlay.location.OnMyLocationListener;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
-public class SelectShopActivity extends AppCompatActivity implements OnMyLocationListener, OnBalloonListener, AdapterView.OnItemClickListener, View.OnTouchListener, ShopDetailsFragment.OnFragmentInteractionListener, ShopFilterDialog.OnFragmentInteractionListener
+public class SelectShopActivity extends AppCompatActivity implements View.OnTouchListener, OnMyLocationListener, OnBalloonListener, ShopsAdapter.OnItemClickListener, ShopDetailsFragment.OnFragmentInteractionListener, ShopFilterDialog.OnFragmentInteractionListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "SelectShopActivity";
@@ -80,8 +80,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     private Drawable                  mHypermarketSelectedDrawable = null;
     private NoScrollableDrawerLayout  mDrawerLayout                = null;
     private ActionBarDrawerToggle     mDrawerToggle                = null;
-    private ListView                  mShopsListView               = null;
-    private ShopsListAdapter          mShopsListAdapter            = null;
+    private RecyclerView              mShopsRecyclerView           = null;
+    private ShopsAdapter              mShopsAdapter                = null;
     private FrameLayout               mShopDetailsView             = null;
     private ShopDetailsFragment       mShopDetailsFragment         = null;
     private ShopFilter                mShopFilter                  = null;
@@ -102,7 +102,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         Toolbar toolbar      = (Toolbar)                 findViewById(R.id.toolbar);
         mMapView             = (MapView)                 findViewById(R.id.mapView);
         mDrawerLayout        = (NoScrollableDrawerLayout)findViewById(R.id.drawerLayout);
-        mShopsListView       = (ListView)                findViewById(R.id.shopsListView);
+        mShopsRecyclerView   = (RecyclerView)            findViewById(R.id.shopsRecyclerView);
         mShopDetailsView     = (FrameLayout)             findViewById(R.id.shopDetailsView);
         mShopDetailsFragment = (ShopDetailsFragment)     getSupportFragmentManager().findFragmentById(R.id.shopDetailsFragment);
 
@@ -149,8 +149,8 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
 
         int drawerWidth = getResources().getDisplayMetrics().widthPixels * 80 / 100;
-        mShopsListView.getLayoutParams().width   = drawerWidth;
-        mShopDetailsView.getLayoutParams().width = drawerWidth;
+        mShopsRecyclerView.getLayoutParams().width = drawerWidth;
+        mShopDetailsView.getLayoutParams().width   = drawerWidth;
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -165,7 +165,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
             {
                 super.onDrawerOpened(drawerView);
 
-                if (drawerView == mShopsListView)
+                if (drawerView == mShopsRecyclerView)
                 {
                     mDrawerLayout.closeDrawer(mShopDetailsView);
                 }
@@ -174,15 +174,15 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
-
-
-        mShopsListAdapter = new ShopsListAdapter(this, shops);
-        mShopsListView.setAdapter(mShopsListAdapter);
-        mShopsListView.setOnItemClickListener(this);
-
-
-
         mShopDetailsView.setOnTouchListener(this);
+
+
+
+        mShopsAdapter = new ShopsAdapter(this, shops);
+        mShopsAdapter.setOnItemClickListener(this);
+
+        mShopsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        mShopsRecyclerView.setAdapter(mShopsAdapter);
 
 
 
@@ -239,7 +239,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         }
 
         mShopFilter = savedInstanceState.getParcelable(SAVED_STATE_SHOP_FILTER);
-        mShopsListAdapter.filter(mShopFilter);
+        mShopsAdapter.filter(mShopFilter);
 
         updateMapPoints();
 
@@ -251,7 +251,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
         if (mLastKnownPositionLatitude != 0 && mLastKnownPositionLongitude != 0)
         {
-            mShopsListAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
+            mShopsAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
         }
     }
 
@@ -266,9 +266,9 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     @Override
     public void onBackPressed()
     {
-        if (mDrawerLayout.isDrawerOpen(mShopsListView))
+        if (mDrawerLayout.isDrawerOpen(mShopsRecyclerView))
         {
-            mDrawerLayout.closeDrawer(mShopsListView);
+            mDrawerLayout.closeDrawer(mShopsRecyclerView);
         }
         else
         if (mDrawerLayout.isDrawerOpen(mShopDetailsView))
@@ -318,6 +318,21 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     }
 
     @Override
+    public boolean onTouch(View view, MotionEvent event)
+    {
+        if (view == mShopDetailsView)
+        {
+            return true;
+        }
+        else
+        {
+            AppLog.wtf(TAG, "Unknown view");
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event)
     {
         if (keyCode == KeyEvent.KEYCODE_MENU)
@@ -348,7 +363,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         mLastKnownPositionLatitude  = geoPoint.getLat();
         mLastKnownPositionLongitude = geoPoint.getLon();
 
-        mShopsListAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
+        mShopsAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
     }
 
     @Override
@@ -361,7 +376,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     public void onBalloonShow(BalloonItem balloonItem)
     {
         int itemId = Integer.parseInt(String.valueOf(balloonItem.getText()));
-        selectShop((ShopInfo)mShopsListAdapter.getItem(itemId));
+        selectShop(mShopsAdapter.getItems().get(itemId));
 
         mDrawerLayout.openDrawer(mShopDetailsView);
 
@@ -387,39 +402,17 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    public void onShopClicked(ShopsAdapter.ViewHolder viewHolder, ShopInfo shop)
     {
-        if (parent == mShopsListView)
-        {
-            selectShop((ShopInfo)mShopsListAdapter.getItem(position));
+        selectShop(shop);
 
-            MapController mapController = mMapView.getMapController();
+        MapController mapController = mMapView.getMapController();
 
-            mapController.setPositionNoAnimationTo(new GeoPoint(mSelectedShop.getLatitude(), mSelectedShop.getLongitude()));
-            mapController.setZoomCurrent(15);
+        mapController.setPositionNoAnimationTo(new GeoPoint(shop.getLatitude(), shop.getLongitude()));
+        mapController.setZoomCurrent(15);
 
-            mDrawerLayout.closeDrawer(mShopsListView);
-            mDrawerLayout.openDrawer(mShopDetailsView);
-        }
-        else
-        {
-            AppLog.wtf(TAG, "Unknown view");
-        }
-    }
-
-    @Override
-    public boolean onTouch(View view, MotionEvent event)
-    {
-        if (view == mShopDetailsView)
-        {
-            return true;
-        }
-        else
-        {
-            AppLog.wtf(TAG, "Unknown view");
-        }
-
-        return false;
+        mDrawerLayout.closeDrawer(mShopsRecyclerView);
+        mDrawerLayout.openDrawer(mShopDetailsView);
     }
 
     @Override
@@ -465,13 +458,13 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
     public void onShopFilterApplied(ShopFilter filter)
     {
         mShopFilter = filter;
-        mShopsListAdapter.filter(mShopFilter);
+        mShopsAdapter.filter(mShopFilter);
 
         updateMapPoints();
 
         if (mLastKnownPositionLatitude != 0 && mLastKnownPositionLongitude != 0)
         {
-            mShopsListAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
+            mShopsAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
         }
     }
 
@@ -480,9 +473,11 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         mShopsOverlay.clearOverlayItems();
         mShopsOverlayItems.clear();
 
-        for (int i = 0; i < mShopsListAdapter.getCount(); ++i)
+        ArrayList<ShopInfo> shops = mShopsAdapter.getItems();
+
+        for (int i = 0; i < shops.size(); ++i)
         {
-            ShopInfo shop = (ShopInfo)mShopsListAdapter.getItem(i);
+            ShopInfo shop = shops.get(i);
 
             if (shop.getLatitude() != 0 || shop.getLongitude() != 0)
             {
@@ -505,7 +500,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
 
     private void toggleShopDetails()
     {
-        mDrawerLayout.closeDrawer(mShopsListView);
+        mDrawerLayout.closeDrawer(mShopsRecyclerView);
 
         if (mDrawerLayout.isDrawerOpen(mShopDetailsView))
         {
@@ -535,7 +530,7 @@ public class SelectShopActivity extends AppCompatActivity implements OnMyLocatio
         }
 
         mSelectedShop = shop;
-        mShopsListAdapter.setSelectedShop(mSelectedShop);
+        mShopsAdapter.setSelectedShop(mSelectedShop);
 
         if (mSelectedShop != null)
         {

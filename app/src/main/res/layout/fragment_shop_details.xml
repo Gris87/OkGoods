@@ -294,7 +294,7 @@
                 android:id="@+id/photosProgressBar"
                 android:layout_width="@dimen/progress_bar_size"
                 android:layout_height="@dimen/progress_bar_size"
-                android:layout_gravity="start|center_vertical"/>
+                android:layout_gravity="start|center_vertical" />
 
             <HorizontalScrollView
                 android:id="@+id/photosHorizontalScrollView"

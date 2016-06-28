@@ -1,10 +1,10 @@
 package ru.okmarket.okgoods.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,31 +14,23 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.other.ShopFilter;
 import ru.okmarket.okgoods.other.ShopInfo;
 
-public class ShopsListAdapter extends BaseAdapter
+public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "ShopsListAdapter";
+    private static final String TAG = "ShopsAdapter";
 
 
 
-    private Context             mContext       = null;
-    private ArrayList<ShopInfo> mOriginalShops = null;
-    private ArrayList<ShopInfo> mShops         = null;
-    private ShopInfo            mNearestShop   = null;
-    private ShopInfo            mSelectedShop  = null;
+    private Context             mContext             = null;
+    private ArrayList<ShopInfo> mOriginalShops       = null;
+    private ArrayList<ShopInfo> mShops               = null;
+    private ShopInfo            mNearestShop         = null;
+    private ShopInfo            mSelectedShop        = null;
+    private OnItemClickListener mOnItemClickListener = null;
 
 
 
-    private static class ViewHolder
-    {
-        View      mBackgroundView;
-        TextView  mNameTextView;
-        ImageView mNearestShopImageView;
-    }
-
-
-
-    public ShopsListAdapter(Context context, ArrayList<ShopInfo> shops)
+    public ShopsAdapter(Context context, ArrayList<ShopInfo> shops)
     {
         mContext       = context;
         mOriginalShops = shops;
@@ -50,49 +42,21 @@ public class ShopsListAdapter extends BaseAdapter
     }
 
     @Override
-    public int getCount()
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        return mShops.size();
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_shop, parent, false);
+
+        return new ViewHolder(view);
     }
 
     @Override
-    public Object getItem(int position)
+    public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        return position >= 0 && position < mShops.size() ? mShops.get(position) : null;
-    }
+        final ShopInfo item = mShops.get(position);
 
-    @Override
-    public long getItemId(int position)
-    {
-        return position;
-    }
+        holder.mNameTextView.setText(item.getName());
 
-    private View newView(Context context, ViewGroup parent)
-    {
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        View rootView = inflater.inflate(R.layout.list_item_shops, parent, false);
-
-        ViewHolder holder = new ViewHolder();
-
-        holder.mBackgroundView       = rootView;
-        holder.mNameTextView         = (TextView) rootView.findViewById(R.id.nameTextView);
-        holder.mNearestShopImageView = (ImageView)rootView.findViewById(R.id.nearestShopImageView);
-
-        rootView.setTag(holder);
-
-        return rootView;
-    }
-
-    private void bindView(int position, View view)
-    {
-        ShopInfo shop = mShops.get(position);
-
-        ViewHolder holder = (ViewHolder)view.getTag();
-
-        holder.mNameTextView.setText(shop.getName());
-
-        if (shop == mNearestShop)
+        if (item == mNearestShop)
         {
             holder.mNearestShopImageView.setVisibility(View.VISIBLE);
         }
@@ -101,35 +65,39 @@ public class ShopsListAdapter extends BaseAdapter
             holder.mNearestShopImageView.setVisibility(View.GONE);
         }
 
-        if (mSelectedShop != null && mSelectedShop.equals(shop))
+        if (mSelectedShop != null && mSelectedShop.equals(item))
         {
             // noinspection deprecation
-            holder.mBackgroundView.setBackgroundColor(mContext.getResources().getColor(R.color.selectedShop));
+            holder.mView.setBackgroundColor(mContext.getResources().getColor(R.color.selectedShop));
         }
         else
         {
             // noinspection deprecation
-            holder.mBackgroundView.setBackgroundColor(mContext.getResources().getColor(R.color.windowBackground));
+            holder.mView.setBackgroundColor(mContext.getResources().getColor(R.color.windowBackground));
         }
+
+        holder.mView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (mOnItemClickListener != null)
+                {
+                    mOnItemClickListener.onShopClicked(holder, item);
+                }
+            }
+        });
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public int getItemCount()
     {
-        View view;
+        return mShops.size();
+    }
 
-        if (convertView != null)
-        {
-            view = convertView;
-        }
-        else
-        {
-            view = newView(mContext, parent);
-        }
-
-        bindView(position, view);
-
-        return view;
+    public ArrayList<ShopInfo> getItems()
+    {
+        return mShops;
     }
 
     public void findNearestShop(double latitude, double longitude)
@@ -209,5 +177,37 @@ public class ShopsListAdapter extends BaseAdapter
         mSelectedShop = shop;
 
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        mOnItemClickListener = listener;
+    }
+
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder
+    {
+        public View      mView;
+        public TextView  mNameTextView;
+        public ImageView mNearestShopImageView;
+
+
+
+        public ViewHolder(View view)
+        {
+            super(view);
+
+            mView                 = view;
+            mNameTextView         = (TextView) view.findViewById(R.id.nameTextView);
+            mNearestShopImageView = (ImageView)view.findViewById(R.id.nearestShopImageView);
+        }
+    }
+
+
+
+    public interface OnItemClickListener
+    {
+        void onShopClicked(ViewHolder viewHolder, ShopInfo shop);
     }
 }

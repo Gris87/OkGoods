@@ -8,12 +8,12 @@
         android:icon="@drawable/filter"
         android:title="@string/filter"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
     <item android:id="@+id/menu_shop_details"
         android:icon="@drawable/menu_overflow"
         android:title="@string/details_for_shop"
         android:orderInCategory="200"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
 </menu>

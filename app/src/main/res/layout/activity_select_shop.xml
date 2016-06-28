@@ -41,12 +41,14 @@
             android:layout_height="match_parent"
             android:apiKey="oFLmlTN7o4WKqoqtg8WSRJe-kh3uNWvFONhsUBz~baYzPKDfXgHp6C-wPZ0-OLgup9s6rsl4Fzn-iWsAvz8BDDDy3fb6cbSB4vlQSloXo3A=" />
 
-        <ListView
-            android:id="@+id/shopsListView"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/shopsRecyclerView"
             android:layout_width="@dimen/common_drawer_layout_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/windowBackground"/>
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/list_item_shop"
+            android:background="@color/windowBackground" />
 
         <FrameLayout
             android:id="@+id/shopDetailsView"
