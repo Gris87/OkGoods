@@ -5,10 +5,10 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
-public class ShopInfo implements Parcelable
+public class ShopEntity implements Parcelable
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "ShopInfo";
+    private static final String TAG = "ShopEntity";
 
 
 
@@ -28,7 +28,7 @@ public class ShopInfo implements Parcelable
 
 
 
-    public ShopInfo()
+    public ShopEntity()
     {
         mId                = 0;
         mCityId            = 0;
@@ -64,12 +64,12 @@ public class ShopInfo implements Parcelable
             return true;
         }
 
-        if (!(object instanceof ShopInfo))
+        if (!(object instanceof ShopEntity))
         {
             return false;
         }
 
-        ShopInfo shop = (ShopInfo)object;
+        ShopEntity shop = (ShopEntity)object;
 
         return mId == shop.mId;
     }
@@ -229,22 +229,22 @@ public class ShopInfo implements Parcelable
         out.writeInt(mServicesSet);
     }
 
-    public static final Parcelable.Creator<ShopInfo> CREATOR = new Parcelable.Creator<ShopInfo>()
+    public static final Parcelable.Creator<ShopEntity> CREATOR = new Parcelable.Creator<ShopEntity>()
     {
         @Override
-        public ShopInfo createFromParcel(Parcel in)
+        public ShopEntity createFromParcel(Parcel in)
         {
-            return new ShopInfo(in);
+            return new ShopEntity(in);
         }
 
         @Override
-        public ShopInfo[] newArray(int size)
+        public ShopEntity[] newArray(int size)
         {
-            return new ShopInfo[size];
+            return new ShopEntity[size];
         }
     };
 
-    private ShopInfo(Parcel in)
+    private ShopEntity(Parcel in)
     {
         mId                = in.readInt();
         mCityId            = in.readInt();

@@ -24,8 +24,8 @@ import java.util.Locale;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.SelectedGoodsAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
-import ru.okmarket.okgoods.db.entities.SelectedGoodInfo;
-import ru.okmarket.okgoods.db.entities.ShopInfo;
+import ru.okmarket.okgoods.db.entities.SelectedGoodEntity;
+import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.dialogs.SelectCityDialog;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
 import ru.okmarket.okgoods.other.Extras;
@@ -66,9 +66,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private ShopMapFragment                 mShopMapFragment    = null;
     private MainDatabase                    mMainDatabase       = null;
     private SQLiteDatabase                  mDB                 = null;
-    private ShopInfo                        mSelectedShop       = null;
+    private ShopEntity                      mSelectedShop       = null;
     private SelectedGoodsAdapter.ViewHolder mSelectedViewHolder = null;
-    private SelectedGoodInfo                mSelectedGood       = null;
+    private SelectedGoodEntity              mSelectedGood       = null;
 
 
 
@@ -422,7 +422,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     @Override
-    public void onSelectedGoodClicked(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
+    public void onSelectedGoodClicked(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodEntity good)
     {
         if (good.equals(mSelectedGood))
         {
@@ -435,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     @Override
-    public void onSelectedGoodBindViewHolder(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
+    public void onSelectedGoodBindViewHolder(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodEntity good)
     {
         if (mSelectedViewHolder == viewHolder)
         {
@@ -450,7 +450,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    private void selectSelectedGood(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodInfo good)
+    private void selectSelectedGood(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodEntity good)
     {
         if (mSelectedViewHolder != null)
         {

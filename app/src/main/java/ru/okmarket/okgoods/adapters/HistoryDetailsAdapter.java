@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.db.entities.HistoryDetailsInfo;
+import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 
 public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAdapter.ViewHolder>
 {
@@ -20,10 +20,10 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
 
 
 
-    private Context                       mContext                  = null;
-    private ArrayList<HistoryDetailsInfo> mItems                    = null;
-    private OnItemClickListener           mOnItemClickListener      = null;
-    private OnBindViewHolderListener      mOnBindViewHolderListener = null;
+    private Context                         mContext                  = null;
+    private ArrayList<HistoryDetailsEntity> mItems                    = null;
+    private OnItemClickListener             mOnItemClickListener      = null;
+    private OnBindViewHolderListener        mOnBindViewHolderListener = null;
 
 
 
@@ -46,7 +46,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        final HistoryDetailsInfo item = mItems.get(position);
+        final HistoryDetailsEntity item = mItems.get(position);
 
         holder.mGoodNameTextView.setText(item.getName());
         holder.mGoodNameTextView.setHorizontallyScrolling(false);
@@ -93,14 +93,14 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         return mItems.size();
     }
 
-    public void setItems(ArrayList<HistoryDetailsInfo> items)
+    public void setItems(ArrayList<HistoryDetailsEntity> items)
     {
         mItems = items;
 
         notifyDataSetChanged();
     }
 
-    public ArrayList<HistoryDetailsInfo> getItems()
+    public ArrayList<HistoryDetailsEntity> getItems()
     {
         return mItems;
     }
@@ -143,11 +143,11 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
 
     public interface OnItemClickListener
     {
-        void onHistoryDetailsClicked(ViewHolder viewHolder, HistoryDetailsInfo details);
+        void onHistoryDetailsClicked(ViewHolder viewHolder, HistoryDetailsEntity details);
     }
 
     public interface OnBindViewHolderListener
     {
-        void onHistoryDetailsBindViewHolder(ViewHolder viewHolder, HistoryDetailsInfo details);
+        void onHistoryDetailsBindViewHolder(ViewHolder viewHolder, HistoryDetailsEntity details);
     }
 }

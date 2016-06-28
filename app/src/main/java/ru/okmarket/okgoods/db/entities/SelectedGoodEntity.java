@@ -7,10 +7,10 @@ import java.util.Locale;
 
 import ru.okmarket.okgoods.db.MainDatabase;
 
-public class SelectedGoodInfo implements Parcelable
+public class SelectedGoodEntity implements Parcelable
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "SelectedGoodInfo";
+    private static final String TAG = "SelectedGoodEntity";
 
 
 
@@ -24,7 +24,7 @@ public class SelectedGoodInfo implements Parcelable
 
 
 
-    public SelectedGoodInfo()
+    public SelectedGoodEntity()
     {
         mId         = 0;
         mGoodId     = 0;
@@ -60,12 +60,12 @@ public class SelectedGoodInfo implements Parcelable
             return true;
         }
 
-        if (!(object instanceof SelectedGoodInfo))
+        if (!(object instanceof SelectedGoodEntity))
         {
             return false;
         }
 
-        SelectedGoodInfo selectedGood = (SelectedGoodInfo)object;
+        SelectedGoodEntity selectedGood = (SelectedGoodEntity)object;
 
         return mId == selectedGood.mId;
     }
@@ -168,22 +168,22 @@ public class SelectedGoodInfo implements Parcelable
         out.writeInt(mEnabled);
     }
 
-    public static final Parcelable.Creator<SelectedGoodInfo> CREATOR = new Parcelable.Creator<SelectedGoodInfo>()
+    public static final Parcelable.Creator<SelectedGoodEntity> CREATOR = new Parcelable.Creator<SelectedGoodEntity>()
     {
         @Override
-        public SelectedGoodInfo createFromParcel(Parcel in)
+        public SelectedGoodEntity createFromParcel(Parcel in)
         {
-            return new SelectedGoodInfo(in);
+            return new SelectedGoodEntity(in);
         }
 
         @Override
-        public SelectedGoodInfo[] newArray(int size)
+        public SelectedGoodEntity[] newArray(int size)
         {
-            return new SelectedGoodInfo[size];
+            return new SelectedGoodEntity[size];
         }
     };
 
-    private SelectedGoodInfo(Parcel in)
+    private SelectedGoodEntity(Parcel in)
     {
         mId         = in.readInt();
         mGoodId     = in.readInt();

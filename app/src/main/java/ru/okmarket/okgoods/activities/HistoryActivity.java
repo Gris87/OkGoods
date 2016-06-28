@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.HistoryAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
-import ru.okmarket.okgoods.db.entities.HistoryDetailsInfo;
-import ru.okmarket.okgoods.db.entities.HistoryInfo;
+import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
+import ru.okmarket.okgoods.db.entities.HistoryEntity;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
@@ -99,9 +99,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
         if (mHistoryDetailsFragment != null)
         {
-            ArrayList<HistoryDetailsInfo> details         = savedInstanceState.getParcelableArrayList(SAVED_STATE_HISTORY_DETAILS);
-            HistoryDetailsInfo            selectedDetails = savedInstanceState.getParcelable(         SAVED_STATE_SELECTED_DETAILS);
-            double                        total           = savedInstanceState.getDouble(             SAVED_STATE_TOTAL);
+            ArrayList<HistoryDetailsEntity> details         = savedInstanceState.getParcelableArrayList(SAVED_STATE_HISTORY_DETAILS);
+            HistoryDetailsEntity            selectedDetails = savedInstanceState.getParcelable(         SAVED_STATE_SELECTED_DETAILS);
+            double                          total           = savedInstanceState.getDouble(             SAVED_STATE_TOTAL);
 
             mHistoryDetailsFragment.setHistoryDetails(details);
             mHistoryDetailsFragment.setSelectedHistoryDetails(selectedDetails);
@@ -125,12 +125,12 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     }
 
     @Override
-    public void onHistoryClicked(HistoryAdapter.ViewHolder viewHolder, HistoryInfo history)
+    public void onHistoryClicked(HistoryAdapter.ViewHolder viewHolder, HistoryEntity history)
     {
         MainDatabase   mainDatabase = new MainDatabase(HistoryActivity.this);
         SQLiteDatabase db           = mainDatabase.getReadableDatabase();
 
-        ArrayList<HistoryDetailsInfo> details = mainDatabase.getHistoryDetails(db, history.getId());
+        ArrayList<HistoryDetailsEntity> details = mainDatabase.getHistoryDetails(db, history.getId());
 
         db.close();
 

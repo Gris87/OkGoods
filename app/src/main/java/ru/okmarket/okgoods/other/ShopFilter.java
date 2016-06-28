@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.util.Locale;
 
-import ru.okmarket.okgoods.db.entities.ShopInfo;
+import ru.okmarket.okgoods.db.entities.ShopEntity;
 
 public class ShopFilter implements Parcelable
 {
@@ -87,7 +87,7 @@ public class ShopFilter implements Parcelable
         mServicesSet = servicesSet;
     }
 
-    public boolean isFiltered(ShopInfo shop)
+    public boolean isFiltered(ShopEntity shop)
     {
         if (mIsHypermarket)
         {

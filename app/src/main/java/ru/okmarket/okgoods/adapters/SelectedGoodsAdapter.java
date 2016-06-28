@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
-import ru.okmarket.okgoods.db.entities.SelectedGoodInfo;
+import ru.okmarket.okgoods.db.entities.SelectedGoodEntity;
 
 public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdapter.ViewHolder>
 {
@@ -22,12 +22,12 @@ public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdap
 
 
 
-    private Context                     mContext                  = null;
-    private MainDatabase                mMainDatabase             = null;
-    private SQLiteDatabase              mDB                       = null;
-    private ArrayList<SelectedGoodInfo> mItems                    = null;
-    private OnItemClickListener         mOnItemClickListener      = null;
-    private OnBindViewHolderListener    mOnBindViewHolderListener = null;
+    private Context                       mContext                  = null;
+    private MainDatabase                  mMainDatabase             = null;
+    private SQLiteDatabase                mDB                       = null;
+    private ArrayList<SelectedGoodEntity> mItems                    = null;
+    private OnItemClickListener           mOnItemClickListener      = null;
+    private OnBindViewHolderListener      mOnBindViewHolderListener = null;
 
 
 
@@ -54,7 +54,7 @@ public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        final SelectedGoodInfo item = mItems.get(position);
+        final SelectedGoodEntity item = mItems.get(position);
 
         holder.mGoodNameTextView.setText(item.getName());
         holder.mGoodNameTextView.setHorizontallyScrolling(false);
@@ -146,11 +146,11 @@ public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdap
 
     public interface OnItemClickListener
     {
-        void onSelectedGoodClicked(ViewHolder viewHolder, SelectedGoodInfo good);
+        void onSelectedGoodClicked(ViewHolder viewHolder, SelectedGoodEntity good);
     }
 
     public interface OnBindViewHolderListener
     {
-        void onSelectedGoodBindViewHolder(ViewHolder viewHolder, SelectedGoodInfo good);
+        void onSelectedGoodBindViewHolder(ViewHolder viewHolder, SelectedGoodEntity good);
     }
 }

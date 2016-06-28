@@ -25,7 +25,7 @@ import java.util.Map;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.ShopsAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
-import ru.okmarket.okgoods.db.entities.ShopInfo;
+import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.dialogs.ShopFilterDialog;
 import ru.okmarket.okgoods.fragments.ShopDetailsFragment;
 import ru.okmarket.okgoods.other.Extras;
@@ -85,7 +85,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
     private FrameLayout               mShopDetailsView             = null;
     private ShopDetailsFragment       mShopDetailsFragment         = null;
     private ShopFilter                mShopFilter                  = null;
-    private ShopInfo                  mSelectedShop                = null;
+    private ShopEntity                mSelectedShop                = null;
     private double                    mLastKnownPositionLatitude   = 0;
     private double                    mLastKnownPositionLongitude  = 0;
 
@@ -113,7 +113,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
         MainDatabase mainDatabase = new MainDatabase(this);
         SQLiteDatabase db = mainDatabase.getReadableDatabase();
         int cityId = mainDatabase.getCityId(prefs.getString(Preferences.SETTINGS_CITY, "MOSCOW"));
-        ArrayList<ShopInfo> shops = mainDatabase.getShops(db, cityId);
+        ArrayList<ShopEntity> shops = mainDatabase.getShops(db, cityId);
         db.close();
 
 
@@ -196,7 +196,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
         Intent intent = getIntent();
 
-        ShopInfo shop = intent.getParcelableExtra(Extras.SHOP);
+        ShopEntity shop = intent.getParcelableExtra(Extras.SHOP);
         selectShop(shop);
     }
 
@@ -243,7 +243,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
         updateMapPoints();
 
-        ShopInfo shop = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_SHOP);
+        ShopEntity shop = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_SHOP);
         selectShop(shop);
 
         mLastKnownPositionLatitude  = savedInstanceState.getDouble(SAVED_STATE_LAST_KNOWN_POSITION_LATITUDE);
@@ -402,7 +402,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
     }
 
     @Override
-    public void onShopClicked(ShopsAdapter.ViewHolder viewHolder, ShopInfo shop)
+    public void onShopClicked(ShopsAdapter.ViewHolder viewHolder, ShopEntity shop)
     {
         selectShop(shop);
 
@@ -473,11 +473,11 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
         mShopsOverlay.clearOverlayItems();
         mShopsOverlayItems.clear();
 
-        ArrayList<ShopInfo> shops = mShopsAdapter.getItems();
+        ArrayList<ShopEntity> shops = mShopsAdapter.getItems();
 
         for (int i = 0; i < shops.size(); ++i)
         {
-            ShopInfo shop = shops.get(i);
+            ShopEntity shop = shops.get(i);
 
             if (shop.getLatitude() != 0 || shop.getLongitude() != 0)
             {
@@ -517,7 +517,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
         mShopDetailsFragment.updateUI(mSelectedShop);
     }
 
-    private void selectShop(ShopInfo shop)
+    private void selectShop(ShopEntity shop)
     {
         if (mSelectedShop != null)
         {

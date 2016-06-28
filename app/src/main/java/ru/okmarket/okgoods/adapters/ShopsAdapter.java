@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.db.entities.ShopInfo;
+import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.other.ShopFilter;
 
 public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
@@ -21,16 +21,16 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
 
 
 
-    private Context             mContext             = null;
-    private ArrayList<ShopInfo> mOriginalShops       = null;
-    private ArrayList<ShopInfo> mShops               = null;
-    private ShopInfo            mNearestShop         = null;
-    private ShopInfo            mSelectedShop        = null;
-    private OnItemClickListener mOnItemClickListener = null;
+    private Context               mContext             = null;
+    private ArrayList<ShopEntity> mOriginalShops       = null;
+    private ArrayList<ShopEntity> mShops               = null;
+    private ShopEntity            mNearestShop         = null;
+    private ShopEntity            mSelectedShop        = null;
+    private OnItemClickListener   mOnItemClickListener = null;
 
 
 
-    public ShopsAdapter(Context context, ArrayList<ShopInfo> shops)
+    public ShopsAdapter(Context context, ArrayList<ShopEntity> shops)
     {
         mContext       = context;
         mOriginalShops = shops;
@@ -52,7 +52,7 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        final ShopInfo item = mShops.get(position);
+        final ShopEntity item = mShops.get(position);
 
         holder.mNameTextView.setText(item.getName());
 
@@ -95,19 +95,19 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
         return mShops.size();
     }
 
-    public ArrayList<ShopInfo> getItems()
+    public ArrayList<ShopEntity> getItems()
     {
         return mShops;
     }
 
     public void findNearestShop(double latitude, double longitude)
     {
-        ShopInfo nearestShop = null;
-        double   minDistance = Double.MAX_VALUE;
+        ShopEntity nearestShop = null;
+        double     minDistance = Double.MAX_VALUE;
 
         for (int i = 0; i < mShops.size(); ++i)
         {
-            ShopInfo shop = mShops.get(i);
+            ShopEntity shop = mShops.get(i);
 
             double distance = Math.sqrt((latitude - shop.getLatitude()) * (latitude - shop.getLatitude()) + (longitude - shop.getLongitude()) * (longitude - shop.getLongitude()));
 
@@ -161,7 +161,7 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
 
         for (int i = 0; i < mOriginalShops.size(); ++i)
         {
-            ShopInfo shop = mOriginalShops.get(i);
+            ShopEntity shop = mOriginalShops.get(i);
 
             if (filter == null || filter.isFiltered(shop))
             {
@@ -172,7 +172,7 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
         notifyDataSetChanged();
     }
 
-    public void setSelectedShop(ShopInfo shop)
+    public void setSelectedShop(ShopEntity shop)
     {
         mSelectedShop = shop;
 
@@ -208,6 +208,6 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
 
     public interface OnItemClickListener
     {
-        void onShopClicked(ViewHolder viewHolder, ShopInfo shop);
+        void onShopClicked(ViewHolder viewHolder, ShopEntity shop);
     }
 }

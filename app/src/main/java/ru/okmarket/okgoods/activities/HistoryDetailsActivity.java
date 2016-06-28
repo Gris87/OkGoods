@@ -17,7 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.db.entities.HistoryDetailsInfo;
+import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 import ru.okmarket.okgoods.net.HttpClient;
 import ru.okmarket.okgoods.other.Extras;
@@ -59,10 +59,10 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
         Intent intent = getIntent();
 
-        int                           shopId  = intent.getIntExtra(                Extras.SHOP, 0);
-        final String                  history = intent.getStringExtra(             Extras.HISTORY);
-        ArrayList<HistoryDetailsInfo> details = intent.getParcelableArrayListExtra(Extras.HISTORY_DETAILS);
-        double                        total   = intent.getDoubleExtra(             Extras.TOTAL, 0);
+        int                             shopId  = intent.getIntExtra(                Extras.SHOP, 0);
+        final String                    history = intent.getStringExtra(             Extras.HISTORY);
+        ArrayList<HistoryDetailsEntity> details = intent.getParcelableArrayListExtra(Extras.HISTORY_DETAILS);
+        double                          total   = intent.getDoubleExtra(             Extras.TOTAL, 0);
 
 
 
@@ -164,7 +164,7 @@ public class HistoryDetailsActivity extends AppCompatActivity
     {
         super.onRestoreInstanceState(savedInstanceState);
 
-        HistoryDetailsInfo selectedDetails = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_DETAILS);
+        HistoryDetailsEntity selectedDetails = savedInstanceState.getParcelable(SAVED_STATE_SELECTED_DETAILS);
 
         mHistoryDetailsFragment.setSelectedHistoryDetails(selectedDetails);
     }

@@ -5,10 +5,10 @@ import android.os.Parcelable;
 
 import java.util.Locale;
 
-public class HistoryInfo implements Parcelable
+public class HistoryEntity implements Parcelable
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "HistoryInfo";
+    private static final String TAG = "HistoryEntity";
 
 
 
@@ -21,7 +21,7 @@ public class HistoryInfo implements Parcelable
 
 
 
-    public HistoryInfo()
+    public HistoryEntity()
     {
         mId       = 0;
         mShopId   = 0;
@@ -55,12 +55,12 @@ public class HistoryInfo implements Parcelable
             return true;
         }
 
-        if (!(object instanceof HistoryInfo))
+        if (!(object instanceof HistoryEntity))
         {
             return false;
         }
 
-        HistoryInfo history = (HistoryInfo)object;
+        HistoryEntity history = (HistoryEntity)object;
 
         return mId == history.mId;
     }
@@ -160,22 +160,22 @@ public class HistoryInfo implements Parcelable
         out.writeDouble(mTotal);
     }
 
-    public static final Parcelable.Creator<HistoryInfo> CREATOR = new Parcelable.Creator<HistoryInfo>()
+    public static final Parcelable.Creator<HistoryEntity> CREATOR = new Parcelable.Creator<HistoryEntity>()
     {
         @Override
-        public HistoryInfo createFromParcel(Parcel in)
+        public HistoryEntity createFromParcel(Parcel in)
         {
-            return new HistoryInfo(in);
+            return new HistoryEntity(in);
         }
 
         @Override
-        public HistoryInfo[] newArray(int size)
+        public HistoryEntity[] newArray(int size)
         {
-            return new HistoryInfo[size];
+            return new HistoryEntity[size];
         }
     };
 
-    private HistoryInfo(Parcel in)
+    private HistoryEntity(Parcel in)
     {
         mId       = in.readInt();
         mShopId   = in.readInt();

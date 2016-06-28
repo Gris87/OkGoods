@@ -28,7 +28,7 @@ import java.util.Locale;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
-import ru.okmarket.okgoods.db.entities.ShopInfo;
+import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.net.HttpClient;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.CachedImageView;
@@ -236,7 +236,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         }
     }
 
-    public void updateUI(ShopInfo shop)
+    public void updateUI(ShopEntity shop)
     {
         if (shop != null)
         {

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.HistoryDetailsAdapter;
-import ru.okmarket.okgoods.db.entities.HistoryDetailsInfo;
+import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 import ru.okmarket.okgoods.util.AnimationUtils;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 
@@ -34,7 +34,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     private HistoryDetailsAdapter            mAdapter                = null;
     private TextView                         mTotalTextView          = null;
     private HistoryDetailsAdapter.ViewHolder mSelectedViewHolder     = null;
-    private HistoryDetailsInfo               mSelectedHistoryDetails = null;
+    private HistoryDetailsEntity             mSelectedHistoryDetails = null;
     private double                           mTotal                  = 0;
 
 
@@ -67,7 +67,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         return rootView;
     }
 
-    public void setHistoryDetails(ArrayList<HistoryDetailsInfo> details)
+    public void setHistoryDetails(ArrayList<HistoryDetailsEntity> details)
     {
         mAdapter.setItems(details);
 
@@ -83,17 +83,17 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         }
     }
 
-    public ArrayList<HistoryDetailsInfo> getHistoryDetails()
+    public ArrayList<HistoryDetailsEntity> getHistoryDetails()
     {
         return mAdapter.getItems();
     }
 
-    public void setSelectedHistoryDetails(HistoryDetailsInfo details)
+    public void setSelectedHistoryDetails(HistoryDetailsEntity details)
     {
         mSelectedHistoryDetails = details;
     }
 
-    public HistoryDetailsInfo getSelectedHistoryDetails()
+    public HistoryDetailsEntity getSelectedHistoryDetails()
     {
         return mSelectedHistoryDetails;
     }
@@ -111,7 +111,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     }
 
     @Override
-    public void onHistoryDetailsClicked(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsInfo details)
+    public void onHistoryDetailsClicked(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsEntity details)
     {
         if (details.equals(mSelectedHistoryDetails))
         {
@@ -124,7 +124,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     }
 
     @Override
-    public void onHistoryDetailsBindViewHolder(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsInfo details)
+    public void onHistoryDetailsBindViewHolder(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsEntity details)
     {
         if (mSelectedViewHolder == viewHolder)
         {
@@ -139,7 +139,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         }
     }
 
-    private void selectHistoryDetails(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsInfo details)
+    private void selectHistoryDetails(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsEntity details)
     {
         if (mSelectedViewHolder != null)
         {

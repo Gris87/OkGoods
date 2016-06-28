@@ -1,7 +1,7 @@
 package ru.okmarket.okgoods.db.entities;
 
-public class GoodInfo
+public class GoodEntity
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "GoodInfo";
+    private static final String TAG = "GoodEntity";
 }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.db.entities.HistoryInfo;
+import ru.okmarket.okgoods.db.entities.HistoryEntity;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>
 {
@@ -19,13 +19,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
 
 
-    private Context                mContext             = null;
-    private ArrayList<HistoryInfo> mItems               = null;
-    private OnItemClickListener    mOnItemClickListener = null;
+    private Context                  mContext             = null;
+    private ArrayList<HistoryEntity> mItems               = null;
+    private OnItemClickListener      mOnItemClickListener = null;
 
 
 
-    public HistoryAdapter(Context context, ArrayList<HistoryInfo> items)
+    public HistoryAdapter(Context context, ArrayList<HistoryEntity> items)
     {
         mContext             = context;
         mItems               = items;
@@ -43,7 +43,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        final HistoryInfo item = mItems.get(position);
+        final HistoryEntity item = mItems.get(position);
 
         holder.mShopNameTextView.setText(item.getShopName());
         holder.mDateTextView.setText(    item.getDate());
@@ -102,6 +102,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     public interface OnItemClickListener
     {
-        void onHistoryClicked(ViewHolder viewHolder, HistoryInfo history);
+        void onHistoryClicked(ViewHolder viewHolder, HistoryEntity history);
     }
 }

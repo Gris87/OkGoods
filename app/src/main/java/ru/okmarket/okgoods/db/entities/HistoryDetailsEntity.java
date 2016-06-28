@@ -7,10 +7,10 @@ import java.util.Locale;
 
 import ru.okmarket.okgoods.db.MainDatabase;
 
-public class HistoryDetailsInfo implements Parcelable
+public class HistoryDetailsEntity implements Parcelable
 {
     @SuppressWarnings("unused")
-    private static final String TAG = "HistoryDetailsInfo";
+    private static final String TAG = "HistoryDetailsEntity";
 
 
 
@@ -24,7 +24,7 @@ public class HistoryDetailsInfo implements Parcelable
 
 
 
-    public HistoryDetailsInfo()
+    public HistoryDetailsEntity()
     {
         mId         = 0;
         mGoodId     = 0;
@@ -60,12 +60,12 @@ public class HistoryDetailsInfo implements Parcelable
             return true;
         }
 
-        if (!(object instanceof HistoryDetailsInfo))
+        if (!(object instanceof HistoryDetailsEntity))
         {
             return false;
         }
 
-        HistoryDetailsInfo details = (HistoryDetailsInfo)object;
+        HistoryDetailsEntity details = (HistoryDetailsEntity)object;
 
         return mId == details.mId;
     }
@@ -80,7 +80,7 @@ public class HistoryDetailsInfo implements Parcelable
         mId = id;
     }
 
-    public int getGoodId() 
+    public int getGoodId()
     {
         return mGoodId;
     }
@@ -110,7 +110,7 @@ public class HistoryDetailsInfo implements Parcelable
         mName = name;
     }
 
-    public double getCost() 
+    public double getCost()
     {
         return mCost;
     }
@@ -168,22 +168,22 @@ public class HistoryDetailsInfo implements Parcelable
         out.writeInt(mEnabled);
     }
 
-    public static final Parcelable.Creator<HistoryDetailsInfo> CREATOR = new Parcelable.Creator<HistoryDetailsInfo>()
+    public static final Parcelable.Creator<HistoryDetailsEntity> CREATOR = new Parcelable.Creator<HistoryDetailsEntity>()
     {
         @Override
-        public HistoryDetailsInfo createFromParcel(Parcel in)
+        public HistoryDetailsEntity createFromParcel(Parcel in)
         {
-            return new HistoryDetailsInfo(in);
+            return new HistoryDetailsEntity(in);
         }
 
         @Override
-        public HistoryDetailsInfo[] newArray(int size)
+        public HistoryDetailsEntity[] newArray(int size)
         {
-            return new HistoryDetailsInfo[size];
+            return new HistoryDetailsEntity[size];
         }
     };
 
-    private HistoryDetailsInfo(Parcel in)
+    private HistoryDetailsEntity(Parcel in)
     {
         mId         = in.readInt();
         mGoodId     = in.readInt();

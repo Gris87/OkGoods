@@ -13,10 +13,10 @@ import java.util.Locale;
 
 import ru.okmarket.okgoods.BuildConfig;
 import ru.okmarket.okgoods.R;
-import ru.okmarket.okgoods.db.entities.HistoryDetailsInfo;
-import ru.okmarket.okgoods.db.entities.HistoryInfo;
-import ru.okmarket.okgoods.db.entities.SelectedGoodInfo;
-import ru.okmarket.okgoods.db.entities.ShopInfo;
+import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
+import ru.okmarket.okgoods.db.entities.HistoryEntity;
+import ru.okmarket.okgoods.db.entities.SelectedGoodEntity;
+import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
@@ -3334,9 +3334,9 @@ public class MainDatabase extends SQLiteOpenHelper
         return -1;
     }
 
-    public ArrayList<ShopInfo> getShops(SQLiteDatabase db, int cityId)
+    public ArrayList<ShopEntity> getShops(SQLiteDatabase db, int cityId)
     {
-        ArrayList<ShopInfo> res = new ArrayList<>();
+        ArrayList<ShopEntity> res = new ArrayList<>();
 
 
 
@@ -3375,7 +3375,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         while (!cursor.isAfterLast())
         {
-            ShopInfo shop = new ShopInfo();
+            ShopEntity shop = new ShopEntity();
 
             shop.setId(           cursor.getInt(idColumnIndex));
             shop.setCityId(       cursor.getInt(cityIdColumnIndex));
@@ -3414,9 +3414,9 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ShopInfo getShop(SQLiteDatabase db, int shopId)
+    public ShopEntity getShop(SQLiteDatabase db, int shopId)
     {
-        ShopInfo res = null;
+        ShopEntity res = null;
 
         Cursor cursor = db.query(SHOPS_TABLE_NAME, SHOPS_COLUMNS, COLUMN_ID + " = ?", new String[] { String.valueOf(shopId) }, null, null, null);
 
@@ -3444,7 +3444,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         if (!cursor.isAfterLast())
         {
-            res = new ShopInfo();
+            res = new ShopEntity();
 
             res.setId(           cursor.getInt(idColumnIndex));
             res.setCityId(       cursor.getInt(cityIdColumnIndex));
@@ -3477,9 +3477,9 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<SelectedGoodInfo> getSelectedGoods(SQLiteDatabase db)
+    public ArrayList<SelectedGoodEntity> getSelectedGoods(SQLiteDatabase db)
     {
-        ArrayList<SelectedGoodInfo> res = new ArrayList<>();
+        ArrayList<SelectedGoodEntity> res = new ArrayList<>();
 
 
 
@@ -3525,7 +3525,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
 
-            SelectedGoodInfo good = new SelectedGoodInfo();
+            SelectedGoodEntity good = new SelectedGoodEntity();
 
             good.setId(        cursor.getInt(idColumnIndex));
             good.setGoodId(    cursor.getInt(goodIdColumnIndex));
@@ -3549,9 +3549,9 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<HistoryInfo> getHistory(SQLiteDatabase db)
+    public ArrayList<HistoryEntity> getHistory(SQLiteDatabase db)
     {
-        ArrayList<HistoryInfo> res = new ArrayList<>();
+        ArrayList<HistoryEntity> res = new ArrayList<>();
 
 
 
@@ -3583,7 +3583,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         while (!cursor.isAfterLast())
         {
-            HistoryInfo history = new HistoryInfo();
+            HistoryEntity history = new HistoryEntity();
 
             history.setId(      cursor.getInt(idColumnIndex));
             history.setShopId(  cursor.getInt(shopIdColumnIndex));
@@ -3606,9 +3606,9 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<HistoryDetailsInfo> getHistoryDetails(SQLiteDatabase db, int historyId)
+    public ArrayList<HistoryDetailsEntity> getHistoryDetails(SQLiteDatabase db, int historyId)
     {
-        ArrayList<HistoryDetailsInfo> res = new ArrayList<>();
+        ArrayList<HistoryDetailsEntity> res = new ArrayList<>();
 
 
 
@@ -3655,7 +3655,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
 
-            HistoryDetailsInfo details = new HistoryDetailsInfo();
+            HistoryDetailsEntity details = new HistoryDetailsEntity();
 
             details.setId(        cursor.getInt(idColumnIndex));
             details.setGoodId(    cursor.getInt(goodIdColumnIndex));
