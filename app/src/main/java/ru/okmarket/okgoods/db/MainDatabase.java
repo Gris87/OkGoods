@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Stack;
 
 import ru.okmarket.okgoods.BuildConfig;
 import ru.okmarket.okgoods.R;
@@ -20,6 +21,7 @@ import ru.okmarket.okgoods.db.entities.HistoryEntity;
 import ru.okmarket.okgoods.db.entities.SelectedGoodEntity;
 import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.util.AppLog;
+import ru.okmarket.okgoods.util.Tree;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
 public class MainDatabase extends SQLiteOpenHelper
@@ -3532,11 +3534,33 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<GoodsCategoryEntity> getGoodsCategoriesTree(SQLiteDatabase db, int rootCategoryId)
+    public Tree<GoodsCategoryEntity> getGoodsCategoriesTree(SQLiteDatabase db, int rootCategoryId)
     {
         ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, false);
 
-        return categories;
+        Tree<GoodsCategoryEntity> res = new Tree<>(null);
+        Stack<Tree<GoodsCategoryEntity>> stack = new Stack<>();
+
+        stack.push(res);
+
+        do
+        {
+            Tree<GoodsCategoryEntity> item = stack.pop();
+
+            int parentId = (item.getData() != null) ? item.getData().getId() : rootCategoryId;
+
+            for (int i = 0; i < categories.size(); ++i)
+            {
+                GoodsCategoryEntity category = categories.get(i);
+
+                if (category.getParentId() == parentId)
+                {
+                    stack.push(item.addChild(category));
+                }
+            }
+        } while (!stack.isEmpty());
+
+        return res;
     }
 
     public ArrayList<GoodEntity> getGoods(SQLiteDatabase db, int categoryId)

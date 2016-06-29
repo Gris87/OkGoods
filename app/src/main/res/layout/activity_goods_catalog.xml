@@ -32,25 +32,25 @@
         tools:openDrawer="start">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/goodsCatalogRecyclerView"
+            android:id="@+id/goodsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/list_item_goods_catalog" />
+            tools:listitem="@layout/list_item_good" />
 
         <FrameLayout
-            android:id="@+id/goodsCatalogMenuView"
+            android:id="@+id/goodsCategoriesView"
             android:layout_width="@dimen/common_drawer_layout_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@color/windowBackground">
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/goodsCatalogMenuRecyclerView"
+                android:id="@+id/goodsCategoriesRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="LinearLayoutManager"
-                tools:listitem="@layout/list_item_goods_catalog_menu" />
+                tools:listitem="@layout/list_item_goods_category" />
 
         </FrameLayout>
 

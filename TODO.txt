@@ -1,3 +1,4 @@
+Wait for animation finish before set attributes in History/SelectedGoods lists
 Add goods
 Remove goods
 Add aproximate cost

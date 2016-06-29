@@ -22,9 +22,9 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
     // region Attributes
-    private NoScrollableDrawerLayout mDrawerLayout         = null;
-    private ActionBarDrawerToggle    mDrawerToggle         = null;
-    private FrameLayout              mGoodsCatalogMenuView = null;
+    private NoScrollableDrawerLayout mDrawerLayout        = null;
+    private ActionBarDrawerToggle    mDrawerToggle        = null;
+    private FrameLayout              mGoodsCategoriesView = null;
     // endregion
 
 
@@ -38,11 +38,11 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
         // region Searching for views
-        Toolbar toolbar                           = (Toolbar)                 findViewById(R.id.toolbar);
-        mDrawerLayout                             = (NoScrollableDrawerLayout)findViewById(R.id.drawerLayout);
-        RecyclerView goodsCatalogRecyclerView     = (RecyclerView)            findViewById(R.id.goodsCatalogRecyclerView);
-        mGoodsCatalogMenuView                     = (FrameLayout)             findViewById(R.id.goodsCatalogMenuView);
-        RecyclerView goodsCatalogMenuRecyclerView = (RecyclerView)            findViewById(R.id.goodsCatalogMenuRecyclerView);
+        Toolbar toolbar                          = (Toolbar)                 findViewById(R.id.toolbar);
+        mDrawerLayout                            = (NoScrollableDrawerLayout)findViewById(R.id.drawerLayout);
+        RecyclerView goodsRecyclerView           = (RecyclerView)            findViewById(R.id.goodsRecyclerView);
+        mGoodsCategoriesView                     = (FrameLayout)             findViewById(R.id.goodsCategoriesView);
+        RecyclerView goodsCategoriesRecyclerView = (RecyclerView)            findViewById(R.id.goodsCategoriesRecyclerView);
         // endregion
 
 
@@ -52,7 +52,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
         // region DrawerLayout initialization
-        mGoodsCatalogMenuView.getLayoutParams().width = getResources().getDisplayMetrics().widthPixels * 80 / 100;
+        mGoodsCategoriesView.getLayoutParams().width = getResources().getDisplayMetrics().widthPixels * 80 / 100;
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -64,7 +64,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
-        mGoodsCatalogMenuView.setOnTouchListener(this);
+        mGoodsCategoriesView.setOnTouchListener(this);
         // endregion
     }
 
@@ -87,9 +87,9 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     @Override
     public void onBackPressed()
     {
-        if (mDrawerLayout.isDrawerOpen(mGoodsCatalogMenuView))
+        if (mDrawerLayout.isDrawerOpen(mGoodsCategoriesView))
         {
-            mDrawerLayout.closeDrawer(mGoodsCatalogMenuView);
+            mDrawerLayout.closeDrawer(mGoodsCategoriesView);
         }
         else
         {
@@ -100,7 +100,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     @Override
     public boolean onTouch(View view, MotionEvent event)
     {
-        if (view == mGoodsCatalogMenuView)
+        if (view == mGoodsCategoriesView)
         {
             return true;
         }
