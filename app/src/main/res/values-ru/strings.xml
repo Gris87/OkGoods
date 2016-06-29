@@ -56,11 +56,12 @@
     <string name="hypermarket">Гипермаркет</string>
     <string name="supermarket">Супермаркет</string>
 
-    <string name="time">Время: %1$s</string>
-    <string name="no_information">Нет информации</string>
-
     <string name="show_catalog">Показать каталог товаров</string>
     <string name="hide_catalog">Скрыть каталог товаров</string>
+    <string name="expand">Раскрыть</string>
+
+    <string name="time">Время: %1$s</string>
+    <string name="no_information">Нет информации</string>
 
     <string name="city_moscow">Москва</string>
     <string name="city_st_petersburg">Санкт-Петербург</string>

@@ -2,12 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
+
+    <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+        android:id="@+id/expandCategoryButton"
+        android:layout_width="@dimen/expand_category_button_size"
+        android:layout_height="@dimen/expand_category_button_size"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginStart="@dimen/common_margin"
+        android:layout_marginTop="@dimen/common_margin"
+        android:layout_marginBottom="@dimen/common_margin"
+        android:src="@drawable/drop_down"
+        android:contentDescription="@string/expand"
+        style="@style/ExpandCategoryButtonStyle" />
 
     <TextView
         android:id="@+id/nameTextView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="100"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
+        android:layout_marginTop="@dimen/common_margin"
+        android:layout_marginBottom="@dimen/common_margin"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>

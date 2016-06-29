@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 import ru.okmarket.okgoods.util.Tree;
+import ru.okmarket.okgoods.widgets.ImageButtonWithTooltip;
 
 public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategoriesAdapter.ViewHolder>
 {
@@ -102,8 +103,9 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        public View     mView;
-        public TextView mNameTextView;
+        public View                   mView;
+        public ImageButtonWithTooltip mExpandCategoryButton;
+        public TextView               mNameTextView;
 
 
 
@@ -111,8 +113,9 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
         {
             super(view);
 
-            mView         = view;
-            mNameTextView = (TextView)view.findViewById(R.id.nameTextView);
+            mView                 = view;
+            mExpandCategoryButton = (ImageButtonWithTooltip)view.findViewById(R.id.expandCategoryButton);
+            mNameTextView         = (TextView)              view.findViewById(R.id.nameTextView);
         }
     }
 
