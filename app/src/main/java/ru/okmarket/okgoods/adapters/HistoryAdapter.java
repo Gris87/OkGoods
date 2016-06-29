@@ -69,6 +69,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return mItems.size();
     }
 
+    public ArrayList<HistoryEntity> getItems()
+    {
+        return mItems;
+    }
+
+    public void setItems(ArrayList<HistoryEntity> items)
+    {
+        mItems = items;
+
+        notifyDataSetChanged();
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener)
     {
         mOnItemClickListener = listener;

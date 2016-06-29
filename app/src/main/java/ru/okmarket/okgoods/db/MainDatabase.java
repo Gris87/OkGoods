@@ -3536,12 +3536,12 @@ public class MainDatabase extends SQLiteOpenHelper
 
     public Tree<GoodsCategoryEntity> getGoodsCategoriesTree(SQLiteDatabase db, int rootCategoryId)
     {
-        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, false);
-
         Tree<GoodsCategoryEntity> res = new Tree<>(null);
-        Stack<Tree<GoodsCategoryEntity>> stack = new Stack<>();
 
+        Stack<Tree<GoodsCategoryEntity>> stack = new Stack<>();
         stack.push(res);
+
+        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, false);
 
         do
         {

@@ -93,16 +93,16 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         return mItems.size();
     }
 
+    public ArrayList<HistoryDetailsEntity> getItems()
+    {
+        return mItems;
+    }
+
     public void setItems(ArrayList<HistoryDetailsEntity> items)
     {
         mItems = items;
 
         notifyDataSetChanged();
-    }
-
-    public ArrayList<HistoryDetailsEntity> getItems()
-    {
-        return mItems;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener)

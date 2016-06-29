@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.entities.GoodEntity;
+import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 
 public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 {
@@ -19,17 +20,20 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 
 
 
-    private Context               mContext             = null;
-    private ArrayList<GoodEntity> mItems               = null;
-    private OnItemClickListener   mOnItemClickListener = null;
+    private Context                        mContext                 = null;
+    private ArrayList<GoodsCategoryEntity> mCategories              = null;
+    private ArrayList<GoodEntity>          mGoods                   = null;
+    private OnCategoryClickListener        mOnCategoryClickListener = null;
+    private OnGoodClickListener            mOnGoodClickListener     = null;
 
 
 
-    public GoodsAdapter(Context context, ArrayList<GoodEntity> items)
+    public GoodsAdapter(Context context, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods)
     {
         mContext             = context;
-        mItems               = items;
-        mOnItemClickListener = null;
+        mCategories          = categories;
+        mGoods               = goods;
+        mOnGoodClickListener = null;
     }
 
     @Override
@@ -43,30 +47,76 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        final GoodEntity item = mItems.get(position);
-
-        holder.mView.setOnClickListener(new View.OnClickListener()
+        if (position < mCategories.size())
         {
-            @Override
-            public void onClick(View view)
+            final GoodsCategoryEntity item = mCategories.get(position);
+
+            holder.mNameTextView.setText(item.getName());
+
+            holder.mView.setOnClickListener(new View.OnClickListener()
             {
-                if (mOnItemClickListener != null)
+                @Override
+                public void onClick(View view)
                 {
-                    mOnItemClickListener.onGoodClicked(holder, item);
+                    if (mOnGoodClickListener != null)
+                    {
+                        mOnCategoryClickListener.onCategoryClicked(holder, item);
+                    }
                 }
-            }
-        });
+            });
+        }
+        else
+        {
+            final GoodEntity item = mGoods.get(position - mCategories.size());
+
+            holder.mNameTextView.setText(item.getName());
+
+            holder.mView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    if (mOnGoodClickListener != null)
+                    {
+                        mOnGoodClickListener.onGoodClicked(holder, item);
+                    }
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount()
     {
-        return mItems.size();
+        return mCategories.size() + mGoods.size();
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener)
+    public ArrayList<GoodsCategoryEntity> getCategories()
     {
-        mOnItemClickListener = listener;
+        return mCategories;
+    }
+
+    public ArrayList<GoodEntity> getGoods()
+    {
+        return mGoods;
+    }
+
+    public void setItems(ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods)
+    {
+        mCategories = categories;
+        mGoods      = goods;
+
+        notifyDataSetChanged();
+    }
+
+    public void setOnCategoryClickListener(OnCategoryClickListener listener)
+    {
+        mOnCategoryClickListener = listener;
+    }
+
+    public void setOnGoodClickListener(OnGoodClickListener listener)
+    {
+        mOnGoodClickListener = listener;
     }
 
 
@@ -74,10 +124,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         public View     mView;
-        public TextView mShopNameTextView;
-        public TextView mDateTextView;
-        public TextView mDurationTextView;
-        public TextView mTotalTextView;
+        public TextView mNameTextView;
 
 
 
@@ -85,17 +132,19 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
         {
             super(view);
 
-            mView             = view;
-            mShopNameTextView = (TextView)view.findViewById(R.id.shopNameTextView);
-            mDateTextView     = (TextView)view.findViewById(R.id.dateTextView);
-            mDurationTextView = (TextView)view.findViewById(R.id.durationTextView);
-            mTotalTextView    = (TextView)view.findViewById(R.id.totalTextView);
+            mView         = view;
+            mNameTextView = (TextView)view.findViewById(R.id.nameTextView);
         }
     }
 
 
 
-    public interface OnItemClickListener
+    public interface OnCategoryClickListener
+    {
+        void onCategoryClicked(ViewHolder viewHolder, GoodsCategoryEntity category);
+    }
+
+    public interface OnGoodClickListener
     {
         void onGoodClicked(ViewHolder viewHolder, GoodEntity good);
     }

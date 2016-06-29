@@ -32,11 +32,12 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
 
     public ShopsAdapter(Context context, ArrayList<ShopEntity> shops)
     {
-        mContext       = context;
-        mOriginalShops = shops;
-        mShops         = new ArrayList<>();
-        mNearestShop   = null;
-        mSelectedShop  = null;
+        mContext             = context;
+        mOriginalShops       = shops;
+        mShops               = new ArrayList<>();
+        mNearestShop         = null;
+        mSelectedShop        = null;
+        mOnItemClickListener = null;
 
         filter(null);
     }
@@ -98,6 +99,13 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
     public ArrayList<ShopEntity> getItems()
     {
         return mShops;
+    }
+
+    public void setItems(ArrayList<ShopEntity> items)
+    {
+        mOriginalShops = items;
+
+        filter(null);
     }
 
     public void findNearestShop(double latitude, double longitude)

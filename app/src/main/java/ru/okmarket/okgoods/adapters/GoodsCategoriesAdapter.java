@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 import ru.okmarket.okgoods.util.Tree;
@@ -24,10 +26,10 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
 
 
 
-    public GoodsCategoriesAdapter(Context context, Tree<GoodsCategoryEntity> items)
+    public GoodsCategoriesAdapter(Context context, Tree<GoodsCategoryEntity> tree)
     {
         mContext             = context;
-        mItems               = items;
+        mItems               = tree;
         mOnItemClickListener = null;
     }
 
@@ -43,6 +45,8 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
         final GoodsCategoryEntity item = mItems.get(position);
+
+        holder.mNameTextView.setText(item.getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener()
         {
@@ -63,6 +67,32 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
         return mItems.size();
     }
 
+    public ArrayList<GoodsCategoryEntity> getItems()
+    {
+        ArrayList<GoodsCategoryEntity> res = new ArrayList<>();
+
+        ArrayList<Tree<GoodsCategoryEntity>> children = mItems.getChildren();
+
+        for (int i = 0; i < children.size(); ++i)
+        {
+            res.add(children.get(i).getData());
+        }
+
+        return res;
+    }
+
+    public Tree<GoodsCategoryEntity> getTree()
+    {
+        return mItems;
+    }
+
+    public void setTree(Tree<GoodsCategoryEntity> tree)
+    {
+        mItems = tree;
+
+        notifyDataSetChanged();
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener)
     {
         mOnItemClickListener = listener;
@@ -73,10 +103,7 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         public View     mView;
-        public TextView mShopNameTextView;
-        public TextView mDateTextView;
-        public TextView mDurationTextView;
-        public TextView mTotalTextView;
+        public TextView mNameTextView;
 
 
 
@@ -84,11 +111,8 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
         {
             super(view);
 
-            mView             = view;
-            mShopNameTextView = (TextView)view.findViewById(R.id.shopNameTextView);
-            mDateTextView     = (TextView)view.findViewById(R.id.dateTextView);
-            mDurationTextView = (TextView)view.findViewById(R.id.durationTextView);
-            mTotalTextView    = (TextView)view.findViewById(R.id.totalTextView);
+            mView         = view;
+            mNameTextView = (TextView)view.findViewById(R.id.nameTextView);
         }
     }
 

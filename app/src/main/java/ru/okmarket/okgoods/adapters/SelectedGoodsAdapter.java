@@ -101,6 +101,18 @@ public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdap
         return mItems.size();
     }
 
+    public ArrayList<SelectedGoodEntity> getItems()
+    {
+        return mItems;
+    }
+
+    public void setItems(ArrayList<SelectedGoodEntity> items)
+    {
+        mItems = items;
+
+        notifyDataSetChanged();
+    }
+
     public void updateFromDatabase()
     {
         mItems = mMainDatabase.getSelectedGoods(mDB);
