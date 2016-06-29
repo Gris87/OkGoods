@@ -183,98 +183,125 @@
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
                         android:contentDescription="@string/service_clearing_settlement"
-                        android:src="@drawable/service_clearing_settlement" />
+                        android:src="@drawable/service_clearing_settlement"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/serviceCosmeticsImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_cosmetics"
-                        android:src="@drawable/service_cosmetics" />
+                        android:src="@drawable/service_cosmetics"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/servicePlaygroundImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_playground"
-                        android:src="@drawable/service_playground" />
+                        android:src="@drawable/service_playground"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/serviceFishIslandImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_fish_island"
-                        android:src="@drawable/service_fish_island" />
+                        android:src="@drawable/service_fish_island"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/serviceBakeryImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_bakery"
-                        android:src="@drawable/service_bakery" />
+                        android:src="@drawable/service_bakery"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/serviceCookeryImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_cookery"
-                        android:src="@drawable/service_cookery" />
+                        android:src="@drawable/service_cookery"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/serviceTaxiOrderingImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_taxi_ordering"
-                        android:src="@drawable/service_taxi_ordering" />
+                        android:src="@drawable/service_taxi_ordering"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/servicePharmacyImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_pharmacy"
-                        android:src="@drawable/service_pharmacy" />
+                        android:src="@drawable/service_pharmacy"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/serviceOrderingFoodImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_ordering_food"
-                        android:src="@drawable/service_ordering_food" />
+                        android:src="@drawable/service_ordering_food"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/serviceDegustationImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_degustation"
-                        android:src="@drawable/service_degustation" />
+                        android:src="@drawable/service_degustation"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/serviceCafeImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_cafe"
-                        android:src="@drawable/service_cafe" />
+                        android:src="@drawable/service_cafe"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/serviceGiftCardsImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_gift_cards"
-                        android:src="@drawable/service_gift_cards" />
+                        android:src="@drawable/service_gift_cards"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/serviceParkingImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_parking"
-                        android:src="@drawable/service_parking" />
+                        android:src="@drawable/service_parking"
+                        android:scaleType="centerInside" />
 
                     <ru.okmarket.okgoods.widgets.ImageViewWithTooltip
                         android:id="@+id/servicePointOfIssuingOrdersImageView"
                         android:layout_width="@dimen/service_image_size"
                         android:layout_height="@dimen/service_image_size"
+                        android:layout_marginTop="@dimen/common_margin"
                         android:contentDescription="@string/service_point_of_issuing_orders"
-                        android:src="@drawable/service_point_of_issuing_orders" />
+                        android:src="@drawable/service_point_of_issuing_orders"
+                        android:scaleType="centerInside" />
 
                 </LinearLayout>
 

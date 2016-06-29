@@ -12,8 +12,9 @@
         android:layout_marginStart="@dimen/common_margin"
         android:layout_marginTop="@dimen/common_margin"
         android:layout_marginBottom="@dimen/common_margin"
-        android:src="@drawable/drop_down"
         android:contentDescription="@string/expand"
+        android:src="@drawable/expand"
+        android:scaleType="centerInside"
         style="@style/ExpandCategoryButtonStyle" />
 
     <TextView

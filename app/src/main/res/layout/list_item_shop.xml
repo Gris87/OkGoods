@@ -24,6 +24,7 @@
         android:layout_marginEnd="@dimen/common_margin"
         android:layout_marginTop="@dimen/common_margin"
         android:contentDescription="@string/nearest_shop"
-        android:src="@drawable/nearest_shop" />
+        android:src="@drawable/nearest_shop"
+        android:scaleType="centerInside" />
 
 </LinearLayout>
