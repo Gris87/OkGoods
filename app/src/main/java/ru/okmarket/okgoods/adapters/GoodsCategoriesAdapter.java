@@ -1,10 +1,12 @@
 package ru.okmarket.okgoods.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -49,8 +51,17 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        final Tree<GoodsCategoryEntity> node = mItems.get(position);
-        final GoodsCategoryEntity       item = node.getData();
+        final Tree<GoodsCategoryEntity> node      = mItems.get(position);
+        final GoodsCategoryEntity       item      = node.getData();
+        Resources                       resources = mContext.getResources();
+
+        int margin      = resources.getDimensionPixelSize(R.dimen.common_margin);
+        int indentation = resources.getDimensionPixelSize(R.dimen.expand_category_indentation);
+        int button_size = resources.getDimensionPixelSize(R.dimen.expand_category_button_size);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(button_size, button_size);
+        layoutParams.setMargins(margin + indentation * (node.getLevel() - 1), margin, 0, margin);
+        holder.mExpandCategoryButton.setLayoutParams(layoutParams);
 
         holder.mNameTextView.setText(item.getName());
 
@@ -189,7 +200,7 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
             @Override
             protected boolean filter(Tree<GoodsCategoryEntity> node)
             {
-                return node == mTree || node.getParent().getData().isExpanded();
+                return node == mTree || node.getParent().getData() == null || node.getParent().getData().isExpanded();
             }
 
             @Override

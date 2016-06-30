@@ -13,6 +13,7 @@ public class Tree<T>
 
 
     private T                  mData;
+    private int                mLevel;
     private Tree<T>            mParent;
     private ArrayList<Tree<T>> mChildren;
 
@@ -21,6 +22,7 @@ public class Tree<T>
     public Tree(T data)
     {
         mData     = data;
+        mLevel    = 0;
         mParent   = null;
         mChildren = new ArrayList<>();
     }
@@ -28,6 +30,7 @@ public class Tree<T>
     private Tree(T data, Tree<T> parent)
     {
         mData     = data;
+        mLevel    = parent.mLevel + 1;
         mParent   = parent;
         mChildren = new ArrayList<>();
 
@@ -174,6 +177,11 @@ public class Tree<T>
     public void setData(T data)
     {
         mData = data;
+    }
+
+    public int getLevel()
+    {
+        return mLevel;
     }
 
     public Tree<T> getParent()
