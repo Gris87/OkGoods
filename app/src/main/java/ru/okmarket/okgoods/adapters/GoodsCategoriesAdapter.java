@@ -3,6 +3,7 @@ package ru.okmarket.okgoods.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
         holder.mExpandCategoryButton.setLayoutParams(layoutParams);
 
         holder.mNameTextView.setText(item.getName());
+        holder.mNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12 - node.getLevel());
 
         if (node.size() > 0)
         {
