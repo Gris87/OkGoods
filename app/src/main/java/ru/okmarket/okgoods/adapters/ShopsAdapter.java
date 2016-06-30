@@ -108,6 +108,18 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
         filter(null);
     }
 
+    public void setSelectedShop(ShopEntity shop)
+    {
+        mSelectedShop = shop;
+
+        notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        mOnItemClickListener = listener;
+    }
+
     public void findNearestShop(double latitude, double longitude)
     {
         ShopEntity nearestShop = null;
@@ -178,18 +190,6 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
         }
 
         notifyDataSetChanged();
-    }
-
-    public void setSelectedShop(ShopEntity shop)
-    {
-        mSelectedShop = shop;
-
-        notifyDataSetChanged();
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener)
-    {
-        mOnItemClickListener = listener;
     }
 
 
