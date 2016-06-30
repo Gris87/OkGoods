@@ -76,16 +76,63 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
                     {
                         item.setExpanded(true);
 
-                        mItems.addAll(holder.getAdapterPosition() + 1, node.getChildren());
+                        ArrayList<Tree<GoodsCategoryEntity>> children = node.doDepthForResult(new Tree.OperationWithResult<GoodsCategoryEntity, ArrayList<Tree<GoodsCategoryEntity>>>()
+                        {
+                            @Override
+                            protected boolean filter(Tree<GoodsCategoryEntity> recursiveNode, ArrayList<Tree<GoodsCategoryEntity>> currentResult)
+                            {
+                                return recursiveNode == node || recursiveNode.getParent().getData().isExpanded();
+                            }
+
+                            @Override
+                            protected ArrayList<Tree<GoodsCategoryEntity>> init()
+                            {
+                                return new ArrayList<>();
+                            }
+
+                            @Override
+                            protected ArrayList<Tree<GoodsCategoryEntity>> run(Tree<GoodsCategoryEntity> recursiveNode, ArrayList<Tree<GoodsCategoryEntity>> currentResult)
+                            {
+                                if (recursiveNode != node)
+                                {
+                                    currentResult.add(recursiveNode);
+                                }
+
+                                return currentResult;
+                            }
+                        });
+
+                        mItems.addAll(holder.getAdapterPosition() + 1, children);
                     }
                     else
                     {
-                        item.setExpanded(false);
-
-                        for (int i = node.size() - 1; i >= 0; --i)
+                        int childCount = node.doDepthForResult(new Tree.OperationWithResult<GoodsCategoryEntity, Integer>()
                         {
-                            mItems.remove(holder.getAdapterPosition() + 1 + i);
+                            @Override
+                            protected boolean filter(Tree<GoodsCategoryEntity> recursiveNode, Integer currentResult)
+                            {
+                                return recursiveNode.getData().isExpanded();
+                            }
+
+                            @Override
+                            protected Integer init()
+                            {
+                                return 0;
+                            }
+
+                            @Override
+                            protected Integer run(Tree<GoodsCategoryEntity> recursiveNode, Integer currentResult)
+                            {
+                                return currentResult + recursiveNode.size();
+                            }
+                        });
+
+                        for (int i = childCount; i >= 1; --i)
+                        {
+                            mItems.remove(holder.getAdapterPosition() + i);
                         }
+
+                        item.setExpanded(false);
                     }
 
                     notifyDataSetChanged();
@@ -116,20 +163,6 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
         return mItems.size();
     }
 
-    public ArrayList<GoodsCategoryEntity> getTopLevelItems()
-    {
-        ArrayList<GoodsCategoryEntity> res = new ArrayList<>();
-
-        ArrayList<Tree<GoodsCategoryEntity>> children = mTree.getChildren();
-
-        for (int i = 0; i < children.size(); ++i)
-        {
-            res.add(children.get(i).getData());
-        }
-
-        return res;
-    }
-
     public Tree<GoodsCategoryEntity> getTree()
     {
         return mTree;
@@ -140,7 +173,6 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
         mTree = tree;
 
         invalidate();
-        notifyDataSetChanged();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener)
@@ -152,31 +184,25 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
     {
         mItems.clear();
 
-        ArrayList<Tree<GoodsCategoryEntity>> children = mTree.getChildren();
-
-        for (int i = 0; i < children.size(); ++i)
+        mTree.doDepth(new Tree.Operation<GoodsCategoryEntity>()
         {
-            Tree<GoodsCategoryEntity> child = children.get(i);
-
-            mItems.add(child);
-            addItemsIfExpanded(child);
-        }
-    }
-
-    private void addItemsIfExpanded(Tree<GoodsCategoryEntity> tree)
-    {
-        if (tree.getData().isExpanded())
-        {
-            ArrayList<Tree<GoodsCategoryEntity>> children = tree.getChildren();
-
-            for (int i = 0; i < children.size(); ++i)
+            @Override
+            protected boolean filter(Tree<GoodsCategoryEntity> node)
             {
-                Tree<GoodsCategoryEntity> child = children.get(i);
-
-                mItems.add(child);
-                addItemsIfExpanded(child);
+                return node == mTree || node.getParent().getData().isExpanded();
             }
-        }
+
+            @Override
+            protected void run(Tree<GoodsCategoryEntity> node)
+            {
+                if (node != mTree)
+                {
+                    mItems.add(node);
+                }
+            }
+        });
+
+        notifyDataSetChanged();
     }
 
 

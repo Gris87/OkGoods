@@ -85,7 +85,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mDB           = mMainDatabase.getReadableDatabase();
 
         mGoodsCategoriesAdapter = new GoodsCategoriesAdapter(this, mMainDatabase.getGoodsCategoriesTree(mDB, 0));
-        mGoodsAdapter           = new GoodsAdapter(this, mGoodsCategoriesAdapter.getTopLevelItems(), mMainDatabase.getGoods(mDB, 0));
+        mGoodsAdapter           = new GoodsAdapter(this, mGoodsCategoriesAdapter.getTree().getAll(), mMainDatabase.getGoods(mDB, 0));
 
         goodsCategoriesRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         goodsCategoriesRecyclerView.setAdapter(mGoodsCategoriesAdapter);
