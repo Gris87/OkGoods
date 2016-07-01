@@ -15,11 +15,14 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.GoodsAdapter;
 import ru.okmarket.okgoods.adapters.GoodsCategoriesAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.db.entities.GoodEntity;
+import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 import ru.okmarket.okgoods.util.AppLog;
+import ru.okmarket.okgoods.util.Tree;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
-public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTouchListener
+public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTouchListener, GoodsCategoriesAdapter.OnItemClickListener, GoodsAdapter.OnCategoryClickListener, GoodsAdapter.OnGoodClickListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = "GoodsCatalogActivity";
@@ -27,13 +30,14 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
     // region Attributes
-    private NoScrollableDrawerLayout mDrawerLayout           = null;
-    private ActionBarDrawerToggle    mDrawerToggle           = null;
-    private FrameLayout              mGoodsCategoriesView    = null;
-    private GoodsCategoriesAdapter   mGoodsCategoriesAdapter = null;
-    private GoodsAdapter             mGoodsAdapter           = null;
-    private MainDatabase             mMainDatabase           = null;
-    private SQLiteDatabase           mDB                     = null;
+    private NoScrollableDrawerLayout  mDrawerLayout           = null;
+    private ActionBarDrawerToggle     mDrawerToggle           = null;
+    private FrameLayout               mGoodsCategoriesView    = null;
+    private GoodsCategoriesAdapter    mGoodsCategoriesAdapter = null;
+    private GoodsAdapter              mGoodsAdapter           = null;
+    private MainDatabase              mMainDatabase           = null;
+    private SQLiteDatabase            mDB                     = null;
+    private Tree<GoodsCategoryEntity> mSelectedCategory       = null;
     // endregion
 
 
@@ -52,10 +56,10 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mGoodsCategoriesView                     = (FrameLayout)             findViewById(R.id.goodsCategoriesView);
         RecyclerView goodsCategoriesRecyclerView = (RecyclerView)            findViewById(R.id.goodsCategoriesRecyclerView);
         RecyclerView goodsRecyclerView           = (RecyclerView)            findViewById(R.id.goodsRecyclerView);
-        // endregion
 
         assert goodsCategoriesRecyclerView != null;
-        assert goodsRecyclerView != null;
+        assert goodsRecyclerView           != null;
+        // endregion
 
 
 
@@ -81,17 +85,27 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
 
+        // region RecyclerViews initialization
         mMainDatabase = new MainDatabase(this);
         mDB           = mMainDatabase.getReadableDatabase();
 
         mGoodsCategoriesAdapter = new GoodsCategoriesAdapter(this, mMainDatabase.getGoodsCategoriesTree(mDB, 0));
-        mGoodsAdapter           = new GoodsAdapter(this, mGoodsCategoriesAdapter.getTree().getAll(), mMainDatabase.getGoods(mDB, 0));
+        mGoodsAdapter           = new GoodsAdapter(this);
+
+        mGoodsCategoriesAdapter.setOnItemClickListener(this);
+        mGoodsAdapter.setOnCategoryClickListener(this);
+        mGoodsAdapter.setOnGoodClickListener(this);
 
         goodsCategoriesRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         goodsCategoriesRecyclerView.setAdapter(mGoodsCategoriesAdapter);
 
         goodsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         goodsRecyclerView.setAdapter(mGoodsAdapter);
+        // endregion
+
+
+
+        selectCategory(mGoodsCategoriesAdapter.getTree());
     }
 
     @Override
@@ -130,7 +144,14 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         }
         else
         {
-            super.onBackPressed();
+            if (mSelectedCategory.getParent() != null)
+            {
+                selectCategory(mSelectedCategory.getParent());
+            }
+            else
+            {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -147,5 +168,44 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         }
 
         return false;
+    }
+
+    @Override
+    public void onGoodsCategoryClicked(GoodsCategoriesAdapter.ViewHolder viewHolder, Tree<GoodsCategoryEntity> category)
+    {
+        mDrawerLayout.closeDrawer(mGoodsCategoriesView);
+
+        selectCategory(category);
+    }
+
+    @Override
+    public void onCategoryClicked(GoodsAdapter.ViewHolder viewHolder, GoodsCategoryEntity category)
+    {
+        for (int i = 0; i < mSelectedCategory.size(); ++i)
+        {
+            Tree<GoodsCategoryEntity> child = mSelectedCategory.getChild(i);
+
+            if (child.getData() == category)
+            {
+                selectCategory(child);
+
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onGoodClicked(GoodsAdapter.ViewHolder viewHolder, GoodEntity good)
+    {
+
+    }
+
+    private void selectCategory(Tree<GoodsCategoryEntity> category)
+    {
+        mSelectedCategory = category;
+
+        mGoodsAdapter.setItems(mSelectedCategory.getAll(), mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId()));
+
+        setTitle(mSelectedCategory.getData().getName());
     }
 }

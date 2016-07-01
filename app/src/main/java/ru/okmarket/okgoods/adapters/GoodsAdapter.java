@@ -28,11 +28,11 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 
 
 
-    public GoodsAdapter(Context context, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods)
+    public GoodsAdapter(Context context)
     {
         mContext             = context;
-        mCategories          = categories;
-        mGoods               = goods;
+        mCategories          = new ArrayList<>();
+        mGoods               = new ArrayList<>();
         mOnGoodClickListener = null;
     }
 

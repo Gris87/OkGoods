@@ -56,6 +56,7 @@
     <string name="hypermarket">Гипермаркет</string>
     <string name="supermarket">Супермаркет</string>
 
+    <string name="goods_catalog">Каталог товаров</string>
     <string name="show_catalog">Показать каталог товаров</string>
     <string name="hide_catalog">Скрыть каталог товаров</string>
     <string name="expand">Раскрыть</string>

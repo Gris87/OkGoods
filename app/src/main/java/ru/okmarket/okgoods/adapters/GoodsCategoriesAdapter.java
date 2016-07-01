@@ -202,16 +202,13 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
             @Override
             protected boolean filter(Tree<GoodsCategoryEntity> node)
             {
-                return node == mTree || node.getParent().getData() == null || node.getParent().getData().isExpanded();
+                return node == mTree || node.getParent().getData().isExpanded();
             }
 
             @Override
             protected void run(Tree<GoodsCategoryEntity> node)
             {
-                if (node != mTree)
-                {
-                    mItems.add(node);
-                }
+                mItems.add(node);
             }
         });
 

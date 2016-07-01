@@ -3536,24 +3536,49 @@ public class MainDatabase extends SQLiteOpenHelper
 
     public Tree<GoodsCategoryEntity> getGoodsCategoriesTree(SQLiteDatabase db, int rootCategoryId)
     {
-        Tree<GoodsCategoryEntity> res = new Tree<>(null);
+        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, false);
+        GoodsCategoryEntity rootCategory = null;
+
+        if (rootCategoryId > 0)
+        {
+            for (int i = 0; i < categories.size(); ++i)
+            {
+                rootCategory = categories.get(i);
+
+                if (rootCategory.getId() == rootCategoryId)
+                {
+                    rootCategory.setExpanded(true);
+
+                    break;
+                }
+            }
+        }
+        else
+        {
+            rootCategory = new GoodsCategoryEntity();
+
+            rootCategory.setId(0);
+            rootCategory.setParentId(-1);
+            rootCategory.setName(mContext.getString(R.string.goods_catalog));
+            rootCategory.setUpdateTime(-1);
+            rootCategory.setEnabled(FORCE_ENABLED);
+            rootCategory.setExpanded(true);
+        }
+
+        Tree<GoodsCategoryEntity> res = new Tree<>(rootCategory);
 
         Stack<Tree<GoodsCategoryEntity>> stack = new Stack<>();
         stack.push(res);
-
-        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, false);
 
         do
         {
             Tree<GoodsCategoryEntity> item = stack.pop();
 
-            int parentId = (item.getData() != null) ? item.getData().getId() : rootCategoryId;
-
             for (int i = 0; i < categories.size(); ++i)
             {
                 GoodsCategoryEntity category = categories.get(i);
 
-                if (category.getParentId() == parentId)
+                if (category.getParentId() == item.getData().getId())
                 {
                     stack.push(item.addChild(category));
                 }

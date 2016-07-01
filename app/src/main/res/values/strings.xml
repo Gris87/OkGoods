@@ -56,6 +56,7 @@
     <string name="hypermarket">Hypermarket</string>
     <string name="supermarket">Supermarket</string>
 
+    <string name="goods_catalog">Goods catalog</string>
     <string name="show_catalog">Show catalog</string>
     <string name="hide_catalog">Hide catalog</string>
     <string name="expand">Expand</string>
