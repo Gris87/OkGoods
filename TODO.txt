@@ -1,4 +1,5 @@
 Wait for animation finish before set attributes in History/SelectedGoods lists
+Take from cache while offline
 Add goods
 Remove goods
 Add aproximate cost

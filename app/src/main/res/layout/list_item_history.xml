@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:maxLines="1"
-            android:gravity="end" />
+            android:gravity="end|top" />
 
     </LinearLayout>
 

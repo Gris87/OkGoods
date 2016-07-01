@@ -13,8 +13,8 @@
         android:layout_weight="100"
         android:layout_marginLeft="@dimen/common_margin"
         android:layout_marginRight="@dimen/common_margin"
-        android:gravity="center_vertical"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="start|center_vertical" />
 
     <ImageView
         android:id="@+id/nearestShopImageView"

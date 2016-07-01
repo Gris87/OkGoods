@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center_horizontal|top"
         android:text="@string/undefined_shop" />
 
     <android.support.v7.widget.GridLayout

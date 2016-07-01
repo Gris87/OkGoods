@@ -30,6 +30,7 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.net.HttpClient;
+import ru.okmarket.okgoods.net.Web;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.CachedImageView;
 import ru.okmarket.okgoods.widgets.ImageViewWithTooltip;
@@ -281,7 +282,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
-            StringRequest request = new StringRequest(Request.Method.GET, "http://okmarket.ru/stores/" + String.valueOf(shop.getId()) + "/"
+            StringRequest request = new StringRequest(Request.Method.GET, Web.getShopUrl(shop.getId())
                     , new Response.Listener<String>()
                     {
                         @Override
@@ -301,39 +302,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
-                            final ArrayList<String> urls = new ArrayList<>();
-
-                            int index = -1;
-
-                            do
-                            {
-                                index = response.indexOf("<img src=\"", index + 1);
-
-                                if (index < 0)
-                                {
-                                    break;
-                                }
-
-                                int index2 = response.indexOf('>', index + 10);
-
-                                if (index2 < 0)
-                                {
-                                    break;
-                                }
-
-                                String imageTag = response.substring(index, index2 + 1);
-                                index = index2 + 1;
-
-                                if (imageTag.contains("id=\"sd-gallery"))
-                                {
-                                    index2 = imageTag.indexOf("\"", 10);
-
-                                    if (index2 >= 0)
-                                    {
-                                        urls.add("http://okmarket.ru" + imageTag.substring(10, index2));
-                                    }
-                                }
-                            } while (true);
+                            final ArrayList<String> urls = Web.getShopPhotosUrlsFromResponse(response);
 
                             for (int i = 0; i < urls.size(); ++i)
                             {

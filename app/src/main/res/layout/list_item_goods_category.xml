@@ -26,6 +26,7 @@
         android:layout_marginRight="@dimen/common_margin"
         android:layout_marginTop="@dimen/common_margin"
         android:layout_marginBottom="@dimen/common_margin"
+        android:layout_gravity="start|center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>

@@ -20,6 +20,7 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 import ru.okmarket.okgoods.net.HttpClient;
+import ru.okmarket.okgoods.net.Web;
 import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.CachedImageView;
@@ -87,45 +88,18 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
         mHttpClient.getRequestQueue().cancelAll(TAG);
 
-        StringRequest request = new StringRequest(Request.Method.GET, "http://okmarket.ru/stores/" + String.valueOf(shopId) + "/"
+        StringRequest request = new StringRequest(Request.Method.GET, Web.getShopUrl(shopId)
                 , new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response)
                     {
-                        int index = -1;
+                        String photoUrl = Web.getFirstShopPhotoUrlFromResponse(response);
 
-                        do
+                        if (photoUrl != null)
                         {
-                            index = response.indexOf("<img src=\"", index + 1);
-
-                            if (index < 0)
-                            {
-                                break;
-                            }
-
-                            int index2 = response.indexOf('>', index + 10);
-
-                            if (index2 < 0)
-                            {
-                                break;
-                            }
-
-                            String imageTag = response.substring(index, index2 + 1);
-                            index = index2 + 1;
-
-                            if (imageTag.contains("id=\"sd-gallery"))
-                            {
-                                index2 = imageTag.indexOf("\"", 10);
-
-                                if (index2 >= 0)
-                                {
-                                    mShopImageView.setImageUrl("http://okmarket.ru" + imageTag.substring(10, index2), mHttpClient.getImageLoader());
-
-                                    break;
-                                }
-                            }
-                        } while (true);
+                            mShopImageView.setImageUrl(photoUrl, mHttpClient.getImageLoader());
+                        }
                     }
                 }
                 ,  new Response.ErrorListener()

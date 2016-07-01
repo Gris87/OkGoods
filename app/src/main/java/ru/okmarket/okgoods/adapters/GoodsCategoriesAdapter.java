@@ -65,7 +65,7 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
         holder.mExpandCategoryButton.setLayoutParams(layoutParams);
 
         holder.mNameTextView.setText(item.getName());
-        holder.mNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12 - node.getLevel());
+        holder.mNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18 - node.getLevel() * 2);
 
         if (node.size() > 0)
         {
