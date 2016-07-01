@@ -99,8 +99,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         goodsCategoriesRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         goodsCategoriesRecyclerView.setAdapter(mGoodsCategoriesAdapter);
 
-        goodsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         goodsRecyclerView.setAdapter(mGoodsAdapter);
+        //((GridLayoutManager)goodsRecyclerView.getLayoutManager()).setSpanCount();
         // endregion
 
 
