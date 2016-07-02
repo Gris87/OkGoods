@@ -50,6 +50,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String COLUMN_NUMBER_OF_CASHBOXES = "_number_of_cashboxes";
     public static final String COLUMN_SERVICES_SET        = "_services_set";
     public static final String COLUMN_PARENT_ID           = "_parent_id";
+    public static final String COLUMN_IMAGE_URL           = "_image_url";
     public static final String COLUMN_UPDATE_TIME         = "_update_time";
     public static final String COLUMN_ENABLED             = "_enabled";
     public static final String COLUMN_CATEGORY_ID         = "_category_id";
@@ -91,6 +92,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 COLUMN_ID,
                                                                 COLUMN_PARENT_ID,
                                                                 COLUMN_NAME,
+                                                                COLUMN_IMAGE_URL,
                                                                 COLUMN_UPDATE_TIME,
                                                                 COLUMN_ENABLED
                                                             };
@@ -99,6 +101,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 COLUMN_ID,
                                                                 COLUMN_CATEGORY_ID,
                                                                 COLUMN_NAME,
+                                                                COLUMN_IMAGE_URL,
                                                                 COLUMN_COST,
                                                                 COLUMN_UNIT,
                                                                 COLUMN_UNIT_TYPE,
@@ -170,6 +173,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                     COLUMN_ID          + " INTEGER PRIMARY KEY, " +
                                                                     COLUMN_PARENT_ID   + " INTEGER NOT NULL, "    +
                                                                     COLUMN_NAME        + " TEXT NOT NULL, "       +
+                                                                    COLUMN_IMAGE_URL   + " TEXT NOT NULL, "       +
                                                                     COLUMN_UPDATE_TIME + " INTEGER NOT NULL, "    +
                                                                     COLUMN_ENABLED     + " INTEGER NOT NULL "     +
                                                                 ");";
@@ -179,6 +183,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                     COLUMN_ID          + " INTEGER PRIMARY KEY, "                                                                +
                                                                     COLUMN_CATEGORY_ID + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + "(" + COLUMN_ID + "), " +
                                                                     COLUMN_NAME        + " TEXT NOT NULL, "                                                                      +
+                                                                    COLUMN_IMAGE_URL   + " TEXT NOT NULL, "                                                                      +
                                                                     COLUMN_COST        + " REAL NOT NULL, "                                                                      +
                                                                     COLUMN_UNIT        + " REAL NOT NULL, "                                                                      +
                                                                     COLUMN_UNIT_TYPE   + " INTEGER NOT NULL, "                                                                   +
