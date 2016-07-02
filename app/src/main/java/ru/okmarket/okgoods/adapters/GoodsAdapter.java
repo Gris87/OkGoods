@@ -30,16 +30,18 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
     private HttpClient                     mHttpClient              = null;
     private OnCategoryClickListener        mOnCategoryClickListener = null;
     private OnGoodClickListener            mOnGoodClickListener     = null;
+    private int                            mWidth                   = 0;
 
 
 
-    public GoodsAdapter(Context context)
+    public GoodsAdapter(Context context, int width)
     {
         mContext             = context;
         mCategories          = new ArrayList<>();
         mGoods               = new ArrayList<>();
         mHttpClient          = HttpClient.getInstance(mContext);
         mOnGoodClickListener = null;
+        mWidth               = width;
     }
 
     @Override
@@ -60,8 +62,8 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             holder.mCategoryView.setVisibility(View.VISIBLE);
             holder.mGoodView.setVisibility(    View.GONE);
 
-            int imageWidth  = holder.mView.getWidth();
-            int imageHeight = imageWidth * 2 / 3;
+            int imageWidth  = mWidth;
+            int imageHeight = mWidth * 2 / 3;
 
             holder.mCategoryImageView.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageHeight));
 

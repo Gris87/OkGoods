@@ -1,10 +1,12 @@
 package ru.okmarket.okgoods.activities;
 
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
@@ -63,12 +65,30 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
 
+        Resources resources = getResources();
+
+        int screenWidth    = resources.getDisplayMetrics().widthPixels;
+        int maxColumnWidth = resources.getDimensionPixelSize(R.dimen.good_max_width);
+        int columnCount    = screenWidth / maxColumnWidth;
+
+        if (columnCount * maxColumnWidth > screenWidth)
+        {
+            --columnCount;
+        }
+
+        if (columnCount <= 0)
+        {
+            columnCount = 1;
+        }
+
+
+
         setSupportActionBar(toolbar);
 
 
 
         // region DrawerLayout initialization
-        mGoodsCategoriesView.getLayoutParams().width = getResources().getDisplayMetrics().widthPixels * 80 / 100;
+        mGoodsCategoriesView.getLayoutParams().width = screenWidth * 80 / 100;
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -90,7 +110,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mDB           = mMainDatabase.getReadableDatabase();
 
         mGoodsCategoriesAdapter = new GoodsCategoriesAdapter(this, mMainDatabase.getGoodsCategoriesTree(mDB, 0));
-        mGoodsAdapter           = new GoodsAdapter(this);
+        mGoodsAdapter           = new GoodsAdapter(this, screenWidth / columnCount);
 
         mGoodsCategoriesAdapter.setOnItemClickListener(this);
         mGoodsAdapter.setOnCategoryClickListener(this);
@@ -100,7 +120,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         goodsCategoriesRecyclerView.setAdapter(mGoodsCategoriesAdapter);
 
         goodsRecyclerView.setAdapter(mGoodsAdapter);
-        //((GridLayoutManager)goodsRecyclerView.getLayoutManager()).setSpanCount();
+        ((GridLayoutManager)goodsRecyclerView.getLayoutManager()).setSpanCount(columnCount);
         // endregion
 
 
