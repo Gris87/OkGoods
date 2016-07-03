@@ -9,7 +9,8 @@ public class Web
 
 
 
-    private static final String OK_MARKET_RU_URL = "http://okmarket.ru";
+    private static final String OK_MARKET_RU_URL     = "http://okmarket.ru";
+    private static final String OKEY_DOSTAVKA_RU_URL = "https://www.okeydostavka.ru";
 
 
 
@@ -92,5 +93,10 @@ public class Web
         } while (true);
 
         return null;
+    }
+
+    public static String getCategoryPhotoUrl(String fileName)
+    {
+        return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/categories/" + fileName;
     }
 }

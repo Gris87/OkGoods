@@ -3508,6 +3508,7 @@ public class MainDatabase extends SQLiteOpenHelper
         int idColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_ID);
         int parentIdColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_PARENT_ID);
         int nameColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+        int imageUrlColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_IMAGE_URL);
         int updateTimeColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_UPDATE_TIME);
         int enabledColumnIndex    = cursor.getColumnIndexOrThrow(COLUMN_ENABLED);
 
@@ -3522,6 +3523,7 @@ public class MainDatabase extends SQLiteOpenHelper
             category.setId(        cursor.getInt(idColumnIndex));
             category.setParentId(  cursor.getInt(parentIdColumnIndex));
             category.setName(      cursor.getString(nameColumnIndex));
+            category.setImageUrl(  cursor.getString(imageUrlColumnIndex));
             category.setUpdateTime(cursor.getInt(updateTimeColumnIndex));
             category.setEnabled(   cursor.getInt(enabledColumnIndex));
 
@@ -3621,6 +3623,7 @@ public class MainDatabase extends SQLiteOpenHelper
         int idColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_ID);
         int categoryIdColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
         int nameColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+        int imageUrlColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_IMAGE_URL);
         int costColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_COST);
         int unitColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_UNIT);
         int unitTypeColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_UNIT_TYPE);
@@ -3638,6 +3641,7 @@ public class MainDatabase extends SQLiteOpenHelper
             good.setId(        cursor.getInt(idColumnIndex));
             good.setCategoryId(cursor.getInt(categoryIdColumnIndex));
             good.setName(      cursor.getString(nameColumnIndex));
+            good.setImageUrl(  cursor.getString(imageUrlColumnIndex));
             good.setCost(      cursor.getDouble(costColumnIndex));
             good.setUnit(      cursor.getDouble(unitColumnIndex));
             good.setUnitType(  cursor.getInt(unitTypeColumnIndex));

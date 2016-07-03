@@ -15,6 +15,7 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.entities.GoodEntity;
 import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 import ru.okmarket.okgoods.net.HttpClient;
+import ru.okmarket.okgoods.net.Web;
 import ru.okmarket.okgoods.widgets.CachedImageView;
 
 public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
@@ -68,7 +69,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             holder.mCategoryImageView.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageHeight));
 
             ((ImageView)holder.mCategoryImageView.getContentView()).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            holder.mCategoryImageView.setImageUrl("https://www.okeydostavka.ru/wcsstore/OKMarketCAS/categories/Food%20Promo.jpg", mHttpClient.getImageLoader());
+            holder.mCategoryImageView.setImageUrl(Web.getCategoryPhotoUrl(item.getImageUrl()), mHttpClient.getImageLoader());
             holder.mCategoryNameTextView.setText(item.getName());
 
             holder.mView.setOnClickListener(new View.OnClickListener()
