@@ -193,7 +193,7 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
         mOnItemClickListener = listener;
     }
 
-    private void invalidate()
+    public void invalidate()
     {
         mItems.clear();
 

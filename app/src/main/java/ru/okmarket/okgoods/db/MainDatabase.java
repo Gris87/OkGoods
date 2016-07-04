@@ -3497,11 +3497,11 @@ public class MainDatabase extends SQLiteOpenHelper
 
         if (allowDisabled)
         {
-            cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, COLUMN_ENABLED + " != ?", new String[] { String.valueOf(FORCE_ENABLED) }, null, null, COLUMN_NAME);
+            cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, COLUMN_ENABLED + " != ?", new String[] { String.valueOf(FORCE_ENABLED) }, null, null, COLUMN_ENABLED + ", " + COLUMN_NAME);
         }
         else
         {
-            cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, COLUMN_ENABLED + " = ?", new String[] { String.valueOf(ENABLED) }, null, null, COLUMN_NAME);
+            cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, COLUMN_ENABLED + " != ?", new String[] { String.valueOf(DISABLED) }, null, null, COLUMN_ENABLED + ", " + COLUMN_NAME);
         }
 
 
@@ -3606,11 +3606,11 @@ public class MainDatabase extends SQLiteOpenHelper
 
         if (categoryId >= 0)
         {
-            cursor = db.query(GOODS_TABLE_NAME, GOODS_COLUMNS, COLUMN_CATEGORY_ID + " = ? AND " + COLUMN_ENABLED + " = ?"
+            cursor = db.query(GOODS_TABLE_NAME, GOODS_COLUMNS, COLUMN_CATEGORY_ID + " = ? AND " + COLUMN_ENABLED + " != ?"
                     , new String[]
                             {
                                     String.valueOf(categoryId),
-                                    String.valueOf(ENABLED)
+                                    String.valueOf(DISABLED)
                             }
                     , null, null, null);
         }
@@ -3624,7 +3624,7 @@ public class MainDatabase extends SQLiteOpenHelper
         int idColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_ID);
         int categoryIdColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
         int nameColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_NAME);
-        int imageIdColumnIndex  = cursor.getColumnIndexOrThrow(COLUMN_IMAGE_ID);
+        int imageIdColumnIndex    = cursor.getColumnIndexOrThrow(COLUMN_IMAGE_ID);
         int costColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_COST);
         int unitColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_UNIT);
         int unitTypeColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_UNIT_TYPE);

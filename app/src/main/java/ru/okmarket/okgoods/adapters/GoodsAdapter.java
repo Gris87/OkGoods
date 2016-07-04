@@ -2,6 +2,7 @@ package ru.okmarket.okgoods.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,9 +65,19 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             holder.mGoodView.setVisibility(    View.GONE);
 
             holder.mCategoryImageView.setLayoutParams(mImageLayoutParams);
+            holder.mCategoryImageView.setErrorImageResId(R.drawable.download_error);
+            ((ImageView)holder.mCategoryImageView.getContentView()).setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            ((ImageView)holder.mCategoryImageView.getContentView()).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            holder.mCategoryImageView.setImageUrl(Web.getCategoryPhotoUrl(item.getImageName()), mHttpClient.getImageLoader());
+            if (!TextUtils.isEmpty(item.getImageName()))
+            {
+                holder.mCategoryImageView.showContentView();
+                holder.mCategoryImageView.setImageUrl(Web.getCategoryPhotoUrl(item.getImageName()), mHttpClient.getImageLoader());
+            }
+            else
+            {
+                holder.mCategoryImageView.showErrorView();
+            }
+
             holder.mCategoryNameTextView.setText(item.getName());
 
             holder.mView.setOnClickListener(new View.OnClickListener()
@@ -89,9 +100,19 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             holder.mGoodView.setVisibility(    View.VISIBLE);
 
             holder.mGoodImageView.setLayoutParams(mImageLayoutParams);
+            holder.mGoodImageView.setErrorImageResId(R.drawable.download_error);
+            ((ImageView)holder.mGoodImageView.getContentView()).setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            ((ImageView)holder.mGoodImageView.getContentView()).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            holder.mGoodImageView.setImageUrl(Web.getGoodPhotoThumbnailUrl(item.getImageId()), mHttpClient.getImageLoader());
+            if (item.getImageId() > 0)
+            {
+                holder.mGoodImageView.showContentView();
+                holder.mGoodImageView.setImageUrl(Web.getGoodPhotoThumbnailUrl(item.getImageId()), mHttpClient.getImageLoader());
+            }
+            else
+            {
+                holder.mGoodImageView.showErrorView();
+            }
+
             holder.mGoodNameTextView.setText(item.getName());
 
             holder.mView.setOnClickListener(new View.OnClickListener()

@@ -336,14 +336,14 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
         mContentView.setVisibility(View.GONE);
     }
 
-    private void showErrorView()
+    public void showErrorView()
     {
         mProgressView.setVisibility(View.GONE);
         mErrorView.setVisibility(View.VISIBLE);
         mContentView.setVisibility(View.GONE);
     }
 
-    private void showContentView()
+    public void showContentView()
     {
         mProgressView.setVisibility(View.GONE);
         mErrorView.setVisibility(View.GONE);

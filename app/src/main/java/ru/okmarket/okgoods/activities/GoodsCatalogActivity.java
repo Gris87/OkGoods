@@ -166,6 +166,9 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         {
             if (mSelectedCategory.getParent() != null)
             {
+                mSelectedCategory.getData().setExpanded(false);
+                mGoodsCategoriesAdapter.invalidate();
+
                 selectCategory(mSelectedCategory.getParent());
             }
             else
@@ -207,6 +210,9 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
             if (child.getData() == category)
             {
+                category.setExpanded(true);
+                mGoodsCategoriesAdapter.invalidate();
+
                 selectCategory(child);
 
                 break;
