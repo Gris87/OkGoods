@@ -25,6 +25,7 @@ Auto-update service
 Updater class with callbacks
 Show 10 second timer on update db action
 Auto-update options (Frequency, Wi-Fi)
+Cost statistics
 Release keys
 Free money everywhere
 Find more free money

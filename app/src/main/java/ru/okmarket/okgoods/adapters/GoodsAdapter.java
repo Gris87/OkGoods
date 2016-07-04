@@ -69,7 +69,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             holder.mCategoryImageView.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageHeight));
 
             ((ImageView)holder.mCategoryImageView.getContentView()).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            holder.mCategoryImageView.setImageUrl(Web.getCategoryPhotoUrl(item.getImageUrl()), mHttpClient.getImageLoader());
+            holder.mCategoryImageView.setImageUrl(Web.getCategoryPhotoUrl(item.getImageName()), mHttpClient.getImageLoader());
             holder.mCategoryNameTextView.setText(item.getName());
 
             holder.mView.setOnClickListener(new View.OnClickListener()

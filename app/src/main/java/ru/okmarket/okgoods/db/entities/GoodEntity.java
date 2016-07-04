@@ -17,7 +17,7 @@ public class GoodEntity implements Parcelable
     private int     mId;
     private int     mCategoryId;
     private String  mName;
-    private String  mImageUrl;
+    private int     mImageId;
     private double  mCost;
     private double  mUnit;
     private int     mUnitType;
@@ -31,7 +31,7 @@ public class GoodEntity implements Parcelable
         mId         = 0;
         mCategoryId = 0;
         mName       = null;
-        mImageUrl   = null;
+        mImageId    = 0;
         mCost       = 0;
         mUnit       = 0;
         mUnitType   = MainDatabase.UNIT_TYPE_NOTHING;
@@ -107,14 +107,14 @@ public class GoodEntity implements Parcelable
         mName = name;
     }
 
-    public String getImageUrl()
+    public int getImageId()
     {
-        return mImageUrl;
+        return mImageId;
     }
 
-    public void setImageUrl(String imageUrl)
+    public void setImageId(int imageId)
     {
-        mImageUrl = imageUrl;
+        mImageId = imageId;
     }
 
     public double getCost()
@@ -189,7 +189,7 @@ public class GoodEntity implements Parcelable
         out.writeInt(mId);
         out.writeInt(mCategoryId);
         out.writeString(mName);
-        out.writeString(mImageUrl);
+        out.writeInt(mImageId);
         out.writeDouble(mCost);
         out.writeDouble(mUnit);
         out.writeInt(mUnitType);
@@ -217,7 +217,7 @@ public class GoodEntity implements Parcelable
         mId         = in.readInt();
         mCategoryId = in.readInt();
         mName       = in.readString();
-        mImageUrl   = in.readString();
+        mImageId    = in.readInt();
         mCost       = in.readDouble();
         mUnit       = in.readDouble();
         mUnitType   = in.readInt();

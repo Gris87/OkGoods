@@ -99,4 +99,14 @@ public class Web
     {
         return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/categories/" + fileName;
     }
+
+    public static String getGoodPhotoThumbnailUrl(int imageId)
+    {
+        return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + String.valueOf(imageId) + "/" + String.valueOf(imageId) + "_thumbnail.jpg";
+    }
+
+    public static String getGoodPhotoFullImageUrl(int imageId)
+    {
+        return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + String.valueOf(imageId) + "/" + String.valueOf(imageId) + "_fullimage.jpg" ;
+    }
 }

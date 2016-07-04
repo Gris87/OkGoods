@@ -17,7 +17,7 @@ public class GoodsCategoryEntity implements Parcelable
     private int     mId;
     private int     mParentId;
     private String  mName;
-    private String  mImageUrl;
+    private String  mImageName;
     private int     mUpdateTime;
     private int     mEnabled;
     private boolean mExpanded;
@@ -29,7 +29,7 @@ public class GoodsCategoryEntity implements Parcelable
         mId         = 0;
         mParentId   = 0;
         mName       = null;
-        mImageUrl   = null;
+        mImageName  = null;
         mUpdateTime = 0;
         mEnabled    = 0;
         mExpanded   = false;
@@ -100,14 +100,14 @@ public class GoodsCategoryEntity implements Parcelable
         mName = name;
     }
 
-    public String getImageUrl()
+    public String getImageName()
     {
-        return mImageUrl;
+        return mImageName;
     }
 
-    public void setImageUrl(String imageUrl)
+    public void setImageName(String imageName)
     {
-        mImageUrl = imageUrl;
+        mImageName = imageName;
     }
 
     public int getUpdateTime()
@@ -162,7 +162,7 @@ public class GoodsCategoryEntity implements Parcelable
         out.writeInt(mId);
         out.writeInt(mParentId);
         out.writeString(mName);
-        out.writeString(mImageUrl);
+        out.writeString(mImageName);
         out.writeInt(mUpdateTime);
         out.writeInt(mEnabled);
         out.writeByte(mExpanded ? (byte)1 : (byte)0);
@@ -188,7 +188,7 @@ public class GoodsCategoryEntity implements Parcelable
         mId         = in.readInt();
         mParentId   = in.readInt();
         mName       = in.readString();
-        mImageUrl   = in.readString();
+        mImageName  = in.readString();
         mUpdateTime = in.readInt();
         mEnabled    = in.readInt();
         mExpanded   = (in.readByte() == (byte)1);

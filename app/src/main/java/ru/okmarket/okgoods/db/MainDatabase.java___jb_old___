@@ -3174,7 +3174,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private void fillGoodsTable(SQLiteDatabase db)
     {
-        insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 0, 0, "", 0, 0.00, 0, UNIT_TYPE_NOTHING, 0, DISABLED);
+        insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 0, 0, "", 0.00, 0, UNIT_TYPE_NOTHING, 0, DISABLED);
 
         if (BuildConfig.DEBUG)
         {
