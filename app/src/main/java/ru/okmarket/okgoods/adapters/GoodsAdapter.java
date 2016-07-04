@@ -31,7 +31,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
     private HttpClient                     mHttpClient              = null;
     private OnCategoryClickListener        mOnCategoryClickListener = null;
     private OnGoodClickListener            mOnGoodClickListener     = null;
-    private int                            mWidth                   = 0;
+    private LinearLayout.LayoutParams      mImageLayoutParams       = null;
 
 
 
@@ -42,7 +42,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
         mGoods               = new ArrayList<>();
         mHttpClient          = HttpClient.getInstance(mContext);
         mOnGoodClickListener = null;
-        mWidth               = width;
+        mImageLayoutParams   = new LinearLayout.LayoutParams(width, width * 2 / 3);
     }
 
     @Override
@@ -63,10 +63,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             holder.mCategoryView.setVisibility(View.VISIBLE);
             holder.mGoodView.setVisibility(    View.GONE);
 
-            int imageWidth  = mWidth;
-            int imageHeight = mWidth * 2 / 3;
-
-            holder.mCategoryImageView.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageHeight));
+            holder.mCategoryImageView.setLayoutParams(mImageLayoutParams);
 
             ((ImageView)holder.mCategoryImageView.getContentView()).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.mCategoryImageView.setImageUrl(Web.getCategoryPhotoUrl(item.getImageName()), mHttpClient.getImageLoader());
@@ -91,6 +88,10 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             holder.mCategoryView.setVisibility(View.GONE);
             holder.mGoodView.setVisibility(    View.VISIBLE);
 
+            holder.mGoodImageView.setLayoutParams(mImageLayoutParams);
+
+            ((ImageView)holder.mGoodImageView.getContentView()).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            holder.mGoodImageView.setImageUrl(Web.getGoodPhotoThumbnailUrl(item.getImageId()), mHttpClient.getImageLoader());
             holder.mGoodNameTextView.setText(item.getName());
 
             holder.mView.setOnClickListener(new View.OnClickListener()
@@ -150,6 +151,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
         public View            mGoodView;
         public CachedImageView mCategoryImageView;
         public TextView        mCategoryNameTextView;
+        public CachedImageView mGoodImageView;
         public TextView        mGoodNameTextView;
 
 
@@ -163,6 +165,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             mGoodView             =                  view.findViewById(R.id.goodView);
             mCategoryImageView    = (CachedImageView)view.findViewById(R.id.categoryImageView);
             mCategoryNameTextView = (TextView)       view.findViewById(R.id.categoryNameTextView);
+            mGoodImageView        = (CachedImageView)view.findViewById(R.id.goodImageView);
             mGoodNameTextView     = (TextView)       view.findViewById(R.id.goodNameTextView);
         }
     }

@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_margin"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:gravity="center" />
 
     </LinearLayout>
@@ -39,11 +39,18 @@
         android:layout_marginBottom="@dimen/common_margin"
         android:orientation="vertical">
 
+        <ru.okmarket.okgoods.widgets.CachedImageView
+            android:id="@+id/goodImageView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center" />
+
         <TextView
             android:id="@+id/goodNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="@dimen/common_margin"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:gravity="center" />
 
     </LinearLayout>
