@@ -10,7 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Stack;
 
 import ru.okmarket.okgoods.BuildConfig;
 import ru.okmarket.okgoods.R;
@@ -22,6 +21,7 @@ import ru.okmarket.okgoods.db.entities.SelectedGoodEntity;
 import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.util.Tree;
+import ru.okmarket.okgoods.util.Utils;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
 public class MainDatabase extends SQLiteOpenHelper
@@ -3637,27 +3637,7 @@ public class MainDatabase extends SQLiteOpenHelper
             }
         }
 
-        Tree<GoodsCategoryEntity> res = new Tree<>(rootCategory);
-
-        Stack<Tree<GoodsCategoryEntity>> stack = new Stack<>();
-        stack.push(res);
-
-        do
-        {
-            Tree<GoodsCategoryEntity> item = stack.pop();
-
-            for (int i = 0; i < categories.size(); ++i)
-            {
-                GoodsCategoryEntity category = categories.get(i);
-
-                if (category.getParentId() == item.getData().getId())
-                {
-                    stack.push(item.addChild(category));
-                }
-            }
-        } while (!stack.isEmpty());
-
-        return res;
+        return Utils.buildCategoriesTreeFromList(categories, rootCategory);
     }
 
     public ArrayList<GoodEntity> getGoods(SQLiteDatabase db, int categoryId, boolean limit)

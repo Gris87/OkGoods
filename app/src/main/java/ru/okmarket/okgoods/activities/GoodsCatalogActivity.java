@@ -31,6 +31,7 @@ import ru.okmarket.okgoods.net.HttpClient;
 import ru.okmarket.okgoods.net.Web;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.util.Tree;
+import ru.okmarket.okgoods.util.Utils;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
@@ -38,6 +39,11 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 {
     @SuppressWarnings("unused")
     private static final String TAG = "GoodsCatalogActivity";
+
+
+
+    private static final String SAVED_STATE_TREE              = "TREE";
+    private static final String SAVED_STATE_SELECTED_CATEGORY = "SELECTED_CATEGORY";
 
 
 
@@ -172,6 +178,78 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         if (mDB != null)
         {
             mDB.close();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        ArrayList<GoodsCategoryEntity> allNodes = mGoodsCategoriesAdapter.getTree().doDepthForResult(new Tree.OperationWithResult<GoodsCategoryEntity, ArrayList<GoodsCategoryEntity>>()
+        {
+            @Override
+            protected ArrayList<GoodsCategoryEntity> init()
+            {
+                return new ArrayList<>();
+            }
+
+            @Override
+            protected ArrayList<GoodsCategoryEntity> run(Tree<GoodsCategoryEntity> node, ArrayList<GoodsCategoryEntity> currentResult)
+            {
+                currentResult.add(node.getData());
+
+                return currentResult;
+            }
+        });
+
+        outState.putParcelableArrayList(SAVED_STATE_TREE,              allNodes);
+        outState.putInt(                SAVED_STATE_SELECTED_CATEGORY, mSelectedCategory.getData().getId());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        final ArrayList<GoodsCategoryEntity> allNodes           = savedInstanceState.getParcelableArrayList(SAVED_STATE_TREE);
+        final int                            selectedCategoryId = savedInstanceState.getInt(                SAVED_STATE_SELECTED_CATEGORY, MainDatabase.SPECIAL_ID_NONE);
+
+        if (allNodes != null && allNodes.size() > 0)
+        {
+            Tree<GoodsCategoryEntity> tree = Utils.buildCategoriesTreeFromList(allNodes, allNodes.get(0));
+
+            Tree<GoodsCategoryEntity> foundCategory = tree.doDepthForResult(new Tree.OperationWithResult<GoodsCategoryEntity, Tree<GoodsCategoryEntity>>()
+            {
+                @Override
+                protected boolean filter(Tree<GoodsCategoryEntity> node, Tree<GoodsCategoryEntity> currentResult)
+                {
+                    return currentResult == null;
+                }
+
+                @Override
+                protected Tree<GoodsCategoryEntity> init()
+                {
+                    return null;
+                }
+
+                @Override
+                protected Tree<GoodsCategoryEntity> run(Tree<GoodsCategoryEntity> node, Tree<GoodsCategoryEntity> currentResult)
+                {
+                    if (node.getData().getId() == selectedCategoryId)
+                    {
+                        return node;
+                    }
+
+                    return null;
+                }
+            });
+
+            if (foundCategory != null)
+            {
+                mGoodsCategoriesAdapter.setTree(tree);
+                selectCategory(foundCategory);
+            }
         }
     }
 
