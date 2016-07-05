@@ -3342,6 +3342,7 @@ public class MainDatabase extends SQLiteOpenHelper
         db.execSQL(builder.toString());
     }
 
+    // region Getters
     public String[] getCities(SQLiteDatabase db)
     {
         Cursor cursor = db.query(CITIES_TABLE_NAME, CITIES_COLUMNS, null, null, null, null, null);
@@ -3603,7 +3604,7 @@ public class MainDatabase extends SQLiteOpenHelper
         ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, false, limit);
         GoodsCategoryEntity rootCategory = null;
 
-        if (rootCategoryId > SPECIAL_ID_ROOT)
+        if (rootCategoryId != SPECIAL_ID_ROOT)
         {
             for (int i = 0; i < categories.size(); ++i)
             {
@@ -3630,7 +3631,7 @@ public class MainDatabase extends SQLiteOpenHelper
             rootCategory.setEnabled(FORCE_ENABLED);
             rootCategory.setExpanded(true);
 
-            if (rootCategoryId > SPECIAL_ID_ROOT)
+            if (rootCategoryId != SPECIAL_ID_ROOT)
             {
                 return new Tree<>(rootCategory);
             }
@@ -3667,7 +3668,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         Cursor cursor;
 
-        if (categoryId >= SPECIAL_ID_ROOT)
+        if (categoryId != SPECIAL_ID_NONE)
         {
             cursor = db.query(GOODS_TABLE_NAME, GOODS_COLUMNS
                     , COLUMN_CATEGORY_ID + " = ? AND " + COLUMN_ENABLED + " != ?"
@@ -3939,4 +3940,5 @@ public class MainDatabase extends SQLiteOpenHelper
 
         return res;
     }
+    // endregion
 }
