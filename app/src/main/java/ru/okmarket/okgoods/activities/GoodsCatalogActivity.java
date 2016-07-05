@@ -109,7 +109,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mMainDatabase = new MainDatabase(this);
         mDB           = mMainDatabase.getReadableDatabase();
 
-        mGoodsCategoriesAdapter = new GoodsCategoriesAdapter(this, mMainDatabase.getGoodsCategoriesTree(mDB, 0));
+        mGoodsCategoriesAdapter = new GoodsCategoriesAdapter(this, mMainDatabase.getGoodsCategoriesTree(mDB, MainDatabase.SPECIAL_ID_ROOT, false));
         mGoodsAdapter           = new GoodsAdapter(this, screenWidth / columnCount);
 
         mGoodsCategoriesAdapter.setOnItemClickListener(this);
@@ -230,7 +230,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     {
         mSelectedCategory = category;
 
-        mGoodsAdapter.setItems(mSelectedCategory.getAll(), mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId()));
+        mGoodsAdapter.setItems(mSelectedCategory.getAll(), mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), false));
 
         setTitle(mSelectedCategory.getData().getName());
     }
