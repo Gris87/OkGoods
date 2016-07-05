@@ -142,9 +142,23 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
         return mCategories;
     }
 
+    public void setCategories(ArrayList<GoodsCategoryEntity> categories)
+    {
+        mCategories = categories;
+
+        notifyDataSetChanged();
+    }
+
     public ArrayList<GoodEntity> getGoods()
     {
         return mGoods;
+    }
+
+    public void setGoods(ArrayList<GoodEntity> goods)
+    {
+        mGoods = goods;
+
+        notifyDataSetChanged();
     }
 
     public void setItems(ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods)

@@ -2,6 +2,11 @@ package ru.okmarket.okgoods.net;
 
 import java.util.ArrayList;
 
+import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.db.entities.GoodEntity;
+import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
+import ru.okmarket.okgoods.util.AppLog;
+
 public class Web
 {
     @SuppressWarnings("unused")
@@ -11,6 +16,26 @@ public class Web
 
     private static final String OK_MARKET_RU_URL     = "http://okmarket.ru";
     private static final String OKEY_DOSTAVKA_RU_URL = "https://www.okeydostavka.ru";
+
+    public static final String[] OKEY_DOSTAVKA_RU_SHOPS = {
+              "spb"
+            , "spb1"
+            , "spb2"
+            , "spb3"
+            , "msk"
+            , "msk1"
+            , "msk2"
+    };
+
+    public static final int[] OKEY_DOSTAVKA_RU_SHOP_IDS = {
+              10653
+            , 10654
+            , 10655
+            , 10656
+            , 10151
+            , 10651
+            , 10652
+    };
 
 
 
@@ -95,6 +120,26 @@ public class Web
         return null;
     }
 
+    public static String getCatalogUrl(String shop, int shopId, int categoryId)
+    {
+        if (categoryId == MainDatabase.SPECIAL_ID_ROOT)
+        {
+            return OKEY_DOSTAVKA_RU_URL + "/" + shop + "/catalog";
+        }
+        else
+        {
+            return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/CategoryDisplay?" +
+                    "storeId=" + String.valueOf(shopId)        + "&" +
+                    "urlLangId=-20"                            + "&" +
+                    "beginIndex=0"                             + "&" +
+                    "urlRequestType=Base"                      + "&" +
+                    "categoryId=" + String.valueOf(categoryId) + "&" +
+                    "pageView=grid"                            + "&" +
+                    "langId=-20"                               + "&" +
+                    "catalogId=12051";
+        }
+    }
+
     public static String getCategoryPhotoUrl(String fileName)
     {
         return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/categories/" + fileName;
@@ -108,5 +153,10 @@ public class Web
     public static String getGoodPhotoFullImageUrl(int imageId)
     {
         return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + String.valueOf(imageId) + "/" + String.valueOf(imageId) + "_fullimage.jpg" ;
+    }
+
+    public static void getCatalogItemsFromResponse(String response, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods)
+    {
+        AppLog.e(TAG, response);
     }
 }

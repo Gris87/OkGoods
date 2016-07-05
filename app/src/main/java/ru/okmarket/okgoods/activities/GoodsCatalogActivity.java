@@ -3,6 +3,7 @@ package ru.okmarket.okgoods.activities;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +14,21 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.ArrayList;
+
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.GoodsAdapter;
 import ru.okmarket.okgoods.adapters.GoodsCategoriesAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.GoodEntity;
 import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
+import ru.okmarket.okgoods.net.HttpClient;
+import ru.okmarket.okgoods.net.Web;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.util.Tree;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
@@ -40,6 +50,9 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     private MainDatabase              mMainDatabase           = null;
     private SQLiteDatabase            mDB                     = null;
     private Tree<GoodsCategoryEntity> mSelectedCategory       = null;
+    private GoodsLoadingTask          mGoodsLoadingTask       = null;
+    private HttpClient                mHttpClient             = null;
+    private int                       mRequestsInProgress     = 0;
     // endregion
 
 
@@ -125,6 +138,11 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
 
+        mHttpClient = HttpClient.getInstance(this);
+
+        mHttpClient.getRequestQueue().cancelAll(TAG);
+        mRequestsInProgress = 0;
+
         selectCategory(mGoodsCategoriesAdapter.getTree());
     }
 
@@ -140,6 +158,16 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     protected void onDestroy()
     {
         super.onDestroy();
+
+        if (mGoodsLoadingTask != null)
+        {
+            mGoodsLoadingTask.cancel(true);
+        }
+
+        if (mRequestsInProgress > 0)
+        {
+            mHttpClient.getRequestQueue().cancelAll(TAG);
+        }
 
         if (mDB != null)
         {
@@ -230,8 +258,111 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     {
         mSelectedCategory = category;
 
-        mGoodsAdapter.setItems(mSelectedCategory.getAll(), mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), false));
-
         setTitle(mSelectedCategory.getData().getName());
+
+
+
+        mGoodsAdapter.setItems(mSelectedCategory.getAll(), mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), true));
+
+        if (mGoodsLoadingTask != null)
+        {
+            mGoodsLoadingTask.cancel(true);
+        }
+
+        mGoodsLoadingTask = new GoodsLoadingTask(mSelectedCategory.getData().getId());
+        mGoodsLoadingTask.execute();
+
+        if (mRequestsInProgress > 0)
+        {
+            mHttpClient.getRequestQueue().cancelAll(TAG);
+            mRequestsInProgress = 0;
+        }
+    }
+
+
+
+    private class GoodsLoadingTask extends AsyncTask<Void, Void, ArrayList<GoodEntity>>
+    {
+        private int mCategoryId = 0;
+
+
+
+        public GoodsLoadingTask(int categoryId)
+        {
+            mCategoryId = categoryId;
+        }
+
+        @Override
+        protected ArrayList<GoodEntity> doInBackground(Void... params)
+        {
+            ArrayList<GoodEntity> res = null;
+
+            try
+            {
+                res = mMainDatabase.getGoods(mDB, mCategoryId, false);
+            }
+            catch (Exception e)
+            {
+                // Nothing
+            }
+
+            if (isCancelled())
+            {
+                return null;
+            }
+
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<GoodEntity> goods)
+        {
+            if (goods != null)
+            {
+                mGoodsLoadingTask = null;
+
+                mGoodsAdapter.setGoods(goods);
+
+                if (System.currentTimeMillis() - mSelectedCategory.getData().getUpdateTime() > 300000) // 5 minutes = 5 * 60 * 1000
+                {
+                    final ArrayList<GoodsCategoryEntity> webCategories = new ArrayList<>();
+                    final ArrayList<GoodEntity>          webGoods      = new ArrayList<>();
+
+                    for (int i = 0; i < Web.OKEY_DOSTAVKA_RU_SHOPS.length; ++i)
+                    {
+                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mSelectedCategory.getData().getId())
+                                , new Response.Listener<String>()
+                                {
+                                    @Override
+                                    public void onResponse(String response)
+                                    {
+                                        Web.getCatalogItemsFromResponse(response, webCategories, webGoods);
+
+                                        --mRequestsInProgress;
+
+                                        if (mRequestsInProgress == 0)
+                                        {
+
+                                        }
+                                    }
+                                }
+                                , new Response.ErrorListener()
+                                {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error)
+                                    {
+                                        AppLog.w(TAG, "Failed to get goods catalog: " + String.valueOf(mSelectedCategory.getData().getName()));
+                                    }
+                                }
+                        );
+
+                        request.setTag(TAG);
+
+                        mHttpClient.addToRequestQueue(request);
+                        ++mRequestsInProgress;
+                    }
+                }
+            }
+        }
     }
 }
