@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.HistoryDetailsAdapter;
+import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 import ru.okmarket.okgoods.util.AnimationUtils;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
@@ -183,7 +184,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         {
             if (mSelectedHistoryDetails.isOwn())
             {
-                if (mSelectedHistoryDetails.getGoodId() > 0)
+                if (mSelectedHistoryDetails.getGoodId() != MainDatabase.SPECIAL_ID_ROOT)
                 {
                     mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_good);
                 }

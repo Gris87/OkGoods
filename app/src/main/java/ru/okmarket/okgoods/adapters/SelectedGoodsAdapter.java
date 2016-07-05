@@ -63,7 +63,7 @@ public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdap
         holder.mGoodNameTextView.setMarqueeRepeatLimit(-1);
         holder.mGoodNameTextView.setSelected(false);
 
-        if (item.getGoodId() > 0 && item.getCost() > 0 && item.getCount() > 0)
+        if (item.getGoodId() != MainDatabase.SPECIAL_ID_ROOT && item.getCost() > 0 && item.getCount() > 0)
         {
             holder.mCostTextView.setVisibility(View.VISIBLE);
             holder.mCostTextView.setAlpha(1);

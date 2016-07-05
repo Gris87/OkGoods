@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
+import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 
 public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAdapter.ViewHolder>
@@ -55,7 +56,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
         holder.mGoodNameTextView.setMarqueeRepeatLimit(-1);
         holder.mGoodNameTextView.setSelected(false);
 
-        if (item.getGoodId() > 0 && item.getCost() > 0 && item.getCount() > 0)
+        if (item.getGoodId() != MainDatabase.SPECIAL_ID_ROOT && item.getCost() > 0 && item.getCount() > 0)
         {
             holder.mCostTextView.setVisibility(View.VISIBLE);
             holder.mCostTextView.setAlpha(1);

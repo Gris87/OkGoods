@@ -494,7 +494,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         {
             if (mSelectedGood.isOwn())
             {
-                if (mSelectedGood.getGoodId() > 0)
+                if (mSelectedGood.getGoodId() != MainDatabase.SPECIAL_ID_ROOT)
                 {
                     mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_good);
                 }

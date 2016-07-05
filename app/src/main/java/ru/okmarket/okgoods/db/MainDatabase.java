@@ -26,16 +26,22 @@ import ru.yandex.yandexmapkit.utils.GeoPoint;
 
 public class MainDatabase extends SQLiteOpenHelper
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "MainDatabase";
+    // endregion
 
 
 
+    // region Database properties
     private static final String DB_NAME    = "main.db";
     private static final int    DB_VERSION = 1;
+    // endregion
 
 
 
+    // region Column names
     public static final String COLUMN_ID                  = "_id";
     public static final String COLUMN_NAME                = "_name";
     public static final String COLUMN_CITY_ID             = "_city_id";
@@ -65,9 +71,9 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String COLUMN_SHOP_ID             = "_shop_id";
     public static final String COLUMN_TOTAL               = "_total";
     public static final String COLUMN_HISTORY_ID          = "_history_id";
+    // endregion
 
-
-
+    // region Columns
     public static final String[] CITIES_COLUMNS =           {
                                                                 COLUMN_ID,
                                                                 COLUMN_NAME
@@ -133,9 +139,11 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 COLUMN_COST,
                                                                 COLUMN_COUNT
                                                             };
+    // endregion
 
 
 
+    // region Table names
     public static final String CITIES_TABLE_NAME           = "cities";
     public static final String SHOPS_TABLE_NAME            = "shops";
     public static final String GOODS_CATEGORIES_TABLE_NAME = "goods_categories";
@@ -143,9 +151,9 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String SELECTED_GOODS_TABLE_NAME   = "selected_goods";
     public static final String HISTORY_TABLE_NAME          = "history";
     public static final String HISTORY_DETAILS_TABLE_NAME  = "history_details";
+    // endregion
 
-
-
+    // region Create table statements
     private static final String CITIES_TABLE_CREATE =           "CREATE TABLE " + CITIES_TABLE_NAME + " " +
                                                                 "(" +
                                                                     COLUMN_ID   + " INTEGER PRIMARY KEY, " +
@@ -218,9 +226,11 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                     COLUMN_COST        + " REAL NOT NULL, "                                                                      +
                                                                     COLUMN_COUNT       + " REAL NOT NULL "                                                                       +
                                                                 ");";
+    // endregion
 
 
 
+    // region Cities
     public static final int CITY_ID_MOSCOW           = 1;
     public static final int CITY_ID_ST_PETERSBURG    = 2;
     public static final int CITY_ID_ASTRAKHAN        = 3;
@@ -311,7 +321,9 @@ public class MainDatabase extends SQLiteOpenHelper
             , new GeoPoint(54.7720531355310, 56.0663189902330) // UFA
             , new GeoPoint(59.1062657254020, 37.9103532275380) // CHEREPOVETS
     };
+    // endregion
 
+    // region Services
     public static final int SERVICE_CLEARING_SETTLEMENT_MASK     = 0x00000001;
     public static final int SERVICE_COSMETICS_MASK               = 0x00000002;
     public static final int SERVICE_PLAYGROUND_MASK              = 0x00000004;
@@ -326,10 +338,9 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final int SERVICE_GIFT_CARDS_MASK              = 0x00000800;
     public static final int SERVICE_PARKING_MASK                 = 0x00001000;
     public static final int SERVICE_POINT_OF_ISSUING_ORDERS_MASK = 0x00002000;
+    // endregion
 
-    public static final int SHOP_SUPERMARKET = 0;
-    public static final int SHOP_HYPERMARKET = 1;
-
+    // region Shops
     public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_ROSTOKINO                                     = 284;
     public static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_MOSCOW_LENINSKIY                              = 532;
     public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_PYATNITSKOE_7KM                               = 534;
@@ -438,18 +449,39 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final int SHOP_ID_UFA_HYPERMARKET_OK_UFA_IYUN                                         = 569;
     public static final int SHOP_ID_UFA_HYPERMARKET_OK_UFA_PLANETA                                      = 571;
     public static final int SHOP_ID_CHEREPOVETS_HYPERMARKET_OK_CHEREPOVETS_RAAKHE                       = 565;
+    // endregion
 
+
+
+    // region IsHypermarket values
+    public static final int SHOP_SUPERMARKET = 0;
+    public static final int SHOP_HYPERMARKET = 1;
+    // endregion
+
+    // region Special IDs
+    public static final int SPECIAL_ID_ROOT = -1;
+    public static final int SPECIAL_ID_NONE = -2;
+    public static final int SPECIAL_ID_OWN  = -100;
+    // endregion
+
+    // region Enabled values
     public static final int DISABLED      = 0;
     public static final int ENABLED       = 1;
     public static final int FORCE_ENABLED = 2;
+    // endregion
 
+    // region UnitType values
     public static final int UNIT_TYPE_NOTHING  = 0;
     public static final int UNIT_TYPE_KILOGRAM = 1;
     public static final int UNIT_TYPE_LITER    = 2;
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private Context mContext = null;
+    // endregion
 
 
 
@@ -479,6 +511,7 @@ public class MainDatabase extends SQLiteOpenHelper
         }
     }
 
+    // region Create/Drop methods
     private void createStaticTables(SQLiteDatabase db)
     {
         db.execSQL(CITIES_TABLE_CREATE);
@@ -506,7 +539,9 @@ public class MainDatabase extends SQLiteOpenHelper
         db.execSQL(HISTORY_TABLE_CREATE);
         db.execSQL(HISTORY_DETAILS_TABLE_CREATE);
     }
+    // endregion
 
+    // region Fill table methods
     private void fillStaticTables(SQLiteDatabase db)
     {
         fillCitiesTable(db);
@@ -3157,47 +3192,47 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private void fillGoodsCategoriesTable(SQLiteDatabase db)
     {
-        insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 0, -1, "", "", 0, DISABLED);
+        insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_ROOT, SPECIAL_ID_NONE, "", "", 0, DISABLED);
 
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15058,    0,     "Алкогольные напитки",         "Alcohol%20products.jpg", 0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15060,    15058, "Крепкий алкоголь",            "2-HardLiquor.jpg",       0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 23056,    15060, "Водка",                       "vodka.jpg",              0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 20554,    15058, "Вино",                        "Vine.jpg",               0, DISABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16052,    0,     "Кондитерские изделия",        "Pastry.jpg",             0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16056,    16052, "Мучные кондитерские изделия", "2-Pastry.jpg",           0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 32053,    16056, "Вафли",                       "Waffles.jpg",            0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 10000000, 0,     "К чаю",                       "",                       0, FORCE_ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15058,          SPECIAL_ID_ROOT, "Алкогольные напитки",         "Alcohol%20products.jpg", 0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15060,          15058,           "Крепкий алкоголь",            "2-HardLiquor.jpg",       0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 23056,          15060,           "Водка",                       "vodka.jpg",              0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 20554,          15058,           "Вино",                        "Vine.jpg",               0, DISABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16052,          SPECIAL_ID_ROOT, "Кондитерские изделия",        "Pastry.jpg",             0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16056,          16052,           "Мучные кондитерские изделия", "2-Pastry.jpg",           0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 32053,          16056,           "Вафли",                       "Waffles.jpg",            0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_OWN, SPECIAL_ID_ROOT, "К чаю",                       "",                       0, FORCE_ENABLED);
         }
     }
 
     private void fillGoodsTable(SQLiteDatabase db)
     {
-        insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 0, 0, "", 0, 0.00, 0, UNIT_TYPE_NOTHING, 0, DISABLED);
+        insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, SPECIAL_ID_ROOT, SPECIAL_ID_NONE, "", 0, 0.00, 0, UNIT_TYPE_NOTHING, 0, DISABLED);
 
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 222807,   23056, "Водка Русский Стандарт Платинум алк.40% 0,5л",                        40097,  669.00, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 225066,   23056, "Водка Царская Оригинальная алк 40% 1л",                               148652, 699.00, 1,     UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 230084,   23056, "Клюквенный спиртовой напиток Финляндия Рэдберри 0.7л",                195872, 973.39, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 233821,   23056, "Водка Хортиця Классическая 0.5 л 40% об.",                            709544, 350.70, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 249995,   23056, "Водка Пять озер 40% 0.25 л",                                          699573, 175.35, 0.25,  UNIT_TYPE_LITER,    0, DISABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 250787,   23056, "Водка Русский Стандарт 40% 0.7л",                                     696684, 767.16, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 253396,   23056, "Водка Парламент Классик алк.40% 0,5л",                                148144, 359.00,  0.5,  UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 75578,    32053, "Вафли Коровка топленое молоко 150г",                                  367208, 46.02,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 93820,    32053, "Вафельные рулетики ОКЕЙ со вкусом и ароматом сгущенного молока 150г", 684735, 36.90,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 179713,   32053, "Трубочки вафельные Finetti с ореховой начинкой 45г",                  703866, 70.90,  0.045, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 196931,   32053, "Вафли Loacker хрустящие с лесным орехом 175г",                        378137, 159.06, 0.175, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 241659,   32053, "Вафли Рот Фронт Лесная быль 250г",                                    662871, 114.00, 0.25,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 243456,   32053, "Вафли ТЧН! с ароматом сгущённого молока 200г",                        628977, 24.99,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 655311,   32053, "Вафли Неаполитанер с ореховым кремом 150г",                           738256, 124.00, 0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 667280,   32053, "Вафли Яшкино сливочные. 200г",                                        303312, 33.32,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 667282,   32053, "Вафли Яшкино голландские карамельная начинка. 290г",                  437906, 68.82,  0.29,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 674474,   32053, "Вафли Вереск с ароматом лесного ореха 105г",                          743387, 19.48,  0.105, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 674476,   32053, "Вафли Вереск со вкусом крем-брюле 105г",                              743382, 19.48,  0.105, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 728483,   32053, "Вафли ТЧН! с ванильно-сливочным ароматом 200г",                       764935, 24.99,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 10000000, 0,     "Наш любимый хлеб",                                                    0,      0.00,   0,     UNIT_TYPE_NOTHING,  0, FORCE_ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 222807,         23056,           "Водка Русский Стандарт Платинум алк.40% 0,5л",                        40097,  669.00, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 225066,         23056,           "Водка Царская Оригинальная алк 40% 1л",                               148652, 699.00, 1,     UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 230084,         23056,           "Клюквенный спиртовой напиток Финляндия Рэдберри 0.7л",                195872, 973.39, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 233821,         23056,           "Водка Хортиця Классическая 0.5 л 40% об.",                            709544, 350.70, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 249995,         23056,           "Водка Пять озер 40% 0.25 л",                                          699573, 175.35, 0.25,  UNIT_TYPE_LITER,    0, DISABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 250787,         23056,           "Водка Русский Стандарт 40% 0.7л",                                     696684, 767.16, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 253396,         23056,           "Водка Парламент Классик алк.40% 0,5л",                                148144, 359.00,  0.5,  UNIT_TYPE_LITER,    0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 75578,          32053,           "Вафли Коровка топленое молоко 150г",                                  367208, 46.02,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 93820,          32053,           "Вафельные рулетики ОКЕЙ со вкусом и ароматом сгущенного молока 150г", 684735, 36.90,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 179713,         32053,           "Трубочки вафельные Finetti с ореховой начинкой 45г",                  703866, 70.90,  0.045, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 196931,         32053,           "Вафли Loacker хрустящие с лесным орехом 175г",                        378137, 159.06, 0.175, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 241659,         32053,           "Вафли Рот Фронт Лесная быль 250г",                                    662871, 114.00, 0.25,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 243456,         32053,           "Вафли ТЧН! с ароматом сгущённого молока 200г",                        628977, 24.99,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 655311,         32053,           "Вафли Неаполитанер с ореховым кремом 150г",                           738256, 124.00, 0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 667280,         32053,           "Вафли Яшкино сливочные. 200г",                                        303312, 33.32,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 667282,         32053,           "Вафли Яшкино голландские карамельная начинка. 290г",                  437906, 68.82,  0.29,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 674474,         32053,           "Вафли Вереск с ароматом лесного ореха 105г",                          743387, 19.48,  0.105, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 674476,         32053,           "Вафли Вереск со вкусом крем-брюле 105г",                              743382, 19.48,  0.105, UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 728483,         32053,           "Вафли ТЧН! с ванильно-сливочным ароматом 200г",                       764935, 24.99,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, SPECIAL_ID_OWN, SPECIAL_ID_ROOT, "Наш любимый хлеб",                                                    0,      0.00,   0,     UNIT_TYPE_NOTHING,  0, FORCE_ENABLED);
         }
     }
 
@@ -3205,26 +3240,26 @@ public class MainDatabase extends SQLiteOpenHelper
     {
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 1,  222807,   0,        2);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 2,  230084,   0,        1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 3,  233821,   0,        3);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 4,  0,        20554,    1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 5,  250787,   0,        2);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 6,  0,        16056,    4);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 7,  10000000, 0,        2);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 8,  0,        10000000, 1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 9,  249995,   0,        3);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 10, 225066,   0,        4);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 11, 253396,   0,        2);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 12, 75578,    0,        1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 13, 93820,    23056,    4);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 14, 179713,   0,        1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 15, 196931,   0,        2);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 16, 241659,   0,        1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 17, 243456,   0,        1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 18, 655311,   0,        2);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 19, 667280,   0,        1);
-            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 20, 667282,   0,        1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 1,  222807,          SPECIAL_ID_ROOT, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 2,  230084,          SPECIAL_ID_ROOT, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 3,  233821,          SPECIAL_ID_ROOT, 3);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 4,  SPECIAL_ID_ROOT, 20554,           1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 5,  250787,          SPECIAL_ID_ROOT, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 6,  SPECIAL_ID_ROOT, 16056,           4);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 7,  SPECIAL_ID_OWN,  SPECIAL_ID_ROOT, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 8,  SPECIAL_ID_ROOT, SPECIAL_ID_OWN,  1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 9,  249995,          SPECIAL_ID_ROOT, 3);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 10, 225066,          SPECIAL_ID_ROOT, 4);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 11, 253396,          SPECIAL_ID_ROOT, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 12, 75578,           SPECIAL_ID_ROOT, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 13, SPECIAL_ID_ROOT, 23056,           4);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 14, 179713,          SPECIAL_ID_ROOT, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 15, 196931,          SPECIAL_ID_ROOT, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 16, 241659,          SPECIAL_ID_ROOT, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 17, 243456,          SPECIAL_ID_ROOT, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 18, 655311,          SPECIAL_ID_ROOT, 2);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 19, 667280,          SPECIAL_ID_ROOT, 1);
+            insertToTable(db, SELECTED_GOODS_TABLE_NAME, SELECTED_GOODS_COLUMNS, 20, 667282,          SPECIAL_ID_ROOT, 1);
         }
     }
 
@@ -3243,32 +3278,33 @@ public class MainDatabase extends SQLiteOpenHelper
     {
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 1,  1, 233821,   0,        234.10, 5);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 2,  1, 75578,    0,        121.60, 8);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 3,  1, 222807,   0,        10.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 4,  1, 225066,   0,        20.00,  3);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 5,  1, 230084,   0,        30.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 6,  1, 249995,   0,        40.00,  2);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 7,  1, 250787,   0,        50.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 8,  1, 253396,   0,        60.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 9,  1, 93820,    0,        70.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 10, 1, 179713,   0,        80.00,  2);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 11, 1, 196931,   0,        90.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 12, 1, 241659,   0,        10.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 13, 1, 243456,   0,        20.00,  3);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 14, 1, 655311,   0,        30.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 15, 1, 667280,   0,        40.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 16, 1, 0,        23056,    0.00,   1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 17, 1, 667282,   0,        60.00,  2);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 18, 1, 674474,   0,        70.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 19, 1, 674476,   0,        80.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 20, 1, 728483,   0,        90.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 21, 1, 10000000, 0,        10.00,  1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 22, 1, 0,        10000000, 0.00,   1);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 23, 3, 249995,   0,        974.10, 3);
-            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 24, 3, 222807,   0,        843.10, 2);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 1,  1, 233821,          SPECIAL_ID_ROOT, 234.10, 5);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 2,  1, 75578,           SPECIAL_ID_ROOT, 121.60, 8);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 3,  1, 222807,          SPECIAL_ID_ROOT, 10.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 4,  1, 225066,          SPECIAL_ID_ROOT, 20.00,  3);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 5,  1, 230084,          SPECIAL_ID_ROOT, 30.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 6,  1, 249995,          SPECIAL_ID_ROOT, 40.00,  2);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 7,  1, 250787,          SPECIAL_ID_ROOT, 50.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 8,  1, 253396,          SPECIAL_ID_ROOT, 60.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 9,  1, 93820,           SPECIAL_ID_ROOT, 70.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 10, 1, 179713,          SPECIAL_ID_ROOT, 80.00,  2);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 11, 1, 196931,          SPECIAL_ID_ROOT, 90.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 12, 1, 241659,          SPECIAL_ID_ROOT, 10.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 13, 1, 243456,          SPECIAL_ID_ROOT, 20.00,  3);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 14, 1, 655311,          SPECIAL_ID_ROOT, 30.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 15, 1, 667280,          SPECIAL_ID_ROOT, 40.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 16, 1, SPECIAL_ID_ROOT, 23056,           0.00,   1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 17, 1, 667282,          SPECIAL_ID_ROOT, 60.00,  2);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 18, 1, 674474,          SPECIAL_ID_ROOT, 70.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 19, 1, 674476,          SPECIAL_ID_ROOT, 80.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 20, 1, 728483,          SPECIAL_ID_ROOT, 90.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 21, 1, SPECIAL_ID_OWN,  SPECIAL_ID_ROOT, 10.00,  1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 22, 1, SPECIAL_ID_ROOT, SPECIAL_ID_OWN,  0.00,   1);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 23, 3, 249995,          SPECIAL_ID_ROOT, 974.10, 3);
+            insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 24, 3, 222807,          SPECIAL_ID_ROOT, 843.10, 2);
         }
     }
+    // endregion
 
     public void insertToTable(SQLiteDatabase db, String tableName, String[] columns, Object... values)
     {
@@ -3308,8 +3344,13 @@ public class MainDatabase extends SQLiteOpenHelper
 
     public String[] getCities(SQLiteDatabase db)
     {
-        Cursor cursor = db.query(CITIES_TABLE_NAME, new String[] { COLUMN_NAME }, null, null, null, null, null);
+        Cursor cursor = db.query(CITIES_TABLE_NAME, CITIES_COLUMNS, null, null, null, null, null);
+
+
+
         int nameColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+
+
 
         String[] res = new String[cursor.getCount()];
 
@@ -3344,7 +3385,7 @@ public class MainDatabase extends SQLiteOpenHelper
         return -1;
     }
 
-    public ArrayList<ShopEntity> getShops(SQLiteDatabase db, int cityId)
+    public ArrayList<ShopEntity> getShops(SQLiteDatabase db, int cityId, boolean limit)
     {
         ArrayList<ShopEntity> res = new ArrayList<>();
 
@@ -3354,11 +3395,22 @@ public class MainDatabase extends SQLiteOpenHelper
 
         if (cityId > 0)
         {
-            cursor = db.query(SHOPS_TABLE_NAME, SHOPS_COLUMNS, COLUMN_CITY_ID + " = ?", new String[] { String.valueOf(cityId) }, null, null, null);
+            cursor = db.query(SHOPS_TABLE_NAME, SHOPS_COLUMNS
+                    , COLUMN_CITY_ID + " = ?"
+                    , new String[]
+                            {
+                                    String.valueOf(cityId)
+                            }
+                    , null, null, null
+                    , limit ? "10" : null);
         }
         else
         {
-            cursor = db.query(SHOPS_TABLE_NAME, SHOPS_COLUMNS, null, null, null, null, null);
+            cursor = db.query(SHOPS_TABLE_NAME, SHOPS_COLUMNS
+                    , null
+                    , null
+                    , null, null, null
+                    , limit ? "10" : null);
         }
 
 
@@ -3428,7 +3480,13 @@ public class MainDatabase extends SQLiteOpenHelper
     {
         ShopEntity res = null;
 
-        Cursor cursor = db.query(SHOPS_TABLE_NAME, SHOPS_COLUMNS, COLUMN_ID + " = ?", new String[] { String.valueOf(shopId) }, null, null, null);
+        Cursor cursor = db.query(SHOPS_TABLE_NAME, SHOPS_COLUMNS
+                , COLUMN_ID + " = ?"
+                , new String[]
+                        {
+                                String.valueOf(shopId)
+                        }
+                , null, null, null);
 
 
 
@@ -3487,22 +3545,20 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<GoodsCategoryEntity> getGoodsCategories(SQLiteDatabase db, boolean allowDisabled)
+    public ArrayList<GoodsCategoryEntity> getGoodsCategories(SQLiteDatabase db, boolean allowDisabled, boolean limit)
     {
         ArrayList<GoodsCategoryEntity> res = new ArrayList<>();
 
 
 
-        Cursor cursor;
-
-        if (allowDisabled)
-        {
-            cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, COLUMN_ENABLED + " != ?", new String[] { String.valueOf(FORCE_ENABLED) }, null, null, COLUMN_ENABLED + ", " + COLUMN_NAME);
-        }
-        else
-        {
-            cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, COLUMN_ENABLED + " != ?", new String[] { String.valueOf(DISABLED) }, null, null, COLUMN_ENABLED + ", " + COLUMN_NAME);
-        }
+        Cursor cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS
+                , COLUMN_ENABLED + " != ?"
+                , new String[]
+                        {
+                                String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
+                        }
+                , null, null, COLUMN_ENABLED + ", " + COLUMN_NAME
+                , limit ? "10" : null);
 
 
 
@@ -3542,35 +3598,42 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public Tree<GoodsCategoryEntity> getGoodsCategoriesTree(SQLiteDatabase db, int rootCategoryId)
+    public Tree<GoodsCategoryEntity> getGoodsCategoriesTree(SQLiteDatabase db, int rootCategoryId, boolean limit)
     {
-        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, false);
+        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, false, limit);
         GoodsCategoryEntity rootCategory = null;
 
-        if (rootCategoryId > 0)
+        if (rootCategoryId > SPECIAL_ID_ROOT)
         {
             for (int i = 0; i < categories.size(); ++i)
             {
-                rootCategory = categories.get(i);
+                GoodsCategoryEntity category = categories.get(i);
 
-                if (rootCategory.getId() == rootCategoryId)
+                if (category.getId() == rootCategoryId)
                 {
+                    rootCategory = category;
                     rootCategory.setExpanded(true);
 
                     break;
                 }
             }
         }
-        else
+
+        if (rootCategory == null)
         {
             rootCategory = new GoodsCategoryEntity();
 
-            rootCategory.setId(0);
-            rootCategory.setParentId(-1);
+            rootCategory.setId(SPECIAL_ID_ROOT);
+            rootCategory.setParentId(SPECIAL_ID_NONE);
             rootCategory.setName(mContext.getString(R.string.goods_catalog));
             rootCategory.setUpdateTime(-1);
             rootCategory.setEnabled(FORCE_ENABLED);
             rootCategory.setExpanded(true);
+
+            if (rootCategoryId > SPECIAL_ID_ROOT)
+            {
+                return new Tree<>(rootCategory);
+            }
         }
 
         Tree<GoodsCategoryEntity> res = new Tree<>(rootCategory);
@@ -3596,7 +3659,7 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<GoodEntity> getGoods(SQLiteDatabase db, int categoryId)
+    public ArrayList<GoodEntity> getGoods(SQLiteDatabase db, int categoryId, boolean limit)
     {
         ArrayList<GoodEntity> res = new ArrayList<>();
 
@@ -3604,19 +3667,28 @@ public class MainDatabase extends SQLiteOpenHelper
 
         Cursor cursor;
 
-        if (categoryId >= 0)
+        if (categoryId >= SPECIAL_ID_ROOT)
         {
-            cursor = db.query(GOODS_TABLE_NAME, GOODS_COLUMNS, COLUMN_CATEGORY_ID + " = ? AND " + COLUMN_ENABLED + " != ?"
+            cursor = db.query(GOODS_TABLE_NAME, GOODS_COLUMNS
+                    , COLUMN_CATEGORY_ID + " = ? AND " + COLUMN_ENABLED + " != ?"
                     , new String[]
                             {
                                     String.valueOf(categoryId),
                                     String.valueOf(DISABLED)
                             }
-                    , null, null, null);
+                    , null, null, null
+                    , limit ? "10" : null);
         }
         else
         {
-            cursor = db.query(GOODS_TABLE_NAME, GOODS_COLUMNS, COLUMN_ENABLED + " != ?", new String[] { String.valueOf(FORCE_ENABLED) }, null, null, null);
+            cursor = db.query(GOODS_TABLE_NAME, GOODS_COLUMNS
+                    , COLUMN_ENABLED + " != ?"
+                    , new String[]
+                            {
+                                    String.valueOf(FORCE_ENABLED)
+                            }
+                    , null, null, null
+                    , limit ? "10" : null);
         }
 
 
@@ -3663,28 +3735,29 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<SelectedGoodEntity> getSelectedGoods(SQLiteDatabase db)
+    public ArrayList<SelectedGoodEntity> getSelectedGoods(SQLiteDatabase db, boolean limit)
     {
         ArrayList<SelectedGoodEntity> res = new ArrayList<>();
 
 
 
-        Cursor cursor = db.rawQuery("SELECT"                                                                                         + " "  +
-                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_ID                                                                        + ", " +
-                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_GOOD_ID                                                                   + ", " +
-                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_CATEGORY_ID                                                               + ", " +
-                GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                    + ", " +
-                GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                                + ", " +
-                GOODS_TABLE_NAME            + "." + COLUMN_COST                                                                      + ", " +
-                SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_COUNT                                                                     + ", " +
-                GOODS_TABLE_NAME            + "." + COLUMN_ENABLED + " AS good_enabled"                                              + ", " +
-                GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ENABLED + " AS category_enabled"                                          + " "  +
-                "FROM " + SELECTED_GOODS_TABLE_NAME                                                                                  + " "  +
-                "INNER JOIN " + GOODS_TABLE_NAME                                                                                     + " "  +
-                "ON " + SELECTED_GOODS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
-                "INNER JOIN " + GOODS_CATEGORIES_TABLE_NAME                                                                          + " "  +
-                "ON " + SELECTED_GOODS_TABLE_NAME + "." + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ID + " "  +
-                ";", null );
+        Cursor cursor = db.rawQuery("SELECT"                                                                                                             + " "  +
+                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_ID                                                                    + ", " +
+                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_GOOD_ID                                                               + ", " +
+                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_CATEGORY_ID                                                           + ", " +
+                                        GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                + ", " +
+                                        GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                            + ", " +
+                                        GOODS_TABLE_NAME            + "." + COLUMN_COST                                                                  + ", " +
+                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_COUNT                                                                 + ", " +
+                                        GOODS_TABLE_NAME            + "." + COLUMN_ENABLED + " AS good_enabled"                                          + ", " +
+                                        GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ENABLED + " AS category_enabled"                                      + " "  +
+                                    "FROM " + SELECTED_GOODS_TABLE_NAME                                                                                  + " "  +
+                                    "INNER JOIN " + GOODS_TABLE_NAME                                                                                     + " "  +
+                                    "ON " + SELECTED_GOODS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
+                                    "INNER JOIN " + GOODS_CATEGORIES_TABLE_NAME                                                                          + " "  +
+                                    "ON " + SELECTED_GOODS_TABLE_NAME + "." + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ID + " "  +
+                                    (limit ? "LIMIT 10" : "")                                                                                            + " "  +
+                                    ";", null );
 
 
 
@@ -3716,10 +3789,10 @@ public class MainDatabase extends SQLiteOpenHelper
             good.setId(        cursor.getInt(idColumnIndex));
             good.setGoodId(    cursor.getInt(goodIdColumnIndex));
             good.setCategoryId(cursor.getInt(categoryIdColumnIndex));
-            good.setName(      good.getGoodId() > 0 ? goodName : categoryName);
+            good.setName(      good.getGoodId() != SPECIAL_ID_ROOT ? goodName : categoryName);
             good.setCost(      cursor.getDouble(costColumnIndex));
             good.setCount(     cursor.getDouble(countColumnIndex));
-            good.setEnabled(   good.getGoodId() > 0 ? goodEnabled : categoryEnabled);
+            good.setEnabled(   good.getGoodId() != SPECIAL_ID_ROOT ? goodEnabled : categoryEnabled);
 
             res.add(good);
 
@@ -3735,7 +3808,7 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<HistoryEntity> getHistory(SQLiteDatabase db)
+    public ArrayList<HistoryEntity> getHistory(SQLiteDatabase db, boolean limit)
     {
         ArrayList<HistoryEntity> res = new ArrayList<>();
 
@@ -3751,7 +3824,8 @@ public class MainDatabase extends SQLiteOpenHelper
                                     "FROM " + HISTORY_TABLE_NAME                                                                   + " "  +
                                     "INNER JOIN " + SHOPS_TABLE_NAME                                                               + " "  +
                                     "ON " + HISTORY_TABLE_NAME + "." + COLUMN_SHOP_ID + " = " + SHOPS_TABLE_NAME + "." + COLUMN_ID + " "  +
-                                    "ORDER BY " + HISTORY_TABLE_NAME + "." + COLUMN_ID + " DESC"                                   +
+                                    "ORDER BY " + HISTORY_TABLE_NAME + "." + COLUMN_ID + " DESC"                                   + " "  +
+                                    (limit ? "LIMIT 10" : "")                                                                      + " "  +
                                     ";", null);
 
 
@@ -3792,7 +3866,7 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<HistoryDetailsEntity> getHistoryDetails(SQLiteDatabase db, int historyId)
+    public ArrayList<HistoryDetailsEntity> getHistoryDetails(SQLiteDatabase db, int historyId, boolean limit)
     {
         ArrayList<HistoryDetailsEntity> res = new ArrayList<>();
 
@@ -3813,7 +3887,8 @@ public class MainDatabase extends SQLiteOpenHelper
                                     "ON " + HISTORY_DETAILS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
                                     "INNER JOIN " + GOODS_CATEGORIES_TABLE_NAME                                                                           + " "  +
                                     "ON " + HISTORY_DETAILS_TABLE_NAME + "." + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ID + " "  +
-                                    "WHERE " + HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_HISTORY_ID + " = ?"                                             +
+                                    "WHERE " + HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_HISTORY_ID + " = ?"                                             + " "  +
+                                    (limit ? "LIMIT 10" : "")                                                                                             + " "  +
                                     ";", new String[] { String.valueOf(historyId) } );
 
 
@@ -3846,10 +3921,10 @@ public class MainDatabase extends SQLiteOpenHelper
             details.setId(        cursor.getInt(idColumnIndex));
             details.setGoodId(    cursor.getInt(goodIdColumnIndex));
             details.setCategoryId(cursor.getInt(categoryIdColumnIndex));
-            details.setName(      details.getGoodId() > 0 ? goodName : categoryName);
+            details.setName(      details.getGoodId() != SPECIAL_ID_ROOT ? goodName : categoryName);
             details.setCost(      cursor.getDouble(costColumnIndex));
             details.setCount(     cursor.getDouble(countColumnIndex));
-            details.setEnabled(   details.getGoodId() > 0 ? goodEnabled : categoryEnabled);
+            details.setEnabled(   details.getGoodId() != SPECIAL_ID_ROOT ? goodEnabled : categoryEnabled);
 
             res.add(details);
 

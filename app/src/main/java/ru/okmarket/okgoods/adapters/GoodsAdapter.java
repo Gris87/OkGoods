@@ -70,12 +70,13 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 
             if (!TextUtils.isEmpty(item.getImageName()))
             {
-                holder.mCategoryImageView.showContentView();
+                holder.mCategoryImageView.setDefaultImageResId(0);
                 holder.mCategoryImageView.setImageUrl(Web.getCategoryPhotoUrl(item.getImageName()), mHttpClient.getImageLoader());
             }
             else
             {
-                holder.mCategoryImageView.showErrorView();
+                holder.mCategoryImageView.setDefaultImageResId(R.drawable.download_error);
+                holder.mCategoryImageView.setImageUrl("", mHttpClient.getImageLoader());
             }
 
             holder.mCategoryNameTextView.setText(item.getName());
@@ -105,12 +106,13 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 
             if (item.getImageId() > 0)
             {
-                holder.mGoodImageView.showContentView();
+                holder.mGoodImageView.setDefaultImageResId(0);
                 holder.mGoodImageView.setImageUrl(Web.getGoodPhotoThumbnailUrl(item.getImageId()), mHttpClient.getImageLoader());
             }
             else
             {
-                holder.mGoodImageView.showErrorView();
+                holder.mGoodImageView.setDefaultImageResId(R.drawable.download_error);
+                holder.mGoodImageView.setImageUrl("", mHttpClient.getImageLoader());
             }
 
             holder.mGoodNameTextView.setText(item.getName());
