@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown view");
+            AppLog.wtf(TAG, "Unknown view: " + String.valueOf(view));
         }
 
         return false;

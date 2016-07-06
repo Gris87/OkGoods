@@ -326,7 +326,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown view");
+            AppLog.wtf(TAG, "Unknown view: " + String.valueOf(view));
         }
 
         return false;

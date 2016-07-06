@@ -193,7 +193,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown view");
+            AppLog.wtf(TAG, "Unknown view: " + String.valueOf(view));
         }
     }
 

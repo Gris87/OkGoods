@@ -293,7 +293,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown view");
+            AppLog.wtf(TAG, "Unknown view: " + String.valueOf(view));
         }
 
         return false;
@@ -418,7 +418,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     @Override
                                     public void onResponse(String response)
                                     {
-                                        Web.getCatalogItemsFromResponse(response, webCategories, webGoods);
+                                        Web.getCatalogItemsFromResponse(response, mSelectedCategory.getData().getId(), webCategories, webGoods);
 
                                         --mRequestsInProgress;
 

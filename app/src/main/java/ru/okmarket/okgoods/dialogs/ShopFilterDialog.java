@@ -171,7 +171,7 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown button view");
+            AppLog.wtf(TAG, "Unknown button view: " + String.valueOf(buttonView));
         }
     }
 
@@ -249,7 +249,7 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown view");
+            AppLog.wtf(TAG, "Unknown view: " + String.valueOf(view));
         }
     }
 
