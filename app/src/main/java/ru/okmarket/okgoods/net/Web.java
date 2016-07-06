@@ -143,7 +143,7 @@ public class Web
 
     public static String getCategoryPhotoUrl(String fileName)
     {
-        return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/categories/" + fileName;
+        return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/" + fileName;
     }
 
     public static String getGoodPhotoThumbnailUrl(int imageId)
@@ -192,9 +192,9 @@ public class Web
 
                         imageName = response.substring(i + 10, index2);
 
-                        if (imageName.regionMatches(true, 0, "/wcsstore/OKMarketCAS/categories/", 0, 33))
+                        if (imageName.regionMatches(true, 0, "/wcsstore/OKMarketCAS/", 0, 22))
                         {
-                            imageName = URLEncoder.encode(imageName.substring(33), "UTF-8").replaceAll("\\+", "%20");
+                            imageName = URLEncoder.encode(imageName.substring(22), "UTF-8").replaceAll("\\+", "%20");
                         }
                         else
                         {

@@ -3197,14 +3197,14 @@ public class MainDatabase extends SQLiteOpenHelper
 
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15058,          SPECIAL_ID_ROOT, "Алкогольные напитки",         "Alcohol%20products.jpg", 0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15060,          15058,           "Крепкий алкоголь",            "2-HardLiquor.jpg",       0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 23056,          15060,           "Водка",                       "vodka.jpg",              0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 20554,          15058,           "Вино",                        "Vine.jpg",               0, DISABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16052,          SPECIAL_ID_ROOT, "Кондитерские изделия",        "Pastry.jpg",             0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16056,          16052,           "Мучные кондитерские изделия", "2-Pastry.jpg",           0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 32053,          16056,           "Вафли",                       "Waffles.jpg",            0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_OWN, SPECIAL_ID_ROOT, "К чаю",                       "",                       0, FORCE_ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15058,          SPECIAL_ID_ROOT, "Алкогольные напитки",         "categories/Alcohol%20products.jpg", 0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15060,          15058,           "Крепкий алкоголь",            "categories/2-HardLiquor.jpg",       0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 23056,          15060,           "Водка",                       "categories/vodka.jpg",              0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 20554,          15058,           "Вино",                        "categories/Vine.jpg",               0, DISABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16052,          SPECIAL_ID_ROOT, "Кондитерские изделия",        "categories/Pastry.jpg",             0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16056,          16052,           "Мучные кондитерские изделия", "categories/2-Pastry.jpg",           0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 32053,          16056,           "Вафли",                       "categories/Waffles.jpg",            0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_OWN, SPECIAL_ID_ROOT, "К чаю",                       "",                                  0, FORCE_ENABLED);
         }
     }
 
@@ -3564,7 +3564,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                     String.valueOf(parentCategoryId),
                                     String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
                             }
-                    , null, null, COLUMN_ENABLED + ", " + COLUMN_NAME);
+                    , null, null, null);
         }
         else
         {
@@ -3574,7 +3574,7 @@ public class MainDatabase extends SQLiteOpenHelper
                             {
                                     String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
                             }
-                    , null, null, COLUMN_ENABLED + ", " + COLUMN_NAME);
+                    , null, null, COLUMN_ENABLED);
         }
 
 
