@@ -75,7 +75,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             }
             else
             {
-                holder.mCategoryImageView.setDefaultImageResId(R.drawable.download_error);
+                holder.mCategoryImageView.setDefaultImageResId(R.drawable.no_image);
                 holder.mCategoryImageView.setImageUrl("", mHttpClient.getImageLoader());
             }
 
@@ -111,7 +111,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             }
             else
             {
-                holder.mGoodImageView.setDefaultImageResId(R.drawable.download_error);
+                holder.mGoodImageView.setDefaultImageResId(R.drawable.no_image);
                 holder.mGoodImageView.setImageUrl("", mHttpClient.getImageLoader());
             }
 
