@@ -160,7 +160,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     {
         super.onDestroy();
 
-        mHttpClient.getRequestQueue().cancelAll(TAG);
+        mHttpClient.cancelAll(TAG);
     }
 
     @Override
@@ -278,7 +278,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
-            mHttpClient.getRequestQueue().cancelAll(TAG);
+            mHttpClient.cancelAll(TAG);
 
 
 
@@ -378,7 +378,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
-            mHttpClient.getRequestQueue().cancelAll(TAG);
+            mHttpClient.cancelAll(TAG);
         }
     }
 

@@ -18,9 +18,6 @@ public class HttpClient
 
     private static HttpClient sInstance = null;
 
-
-
-    private Context      mContext      = null;
     private RequestQueue mRequestQueue = null;
     private ImageLoader  mImageLoader  = null;
 
@@ -28,8 +25,7 @@ public class HttpClient
 
     private HttpClient(Context context)
     {
-        mContext      = context;
-        mRequestQueue = getRequestQueue();
+        mRequestQueue = Volley.newRequestQueue(context.getApplicationContext());
         mImageLoader  = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache()
         {
             private final LruCache<String, Bitmap> mCache = new LruCache<>(20);
@@ -60,19 +56,14 @@ public class HttpClient
         return sInstance;
     }
 
-    public RequestQueue getRequestQueue()
-    {
-        if (mRequestQueue == null)
-        {
-            mRequestQueue = Volley.newRequestQueue(mContext.getApplicationContext());
-        }
-
-        return mRequestQueue;
-    }
-
     public <T> void addToRequestQueue(Request<T> req)
     {
-        getRequestQueue().add(req);
+        mRequestQueue.add(req);
+    }
+
+    public void cancelAll(String tag)
+    {
+        mRequestQueue.cancelAll(tag);
     }
 
     public ImageLoader getImageLoader()

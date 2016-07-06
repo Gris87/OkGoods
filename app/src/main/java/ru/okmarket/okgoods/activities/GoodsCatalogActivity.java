@@ -146,7 +146,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
         mHttpClient = HttpClient.getInstance(this);
 
-        mHttpClient.getRequestQueue().cancelAll(TAG);
+        mHttpClient.cancelAll(TAG);
         mRequestsInProgress = 0;
 
         selectCategory(mGoodsCategoriesAdapter.getTree());
@@ -172,7 +172,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
         if (mRequestsInProgress > 0)
         {
-            mHttpClient.getRequestQueue().cancelAll(TAG);
+            mHttpClient.cancelAll(TAG);
         }
 
         if (mDB != null)
@@ -352,7 +352,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
         if (mRequestsInProgress > 0)
         {
-            mHttpClient.getRequestQueue().cancelAll(TAG);
+            mHttpClient.cancelAll(TAG);
             mRequestsInProgress = 0;
         }
     }
@@ -401,7 +401,11 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
                 mGoodsAdapter.setGoods(goods);
 
-                if (System.currentTimeMillis() - mSelectedCategory.getData().getUpdateTime() > 300000) // 5 minutes = 5 * 60 * 1000
+                if (
+                    mSelectedCategory.getData().getId() >= MainDatabase.SPECIAL_ID_ROOT
+                    &&
+                    System.currentTimeMillis() - mSelectedCategory.getData().getUpdateTime() > 300000 // 5 minutes = 5 * 60 * 1000
+                   )
                 {
                     final ArrayList<GoodsCategoryEntity> webCategories = new ArrayList<>();
                     final ArrayList<GoodEntity>          webGoods      = new ArrayList<>();

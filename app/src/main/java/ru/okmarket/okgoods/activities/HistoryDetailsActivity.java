@@ -86,7 +86,7 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
 
 
-        mHttpClient.getRequestQueue().cancelAll(TAG);
+        mHttpClient.cancelAll(TAG);
 
         StringRequest request = new StringRequest(Request.Method.GET, Web.getShopUrl(shopId)
                 , new Response.Listener<String>()
@@ -122,7 +122,7 @@ public class HistoryDetailsActivity extends AppCompatActivity
     {
         super.onDestroy();
 
-        mHttpClient.getRequestQueue().cancelAll(TAG);
+        mHttpClient.cancelAll(TAG);
     }
 
     @Override

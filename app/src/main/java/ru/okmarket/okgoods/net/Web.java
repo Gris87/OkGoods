@@ -157,6 +157,6 @@ public class Web
 
     public static void getCatalogItemsFromResponse(String response, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods)
     {
-        AppLog.e(TAG, response);
+        AppLog.e(TAG, String.valueOf(response.length()));
     }
 }
