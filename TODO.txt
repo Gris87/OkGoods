@@ -1,5 +1,8 @@
 Wait for animation finish before set attributes in History/SelectedGoods lists
 Take from cache while offline
+Add error image for shop photo meta data loader
+Add progress and error image in catalog toolbar
+Probably add goods_in_categories table
 Add goods
 Remove goods
 Add aproximate cost

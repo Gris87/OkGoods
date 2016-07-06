@@ -194,7 +194,7 @@ public class Web
 
                         if (imageName.regionMatches(true, 0, "/wcsstore/OKMarketCAS/", 0, 22))
                         {
-                            imageName = URLEncoder.encode(imageName.substring(22), "UTF-8").replaceAll("\\+", "%20");
+                            imageName = URLEncoder.encode(imageName.substring(22), "UTF-8").replaceAll("%2F", "/").replaceAll("\\+", "%20");
                         }
                         else
                         {
