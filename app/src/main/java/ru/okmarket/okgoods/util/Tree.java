@@ -142,6 +142,11 @@ public class Tree<T>
         return new Tree<>(data, this);
     }
 
+    public void removeChild(int index)
+    {
+        mChildren.remove(index);
+    }
+
     public Tree<T> getChild(int index)
     {
         return mChildren.get(index);
@@ -150,6 +155,11 @@ public class Tree<T>
     public T get(int index)
     {
         return mChildren.get(index).getData();
+    }
+
+    public void set(int index, T data)
+    {
+        mChildren.get(index).setData(data);
     }
 
     public ArrayList<T> getAll()
@@ -162,6 +172,24 @@ public class Tree<T>
         }
 
         return res;
+    }
+
+    public int indexOf(T data)
+    {
+        for (int i = 0; i < mChildren.size(); ++i)
+        {
+            if (mChildren.get(i).getData().equals(data))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public boolean contains(T data)
+    {
+        return indexOf(data) >= 0;
     }
 
     public int size()

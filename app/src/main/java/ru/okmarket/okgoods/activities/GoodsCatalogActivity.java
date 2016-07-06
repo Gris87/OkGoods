@@ -128,7 +128,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mMainDatabase = new MainDatabase(this);
         mDB           = mMainDatabase.getReadableDatabase();
 
-        mGoodsCategoriesAdapter = new GoodsCategoriesAdapter(this, mMainDatabase.getGoodsCategoriesTree(mDB, MainDatabase.SPECIAL_ID_ROOT, false));
+        mGoodsCategoriesAdapter = new GoodsCategoriesAdapter(this, mMainDatabase.getGoodsCategoriesTree(mDB, MainDatabase.SPECIAL_ID_ROOT));
         mGoodsAdapter           = new GoodsAdapter(this, screenWidth / columnCount);
 
         mGoodsCategoriesAdapter.setOnItemClickListener(this);
@@ -393,16 +393,16 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         }
 
         @Override
-        protected void onPostExecute(ArrayList<GoodEntity> goods)
+        protected void onPostExecute(final ArrayList<GoodEntity> goods)
         {
-            if (goods != null)
+            if (goods != null && mCategoryId == mSelectedCategory.getData().getId())
             {
                 mGoodsLoadingTask = null;
 
                 mGoodsAdapter.setGoods(goods);
 
                 if (
-                    mSelectedCategory.getData().getId() >= MainDatabase.SPECIAL_ID_ROOT
+                    mCategoryId >= MainDatabase.SPECIAL_ID_ROOT
                     &&
                     System.currentTimeMillis() - mSelectedCategory.getData().getUpdateTime() > 300000 // 5 minutes = 5 * 60 * 1000
                    )
@@ -412,19 +412,99 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
                     for (int i = 0; i < Web.OKEY_DOSTAVKA_RU_SHOPS.length; ++i)
                     {
-                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mSelectedCategory.getData().getId())
+                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mCategoryId)
                                 , new Response.Listener<String>()
                                 {
                                     @Override
                                     public void onResponse(String response)
                                     {
-                                        Web.getCatalogItemsFromResponse(response, mSelectedCategory.getData().getId(), webCategories, webGoods);
+                                        Web.getCatalogItemsFromResponse(response, mCategoryId, webCategories, webGoods);
 
                                         --mRequestsInProgress;
 
                                         if (mRequestsInProgress == 0)
                                         {
+                                            ArrayList<GoodsCategoryEntity> categoriesInDB = mMainDatabase.getGoodsCategories(mDB, mCategoryId, true);
 
+                                            for (int i = 0; i < categoriesInDB.size(); ++i)
+                                            {
+                                                GoodsCategoryEntity category = categoriesInDB.get(i);
+
+                                                int index = webCategories.indexOf(category);
+
+                                                if (index >= 0)
+                                                {
+                                                    GoodsCategoryEntity webCategory = webCategories.get(index);
+
+                                                    category.setName(     webCategory.getName());
+                                                    category.setImageName(webCategory.getImageName());
+                                                    category.setEnabled(  webCategory.getEnabled());
+                                                }
+                                                else
+                                                {
+                                                    category.setEnabled(MainDatabase.DISABLED);
+                                                }
+
+                                                mMainDatabase.updateGoodsCategory(mDB, category);
+                                            }
+
+                                            for (int i = 0; i < webCategories.size(); ++i)
+                                            {
+                                                GoodsCategoryEntity category = webCategories.get(i);
+
+                                                if (!categoriesInDB.contains(category))
+                                                {
+                                                    categoriesInDB.add(category);
+                                                    mMainDatabase.insertGoodsCategory(mDB, category);
+                                                }
+                                            }
+
+                                            for (int i = 0; i < mSelectedCategory.size(); ++i)
+                                            {
+                                                GoodsCategoryEntity category = mSelectedCategory.get(i);
+
+                                                if (!category.isOwn())
+                                                {
+                                                    int index = categoriesInDB.indexOf(category);
+
+                                                    if (index >= 0)
+                                                    {
+                                                        GoodsCategoryEntity categoryInDB = categoriesInDB.get(index);
+
+                                                        if (categoryInDB.isEnabled())
+                                                        {
+                                                            mSelectedCategory.set(i, categoryInDB);
+                                                        }
+                                                        else
+                                                        {
+                                                            mSelectedCategory.removeChild(i);
+                                                            --i;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        AppLog.wtf(TAG, "Failed to find category in database: " + category.getName());
+                                                    }
+                                                }
+                                            }
+
+                                            for (int i = 0; i < categoriesInDB.size(); ++i)
+                                            {
+                                                GoodsCategoryEntity category = categoriesInDB.get(i);
+
+                                                if (!mSelectedCategory.contains(category))
+                                                {
+                                                    mSelectedCategory.addChild(category);
+                                                }
+                                            }
+
+                                            mSelectedCategory.getData().setUpdateTime(System.currentTimeMillis());
+                                            mMainDatabase.updateGoodsCategoryUpdateTime(mDB, mSelectedCategory.getData());
+
+
+
+                                            mGoodsCategoriesAdapter.invalidate();
+                                            mGoodsAdapter.setItems(mSelectedCategory.getAll(), goods);
                                         }
                                     }
                                 }

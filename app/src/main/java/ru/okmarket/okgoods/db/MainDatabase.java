@@ -1,5 +1,6 @@
 package ru.okmarket.okgoods.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -3192,7 +3193,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private void fillGoodsCategoriesTable(SQLiteDatabase db)
     {
-        insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_ROOT, SPECIAL_ID_NONE, "", "", 0, DISABLED);
+        insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_ROOT, SPECIAL_ID_NONE, "", "", 0, ENABLED);
 
         if (BuildConfig.DEBUG)
         {
@@ -3304,7 +3305,6 @@ public class MainDatabase extends SQLiteOpenHelper
             insertToTable(db, HISTORY_DETAILS_TABLE_NAME, HISTORY_DETAILS_COLUMNS, 24, 3, 222807,          SPECIAL_ID_ROOT, 843.10, 2);
         }
     }
-    // endregion
 
     public void insertToTable(SQLiteDatabase db, String tableName, String[] columns, Object... values)
     {
@@ -3341,6 +3341,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         db.execSQL(builder.toString());
     }
+    // endregion
 
     // region Getters
     public String[] getCities(SQLiteDatabase db)
@@ -3546,20 +3547,35 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<GoodsCategoryEntity> getGoodsCategories(SQLiteDatabase db, boolean allowDisabled, boolean limit)
+    public ArrayList<GoodsCategoryEntity> getGoodsCategories(SQLiteDatabase db, int parentCategoryId, boolean allowDisabled)
     {
         ArrayList<GoodsCategoryEntity> res = new ArrayList<>();
 
 
 
-        Cursor cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS
-                , COLUMN_ENABLED + " != ?"
-                , new String[]
-                        {
-                                String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
-                        }
-                , null, null, COLUMN_ENABLED + ", " + COLUMN_NAME
-                , limit ? "10" : null);
+        Cursor cursor;
+
+        if (parentCategoryId != SPECIAL_ID_NONE)
+        {
+            cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS
+                    , COLUMN_PARENT_ID + " = ? AND " + COLUMN_ENABLED + " != ?"
+                    , new String[]
+                            {
+                                    String.valueOf(parentCategoryId),
+                                    String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
+                            }
+                    , null, null, COLUMN_ENABLED + ", " + COLUMN_NAME);
+        }
+        else
+        {
+            cursor = db.query(GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS
+                    , COLUMN_ENABLED + " != ?"
+                    , new String[]
+                            {
+                                    String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
+                            }
+                    , null, null, COLUMN_ENABLED + ", " + COLUMN_NAME);
+        }
 
 
 
@@ -3582,7 +3598,7 @@ public class MainDatabase extends SQLiteOpenHelper
             category.setParentId(  cursor.getInt(parentIdColumnIndex));
             category.setName(      cursor.getString(nameColumnIndex));
             category.setImageName( cursor.getString(imageNameColumnIndex));
-            category.setUpdateTime(cursor.getInt(updateTimeColumnIndex));
+            category.setUpdateTime(cursor.getLong(updateTimeColumnIndex));
             category.setEnabled(   cursor.getInt(enabledColumnIndex));
 
             res.add(category);
@@ -3599,42 +3615,34 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public Tree<GoodsCategoryEntity> getGoodsCategoriesTree(SQLiteDatabase db, int rootCategoryId, boolean limit)
+    public Tree<GoodsCategoryEntity> getGoodsCategoriesTree(SQLiteDatabase db, int rootCategoryId)
     {
-        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, false, limit);
+        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, SPECIAL_ID_NONE, false);
         GoodsCategoryEntity rootCategory = null;
 
-        if (rootCategoryId != SPECIAL_ID_ROOT)
+        for (int i = 0; i < categories.size(); ++i)
         {
-            for (int i = 0; i < categories.size(); ++i)
+            GoodsCategoryEntity category = categories.get(i);
+
+            if (category.getId() == rootCategoryId)
             {
-                GoodsCategoryEntity category = categories.get(i);
+                rootCategory = category;
+                rootCategory.setExpanded(true);
 
-                if (category.getId() == rootCategoryId)
-                {
-                    rootCategory = category;
-                    rootCategory.setExpanded(true);
-
-                    break;
-                }
+                break;
             }
         }
 
         if (rootCategory == null)
         {
-            rootCategory = new GoodsCategoryEntity();
+            AppLog.wtf(TAG, "Failed to build categories tree");
 
-            rootCategory.setId(SPECIAL_ID_ROOT);
-            rootCategory.setParentId(SPECIAL_ID_NONE);
+            return null;
+        }
+
+        if (TextUtils.isEmpty(rootCategory.getName()))
+        {
             rootCategory.setName(mContext.getString(R.string.goods_catalog));
-            rootCategory.setUpdateTime(-1);
-            rootCategory.setEnabled(FORCE_ENABLED);
-            rootCategory.setExpanded(true);
-
-            if (rootCategoryId != SPECIAL_ID_ROOT)
-            {
-                return new Tree<>(rootCategory);
-            }
         }
 
         return Utils.buildCategoriesTreeFromList(categories, rootCategory);
@@ -3699,7 +3707,7 @@ public class MainDatabase extends SQLiteOpenHelper
             good.setCost(      cursor.getDouble(costColumnIndex));
             good.setUnit(      cursor.getDouble(unitColumnIndex));
             good.setUnitType(  cursor.getInt(unitTypeColumnIndex));
-            good.setUpdateTime(cursor.getInt(updateTimeColumnIndex));
+            good.setUpdateTime(cursor.getLong(updateTimeColumnIndex));
             good.setEnabled(   cursor.getInt(enabledColumnIndex));
 
             res.add(good);
@@ -3919,6 +3927,49 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
         return res;
+    }
+    // endregion
+
+    // region Setters
+    public void insertGoodsCategory(SQLiteDatabase db, GoodsCategoryEntity category)
+    {
+        insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS
+                , category.getId()
+                , category.getParentId()
+                , category.getName()
+                , category.getImageName()
+                , category.getUpdateTime()
+                , category.getEnabled());
+    }
+
+    public void updateGoodsCategory(SQLiteDatabase db, GoodsCategoryEntity category)
+    {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME,       category.getName());
+        values.put(COLUMN_IMAGE_NAME, category.getImageName());
+        values.put(COLUMN_ENABLED,    category.getEnabled());
+
+        db.update(GOODS_CATEGORIES_TABLE_NAME, values
+                , COLUMN_ID + " = ?"
+                , new String[]
+                        {
+                                String.valueOf(category.getId())
+                        });
+    }
+
+    public void updateGoodsCategoryUpdateTime(SQLiteDatabase db, GoodsCategoryEntity category)
+    {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_UPDATE_TIME, category.getUpdateTime());
+
+        db.update(GOODS_CATEGORIES_TABLE_NAME, values
+                , COLUMN_ID + " = ?"
+                , new String[]
+                        {
+                                String.valueOf(category.getId())
+                        });
     }
     // endregion
 }

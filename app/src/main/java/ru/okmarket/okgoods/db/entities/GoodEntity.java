@@ -21,7 +21,7 @@ public class GoodEntity implements Parcelable
     private double  mCost;
     private double  mUnit;
     private int     mUnitType;
-    private int     mUpdateTime;
+    private long    mUpdateTime;
     private int     mEnabled;
 
 
@@ -147,12 +147,12 @@ public class GoodEntity implements Parcelable
         mUnitType = unitType;
     }
 
-    public int getUpdateTime()
+    public long getUpdateTime()
     {
         return mUpdateTime;
     }
 
-    public void setUpdateTime(int updateTime)
+    public void setUpdateTime(long updateTime)
     {
         mUpdateTime = updateTime;
     }
@@ -193,7 +193,7 @@ public class GoodEntity implements Parcelable
         out.writeDouble(mCost);
         out.writeDouble(mUnit);
         out.writeInt(mUnitType);
-        out.writeInt(mUpdateTime);
+        out.writeLong(mUpdateTime);
         out.writeInt(mEnabled);
     }
 
@@ -221,7 +221,7 @@ public class GoodEntity implements Parcelable
         mCost       = in.readDouble();
         mUnit       = in.readDouble();
         mUnitType   = in.readInt();
-        mUpdateTime = in.readInt();
+        mUpdateTime = in.readLong();
         mEnabled    = in.readInt();
     }
 }
