@@ -66,7 +66,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 
             holder.mCategoryImageView.setLayoutParams(mImageLayoutParams);
             holder.mCategoryImageView.setErrorImageResId(R.drawable.download_error);
-            ((ImageView)holder.mCategoryImageView.getContentView()).setScaleType(ImageView.ScaleType.FIT_XY);
+            ((ImageView)holder.mCategoryImageView.getContentView()).setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             if (!TextUtils.isEmpty(item.getImageName()))
             {
@@ -102,7 +102,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 
             holder.mGoodImageView.setLayoutParams(mImageLayoutParams);
             holder.mGoodImageView.setErrorImageResId(R.drawable.download_error);
-            ((ImageView)holder.mGoodImageView.getContentView()).setScaleType(ImageView.ScaleType.FIT_XY);
+            ((ImageView)holder.mGoodImageView.getContentView()).setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             if (item.getImageId() > 0)
             {
