@@ -3648,7 +3648,7 @@ public class MainDatabase extends SQLiteOpenHelper
         return Utils.buildCategoriesTreeFromList(categories, rootCategory);
     }
 
-    public ArrayList<GoodEntity> getGoods(SQLiteDatabase db, int categoryId, boolean limit)
+    public ArrayList<GoodEntity> getGoods(SQLiteDatabase db, int categoryId, boolean allowDisabled, boolean limit)
     {
         ArrayList<GoodEntity> res = new ArrayList<>();
 
@@ -3663,7 +3663,7 @@ public class MainDatabase extends SQLiteOpenHelper
                     , new String[]
                             {
                                     String.valueOf(categoryId),
-                                    String.valueOf(DISABLED)
+                                    String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
                             }
                     , null, null, null
                     , limit ? "10" : null);
@@ -3674,7 +3674,7 @@ public class MainDatabase extends SQLiteOpenHelper
                     , COLUMN_ENABLED + " != ?"
                     , new String[]
                             {
-                                    String.valueOf(FORCE_ENABLED)
+                                    String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
                             }
                     , null, null, null
                     , limit ? "10" : null);
@@ -3969,6 +3969,53 @@ public class MainDatabase extends SQLiteOpenHelper
                 , new String[]
                         {
                                 String.valueOf(category.getId())
+                        });
+    }
+
+    public void insertGood(SQLiteDatabase db, GoodEntity good)
+    {
+        insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS
+                , good.getId()
+                , good.getCategoryId()
+                , good.getName()
+                , good.getImageId()
+                , good.getCost()
+                , good.getUnit()
+                , good.getUnitType()
+                , good.getUpdateTime()
+                , good.getEnabled());
+    }
+
+    public void updateGood(SQLiteDatabase db, GoodEntity good)
+    {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME,      good.getName());
+        values.put(COLUMN_IMAGE_ID,  good.getImageId());
+        values.put(COLUMN_COST,      good.getCost());
+        values.put(COLUMN_UNIT,      good.getUnit());
+        values.put(COLUMN_UNIT_TYPE, good.getUnitType());
+        values.put(COLUMN_ENABLED,   good.getEnabled());
+
+        db.update(GOODS_TABLE_NAME, values
+                , COLUMN_ID + " = ?"
+                , new String[]
+                        {
+                                String.valueOf(good.getId())
+                        });
+    }
+
+    public void updateGoodUpdateTime(SQLiteDatabase db, GoodEntity good)
+    {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_UPDATE_TIME, good.getUpdateTime());
+
+        db.update(GOODS_TABLE_NAME, values
+                , COLUMN_ID + " = ?"
+                , new String[]
+                        {
+                                String.valueOf(good.getId())
                         });
     }
     // endregion

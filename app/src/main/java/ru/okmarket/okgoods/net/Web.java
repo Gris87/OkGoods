@@ -376,25 +376,23 @@ public class Web
 
                 int divLevel = 1;
 
-                int    goodId       = MainDatabase.SPECIAL_ID_NONE;
-                String goodName     = null;
-                int    goodImageId  = 0;
-                double goodCost     = 0;
-                double goodUnit     = 0;
-                int    goodUnitType = MainDatabase.UNIT_TYPE_NOTHING;
-
+                int    goodId             = MainDatabase.SPECIAL_ID_NONE;
+                String goodName           = null;
+                int    goodImageId        = 0;
+                double goodCost           = 0;
+                double goodUnit           = 0;
+                int    goodUnitType       = MainDatabase.UNIT_TYPE_NOTHING;
+                double goodCountIncrement = 0;
+                String goodBrand          = null;
 
                 int i = index + 46;
 
                 while (i < response.length())
                 {
-                    if (response.startsWith("<div", i))
-                    {
-                        ++divLevel;
-                    }
-                    else
                     if (response.startsWith("<div class=\"product_name\">", i))
                     {
+                        ++divLevel;
+
                         int index2 = response.indexOf("title=\"", i + 26);
 
                         if (index2 < 0)
@@ -419,6 +417,11 @@ public class Web
                         break;
                     }
                     else
+                    if (response.startsWith("<div", i))
+                    {
+                        ++divLevel;
+                    }
+                    else
                     if (response.startsWith("</div>", i))
                     {
                         --divLevel;
@@ -426,9 +429,9 @@ public class Web
                         if (divLevel == 0)
                         {
                             AppLog.wtf(TAG, "Unexpected closure for tag div");
-                        }
 
-                        return;
+                            return;
+                        }
                     }
 
                     ++i;
@@ -436,11 +439,6 @@ public class Web
 
                 while (i < response.length())
                 {
-                    if (response.startsWith("<div", i))
-                    {
-                        ++divLevel;
-                    }
-                    else
                     if (response.startsWith("var product = {", i))
                     {
                         int index2 = response.indexOf('}', i + 15);
@@ -465,7 +463,7 @@ public class Web
                                 break;
                             }
 
-                            String property = goodMetaData.substring(index3 + 1, index4);
+                            String property = goodMetaData.substring(index3 + 1, index4).trim();
                             index3 = index4;
 
                             index4 = goodMetaData.indexOf(',', index3 + 1);
@@ -475,20 +473,57 @@ public class Web
                                 index4 = goodMetaData.length();
                             }
 
-                            String value = goodMetaData.substring(index3 + 1, index4).trim();
-                            index3 = index4;
-
-                            if (value.startsWith("\'") && value.endsWith("\'") && value.length() > 1)
+                            if (
+                                property.equals("productId")
+                                ||
+                                property.equals("id")
+                                ||
+                                property.equals("price")
+                                ||
+                                property.equals("brand")
+                               )
                             {
-                                value = value.substring(1, value.length() - 1);
+                                String value = goodMetaData.substring(index3 + 1, index4).trim();
+
+                                if (value.startsWith("\'") && value.endsWith("\'") && value.length() > 1)
+                                {
+                                    value = value.substring(1, value.length() - 1);
+                                }
+
+                                switch (property)
+                                {
+                                    case "productId":
+                                        goodId      = Integer.parseInt(value);
+                                    break;
+
+                                    case "id":
+                                        goodImageId = Integer.parseInt(value);
+                                    break;
+
+                                    case "price":
+                                        goodCost    = Double.parseDouble(value);
+                                    break;
+
+                                    case "brand":
+                                        goodBrand   = value;
+                                    break;
+
+                                    default:
+                                        AppLog.wtf(TAG, "Unknown property: " + property);
+                                    break;
+                                }
                             }
 
-                            AppLog.e(TAG, property + "   |   " + value);
-
+                            index3 = index4;
                         } while (true);
 
                         i = index2 + 1;
                         break;
+                    }
+                    else
+                    if (response.startsWith("<div", i))
+                    {
+                        ++divLevel;
                     }
                     else
                     if (response.startsWith("</div>", i))
@@ -498,9 +533,9 @@ public class Web
                         if (divLevel == 0)
                         {
                             AppLog.wtf(TAG, "Unexpected closure for tag div");
-                        }
 
-                        return;
+                            return;
+                        }
                     }
 
                     ++i;
@@ -508,7 +543,7 @@ public class Web
 
                 index = i;
 
-                AppLog.e(TAG, String.valueOf(goodId) + " " + String.valueOf(goodName));
+                AppLog.e(TAG, String.valueOf(goodId) + " " + String.valueOf(goodName) + " " + String.valueOf(goodImageId) + " " + String.valueOf(goodCost) + " " + String.valueOf(goodUnit) + " " + String.valueOf(goodUnitType) + " " + String.valueOf(goodCountIncrement) + " " + String.valueOf(goodBrand));
 
                 if (goodId != MainDatabase.SPECIAL_ID_NONE)
                 {
@@ -529,6 +564,13 @@ public class Web
 
                         good.setId(goodId);
                         good.setCategoryId(parentCategoryId);
+                        good.setName(goodName);
+                        good.setImageId(goodImageId);
+                        good.setCost(goodCost);
+                        good.setUnit(goodUnit);
+                        good.setUnitType(goodUnitType);
+                        good.setUpdateTime(0);
+                        good.setEnabled(MainDatabase.ENABLED);
 
                         goods.add(good);
                     }

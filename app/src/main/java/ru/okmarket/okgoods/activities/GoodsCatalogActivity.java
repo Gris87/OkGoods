@@ -347,7 +347,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
 
-        mGoodsAdapter.setItems(mSelectedCategory.getAll(), mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), true));
+        mGoodsAdapter.setItems(mSelectedCategory.getAll(), mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), false, true));
 
         if (mGoodsLoadingTask != null)
         {
@@ -449,7 +449,84 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
 
+            ArrayList<GoodEntity> goodsInDB = mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), true, false);
+
+            for (int i = 0; i < goodsInDB.size(); ++i)
+            {
+                GoodEntity good = goodsInDB.get(i);
+
+                int index = webGoods.indexOf(good);
+
+                if (index >= 0)
+                {
+                    GoodEntity webGood = webGoods.get(index);
+
+                    good.setName(    webGood.getName());
+                    good.setImageId( webGood.getImageId());
+                    good.setCost(    webGood.getCost());
+                    good.setUnit(    webGood.getUnit());
+                    good.setUnitType(webGood.getUnitType());
+                    good.setEnabled( webGood.getEnabled());
+                }
+                else
+                {
+                    good.setEnabled(MainDatabase.DISABLED);
+                }
+
+                mMainDatabase.updateGood(mDB, good);
+            }
+
+            for (int i = 0; i < webGoods.size(); ++i)
+            {
+                GoodEntity category = webGoods.get(i);
+
+                if (!goodsInDB.contains(category))
+                {
+                    goodsInDB.add(category);
+                    mMainDatabase.insertGood(mDB, category);
+                }
+            }
+
             ArrayList<GoodEntity> goods = mGoodsAdapter.getGoods();
+
+            for (int i = 0; i < goods.size(); ++i)
+            {
+                GoodEntity good = goods.get(i);
+
+                if (!good.isOwn())
+                {
+                    int index = goodsInDB.indexOf(good);
+
+                    if (index >= 0)
+                    {
+                        GoodEntity goodInDB = goodsInDB.get(index);
+
+                        if (goodInDB.isEnabled())
+                        {
+                            goods.set(i, goodInDB);
+                        }
+                        else
+                        {
+                            goods.remove(i);
+                            --i;
+                        }
+                    }
+                    else
+                    {
+                        AppLog.wtf(TAG, "Failed to find good in database: " + good.getName());
+                    }
+                }
+            }
+
+            for (int i = 0; i < goodsInDB.size(); ++i)
+            {
+                GoodEntity good = goodsInDB.get(i);
+
+                if (!goods.contains(good))
+                {
+                    goods.add(good);
+                }
+            }
 
 
 
@@ -480,7 +557,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
             try
             {
-                res = mMainDatabase.getGoods(mDB, mCategoryId, false);
+                res = mMainDatabase.getGoods(mDB, mCategoryId, false, false);
             }
             catch (Exception e)
             {
