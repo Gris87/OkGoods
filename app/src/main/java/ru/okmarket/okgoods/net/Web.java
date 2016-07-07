@@ -546,6 +546,8 @@ public class Web
                 {
                     if (response.startsWith("<div class=\"product_weight\">", i))
                     {
+                        ++divLevel;
+
                         int index2 = response.indexOf("<span>", i + 28);
 
                         if (index2 < 0)
@@ -574,6 +576,8 @@ public class Web
                     else
                     if (response.startsWith("<div class=\"quantity_section\">", i))
                     {
+                        ++divLevel;
+
                         int index2 = response.indexOf("class=\"header\">", i + 30);
 
                         if (index2 < 0)
