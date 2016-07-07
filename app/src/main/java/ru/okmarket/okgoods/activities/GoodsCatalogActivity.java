@@ -152,6 +152,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mHttpClient.cancelAll(TAG);
         mRequestsInProgress = 0;
 
+        //noinspection deprecation
+        mLoadingProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.progressBarInToolbar), android.graphics.PorterDuff.Mode.SRC_IN);
         mLoadingProgressBar.setVisibility(View.GONE);
 
         selectCategory(mGoodsCategoriesAdapter.getTree());

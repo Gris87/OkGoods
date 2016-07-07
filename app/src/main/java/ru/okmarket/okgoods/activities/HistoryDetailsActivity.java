@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -79,7 +80,11 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
 
         setTitle(history);
+
+        //noinspection deprecation
+        ((ProgressBar)mShopImageView.getProgressView()).getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.progressBarInToolbar), android.graphics.PorterDuff.Mode.SRC_IN);
         ((ImageView)mShopImageView.getContentView()).setScaleType(ImageView.ScaleType.CENTER_CROP);
+
         mHistoryDetailsFragment.setHistoryDetails(details);
         mHistoryDetailsFragment.setSelectedHistoryDetails(null);
         mHistoryDetailsFragment.setTotal(total);

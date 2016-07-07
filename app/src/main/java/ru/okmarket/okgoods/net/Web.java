@@ -367,26 +367,148 @@ public class Web
 
             do
             {
-                index = response.indexOf("<!-- BEGIN CatalogEntryDisplay.jsp -->", index + 1);
+                index = response.indexOf("<div class=\"product ok-theme\">", index + 1);
 
                 if (index < 0)
                 {
                     break;
                 }
 
-                int index2 = response.indexOf("<!-- END CatalogEntryDisplay.jsp -->", index + 38);
+                int divLevel = 1;
 
-                if (index2 < 0)
+                int    goodId       = MainDatabase.SPECIAL_ID_NONE;
+                String goodName     = null;
+                int    goodImageId  = 0;
+                double goodCost     = 0;
+                double goodUnit     = 0;
+                int    goodUnitType = MainDatabase.UNIT_TYPE_NOTHING;
+
+
+                int i = index + 46;
+
+                while (i < response.length())
                 {
-                    break;
+                    if (response.startsWith("<div", i))
+                    {
+                        ++divLevel;
+                    }
+                    else
+                    if (response.startsWith("<div class=\"product_name\">", i))
+                    {
+                        int index2 = response.indexOf("title=\"", i + 26);
+
+                        if (index2 < 0)
+                        {
+                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(i, i + 30));
+
+                            return;
+                        }
+
+                        int index3 = response.indexOf('\"', index2 + 7);
+
+                        if (index3 < 0)
+                        {
+                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index2, index2 + 30));
+
+                            return;
+                        }
+
+                        goodName = response.substring(index2 + 7, index3);
+
+                        i = index3 + 1;
+                        break;
+                    }
+                    else
+                    if (response.startsWith("</div>", i))
+                    {
+                        --divLevel;
+
+                        if (divLevel == 0)
+                        {
+                            AppLog.wtf(TAG, "Unexpected closure for tag div");
+                        }
+
+                        return;
+                    }
+
+                    ++i;
                 }
 
-                int goodId = MainDatabase.SPECIAL_ID_NONE;
+                while (i < response.length())
+                {
+                    if (response.startsWith("<div", i))
+                    {
+                        ++divLevel;
+                    }
+                    else
+                    if (response.startsWith("var product = {", i))
+                    {
+                        int index2 = response.indexOf('}', i + 15);
 
-                String productHtml = response.substring(index + 38, index2);
-                index = index2 + 36;
+                        if (index2 < 0)
+                        {
+                            AppLog.wtf(TAG, "Failed to get good metadata from line: " + response.substring(i, i + 30));
 
-                AppLog.e(TAG, String.valueOf(goodId));
+                            return;
+                        }
+
+                        String goodMetaData = response.substring(i + 15, index2);
+
+                        int index3 = -1;
+
+                        do
+                        {
+                            int index4 = goodMetaData.indexOf(':', index3 + 1);
+
+                            if (index4 < 0)
+                            {
+                                break;
+                            }
+
+                            String property = goodMetaData.substring(index3 + 1, index4);
+                            index3 = index4;
+
+                            index4 = goodMetaData.indexOf(',', index3 + 1);
+
+                            if (index4 < 0)
+                            {
+                                index4 = goodMetaData.length();
+                            }
+
+                            String value = goodMetaData.substring(index3 + 1, index4).trim();
+                            index3 = index4;
+
+                            if (value.startsWith("\'") && value.endsWith("\'") && value.length() > 1)
+                            {
+                                value = value.substring(1, value.length() - 1);
+                            }
+
+                            AppLog.e(TAG, property + "   |   " + value);
+
+                        } while (true);
+
+                        i = index2 + 1;
+                        break;
+                    }
+                    else
+                    if (response.startsWith("</div>", i))
+                    {
+                        --divLevel;
+
+                        if (divLevel == 0)
+                        {
+                            AppLog.wtf(TAG, "Unexpected closure for tag div");
+                        }
+
+                        return;
+                    }
+
+                    ++i;
+                }
+
+                index = i;
+
+                AppLog.e(TAG, String.valueOf(goodId) + " " + String.valueOf(goodName));
 
                 if (goodId != MainDatabase.SPECIAL_ID_NONE)
                 {

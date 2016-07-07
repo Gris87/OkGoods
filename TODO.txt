@@ -1,4 +1,3 @@
-Normal color for progress bar in catalog toolbar and in history details toolbar
 Settings class
 Wait for animation finish before set attributes in History/SelectedGoods lists
 Take from cache while offline
