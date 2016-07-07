@@ -362,6 +362,100 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         }
     }
 
+    private void loadCompleted(ArrayList<GoodsCategoryEntity> webCategories, ArrayList<GoodEntity> webGoods)
+    {
+        if (webCategories.size() > 0 || webGoods.size() > 0)
+        {
+            ArrayList<GoodsCategoryEntity> categoriesInDB = mMainDatabase.getGoodsCategories(mDB, mSelectedCategory.getData().getId(), true);
+
+            for (int i = 0; i < categoriesInDB.size(); ++i)
+            {
+                GoodsCategoryEntity category = categoriesInDB.get(i);
+
+                int index = webCategories.indexOf(category);
+
+                if (index >= 0)
+                {
+                    GoodsCategoryEntity webCategory = webCategories.get(index);
+
+                    category.setName(     webCategory.getName());
+                    category.setImageName(webCategory.getImageName());
+                    category.setEnabled(  webCategory.getEnabled());
+                }
+                else
+                {
+                    category.setEnabled(MainDatabase.DISABLED);
+                }
+
+                mMainDatabase.updateGoodsCategory(mDB, category);
+            }
+
+            for (int i = 0; i < webCategories.size(); ++i)
+            {
+                GoodsCategoryEntity category = webCategories.get(i);
+
+                if (!categoriesInDB.contains(category))
+                {
+                    categoriesInDB.add(category);
+                    mMainDatabase.insertGoodsCategory(mDB, category);
+                }
+            }
+
+            for (int i = 0; i < mSelectedCategory.size(); ++i)
+            {
+                GoodsCategoryEntity category = mSelectedCategory.get(i);
+
+                if (!category.isOwn())
+                {
+                    int index = categoriesInDB.indexOf(category);
+
+                    if (index >= 0)
+                    {
+                        GoodsCategoryEntity categoryInDB = categoriesInDB.get(index);
+
+                        if (categoryInDB.isEnabled())
+                        {
+                            mSelectedCategory.set(i, categoryInDB);
+                        }
+                        else
+                        {
+                            mSelectedCategory.removeChild(i);
+                            --i;
+                        }
+                    }
+                    else
+                    {
+                        AppLog.wtf(TAG, "Failed to find category in database: " + category.getName());
+                    }
+                }
+            }
+
+            for (int i = 0; i < categoriesInDB.size(); ++i)
+            {
+                GoodsCategoryEntity category = categoriesInDB.get(i);
+
+                if (!mSelectedCategory.contains(category))
+                {
+                    mSelectedCategory.addChild(category);
+                }
+            }
+
+            mSelectedCategory.getData().setUpdateTime(System.currentTimeMillis());
+            mMainDatabase.updateGoodsCategoryUpdateTime(mDB, mSelectedCategory.getData());
+
+
+
+            ArrayList<GoodEntity> goods = mGoodsAdapter.getGoods();
+
+
+
+            mGoodsCategoriesAdapter.invalidate();
+            mGoodsAdapter.setItems(mSelectedCategory.getAll(), goods);
+        }
+
+        mLoadingProgressBar.setVisibility(View.GONE);
+    }
+
 
 
     private class GoodsLoadingTask extends AsyncTask<Void, Void, ArrayList<GoodEntity>>
@@ -431,89 +525,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
                                         if (mRequestsInProgress == 0)
                                         {
-                                            ArrayList<GoodsCategoryEntity> categoriesInDB = mMainDatabase.getGoodsCategories(mDB, mCategoryId, true);
-
-                                            for (int i = 0; i < categoriesInDB.size(); ++i)
-                                            {
-                                                GoodsCategoryEntity category = categoriesInDB.get(i);
-
-                                                int index = webCategories.indexOf(category);
-
-                                                if (index >= 0)
-                                                {
-                                                    GoodsCategoryEntity webCategory = webCategories.get(index);
-
-                                                    category.setName(     webCategory.getName());
-                                                    category.setImageName(webCategory.getImageName());
-                                                    category.setEnabled(  webCategory.getEnabled());
-                                                }
-                                                else
-                                                {
-                                                    category.setEnabled(MainDatabase.DISABLED);
-                                                }
-
-                                                mMainDatabase.updateGoodsCategory(mDB, category);
-                                            }
-
-                                            for (int i = 0; i < webCategories.size(); ++i)
-                                            {
-                                                GoodsCategoryEntity category = webCategories.get(i);
-
-                                                if (!categoriesInDB.contains(category))
-                                                {
-                                                    categoriesInDB.add(category);
-                                                    mMainDatabase.insertGoodsCategory(mDB, category);
-                                                }
-                                            }
-
-                                            for (int i = 0; i < mSelectedCategory.size(); ++i)
-                                            {
-                                                GoodsCategoryEntity category = mSelectedCategory.get(i);
-
-                                                if (!category.isOwn())
-                                                {
-                                                    int index = categoriesInDB.indexOf(category);
-
-                                                    if (index >= 0)
-                                                    {
-                                                        GoodsCategoryEntity categoryInDB = categoriesInDB.get(index);
-
-                                                        if (categoryInDB.isEnabled())
-                                                        {
-                                                            mSelectedCategory.set(i, categoryInDB);
-                                                        }
-                                                        else
-                                                        {
-                                                            mSelectedCategory.removeChild(i);
-                                                            --i;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        AppLog.wtf(TAG, "Failed to find category in database: " + category.getName());
-                                                    }
-                                                }
-                                            }
-
-                                            for (int i = 0; i < categoriesInDB.size(); ++i)
-                                            {
-                                                GoodsCategoryEntity category = categoriesInDB.get(i);
-
-                                                if (!mSelectedCategory.contains(category))
-                                                {
-                                                    mSelectedCategory.addChild(category);
-                                                }
-                                            }
-
-                                            mSelectedCategory.getData().setUpdateTime(System.currentTimeMillis());
-                                            mMainDatabase.updateGoodsCategoryUpdateTime(mDB, mSelectedCategory.getData());
-
-
-
-                                            mGoodsCategoriesAdapter.invalidate();
-                                            mGoodsAdapter.setItems(mSelectedCategory.getAll(), goods);
-
-                                            mLoadingProgressBar.setVisibility(View.GONE);
+                                            loadCompleted(webCategories, webGoods);
                                         }
                                     }
                                 }
@@ -523,6 +535,13 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     public void onErrorResponse(VolleyError error)
                                     {
                                         AppLog.w(TAG, "Failed to get goods catalog: " + String.valueOf(mSelectedCategory.getData().getName()));
+
+                                        --mRequestsInProgress;
+
+                                        if (mRequestsInProgress == 0)
+                                        {
+                                            loadCompleted(webCategories, webGoods);
+                                        }
                                     }
                                 }
                         );
