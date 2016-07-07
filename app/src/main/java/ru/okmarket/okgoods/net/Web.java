@@ -383,6 +383,7 @@ public class Web
                 double goodUnit           = 0;
                 int    goodUnitType       = MainDatabase.UNIT_TYPE_NOTHING;
                 double goodCountIncrement = 0;
+                int    goodCountType      = MainDatabase.UNIT_TYPE_NOTHING;
                 String goodBrand          = null;
 
                 int i = index + 46;
@@ -541,9 +542,99 @@ public class Web
                     ++i;
                 }
 
+                while (i < response.length())
+                {
+                    if (response.startsWith("<div class=\"product_weight\">", i))
+                    {
+                        int index2 = response.indexOf("<span>", i + 28);
+
+                        if (index2 < 0)
+                        {
+                            AppLog.wtf(TAG, "Failed to get good weight from line: " + response.substring(i, i + 30));
+
+                            return;
+                        }
+
+                        int index3 = response.indexOf("</span>", index2 + 6);
+
+                        if (index3 < 0)
+                        {
+                            AppLog.wtf(TAG, "Failed to get good weight from line: " + response.substring(i, i + 30));
+
+                            return;
+                        }
+
+                        String weight = response.substring(index2 + 6, index3).replace(',', '.');
+
+                        goodUnit     = Double.parseDouble(weight);
+                        goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
+
+                        i = index3 + 6;
+                    }
+                    else
+                    if (response.startsWith("<div class=\"quantity_section\">", i))
+                    {
+                        int index2 = response.indexOf("class=\"header\">", i + 30);
+
+                        if (index2 < 0)
+                        {
+                            AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(i, i + 30));
+
+                            return;
+                        }
+
+                        int index3 = response.indexOf("<", index2 + 15);
+
+                        if (index3 < 0)
+                        {
+                            AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(i, i + 30));
+
+                            return;
+                        }
+
+                        String header = response.substring(index2 + 15, index3);
+
+                        switch (header)
+                        {
+                            case "Количество":
+                                goodCountType = MainDatabase.UNIT_TYPE_ITEMS;
+                            break;
+
+                            case "Вес":
+                                goodCountType = MainDatabase.UNIT_TYPE_KILOGRAM;
+                            break;
+
+                            default:
+                                AppLog.wtf(TAG, "Unknown count type: " + header);
+                            break;
+                        }
+
+                        i = index3;
+                    }
+                    else
+                    if (response.startsWith("<div", i))
+                    {
+                        ++divLevel;
+                    }
+                    else
+                    if (response.startsWith("</div>", i))
+                    {
+                        --divLevel;
+
+                        if (divLevel == 0)
+                        {
+                            AppLog.wtf(TAG, "Unexpected closure for tag div");
+
+                            return;
+                        }
+                    }
+
+                    ++i;
+                }
+
                 index = i;
 
-                AppLog.e(TAG, String.valueOf(goodId) + " " + String.valueOf(goodName) + " " + String.valueOf(goodImageId) + " " + String.valueOf(goodCost) + " " + String.valueOf(goodUnit) + " " + String.valueOf(goodUnitType) + " " + String.valueOf(goodCountIncrement) + " " + String.valueOf(goodBrand));
+                AppLog.e(TAG, String.valueOf(goodId) + " " + String.valueOf(goodName) + " " + String.valueOf(goodImageId) + " " + String.valueOf(goodCost) + " " + String.valueOf(goodUnit) + " " + String.valueOf(goodUnitType) + " " + String.valueOf(goodCountIncrement) + " " + String.valueOf(goodCountType) + " " + String.valueOf(goodBrand));
 
                 if (goodId != MainDatabase.SPECIAL_ID_NONE)
                 {

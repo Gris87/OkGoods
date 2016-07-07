@@ -475,6 +475,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final int UNIT_TYPE_NOTHING  = 0;
     public static final int UNIT_TYPE_KILOGRAM = 1;
     public static final int UNIT_TYPE_LITER    = 2;
+    public static final int UNIT_TYPE_ITEMS    = 3;
     // endregion
     // endregion
 
