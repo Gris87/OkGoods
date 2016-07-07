@@ -627,9 +627,7 @@ public class Web
 
                         if (divLevel == 0)
                         {
-                            AppLog.wtf(TAG, "Unexpected closure for tag div");
-
-                            return;
+                            break;
                         }
                     }
 
