@@ -326,18 +326,18 @@ public class Web
 
                 if (categoryId != MainDatabase.SPECIAL_ID_NONE)
                 {
-                    boolean good = true;
+                    boolean found = false;
 
                     for (int j = 0; j < categories.size(); ++j)
                     {
                         if (categories.get(j).getId() == categoryId)
                         {
-                            good = false;
+                            found = true;
                             break;
                         }
                     }
 
-                    if (good)
+                    if (!found)
                     {
                         GoodsCategoryEntity category = new GoodsCategoryEntity();
 
@@ -357,6 +357,65 @@ public class Web
         catch (Exception e)
         {
             AppLog.e(TAG, "Failed to parse categories", e);
+        }
+
+
+
+        try
+        {
+            int index = -1;
+
+            do
+            {
+                index = response.indexOf("<!-- BEGIN CatalogEntryDisplay.jsp -->", index + 1);
+
+                if (index < 0)
+                {
+                    break;
+                }
+
+                int index2 = response.indexOf("<!-- END CatalogEntryDisplay.jsp -->", index + 38);
+
+                if (index2 < 0)
+                {
+                    break;
+                }
+
+                int goodId = MainDatabase.SPECIAL_ID_NONE;
+
+                String productHtml = response.substring(index + 38, index2);
+                index = index2 + 36;
+
+                AppLog.e(TAG, String.valueOf(goodId));
+
+                if (goodId != MainDatabase.SPECIAL_ID_NONE)
+                {
+                    boolean found = false;
+
+                    for (int j = 0; j < goods.size(); ++j)
+                    {
+                        if (goods.get(j).getId() == goodId)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        GoodEntity good = new GoodEntity();
+
+                        good.setId(goodId);
+                        good.setCategoryId(parentCategoryId);
+
+                        goods.add(good);
+                    }
+                }
+            } while (true);
+        }
+        catch (Exception e)
+        {
+            AppLog.e(TAG, "Failed to parse goods", e);
         }
     }
 }

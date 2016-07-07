@@ -1,3 +1,4 @@
+Settings class
 Wait for animation finish before set attributes in History/SelectedGoods lists
 Take from cache while offline
 Add error image for shop photo meta data loader

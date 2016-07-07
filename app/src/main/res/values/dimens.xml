@@ -10,6 +10,7 @@
     <dimen name="service_image_size">48dp</dimen>
     <dimen name="shop_photo_size">100dp</dimen>
     <dimen name="shop_filter_service_button_size">48dp</dimen>
+    <dimen name="loading_progressbar_size">32dp</dimen>
     <dimen name="expand_category_button_size">24dp</dimen>
     <dimen name="expand_category_indentation">8dp</dimen>
     <dimen name="good_max_width">150dp</dimen>

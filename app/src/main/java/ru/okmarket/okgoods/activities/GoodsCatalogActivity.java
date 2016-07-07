@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -50,6 +51,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     // region Attributes
     private NoScrollableDrawerLayout  mDrawerLayout           = null;
     private ActionBarDrawerToggle     mDrawerToggle           = null;
+    private ProgressBar               mLoadingProgressBar     = null;
     private FrameLayout               mGoodsCategoriesView    = null;
     private GoodsCategoriesAdapter    mGoodsCategoriesAdapter = null;
     private GoodsAdapter              mGoodsAdapter           = null;
@@ -74,6 +76,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         // region Searching for views
         Toolbar toolbar                          = (Toolbar)                 findViewById(R.id.toolbar);
         mDrawerLayout                            = (NoScrollableDrawerLayout)findViewById(R.id.drawerLayout);
+        mLoadingProgressBar                      = (ProgressBar)             findViewById(R.id.loadingProgressBar);
         mGoodsCategoriesView                     = (FrameLayout)             findViewById(R.id.goodsCategoriesView);
         RecyclerView goodsCategoriesRecyclerView = (RecyclerView)            findViewById(R.id.goodsCategoriesRecyclerView);
         RecyclerView goodsRecyclerView           = (RecyclerView)            findViewById(R.id.goodsRecyclerView);
@@ -354,6 +357,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         {
             mHttpClient.cancelAll(TAG);
             mRequestsInProgress = 0;
+
+            mLoadingProgressBar.setVisibility(View.GONE);
         }
     }
 
@@ -407,6 +412,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                     System.currentTimeMillis() - mSelectedCategory.getData().getUpdateTime() > 300000 // 5 minutes = 5 * 60 * 1000
                    )
                 {
+                    mLoadingProgressBar.setVisibility(View.VISIBLE);
+
                     final ArrayList<GoodsCategoryEntity> webCategories = new ArrayList<>();
                     final ArrayList<GoodEntity>          webGoods      = new ArrayList<>();
 
@@ -505,6 +512,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
                                             mGoodsCategoriesAdapter.invalidate();
                                             mGoodsAdapter.setItems(mSelectedCategory.getAll(), goods);
+
+                                            mLoadingProgressBar.setVisibility(View.GONE);
                                         }
                                     }
                                 }
