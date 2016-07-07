@@ -152,6 +152,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mHttpClient.cancelAll(TAG);
         mRequestsInProgress = 0;
 
+        mLoadingProgressBar.setVisibility(View.GONE);
+
         selectCategory(mGoodsCategoriesAdapter.getTree());
     }
 

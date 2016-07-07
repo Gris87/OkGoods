@@ -1,8 +1,8 @@
+Normal color for progress bar in catalog toolbar and in history details toolbar
 Settings class
 Wait for animation finish before set attributes in History/SelectedGoods lists
 Take from cache while offline
 Add error image for shop photo meta data loader
-Add progress and error image in catalog toolbar
 Probably add goods_in_categories table
 Add goods
 Remove goods
