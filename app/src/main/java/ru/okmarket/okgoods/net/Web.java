@@ -159,11 +159,29 @@ public class Web
         return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + String.valueOf(imageId) + "/" + String.valueOf(imageId) + "_fullimage.jpg" ;
     }
 
-    public static void getCatalogItemsFromResponse(String response, int parentCategoryId, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods)
+    public static int getCatalogItemsFromResponse(String response, int parentCategoryId, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods, int pageIndex)
     {
+        int startPoint = response.indexOf("<!-- END Heading.jsp -->", 1000);
+
+        if (startPoint < 0)
+        {
+             startPoint = response.lastIndexOf("<!-- END Heading.jsp -->", 1000);
+
+            if (startPoint >= 0)
+            {
+                AppLog.wtf(TAG, "Please move index to " + String.valueOf(startPoint));
+            }
+            else
+            {
+                AppLog.wtf(TAG, "Failed to find start point for parsing categories and goods");
+
+                return -1;
+            }
+        }
+
         try
         {
-            int index = -1;
+            int index = startPoint;
 
             do
             {
@@ -190,7 +208,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get category image name from line: " + response.substring(i, i + 30));
 
-                            return;
+                            return -1;
                         }
 
                         imageName = response.substring(i + 10, index2);
@@ -216,7 +234,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Unexpected closure for tag div");
 
-                            return;
+                            return -1;
                         }
                     }
 
@@ -233,7 +251,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get category link from line: " + response.substring(i, i + 30));
 
-                            return;
+                            return -1;
                         }
 
                         String categoryLink  = response.substring(i + 6, index2);
@@ -260,7 +278,7 @@ public class Web
                                 {
                                     AppLog.wtf(TAG, "Failed to get category id from category link: " + categoryLink);
 
-                                    return;
+                                    return -1;
                                 }
 
                                 categoryIdStr = categoryLink.substring(index3 + 11, index4);
@@ -286,7 +304,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Unexpected closure for tag div");
 
-                            return;
+                            return -1;
                         }
                     }
 
@@ -303,7 +321,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get category name from line: " + response.substring(i, i + 30));
 
-                            return;
+                            return -1;
                         }
 
                         categoryName = response.substring(i + 1, index2);
@@ -318,7 +336,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Unexpected closure for tag div");
 
-                            return;
+                            return -1;
                         }
                     }
 
@@ -366,7 +384,7 @@ public class Web
 
         try
         {
-            int index = -1;
+            int index = startPoint;
 
             do
             {
@@ -403,7 +421,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(i, i + 30));
 
-                            return;
+                            return -1;
                         }
 
                         int index3 = response.indexOf('\"', index2 + 7);
@@ -412,7 +430,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index2, index2 + 30));
 
-                            return;
+                            return -1;
                         }
 
                         goodName = response.substring(index2 + 7, index3);
@@ -434,7 +452,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Unexpected closure for tag div");
 
-                            return;
+                            return -1;
                         }
                     }
 
@@ -451,7 +469,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get good metadata from line: " + response.substring(i, i + 30));
 
-                            return;
+                            return -1;
                         }
 
                         String goodMetaData = response.substring(i + 14, index2 + 1);
@@ -479,7 +497,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Unexpected closure for tag div");
 
-                            return;
+                            return -1;
                         }
                     }
 
@@ -496,7 +514,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get good weight from line: " + response.substring(i, i + 30));
 
-                            return;
+                            return -1;
                         }
 
                         String weight = response.substring(i + 28, index2).replace("<span>", "").replace("</span>", "").replace("кг", "").trim().replace(',', '.');
@@ -520,7 +538,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(i, i + 30));
 
-                            return;
+                            return -1;
                         }
 
                         int index3 = response.indexOf('<', index2 + 15);
@@ -529,7 +547,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30));
 
-                            return;
+                            return -1;
                         }
 
                         String header = response.substring(index2 + 15, index3);
@@ -564,7 +582,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index3, index3 + 30));
 
-                            return;
+                            return -1;
                         }
 
                         index3 = response.indexOf(',', index2 + 48);
@@ -573,7 +591,7 @@ public class Web
                         {
                             AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30));
 
-                            return;
+                            return -1;
                         }
 
                         String increment = response.substring(index2 + 48, index3);
@@ -690,5 +708,12 @@ public class Web
         {
             AppLog.e(TAG, "Failed to parse goods", e);
         }
+
+        if (pageIndex == 0)
+        {
+            return 1;
+        }
+
+        return 0;
     }
 }

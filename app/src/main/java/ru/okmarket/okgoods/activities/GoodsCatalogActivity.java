@@ -611,14 +611,21 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     @Override
                                     public void onResponse(String response)
                                     {
-                                        Web.getCatalogItemsFromResponse(response, mCategoryId, webCategories, webGoods);
+                                        int pageCount = Web.getCatalogItemsFromResponse(response, mCategoryId, webCategories, webGoods, 0);
                                         loadPartiallyCompleted(webCategories, webGoods);
 
-                                        --mRequestsInProgress;
-
-                                        if (mRequestsInProgress == 0)
+                                        if (pageCount > 1)
                                         {
-                                            loadCompleted(webCategories, webGoods);
+                                            // TODO: Implement it
+                                        }
+                                        else
+                                        {
+                                            --mRequestsInProgress;
+
+                                            if (mRequestsInProgress == 0)
+                                            {
+                                                loadCompleted(webCategories, webGoods);
+                                            }
                                         }
                                     }
                                 }
