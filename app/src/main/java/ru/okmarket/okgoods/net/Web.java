@@ -1,5 +1,7 @@
 package ru.okmarket.okgoods.net;
 
+import org.json.JSONObject;
+
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -452,72 +454,13 @@ public class Web
                             return;
                         }
 
-                        String goodMetaData = response.substring(i + 15, index2);
+                        String goodMetaData = response.substring(i + 14, index2 + 1);
+                        JSONObject jsonObject = new JSONObject(goodMetaData);
 
-                        int index3 = -1;
-
-                        do
-                        {
-                            int index4 = goodMetaData.indexOf(':', index3 + 1);
-
-                            if (index4 < 0)
-                            {
-                                break;
-                            }
-
-                            String property = goodMetaData.substring(index3 + 1, index4).trim();
-                            index3 = index4;
-
-                            index4 = goodMetaData.indexOf(',', index3 + 1);
-
-                            if (index4 < 0)
-                            {
-                                index4 = goodMetaData.length();
-                            }
-
-                            if (
-                                property.equals("productId")
-                                ||
-                                property.equals("id")
-                                ||
-                                property.equals("price")
-                                ||
-                                property.equals("brand")
-                               )
-                            {
-                                String value = goodMetaData.substring(index3 + 1, index4).trim();
-
-                                if (value.startsWith("\'") && value.endsWith("\'") && value.length() > 1)
-                                {
-                                    value = value.substring(1, value.length() - 1);
-                                }
-
-                                switch (property)
-                                {
-                                    case "productId":
-                                        goodId      = Integer.parseInt(value);
-                                    break;
-
-                                    case "id":
-                                        goodImageId = Integer.parseInt(value);
-                                    break;
-
-                                    case "price":
-                                        goodCost    = Double.parseDouble(value);
-                                    break;
-
-                                    case "brand":
-                                        goodBrand   = value;
-                                    break;
-
-                                    default:
-                                        AppLog.wtf(TAG, "Unknown property: " + property);
-                                    break;
-                                }
-                            }
-
-                            index3 = index4;
-                        } while (true);
+                        goodId      = jsonObject.getInt(   "productId");
+                        goodImageId = jsonObject.getInt(   "id");
+                        goodCost    = jsonObject.getDouble("price");
+                        goodBrand   = jsonObject.getString("brand");
 
                         i = index2 + 1;
                         break;
@@ -558,8 +501,11 @@ public class Web
 
                         String weight = response.substring(i + 28, index2).replace("<span>", "").replace("</span>", "").replace("кг", "").trim().replace(',', '.');
 
-                        goodUnit     = Double.parseDouble(weight);
-                        goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
+                        if (goodUnit == 0 || goodUnitType == MainDatabase.UNIT_TYPE_NOTHING)
+                        {
+                            goodUnit = Double.parseDouble(weight);
+                            goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
+                        }
 
                         i = index2 + 27;
                     }

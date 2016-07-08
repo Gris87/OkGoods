@@ -461,8 +461,13 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                     good.setName(    webGood.getName());
                     good.setImageId( webGood.getImageId());
                     good.setCost(    webGood.getCost());
-                    good.setUnit(    webGood.getUnit());
-                    good.setUnitType(webGood.getUnitType());
+
+                    if (good.getUnitType() != MainDatabase.UNIT_TYPE_LITER)
+                    {
+                        good.setUnit(    webGood.getUnit());
+                        good.setUnitType(webGood.getUnitType());
+                    }
+
                     good.setEnabled( webGood.getEnabled());
                 }
                 else
