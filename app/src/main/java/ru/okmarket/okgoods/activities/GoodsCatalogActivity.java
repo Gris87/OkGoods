@@ -366,7 +366,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         }
     }
 
-    private void loadCompleted(ArrayList<GoodsCategoryEntity> webCategories, ArrayList<GoodEntity> webGoods)
+    private void loadPartiallyCompleted(ArrayList<GoodsCategoryEntity> webCategories, ArrayList<GoodEntity> webGoods)
     {
         if (webCategories.size() > 0 || webGoods.size() > 0)
         {
@@ -443,9 +443,6 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                     mSelectedCategory.addChild(category);
                 }
             }
-
-            mSelectedCategory.getData().setUpdateTime(System.currentTimeMillis());
-            mMainDatabase.updateGoodsCategoryUpdateTime(mDB, mSelectedCategory.getData());
 
 
 
@@ -533,6 +530,15 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
             mGoodsCategoriesAdapter.invalidate();
             mGoodsAdapter.setItems(mSelectedCategory.getAll(), goods);
         }
+    }
+
+    private void loadCompleted(ArrayList<GoodsCategoryEntity> webCategories, ArrayList<GoodEntity> webGoods)
+    {
+        if (webCategories.size() > 0 || webGoods.size() > 0)
+        {
+            mSelectedCategory.getData().setUpdateTime(System.currentTimeMillis());
+            mMainDatabase.updateGoodsCategoryUpdateTime(mDB, mSelectedCategory.getData());
+        }
 
         mLoadingProgressBar.setVisibility(View.GONE);
     }
@@ -584,7 +590,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                 if (
                     mCategoryId >= MainDatabase.SPECIAL_ID_ROOT
                     &&
-                    System.currentTimeMillis() - mSelectedCategory.getData().getUpdateTime() > 300000 // 5 minutes = 5 * 60 * 1000
+                    System.currentTimeMillis() - mSelectedCategory.getData().getUpdateTime() > 900000 // 15 minutes = 15 * 60 * 1000 = 900000
                    )
                 {
                     mLoadingProgressBar.setVisibility(View.VISIBLE);
@@ -601,6 +607,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     public void onResponse(String response)
                                     {
                                         Web.getCatalogItemsFromResponse(response, mCategoryId, webCategories, webGoods);
+                                        loadPartiallyCompleted(webCategories, webGoods);
 
                                         --mRequestsInProgress;
 

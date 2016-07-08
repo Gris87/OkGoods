@@ -2,6 +2,7 @@ package ru.okmarket.okgoods.net;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.GoodEntity;
@@ -546,9 +547,7 @@ public class Web
                 {
                     if (response.startsWith("<div class=\"product_weight\">", i))
                     {
-                        ++divLevel;
-
-                        int index2 = response.indexOf("<span>", i + 28);
+                        int index2 = response.indexOf("</div>", i + 28);
 
                         if (index2 < 0)
                         {
@@ -557,21 +556,12 @@ public class Web
                             return;
                         }
 
-                        int index3 = response.indexOf("</span>", index2 + 6);
-
-                        if (index3 < 0)
-                        {
-                            AppLog.wtf(TAG, "Failed to get good weight from line: " + response.substring(i, i + 30));
-
-                            return;
-                        }
-
-                        String weight = response.substring(index2 + 6, index3).replace(',', '.');
+                        String weight = response.substring(i + 28, index2).replace("<span>", "").replace("</span>", "").replace("кг", "").trim().replace(',', '.');
 
                         goodUnit     = Double.parseDouble(weight);
                         goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
 
-                        i = index3 + 6;
+                        i = index2 + 27;
                     }
                     else
                     if (response.startsWith("<div class=\"quantity_section\">", i))
@@ -587,11 +577,11 @@ public class Web
                             return;
                         }
 
-                        int index3 = response.indexOf("<", index2 + 15);
+                        int index3 = response.indexOf('<', index2 + 15);
 
                         if (index3 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(i, i + 30));
+                            AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30));
 
                             return;
                         }
@@ -602,15 +592,50 @@ public class Web
                         {
                             case "Количество":
                                 goodCountType = MainDatabase.UNIT_TYPE_ITEMS;
+
+                                if (goodUnit == 0 || goodUnitType == MainDatabase.UNIT_TYPE_NOTHING)
+                                {
+                                    goodUnit     = 1;
+                                    goodUnitType = MainDatabase.UNIT_TYPE_ITEMS;
+                                }
                             break;
 
                             case "Вес":
                                 goodCountType = MainDatabase.UNIT_TYPE_KILOGRAM;
+
+                                goodUnit     = 1;
+                                goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
                             break;
 
                             default:
                                 AppLog.wtf(TAG, "Unknown count type: " + header);
                             break;
+                        }
+
+                        index2 = response.indexOf("notifyAndUpdateQuantityChange(this, this.value, ", index3 + 1);
+
+                        if (index2 < 0)
+                        {
+                            AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index3, index3 + 30));
+
+                            return;
+                        }
+
+                        index3 = response.indexOf(',', index2 + 48);
+
+                        if (index3 < 0)
+                        {
+                            AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30));
+
+                            return;
+                        }
+
+                        String increment = response.substring(index2 + 48, index3);
+                        goodCountIncrement = Double.parseDouble(increment);
+
+                        if (goodCountIncrement > 1)
+                        {
+                            goodCountIncrement = 1;
                         }
 
                         i = index3;
@@ -636,10 +661,41 @@ public class Web
 
                 index = i;
 
-                AppLog.e(TAG, String.valueOf(goodId) + " " + String.valueOf(goodName) + " " + String.valueOf(goodImageId) + " " + String.valueOf(goodCost) + " " + String.valueOf(goodUnit) + " " + String.valueOf(goodUnitType) + " " + String.valueOf(goodCountIncrement) + " " + String.valueOf(goodCountType) + " " + String.valueOf(goodBrand));
-
                 if (goodId != MainDatabase.SPECIAL_ID_NONE)
                 {
+                    if (
+                        goodName           == null
+                        ||
+                        goodImageId        == 0
+                        ||
+                        goodCost           == 0
+                        ||
+                        goodUnit           == 0
+                        ||
+                        goodUnitType       == MainDatabase.UNIT_TYPE_NOTHING
+                        ||
+                        goodCountIncrement == 0
+                        ||
+                        goodCountType      == MainDatabase.UNIT_TYPE_NOTHING
+                        ||
+                        goodBrand          == null
+                       )
+                    {
+                        AppLog.e(TAG, String.format(Locale.US, "Parsed good with invalid data: goodId = %1$d, goodName = %2$s, goodImageId = %3$d, goodCost = %4$.2f, goodUnit = %5$.2f, goodUnitType = %6$d, goodCountIncrement = %7$.2f, goodCountType = %8$d, goodBrand = %9$s"
+                                , goodId
+                                , String.valueOf(goodName)
+                                , goodImageId
+                                , goodCost
+                                , goodUnit
+                                , goodUnitType
+                                , goodCountIncrement
+                                , goodCountType
+                                , String.valueOf(goodBrand)
+                        ));
+                    }
+
+
+
                     boolean found = false;
 
                     for (int j = 0; j < goods.size(); ++j)
@@ -667,6 +723,20 @@ public class Web
 
                         goods.add(good);
                     }
+                }
+                else
+                {
+                    AppLog.e(TAG, String.format(Locale.US, "Failed to get ID for good: goodId = %1$d, goodName = %2$s, goodImageId = %3$d, goodCost = %4$.2f, goodUnit = %5$.2f, goodUnitType = %6$d, goodCountIncrement = %7$.2f, goodCountType = %8$d, goodBrand = %9$s"
+                            , goodId
+                            , String.valueOf(goodName)
+                            , goodImageId
+                            , goodCost
+                            , goodUnit
+                            , goodUnitType
+                            , goodCountIncrement
+                            , goodCountType
+                            , String.valueOf(goodBrand)
+                    ));
                 }
             } while (true);
         }
