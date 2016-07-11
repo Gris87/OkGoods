@@ -148,27 +148,10 @@ public class Web
             else
             {
                 return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/CategoryDisplay?" +
-                        "storeId="           + String.valueOf(shopId)     + "&" +
-                        "categoryId="        + String.valueOf(categoryId) + "&" +
-                        "pageView=grid"                                   + "&" +
-                        "productBeginIndex=" + String.valueOf(pageIndex * 72);
-                // https://www.okeydostavka.ru/webapp/wcs/stores/servlet/CategoryDisplay?
-                // urlRequestType=Base&
-                // catalogId=12052&
-                // categoryId=15081&
-                // pageView=grid&
-                // urlLangId=-20&
-                // beginIndex=0&
-                // langId=-20&
-                // top_category=15075&
-                // parent_category_rn=15076&
-                // storeId=10656#facet:&
-                // productBeginIndex:72&
-                // orderBy:&
-                // pageView:grid&
-                // minPrice:&
-                // maxPrice:&
-                // pageSize:&
+                        "storeId="           + String.valueOf(shopId)         + "#facet:&" +
+                        "categoryId="        + String.valueOf(categoryId)     + "&" +
+                        "productBeginIndex=" + String.valueOf(pageIndex * 72) + "&" +
+                        "pageView=grid";
             }
         }
     }
