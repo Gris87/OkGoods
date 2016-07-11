@@ -605,13 +605,28 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
                     for (int i = 0; i < Web.OKEY_DOSTAVKA_RU_SHOPS.length; ++i)
                     {
-                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mCategoryId)
+                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mCategoryId, 0)
                                 , new Response.Listener<String>()
                                 {
+                                    private String mShop;
+                                    private int    mShopId;
+
+
+
+                                    public Response.Listener<String> init(String shop, int shopId)
+                                    {
+                                        mShop   = shop;
+                                        mShopId = shopId;
+
+                                        return this;
+                                    }
+
+
+
                                     @Override
                                     public void onResponse(String response)
                                     {
-                                        int pageCount = Web.getCatalogItemsFromResponse(response, mCategoryId, webCategories, webGoods, 0);
+                                        int pageCount = Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mCategoryId, 0);
                                         loadPartiallyCompleted(webCategories, webGoods);
 
                                         if (pageCount > 1)
@@ -629,6 +644,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                         }
                                     }
                                 }
+                                .init(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i])
                                 , new Response.ErrorListener()
                                 {
                                     @Override

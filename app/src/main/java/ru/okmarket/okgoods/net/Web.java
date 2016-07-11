@@ -1,5 +1,7 @@
 package ru.okmarket.okgoods.net;
 
+import android.text.TextUtils;
+
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
@@ -40,6 +42,10 @@ public class Web
             , 10651
             , 10652
     };
+
+
+
+    private static int PAGE_START_POINT = 292927;
 
 
 
@@ -124,7 +130,7 @@ public class Web
         return null;
     }
 
-    public static String getCatalogUrl(String shop, int shopId, int categoryId)
+    public static String getCatalogUrl(String shop, int shopId, int categoryId, int pageIndex)
     {
         if (categoryId == MainDatabase.SPECIAL_ID_ROOT)
         {
@@ -159,21 +165,23 @@ public class Web
         return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + String.valueOf(imageId) + "/" + String.valueOf(imageId) + "_fullimage.jpg" ;
     }
 
-    public static int getCatalogItemsFromResponse(String response, int parentCategoryId, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods, int pageIndex)
+    public static int getCatalogItemsFromResponse(String response, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods, String shop, int shopId, int parentCategoryId, int pageIndex)
     {
-        int startPoint = response.indexOf("<!-- END Heading.jsp -->", 1000);
+        int startPoint = response.indexOf("<div class=\"rowContainer\"", PAGE_START_POINT);
 
         if (startPoint < 0)
         {
-             startPoint = response.lastIndexOf("<!-- END Heading.jsp -->", 1000);
+            startPoint = response.lastIndexOf("<div class=\"rowContainer\"", PAGE_START_POINT);
 
             if (startPoint >= 0)
             {
-                AppLog.wtf(TAG, "Please move index to " + String.valueOf(startPoint));
+                AppLog.wtf(TAG, "Please move page start point to " + String.valueOf(startPoint) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
+
+                PAGE_START_POINT = startPoint;
             }
             else
             {
-                AppLog.wtf(TAG, "Failed to find start point for parsing categories and goods");
+                AppLog.wtf(TAG, "Failed to find start point for parsing categories and goods | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                 return -1;
             }
@@ -206,7 +214,7 @@ public class Web
 
                         if (index2 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get category image name from line: " + response.substring(i, i + 30));
+                            AppLog.wtf(TAG, "Failed to get category image name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -219,7 +227,7 @@ public class Web
                         }
                         else
                         {
-                            AppLog.wtf(TAG, "Invalid image url: " + imageName);
+                            AppLog.wtf(TAG, "Invalid image url: " + imageName + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             imageName = "";
                         }
@@ -232,7 +240,7 @@ public class Web
                     {
                         if (!response.startsWith("</a>", i - 4))
                         {
-                            AppLog.wtf(TAG, "Unexpected closure for tag div");
+                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -249,7 +257,7 @@ public class Web
 
                         if (index2 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get category link from line: " + response.substring(i, i + 30));
+                            AppLog.wtf(TAG, "Failed to get category link from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -276,7 +284,7 @@ public class Web
 
                                 if (index4 < 0)
                                 {
-                                    AppLog.wtf(TAG, "Failed to get category id from category link: " + categoryLink);
+                                    AppLog.wtf(TAG, "Failed to get category id from category link: " + categoryLink + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                                     return -1;
                                 }
@@ -302,7 +310,7 @@ public class Web
                     {
                         if (!response.startsWith("</a>", i - 4))
                         {
-                            AppLog.wtf(TAG, "Unexpected closure for tag div");
+                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -319,7 +327,7 @@ public class Web
 
                         if (index2 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get category name from line: " + response.substring(i, i + 30));
+                            AppLog.wtf(TAG, "Failed to get category name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -334,7 +342,7 @@ public class Web
                     {
                         if (!response.startsWith("</a>", i - 4))
                         {
-                            AppLog.wtf(TAG, "Unexpected closure for tag div");
+                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -377,7 +385,7 @@ public class Web
         }
         catch (Exception e)
         {
-            AppLog.e(TAG, "Failed to parse categories", e);
+            AppLog.e(TAG, "Failed to parse categories | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex), e);
         }
 
 
@@ -406,6 +414,7 @@ public class Web
                 double goodCountIncrement = 0;
                 int    goodCountType      = MainDatabase.UNIT_TYPE_NOTHING;
                 String goodBrand          = null;
+                int    goodEnabled        = MainDatabase.DISABLED;
 
                 int i = index + 46;
 
@@ -419,7 +428,7 @@ public class Web
 
                         if (index2 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(i, i + 30));
+                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -428,7 +437,7 @@ public class Web
 
                         if (index3 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index2, index2 + 30));
+                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -450,7 +459,7 @@ public class Web
 
                         if (divLevel == 0)
                         {
-                            AppLog.wtf(TAG, "Unexpected closure for tag div");
+                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -467,7 +476,7 @@ public class Web
 
                         if (index2 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get good metadata from line: " + response.substring(i, i + 30));
+                            AppLog.wtf(TAG, "Failed to get good metadata from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -495,7 +504,7 @@ public class Web
 
                         if (divLevel == 0)
                         {
-                            AppLog.wtf(TAG, "Unexpected closure for tag div");
+                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -512,7 +521,7 @@ public class Web
 
                         if (index2 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get good weight from line: " + response.substring(i, i + 30));
+                            AppLog.wtf(TAG, "Failed to get good weight from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
                             return -1;
                         }
@@ -532,77 +541,111 @@ public class Web
                     {
                         ++divLevel;
 
-                        int index2 = response.indexOf("class=\"header\">", i + 30);
-
-                        if (index2 < 0)
+                        while (i < response.length())
                         {
-                            AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(i, i + 30));
+                            if (response.startsWith("class=\"header\">", i))
+                            {
+                                int index2 = response.indexOf('<', i + 15);
 
-                            return -1;
-                        }
+                                if (index2 < 0)
+                                {
+                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
-                        int index3 = response.indexOf('<', index2 + 15);
+                                    return -1;
+                                }
 
-                        if (index3 < 0)
-                        {
-                            AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30));
+                                String header = response.substring(i + 15, index2);
 
-                            return -1;
-                        }
+                                switch (header)
+                                {
+                                    case "Количество":
+                                        goodCountType = MainDatabase.UNIT_TYPE_ITEMS;
 
-                        String header = response.substring(index2 + 15, index3);
+                                        if (goodUnit == 0 || goodUnitType == MainDatabase.UNIT_TYPE_NOTHING)
+                                        {
+                                            goodUnit     = 1;
+                                            goodUnitType = MainDatabase.UNIT_TYPE_ITEMS;
+                                        }
+                                    break;
 
-                        switch (header)
-                        {
-                            case "Количество":
-                                goodCountType = MainDatabase.UNIT_TYPE_ITEMS;
+                                    case "Вес":
+                                        goodCountType = MainDatabase.UNIT_TYPE_KILOGRAM;
+
+                                        goodUnit     = 1;
+                                        goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
+                                    break;
+
+                                    default:
+                                        AppLog.wtf(TAG, "Unknown count type: " + header + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
+                                    break;
+                                }
+
+                                int index3 = response.indexOf("notifyAndUpdateQuantityChange(this, this.value, ", index2 + 1);
+
+                                if (index3 < 0)
+                                {
+                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
+
+                                    return -1;
+                                }
+
+                                int index4 = response.indexOf(',', index3 + 48);
+
+                                if (index4 < 0)
+                                {
+                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index3, index3 + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
+
+                                    return -1;
+                                }
+
+                                String increment = response.substring(index3 + 48, index4);
+                                goodCountIncrement = Double.parseDouble(increment);
+
+                                if (goodCountIncrement > 1)
+                                {
+                                    goodCountIncrement = 1;
+                                }
+
+                                goodEnabled = MainDatabase.ENABLED;
+
+                                i = index4;
+                                break;
+                            }
+                            else
+                            if (response.startsWith("<div class=\"product-unavailable-text\">", i))
+                            {
+                                goodCountType      = MainDatabase.UNIT_TYPE_ITEMS;
+                                goodCountIncrement = 1;
+                                goodEnabled        = MainDatabase.DISABLED;
 
                                 if (goodUnit == 0 || goodUnitType == MainDatabase.UNIT_TYPE_NOTHING)
                                 {
                                     goodUnit     = 1;
                                     goodUnitType = MainDatabase.UNIT_TYPE_ITEMS;
                                 }
-                            break;
 
-                            case "Вес":
-                                goodCountType = MainDatabase.UNIT_TYPE_KILOGRAM;
+                                break;
+                            }
+                            else
+                            if (response.startsWith("<div", i))
+                            {
+                                ++divLevel;
+                            }
+                            else
+                            if (response.startsWith("</div>", i))
+                            {
+                                --divLevel;
 
-                                goodUnit     = 1;
-                                goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
-                            break;
+                                if (divLevel == 0)
+                                {
+                                    AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
 
-                            default:
-                                AppLog.wtf(TAG, "Unknown count type: " + header);
-                            break;
+                                    return -1;
+                                }
+                            }
+
+                            ++i;
                         }
-
-                        index2 = response.indexOf("notifyAndUpdateQuantityChange(this, this.value, ", index3 + 1);
-
-                        if (index2 < 0)
-                        {
-                            AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index3, index3 + 30));
-
-                            return -1;
-                        }
-
-                        index3 = response.indexOf(',', index2 + 48);
-
-                        if (index3 < 0)
-                        {
-                            AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30));
-
-                            return -1;
-                        }
-
-                        String increment = response.substring(index2 + 48, index3);
-                        goodCountIncrement = Double.parseDouble(increment);
-
-                        if (goodCountIncrement > 1)
-                        {
-                            goodCountIncrement = 1;
-                        }
-
-                        i = index3;
                     }
                     else
                     if (response.startsWith("<div", i))
@@ -628,7 +671,7 @@ public class Web
                 if (goodId != MainDatabase.SPECIAL_ID_NONE)
                 {
                     if (
-                        goodName           == null
+                        TextUtils.isEmpty(goodName)
                         ||
                         goodImageId        == 0
                         ||
@@ -642,10 +685,10 @@ public class Web
                         ||
                         goodCountType      == MainDatabase.UNIT_TYPE_NOTHING
                         ||
-                        goodBrand          == null
+                        TextUtils.isEmpty(goodBrand)
                        )
                     {
-                        AppLog.e(TAG, String.format(Locale.US, "Parsed good with invalid data: goodId = %1$d, goodName = %2$s, goodImageId = %3$d, goodCost = %4$.2f, goodUnit = %5$.2f, goodUnitType = %6$d, goodCountIncrement = %7$.2f, goodCountType = %8$d, goodBrand = %9$s"
+                        AppLog.e(TAG, String.format(Locale.US, "Parsed good with invalid data: goodId = %1$d, goodName = %2$s, goodImageId = %3$d, goodCost = %4$.2f, goodUnit = %5$.2f, goodUnitType = %6$d, goodCountIncrement = %7$.2f, goodCountType = %8$d, goodBrand = %9$s | URL: %10$s"
                                 , goodId
                                 , String.valueOf(goodName)
                                 , goodImageId
@@ -655,6 +698,7 @@ public class Web
                                 , goodCountIncrement
                                 , goodCountType
                                 , String.valueOf(goodBrand)
+                                , getCatalogUrl(shop, shopId, parentCategoryId, pageIndex)
                         ));
                     }
 
@@ -683,14 +727,14 @@ public class Web
                         good.setUnit(goodUnit);
                         good.setUnitType(goodUnitType);
                         good.setUpdateTime(0);
-                        good.setEnabled(MainDatabase.ENABLED);
+                        good.setEnabled(goodEnabled);
 
                         goods.add(good);
                     }
                 }
                 else
                 {
-                    AppLog.e(TAG, String.format(Locale.US, "Failed to get ID for good: goodId = %1$d, goodName = %2$s, goodImageId = %3$d, goodCost = %4$.2f, goodUnit = %5$.2f, goodUnitType = %6$d, goodCountIncrement = %7$.2f, goodCountType = %8$d, goodBrand = %9$s"
+                    AppLog.e(TAG, String.format(Locale.US, "Failed to get ID for good: goodId = %1$d, goodName = %2$s, goodImageId = %3$d, goodCost = %4$.2f, goodUnit = %5$.2f, goodUnitType = %6$d, goodCountIncrement = %7$.2f, goodCountType = %8$d, goodBrand = %9$s | URL: %10$s"
                             , goodId
                             , String.valueOf(goodName)
                             , goodImageId
@@ -700,13 +744,14 @@ public class Web
                             , goodCountIncrement
                             , goodCountType
                             , String.valueOf(goodBrand)
+                            , getCatalogUrl(shop, shopId, parentCategoryId, pageIndex)
                     ));
                 }
             } while (true);
         }
         catch (Exception e)
         {
-            AppLog.e(TAG, "Failed to parse goods", e);
+            AppLog.e(TAG, "Failed to parse goods | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex), e);
         }
 
         if (pageIndex == 0)
