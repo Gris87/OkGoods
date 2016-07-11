@@ -45,7 +45,7 @@ public class Web
 
 
 
-    private static int PAGE_START_POINT = 292927;
+    private static int PAGE_START_POINT = 292917;
 
 
 
@@ -138,15 +138,38 @@ public class Web
         }
         else
         {
-            return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/CategoryDisplay?" +
-                    "storeId=" + String.valueOf(shopId)        + "&" +
-                    "urlLangId=-20"                            + "&" +
-                    "beginIndex=0"                             + "&" +
-                    "urlRequestType=Base"                      + "&" +
-                    "categoryId=" + String.valueOf(categoryId) + "&" +
-                    "pageView=grid"                            + "&" +
-                    "langId=-20"                               + "&" +
-                    "catalogId=12051";
+            if (pageIndex == 0)
+            {
+                return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/CategoryDisplay?" +
+                        "storeId="    + String.valueOf(shopId)     + "&" +
+                        "categoryId=" + String.valueOf(categoryId) + "&" +
+                        "pageView=grid";
+            }
+            else
+            {
+                return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/CategoryDisplay?" +
+                        "storeId="           + String.valueOf(shopId)     + "&" +
+                        "categoryId="        + String.valueOf(categoryId) + "&" +
+                        "pageView=grid"                                   + "&" +
+                        "productBeginIndex=" + String.valueOf(pageIndex * 72);
+                // https://www.okeydostavka.ru/webapp/wcs/stores/servlet/CategoryDisplay?
+                // urlRequestType=Base&
+                // catalogId=12052&
+                // categoryId=15081&
+                // pageView=grid&
+                // urlLangId=-20&
+                // beginIndex=0&
+                // langId=-20&
+                // top_category=15075&
+                // parent_category_rn=15076&
+                // storeId=10656#facet:&
+                // productBeginIndex:72&
+                // orderBy:&
+                // pageView:grid&
+                // minPrice:&
+                // maxPrice:&
+                // pageSize:&
+            }
         }
     }
 
@@ -186,6 +209,8 @@ public class Web
                 return -1;
             }
         }
+
+        startPoint = startPoint + 25;
 
         try
         {
@@ -756,6 +781,43 @@ public class Web
 
         if (pageIndex == 0)
         {
+            try
+            {
+                int index = response.length() - 13;
+
+                while (index > startPoint)
+                {
+                    if (response.startsWith("{pageNumber:\"", index))
+                    {
+                        break;
+                    }
+
+                    --index;
+                }
+
+                if (index <= startPoint)
+                {
+                    return 1;
+                }
+
+                int index2 = response.indexOf("\"", index + 13);
+
+                if (index2 < 0)
+                {
+                    AppLog.wtf(TAG, "Failed to get get pages count from line: " + response.substring(index, index + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex));
+
+                    return -1;
+                }
+
+                String pageNumber = response.substring(index + 13, index2);
+
+                return Integer.parseInt(pageNumber);
+            }
+            catch (Exception e)
+            {
+                AppLog.e(TAG, "Failed to get pages count | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, pageIndex), e);
+            }
+
             return 1;
         }
 
