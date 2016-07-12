@@ -148,10 +148,10 @@ public class Web
             else
             {
                 return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/CategoryDisplay?" +
-                        "storeId="           + String.valueOf(shopId)         + "#facet:&" +
-                        "categoryId="        + String.valueOf(categoryId)     + "&" +
-                        "productBeginIndex=" + String.valueOf(pageIndex * 72) + "&" +
-                        "pageView=grid";
+                        "pageView=grid"                                   + "&" +
+                        "categoryId="        + String.valueOf(categoryId) + "&" +
+                        "storeId="           + String.valueOf(shopId)     + "#facet:&" +
+                        "productBeginIndex=" + String.valueOf(pageIndex * 72);
             }
         }
     }
@@ -548,6 +548,7 @@ public class Web
                     if (response.startsWith("<div class=\"quantity_section\">", i))
                     {
                         ++divLevel;
+                        i = i + 30;
 
                         while (i < response.length())
                         {
@@ -606,7 +607,7 @@ public class Web
                                     return -1;
                                 }
 
-                                String increment = response.substring(index3 + 48, index4);
+                                String increment   = response.substring(index3 + 48, index4);
                                 goodCountIncrement = Double.parseDouble(increment);
 
                                 if (goodCountIncrement > 1)
@@ -622,6 +623,8 @@ public class Web
                             else
                             if (response.startsWith("<div class=\"product-unavailable-text\">", i))
                             {
+                                ++divLevel;
+
                                 goodCountType      = MainDatabase.UNIT_TYPE_ITEMS;
                                 goodCountIncrement = 1;
                                 goodEnabled        = MainDatabase.DISABLED;
