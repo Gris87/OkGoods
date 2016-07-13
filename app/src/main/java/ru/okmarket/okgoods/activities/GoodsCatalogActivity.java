@@ -605,7 +605,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
                     for (int i = 0; i < Web.OKEY_DOSTAVKA_RU_SHOPS.length; ++i)
                     {
-                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mCategoryId, 0)
+                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mCategoryId, true)
                                 , new Response.Listener<String>()
                                 {
                                     private String mShop;
@@ -626,90 +626,83 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     @Override
                                     public void onResponse(String response)
                                     {
-                                        int pageCount = Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mCategoryId, 0);
+                                        boolean hasPages = Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mCategoryId, true);
                                         loadPartiallyCompleted(webCategories, webGoods);
 
                                         --mRequestsInProgress;
 
-                                        if (pageCount > 1)
+                                        if (hasPages)
                                         {
-                                            for (int i = 1; i < pageCount; ++i)
-                                            {
-                                                StringRequest request2 = new StringRequest(Request.Method.GET, Web.getCatalogUrl(mShop, mShopId, mCategoryId, i)
-                                                        , new Response.Listener<String>()
+                                            StringRequest request2 = new StringRequest(Request.Method.GET, Web.getCatalogUrl(mShop, mShopId, mCategoryId, false)
+                                                    , new Response.Listener<String>()
+                                                    {
+                                                        private String mShop;
+                                                        private int    mShopId;
+
+
+
+                                                        public Response.Listener<String> init(String shop, int shopId)
                                                         {
-                                                            private String mShop;
-                                                            private int    mShopId;
-                                                            private int    mPageIndex;
+                                                            mShop      = shop;
+                                                            mShopId    = shopId;
+
+                                                            return this;
+                                                        }
 
 
 
-                                                            public Response.Listener<String> init(String shop, int shopId, int pageIndex)
+                                                        @Override
+                                                        public void onResponse(String response)
+                                                        {
+                                                            Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mCategoryId, false);
+                                                            loadPartiallyCompleted(webCategories, webGoods);
+
+                                                            --mRequestsInProgress;
+
+                                                            if (mRequestsInProgress == 0)
                                                             {
-                                                                mShop      = shop;
-                                                                mShopId    = shopId;
-                                                                mPageIndex = pageIndex;
-
-                                                                return this;
-                                                            }
-
-
-
-                                                            @Override
-                                                            public void onResponse(String response)
-                                                            {
-                                                                Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mCategoryId, mPageIndex);
-                                                                loadPartiallyCompleted(webCategories, webGoods);
-
-                                                                --mRequestsInProgress;
-
-                                                                if (mRequestsInProgress == 0)
-                                                                {
-                                                                    loadCompleted(webCategories, webGoods);
-                                                                }
+                                                                loadCompleted(webCategories, webGoods);
                                                             }
                                                         }
-                                                        .init(mShop, mShopId, i)
-                                                        , new Response.ErrorListener()
+                                                    }
+                                                    .init(mShop, mShopId)
+                                                    , new Response.ErrorListener()
+                                                    {
+                                                        private String mShop;
+                                                        private int    mShopId;
+
+
+
+                                                        public Response.ErrorListener init(String shop, int shopId)
                                                         {
-                                                            private String mShop;
-                                                            private int    mShopId;
-                                                            private int    mPageIndex;
+                                                            mShop      = shop;
+                                                            mShopId    = shopId;
+
+                                                            return this;
+                                                        }
 
 
 
-                                                            public Response.ErrorListener init(String shop, int shopId, int pageIndex)
+                                                        @Override
+                                                        public void onErrorResponse(VolleyError error)
+                                                        {
+                                                            AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mShop, mShopId, mCategoryId, false));
+
+                                                            --mRequestsInProgress;
+
+                                                            if (mRequestsInProgress == 0)
                                                             {
-                                                                mShop      = shop;
-                                                                mShopId    = shopId;
-                                                                mPageIndex = pageIndex;
-
-                                                                return this;
-                                                            }
-
-
-
-                                                            @Override
-                                                            public void onErrorResponse(VolleyError error)
-                                                            {
-                                                                AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mShop, mShopId, mCategoryId, mPageIndex));
-
-                                                                --mRequestsInProgress;
-
-                                                                if (mRequestsInProgress == 0)
-                                                                {
-                                                                    loadCompleted(webCategories, webGoods);
-                                                                }
+                                                                loadCompleted(webCategories, webGoods);
                                                             }
                                                         }
-                                                        .init(mShop, mShopId, i)
-                                                );
+                                                    }
+                                                    .init(mShop, mShopId)
+                                            );
 
-                                                request2.setTag(TAG);
+                                            request2.setTag(TAG);
 
-                                                mHttpClient.addToRequestQueue(request2);
-                                                ++mRequestsInProgress;
-                                            }
+                                            mHttpClient.addToRequestQueue(request2);
+                                            ++mRequestsInProgress;
                                         }
                                         else
                                         {
@@ -741,7 +734,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     @Override
                                     public void onErrorResponse(VolleyError error)
                                     {
-                                        AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mShop, mShopId, mCategoryId, 0));
+                                        AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mShop, mShopId, mCategoryId, true));
 
                                         --mRequestsInProgress;
 
