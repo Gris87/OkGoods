@@ -3354,7 +3354,7 @@ public class MainDatabase extends SQLiteOpenHelper
             if (values[i] != null)
             {
                 builder.append("\'");
-                builder.append(String.valueOf(values[i]).replace("\'", "\'\'").replace("\"", "\"\""));
+                builder.append(String.valueOf(values[i]).replace("\'", "\'\'"));
                 builder.append("\'");
             }
             else
