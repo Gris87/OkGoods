@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 
-import java.text.ParseException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -58,6 +59,7 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String COLUMN_SERVICES_SET        = "_services_set";
     public static final String COLUMN_PARENT_ID           = "_parent_id";
     public static final String COLUMN_IMAGE_NAME          = "_image_name";
+    public static final String COLUMN_PRIORITY            = "_priority";
     public static final String COLUMN_UPDATE_TIME         = "_update_time";
     public static final String COLUMN_ENABLED             = "_enabled";
     public static final String COLUMN_CATEGORY_ID         = "_category_id";
@@ -65,6 +67,10 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final String COLUMN_COST                = "_cost";
     public static final String COLUMN_UNIT                = "_unit";
     public static final String COLUMN_UNIT_TYPE           = "_unit_type";
+    public static final String COLUMN_COUNT_INCREMENT     = "_count_increment";
+    public static final String COLUMN_COUNT_TYPE          = "_count_type";
+    public static final String COLUMN_ATTRS               = "_attrs";
+    public static final String COLUMN_ATTRS_DETAILS       = "_attrs_details";
     public static final String COLUMN_GOOD_ID             = "_good_id";
     public static final String COLUMN_COUNT               = "_count";
     public static final String COLUMN_DATE                = "_date";
@@ -101,6 +107,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 COLUMN_PARENT_ID,
                                                                 COLUMN_NAME,
                                                                 COLUMN_IMAGE_NAME,
+                                                                COLUMN_PRIORITY,
                                                                 COLUMN_UPDATE_TIME,
                                                                 COLUMN_ENABLED
                                                             };
@@ -113,6 +120,11 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 COLUMN_COST,
                                                                 COLUMN_UNIT,
                                                                 COLUMN_UNIT_TYPE,
+                                                                COLUMN_COUNT_INCREMENT,
+                                                                COLUMN_COUNT_TYPE,
+                                                                COLUMN_ATTRS,
+                                                                COLUMN_ATTRS_DETAILS,
+                                                                COLUMN_PRIORITY,
                                                                 COLUMN_UPDATE_TIME,
                                                                 COLUMN_ENABLED
                                                             };
@@ -169,10 +181,10 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                     COLUMN_IS_HYPERMARKET      + " INTEGER NOT NULL, "                                                                               +
                                                                     COLUMN_LATITUDE            + " REAL NOT NULL CHECK (" + COLUMN_LATITUDE  + " >= -90)  CHECK (" + COLUMN_LATITUDE  + " <= 90), "  +
                                                                     COLUMN_LONGITUDE           + " REAL NOT NULL CHECK (" + COLUMN_LONGITUDE + " >= -180) CHECK (" + COLUMN_LONGITUDE + " <= 180), " +
-                                                                    COLUMN_PHONE               + " TEXT NOT NULL, "                                                                                  +
-                                                                    COLUMN_WORK_HOURS          + " TEXT NOT NULL, "                                                                                  +
+                                                                    COLUMN_PHONE               + " TEXT, "                                                                                           +
+                                                                    COLUMN_WORK_HOURS          + " TEXT, "                                                                                           +
                                                                     COLUMN_SQUARE              + " INTEGER NOT NULL, "                                                                               +
-                                                                    COLUMN_OPENING_DATE        + " TEXT NOT NULL, "                                                                                  +
+                                                                    COLUMN_OPENING_DATE        + " TEXT, "                                                                                           +
                                                                     COLUMN_PARKING_PLACES      + " INTEGER NOT NULL, "                                                                               +
                                                                     COLUMN_NUMBER_OF_CASHBOXES + " INTEGER NOT NULL, "                                                                               +
                                                                     COLUMN_SERVICES_SET        + " INTEGER NOT NULL "                                                                                +
@@ -182,23 +194,29 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 "(" +
                                                                     COLUMN_ID          + " INTEGER PRIMARY KEY, " +
                                                                     COLUMN_PARENT_ID   + " INTEGER NOT NULL, "    +
-                                                                    COLUMN_NAME        + " TEXT NOT NULL, "       +
-                                                                    COLUMN_IMAGE_NAME  + " TEXT NOT NULL, "       +
+                                                                    COLUMN_NAME        + " TEXT, "                +
+                                                                    COLUMN_IMAGE_NAME  + " TEXT, "                +
+                                                                    COLUMN_PRIORITY    + " INTEGER NOT NULL, "    +
                                                                     COLUMN_UPDATE_TIME + " INTEGER NOT NULL, "    +
                                                                     COLUMN_ENABLED     + " INTEGER NOT NULL "     +
                                                                 ");";
 
     private static final String GOODS_TABLE_CREATE =            "CREATE TABLE " + GOODS_TABLE_NAME + " " +
                                                                 "(" +
-                                                                    COLUMN_ID          + " INTEGER PRIMARY KEY, "                                                                +
-                                                                    COLUMN_CATEGORY_ID + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + "(" + COLUMN_ID + "), " +
-                                                                    COLUMN_NAME        + " TEXT NOT NULL, "                                                                      +
-                                                                    COLUMN_IMAGE_ID    + " INTEGER NOT NULL, "                                                                   +
-                                                                    COLUMN_COST        + " REAL NOT NULL, "                                                                      +
-                                                                    COLUMN_UNIT        + " REAL NOT NULL, "                                                                      +
-                                                                    COLUMN_UNIT_TYPE   + " INTEGER NOT NULL, "                                                                   +
-                                                                    COLUMN_UPDATE_TIME + " INTEGER NOT NULL, "                                                                   +
-                                                                    COLUMN_ENABLED     + " INTEGER NOT NULL "                                                                    +
+                                                                    COLUMN_ID              + " INTEGER PRIMARY KEY, "                                                                +
+                                                                    COLUMN_CATEGORY_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + "(" + COLUMN_ID + "), " +
+                                                                    COLUMN_NAME            + " TEXT, "                                                                               +
+                                                                    COLUMN_IMAGE_ID        + " INTEGER NOT NULL, "                                                                   +
+                                                                    COLUMN_COST            + " REAL NOT NULL, "                                                                      +
+                                                                    COLUMN_UNIT            + " REAL NOT NULL, "                                                                      +
+                                                                    COLUMN_UNIT_TYPE       + " INTEGER NOT NULL, "                                                                   +
+                                                                    COLUMN_COUNT_INCREMENT + " REAL NOT NULL, "                                                                      +
+                                                                    COLUMN_COUNT_TYPE      + " INTEGER NOT NULL, "                                                                   +
+                                                                    COLUMN_ATTRS           + " TEXT, "                                                                               +
+                                                                    COLUMN_ATTRS_DETAILS   + " TEXT, "                                                                               +
+                                                                    COLUMN_PRIORITY        + " INTEGER NOT NULL, "                                                                   +
+                                                                    COLUMN_UPDATE_TIME     + " INTEGER NOT NULL, "                                                                   +
+                                                                    COLUMN_ENABLED         + " INTEGER NOT NULL "                                                                    +
                                                                 ");";
 
     private static final String SELECTED_GOODS_TABLE_CREATE =   "CREATE TABLE " + SELECTED_GOODS_TABLE_NAME + " " +
@@ -3194,47 +3212,47 @@ public class MainDatabase extends SQLiteOpenHelper
 
     private void fillGoodsCategoriesTable(SQLiteDatabase db)
     {
-        insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_ROOT, SPECIAL_ID_NONE, "", "", 0, ENABLED);
+        insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_ROOT, SPECIAL_ID_NONE, null, null, 0, 0, ENABLED);
 
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15058,          SPECIAL_ID_ROOT, "Алкогольные напитки",         "categories/Alcohol%20products.jpg", 0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15060,          15058,           "Крепкий алкоголь",            "categories/2-HardLiquor.jpg",       0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 23056,          15060,           "Водка",                       "categories/vodka.jpg",              0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 20554,          15058,           "Вино",                        "categories/Vine.jpg",               0, DISABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16052,          SPECIAL_ID_ROOT, "Кондитерские изделия",        "categories/Pastry.jpg",             0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16056,          16052,           "Мучные кондитерские изделия", "categories/2-Pastry.jpg",           0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 32053,          16056,           "Вафли",                       "categories/Waffles.jpg",            0, ENABLED);
-            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_OWN, SPECIAL_ID_ROOT, "К чаю",                       "",                                  0, FORCE_ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15058,          SPECIAL_ID_ROOT, "Алкогольные напитки",         "categories/Alcohol%20products.jpg", 1, 0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 15060,          15058,           "Крепкий алкоголь",            "categories/2-HardLiquor.jpg",       1, 0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 23056,          15060,           "Водка",                       "categories/vodka.jpg",              1, 0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 20554,          15058,           "Вино",                        "categories/Vine.jpg",               2, 0, DISABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16052,          SPECIAL_ID_ROOT, "Кондитерские изделия",        "categories/Pastry.jpg",             2, 0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 16056,          16052,           "Мучные кондитерские изделия", "categories/2-Pastry.jpg",           1, 0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, 32053,          16056,           "Вафли",                       "categories/Waffles.jpg",            1, 0, ENABLED);
+            insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_OWN, SPECIAL_ID_ROOT, "К чаю",                       null,                                1, 0, FORCE_ENABLED);
         }
     }
 
     private void fillGoodsTable(SQLiteDatabase db)
     {
-        insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, SPECIAL_ID_ROOT, SPECIAL_ID_NONE, "", 0, 0.00, 0, UNIT_TYPE_NOTHING, 0, DISABLED);
+        insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, SPECIAL_ID_ROOT, SPECIAL_ID_NONE, null, 0, 0.00, 0, UNIT_TYPE_NOTHING, 0, UNIT_TYPE_NOTHING, null, null, 0, 0, DISABLED);
 
         if (BuildConfig.DEBUG)
         {
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 222807,         23056,           "Водка Русский Стандарт Платинум алк.40% 0,5л",                        40097,  669.00, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 225066,         23056,           "Водка Царская Оригинальная алк 40% 1л",                               148652, 699.00, 1,     UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 230084,         23056,           "Клюквенный спиртовой напиток Финляндия Рэдберри 0.7л",                195872, 973.39, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 233821,         23056,           "Водка Хортиця Классическая 0.5 л 40% об.",                            709544, 350.70, 0.5,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 249995,         23056,           "Водка Пять озер 40% 0.25 л",                                          699573, 175.35, 0.25,  UNIT_TYPE_LITER,    0, DISABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 250787,         23056,           "Водка Русский Стандарт 40% 0.7л",                                     696684, 767.16, 0.7,   UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 253396,         23056,           "Водка Парламент Классик алк.40% 0,5л",                                148144, 359.00,  0.5,  UNIT_TYPE_LITER,    0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 75578,          32053,           "Вафли Коровка топленое молоко 150г",                                  367208, 46.02,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 93820,          32053,           "Вафельные рулетики ОКЕЙ со вкусом и ароматом сгущенного молока 150г", 684735, 36.90,  0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 179713,         32053,           "Трубочки вафельные Finetti с ореховой начинкой 45г",                  703866, 70.90,  0.045, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 196931,         32053,           "Вафли Loacker хрустящие с лесным орехом 175г",                        378137, 159.06, 0.175, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 241659,         32053,           "Вафли Рот Фронт Лесная быль 250г",                                    662871, 114.00, 0.25,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 243456,         32053,           "Вафли ТЧН! с ароматом сгущённого молока 200г",                        628977, 24.99,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 655311,         32053,           "Вафли Неаполитанер с ореховым кремом 150г",                           738256, 124.00, 0.15,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 667280,         32053,           "Вафли Яшкино сливочные. 200г",                                        303312, 33.32,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 667282,         32053,           "Вафли Яшкино голландские карамельная начинка. 290г",                  437906, 68.82,  0.29,  UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 674474,         32053,           "Вафли Вереск с ароматом лесного ореха 105г",                          743387, 19.48,  0.105, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 674476,         32053,           "Вафли Вереск со вкусом крем-брюле 105г",                              743382, 19.48,  0.105, UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 728483,         32053,           "Вафли ТЧН! с ванильно-сливочным ароматом 200г",                       764935, 24.99,  0.2,   UNIT_TYPE_KILOGRAM, 0, ENABLED);
-            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, SPECIAL_ID_OWN, SPECIAL_ID_ROOT, "Наш любимый хлеб",                                                    0,      0.00,   0,     UNIT_TYPE_NOTHING,  0, FORCE_ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 222807,         23056,           "Водка Русский Стандарт Платинум алк.40% 0,5л",                        40097,  669.00, 0.5,   UNIT_TYPE_LITER,    1, UNIT_TYPE_ITEMS, null, null, 1,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 225066,         23056,           "Водка Царская Оригинальная алк 40% 1л",                               148652, 699.00, 1,     UNIT_TYPE_LITER,    1, UNIT_TYPE_ITEMS, null, null, 2,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 230084,         23056,           "Клюквенный спиртовой напиток Финляндия Рэдберри 0.7л",                195872, 973.39, 0.7,   UNIT_TYPE_LITER,    1, UNIT_TYPE_ITEMS, null, null, 3,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 233821,         23056,           "Водка Хортиця Классическая 0.5 л 40% об.",                            709544, 350.70, 0.5,   UNIT_TYPE_LITER,    1, UNIT_TYPE_ITEMS, null, null, 4,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 249995,         23056,           "Водка Пять озер 40% 0.25 л",                                          699573, 175.35, 0.25,  UNIT_TYPE_LITER,    1, UNIT_TYPE_ITEMS, null, null, 5,  0, DISABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 250787,         23056,           "Водка Русский Стандарт 40% 0.7л",                                     696684, 767.16, 0.7,   UNIT_TYPE_LITER,    1, UNIT_TYPE_ITEMS, null, null, 6,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 253396,         23056,           "Водка Парламент Классик алк.40% 0,5л",                                148144, 359.00, 0.5,   UNIT_TYPE_LITER,    1, UNIT_TYPE_ITEMS, null, null, 7,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 75578,          32053,           "Вафли Коровка топленое молоко 150г",                                  367208, 46.02,  0.15,  UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 1,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 93820,          32053,           "Вафельные рулетики ОКЕЙ со вкусом и ароматом сгущенного молока 150г", 684735, 36.90,  0.15,  UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 2,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 179713,         32053,           "Трубочки вафельные Finetti с ореховой начинкой 45г",                  703866, 70.90,  0.045, UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 3,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 196931,         32053,           "Вафли Loacker хрустящие с лесным орехом 175г",                        378137, 159.06, 0.175, UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 4,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 241659,         32053,           "Вафли Рот Фронт Лесная быль 250г",                                    662871, 114.00, 0.25,  UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 5,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 243456,         32053,           "Вафли ТЧН! с ароматом сгущённого молока 200г",                        628977, 24.99,  0.2,   UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 6,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 655311,         32053,           "Вафли Неаполитанер с ореховым кремом 150г",                           738256, 124.00, 0.15,  UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 7,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 667280,         32053,           "Вафли Яшкино сливочные. 200г",                                        303312, 33.32,  0.2,   UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 8,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 667282,         32053,           "Вафли Яшкино голландские карамельная начинка. 290г",                  437906, 68.82,  0.29,  UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 9,  0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 674474,         32053,           "Вафли Вереск с ароматом лесного ореха 105г",                          743387, 19.48,  0.105, UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 10, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 674476,         32053,           "Вафли Вереск со вкусом крем-брюле 105г",                              743382, 19.48,  0.105, UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 11, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, 728483,         32053,           "Вафли ТЧН! с ванильно-сливочным ароматом 200г",                       764935, 24.99,  0.2,   UNIT_TYPE_KILOGRAM, 1, UNIT_TYPE_ITEMS, null, null, 12, 0, ENABLED);
+            insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, SPECIAL_ID_OWN, SPECIAL_ID_ROOT, "Наш любимый хлеб",                                                    0,      0.00,   0,     UNIT_TYPE_NOTHING,  1, UNIT_TYPE_ITEMS, null, null, 1,  0, FORCE_ENABLED);
         }
     }
 
@@ -3333,9 +3351,16 @@ public class MainDatabase extends SQLiteOpenHelper
                 builder.append(", ");
             }
 
-            builder.append("\'");
-            builder.append(String.valueOf(values[i]).replace("\'", "\'\'").replace("\"", "\"\""));
-            builder.append("\'");
+            if (values[i] != null)
+            {
+                builder.append("\'");
+                builder.append(String.valueOf(values[i]).replace("\'", "\'\'").replace("\"", "\"\""));
+                builder.append("\'");
+            }
+            else
+            {
+                builder.append("null");
+            }
         }
 
         builder.append(");");
@@ -3456,7 +3481,7 @@ public class MainDatabase extends SQLiteOpenHelper
             {
                 shop.setOpeningDate(dateFormat.parse(cursor.getString(openingDateColumnIndex)));
             }
-            catch (ParseException e)
+            catch (Exception e)
             {
                 shop.setOpeningDate(null);
             }
@@ -3531,7 +3556,7 @@ public class MainDatabase extends SQLiteOpenHelper
             {
                 res.setOpeningDate(dateFormat.parse(cursor.getString(openingDateColumnIndex)));
             }
-            catch (ParseException e)
+            catch (Exception e)
             {
                 res.setOpeningDate(null);
             }
@@ -3565,7 +3590,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                     String.valueOf(parentCategoryId),
                                     String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
                             }
-                    , null, null, null);
+                    , null, null, COLUMN_PRIORITY);
         }
         else
         {
@@ -3575,7 +3600,7 @@ public class MainDatabase extends SQLiteOpenHelper
                             {
                                     String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
                             }
-                    , null, null, COLUMN_ENABLED);
+                    , null, null, COLUMN_ENABLED + ", " + COLUMN_PRIORITY);
         }
 
 
@@ -3584,6 +3609,7 @@ public class MainDatabase extends SQLiteOpenHelper
         int parentIdColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_PARENT_ID);
         int nameColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_NAME);
         int imageNameColumnIndex  = cursor.getColumnIndexOrThrow(COLUMN_IMAGE_NAME);
+        int priorityColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_PRIORITY);
         int updateTimeColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_UPDATE_TIME);
         int enabledColumnIndex    = cursor.getColumnIndexOrThrow(COLUMN_ENABLED);
 
@@ -3599,8 +3625,10 @@ public class MainDatabase extends SQLiteOpenHelper
             category.setParentId(  cursor.getInt(parentIdColumnIndex));
             category.setName(      cursor.getString(nameColumnIndex));
             category.setImageName( cursor.getString(imageNameColumnIndex));
+            category.setPriority(  cursor.getInt(priorityColumnIndex));
             category.setUpdateTime(cursor.getLong(updateTimeColumnIndex));
             category.setEnabled(   cursor.getInt(enabledColumnIndex));
+            category.setExpanded(  false);
 
             res.add(category);
 
@@ -3666,7 +3694,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                     String.valueOf(categoryId),
                                     String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
                             }
-                    , null, null, null
+                    , null, null, COLUMN_PRIORITY
                     , limit ? "10" : null);
         }
         else
@@ -3677,21 +3705,26 @@ public class MainDatabase extends SQLiteOpenHelper
                             {
                                     String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
                             }
-                    , null, null, null
+                    , null, null, COLUMN_ENABLED + ", " + COLUMN_PRIORITY
                     , limit ? "10" : null);
         }
 
 
 
-        int idColumnIndex         = cursor.getColumnIndexOrThrow(COLUMN_ID);
-        int categoryIdColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
-        int nameColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_NAME);
-        int imageIdColumnIndex    = cursor.getColumnIndexOrThrow(COLUMN_IMAGE_ID);
-        int costColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_COST);
-        int unitColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_UNIT);
-        int unitTypeColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_UNIT_TYPE);
-        int updateTimeColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_UPDATE_TIME);
-        int enabledColumnIndex    = cursor.getColumnIndexOrThrow(COLUMN_ENABLED);
+        int idColumnIndex             = cursor.getColumnIndexOrThrow(COLUMN_ID);
+        int categoryIdColumnIndex     = cursor.getColumnIndexOrThrow(COLUMN_CATEGORY_ID);
+        int nameColumnIndex           = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+        int imageIdColumnIndex        = cursor.getColumnIndexOrThrow(COLUMN_IMAGE_ID);
+        int costColumnIndex           = cursor.getColumnIndexOrThrow(COLUMN_COST);
+        int unitColumnIndex           = cursor.getColumnIndexOrThrow(COLUMN_UNIT);
+        int unitTypeColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_UNIT_TYPE);
+        int countIncrementColumnIndex = cursor.getColumnIndexOrThrow(COLUMN_COUNT_INCREMENT);
+        int countTypeColumnIndex      = cursor.getColumnIndexOrThrow(COLUMN_COUNT_TYPE);
+        int attrsColumnIndex          = cursor.getColumnIndexOrThrow(COLUMN_ATTRS);
+        int attrsDetailsColumnIndex   = cursor.getColumnIndexOrThrow(COLUMN_ATTRS_DETAILS);
+        int priorityColumnIndex       = cursor.getColumnIndexOrThrow(COLUMN_PRIORITY);
+        int updateTimeColumnIndex     = cursor.getColumnIndexOrThrow(COLUMN_UPDATE_TIME);
+        int enabledColumnIndex        = cursor.getColumnIndexOrThrow(COLUMN_ENABLED);
 
 
 
@@ -3701,15 +3734,33 @@ public class MainDatabase extends SQLiteOpenHelper
         {
             GoodEntity good = new GoodEntity();
 
-            good.setId(        cursor.getInt(idColumnIndex));
-            good.setCategoryId(cursor.getInt(categoryIdColumnIndex));
-            good.setName(      cursor.getString(nameColumnIndex));
-            good.setImageId(   cursor.getInt(imageIdColumnIndex));
-            good.setCost(      cursor.getDouble(costColumnIndex));
-            good.setUnit(      cursor.getDouble(unitColumnIndex));
-            good.setUnitType(  cursor.getInt(unitTypeColumnIndex));
-            good.setUpdateTime(cursor.getLong(updateTimeColumnIndex));
-            good.setEnabled(   cursor.getInt(enabledColumnIndex));
+            good.setId(            cursor.getInt(idColumnIndex));
+            good.setCategoryId(    cursor.getInt(categoryIdColumnIndex));
+            good.setName(          cursor.getString(nameColumnIndex));
+            good.setImageId(       cursor.getInt(imageIdColumnIndex));
+            good.setCost(          cursor.getDouble(costColumnIndex));
+            good.setUnit(          cursor.getDouble(unitColumnIndex));
+            good.setUnitType(      cursor.getInt(unitTypeColumnIndex));
+            good.setCountIncrement(cursor.getDouble(countIncrementColumnIndex));
+            good.setCountType(     cursor.getInt(countTypeColumnIndex));
+            String attrs        =  cursor.getString(attrsColumnIndex);
+            String attrsDetails =  cursor.getString(attrsDetailsColumnIndex);
+            good.setPriority(      cursor.getInt(priorityColumnIndex));
+            good.setUpdateTime(    cursor.getLong(updateTimeColumnIndex));
+            good.setEnabled(       cursor.getInt(enabledColumnIndex));
+
+            try
+            {
+                good.setAttrs(       !TextUtils.isEmpty(attrs)        ? new JSONObject(attrs)        : null);
+                good.setAttrsDetails(!TextUtils.isEmpty(attrsDetails) ? new JSONObject(attrsDetails) : null);
+            }
+            catch (Exception e)
+            {
+                AppLog.e(TAG, "Failed to parse JSON", e);
+
+                good.setAttrs(       null);
+                good.setAttrsDetails(null);
+            }
 
             res.add(good);
 
@@ -3939,6 +3990,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 , category.getParentId()
                 , category.getName()
                 , category.getImageName()
+                , category.getPriority()
                 , category.getUpdateTime()
                 , category.getEnabled());
     }
@@ -3949,6 +4001,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         values.put(COLUMN_NAME,       category.getName());
         values.put(COLUMN_IMAGE_NAME, category.getImageName());
+        values.put(COLUMN_PRIORITY,   category.getPriority());
         values.put(COLUMN_ENABLED,    category.getEnabled());
 
         db.update(GOODS_CATEGORIES_TABLE_NAME, values
@@ -3983,6 +4036,11 @@ public class MainDatabase extends SQLiteOpenHelper
                 , good.getCost()
                 , good.getUnit()
                 , good.getUnitType()
+                , good.getCountIncrement()
+                , good.getCountType()
+                , good.getAttrs()        != null ? good.getAttrs().toString()        : null
+                , good.getAttrsDetails() != null ? good.getAttrsDetails().toString() : null
+                , good.getPriority()
                 , good.getUpdateTime()
                 , good.getEnabled());
     }
@@ -3991,12 +4049,17 @@ public class MainDatabase extends SQLiteOpenHelper
     {
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_NAME,      good.getName());
-        values.put(COLUMN_IMAGE_ID,  good.getImageId());
-        values.put(COLUMN_COST,      good.getCost());
-        values.put(COLUMN_UNIT,      good.getUnit());
-        values.put(COLUMN_UNIT_TYPE, good.getUnitType());
-        values.put(COLUMN_ENABLED,   good.getEnabled());
+        values.put(COLUMN_NAME,            good.getName());
+        values.put(COLUMN_IMAGE_ID,        good.getImageId());
+        values.put(COLUMN_COST,            good.getCost());
+        values.put(COLUMN_UNIT,            good.getUnit());
+        values.put(COLUMN_UNIT_TYPE,       good.getUnitType());
+        values.put(COLUMN_COUNT_INCREMENT, good.getCountIncrement());
+        values.put(COLUMN_COUNT_TYPE,      good.getCountType());
+        values.put(COLUMN_ATTRS,           good.getAttrs()        != null ? good.getAttrs().toString()        : null);
+        values.put(COLUMN_ATTRS_DETAILS,   good.getAttrsDetails() != null ? good.getAttrsDetails().toString() : null);
+        values.put(COLUMN_PRIORITY,        good.getPriority());
+        values.put(COLUMN_ENABLED,         good.getEnabled());
 
         db.update(GOODS_TABLE_NAME, values
                 , COLUMN_ID + " = ?"

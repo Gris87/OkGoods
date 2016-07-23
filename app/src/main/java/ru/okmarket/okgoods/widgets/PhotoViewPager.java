@@ -38,7 +38,7 @@ public class PhotoViewPager extends ViewPager
         {
             return super.onInterceptTouchEvent(event);
         }
-        catch (IllegalArgumentException e)
+        catch (Exception e)
         {
             // Nothing
         }

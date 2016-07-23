@@ -1,3 +1,5 @@
+nulls in shops table
+Improve settings
 Settings class
 Wait for animation finish before set attributes in History/SelectedGoods lists
 Take from cache while offline

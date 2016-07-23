@@ -2,10 +2,14 @@ package ru.okmarket.okgoods.db.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+
+import org.json.JSONObject;
 
 import java.util.Locale;
 
 import ru.okmarket.okgoods.db.MainDatabase;
+import ru.okmarket.okgoods.util.AppLog;
 
 public class GoodEntity implements Parcelable
 {
@@ -14,29 +18,43 @@ public class GoodEntity implements Parcelable
 
 
 
-    private int     mId;
-    private int     mCategoryId;
-    private String  mName;
-    private int     mImageId;
-    private double  mCost;
-    private double  mUnit;
-    private int     mUnitType;
-    private long    mUpdateTime;
-    private int     mEnabled;
+    public static final String ATTRIBUTE_BRAND = "brand";
+
+
+
+    private int        mId;
+    private int        mCategoryId;
+    private String     mName;
+    private int        mImageId;
+    private double     mCost;
+    private double     mUnit;
+    private int        mUnitType;
+    private double     mCountIncrement;
+    private int        mCountType;
+    private JSONObject mAttrs;
+    private JSONObject mAttrsDetails;
+    private int        mPriority;
+    private long       mUpdateTime;
+    private int        mEnabled;
 
 
 
     public GoodEntity()
     {
-        mId         = 0;
-        mCategoryId = 0;
-        mName       = null;
-        mImageId    = 0;
-        mCost       = 0;
-        mUnit       = 0;
-        mUnitType   = MainDatabase.UNIT_TYPE_NOTHING;
-        mUpdateTime = 0;
-        mEnabled    = 0;
+        mId             = 0;
+        mCategoryId     = 0;
+        mName           = null;
+        mImageId        = 0;
+        mCost           = 0;
+        mUnit           = 0;
+        mUnitType       = MainDatabase.UNIT_TYPE_NOTHING;
+        mCountIncrement = 0;
+        mCountType      = MainDatabase.UNIT_TYPE_NOTHING;
+        mAttrs          = null;
+        mAttrsDetails   = null;
+        mPriority       = 0;
+        mUpdateTime     = 0;
+        mEnabled        = 0;
     }
 
     @Override
@@ -147,6 +165,56 @@ public class GoodEntity implements Parcelable
         mUnitType = unitType;
     }
 
+    public double getCountIncrement()
+    {
+        return mCountIncrement;
+    }
+
+    public void setCountIncrement(double countIncrement)
+    {
+        mCountIncrement = countIncrement;
+    }
+
+    public int getCountType()
+    {
+        return mCountType;
+    }
+
+    public void setCountType(int countType)
+    {
+        mCountType = countType;
+    }
+
+    public JSONObject getAttrs()
+    {
+        return mAttrs;
+    }
+
+    public void setAttrs(JSONObject attrs)
+    {
+        mAttrs = attrs;
+    }
+
+    public JSONObject getAttrsDetails()
+    {
+        return mAttrsDetails;
+    }
+
+    public void setAttrsDetails(JSONObject attrsDetails)
+    {
+        mAttrsDetails = attrsDetails;
+    }
+
+    public int getPriority()
+    {
+        return mPriority;
+    }
+
+    public void setPriority(int priority)
+    {
+        mPriority = priority;
+    }
+
     public long getUpdateTime()
     {
         return mUpdateTime;
@@ -188,11 +256,16 @@ public class GoodEntity implements Parcelable
     {
         out.writeInt(mId);
         out.writeInt(mCategoryId);
-        out.writeString(mName);
+        out.writeString(mName != null ? mName : "");
         out.writeInt(mImageId);
         out.writeDouble(mCost);
         out.writeDouble(mUnit);
         out.writeInt(mUnitType);
+        out.writeDouble(mCountIncrement);
+        out.writeInt(mCountType);
+        out.writeString(mAttrs        != null ? mAttrs.toString()        : "");
+        out.writeString(mAttrsDetails != null ? mAttrsDetails.toString() : "");
+        out.writeInt(mPriority);
         out.writeLong(mUpdateTime);
         out.writeInt(mEnabled);
     }
@@ -214,14 +287,37 @@ public class GoodEntity implements Parcelable
 
     private GoodEntity(Parcel in)
     {
-        mId         = in.readInt();
-        mCategoryId = in.readInt();
-        mName       = in.readString();
-        mImageId    = in.readInt();
-        mCost       = in.readDouble();
-        mUnit       = in.readDouble();
-        mUnitType   = in.readInt();
-        mUpdateTime = in.readLong();
-        mEnabled    = in.readInt();
+        mId                 = in.readInt();
+        mCategoryId         = in.readInt();
+        mName               = in.readString();
+        mImageId            = in.readInt();
+        mCost               = in.readDouble();
+        mUnit               = in.readDouble();
+        mUnitType           = in.readInt();
+        mCountIncrement     = in.readDouble();
+        mCountType          = in.readInt();
+        String attrs        = in.readString();
+        String attrsDetails = in.readString();
+        mPriority           = in.readInt();
+        mUpdateTime         = in.readLong();
+        mEnabled            = in.readInt();
+
+        if (TextUtils.isEmpty(mName))
+        {
+            mName = null;
+        }
+
+        try
+        {
+            mAttrs        = !TextUtils.isEmpty(attrs)        ? new JSONObject(attrs)        : null;
+            mAttrsDetails = !TextUtils.isEmpty(attrsDetails) ? new JSONObject(attrsDetails) : null;
+        }
+        catch (Exception e)
+        {
+            AppLog.e(TAG, "Failed to parse JSON", e);
+
+            mAttrs        = null;
+            mAttrsDetails = null;
+        }
     }
 }

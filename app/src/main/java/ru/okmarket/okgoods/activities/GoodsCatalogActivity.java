@@ -384,6 +384,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
                     category.setName(     webCategory.getName());
                     category.setImageName(webCategory.getImageName());
+                    category.setPriority( webCategory.getPriority());
                     category.setEnabled(  webCategory.getEnabled());
                 }
                 else
@@ -468,7 +469,12 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                         good.setUnitType(webGood.getUnitType());
                     }
 
-                    good.setEnabled( webGood.getEnabled());
+                    good.setCountIncrement(webGood.getCountIncrement());
+                    good.setCountType(     webGood.getCountType());
+                    good.setAttrs(         Utils.mergeJSONObjects(good.getAttrs(),        webGood.getAttrs()));
+                    good.setAttrsDetails(  Utils.mergeJSONObjects(good.getAttrsDetails(), webGood.getAttrsDetails()));
+                    good.setPriority(      webGood.getPriority());
+                    good.setEnabled(       webGood.getEnabled());
                 }
                 else
                 {

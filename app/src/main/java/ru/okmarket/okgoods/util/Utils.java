@@ -1,6 +1,10 @@
 package ru.okmarket.okgoods.util;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Stack;
 
 import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
@@ -35,5 +39,47 @@ public class Utils
         } while (!stack.isEmpty());
 
         return res;
+    }
+
+    public static JSONObject mergeJSONObjects(JSONObject first, JSONObject second)
+    {
+        if (first != null)
+        {
+            if (second != null)
+            {
+                Iterator<String> it = second.keys();
+
+                while (it.hasNext())
+                {
+                    String key = it.next();
+
+                    try
+                    {
+                        first.put(key, second.get(key));
+                    }
+                    catch (JSONException e)
+                    {
+                        AppLog.e(TAG, "Failed to merge JSON objects", e);
+                    }
+                }
+
+                return first;
+            }
+            else
+            {
+                return first;
+            }
+        }
+        else
+        {
+            if (second != null)
+            {
+                return second;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

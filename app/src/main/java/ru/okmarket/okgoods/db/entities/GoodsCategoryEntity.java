@@ -2,6 +2,7 @@ package ru.okmarket.okgoods.db.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import java.util.Locale;
 
@@ -18,6 +19,7 @@ public class GoodsCategoryEntity implements Parcelable
     private int     mParentId;
     private String  mName;
     private String  mImageName;
+    private int     mPriority;
     private long    mUpdateTime;
     private int     mEnabled;
     private boolean mExpanded;
@@ -30,6 +32,7 @@ public class GoodsCategoryEntity implements Parcelable
         mParentId   = 0;
         mName       = null;
         mImageName  = null;
+        mPriority   = 0;
         mUpdateTime = 0;
         mEnabled    = 0;
         mExpanded   = false;
@@ -110,6 +113,16 @@ public class GoodsCategoryEntity implements Parcelable
         mImageName = imageName;
     }
 
+    public int getPriority()
+    {
+        return mPriority;
+    }
+
+    public void setPriority(int priority)
+    {
+        mPriority = priority;
+    }
+
     public long getUpdateTime()
     {
         return mUpdateTime;
@@ -161,8 +174,9 @@ public class GoodsCategoryEntity implements Parcelable
     {
         out.writeInt(mId);
         out.writeInt(mParentId);
-        out.writeString(mName);
-        out.writeString(mImageName);
+        out.writeString(mName      != null ? mName      : "");
+        out.writeString(mImageName != null ? mImageName : "");
+        out.writeInt(mPriority);
         out.writeLong(mUpdateTime);
         out.writeInt(mEnabled);
         out.writeByte(mExpanded ? (byte)1 : (byte)0);
@@ -189,8 +203,19 @@ public class GoodsCategoryEntity implements Parcelable
         mParentId   = in.readInt();
         mName       = in.readString();
         mImageName  = in.readString();
+        mPriority   = in.readInt();
         mUpdateTime = in.readLong();
         mEnabled    = in.readInt();
         mExpanded   = (in.readByte() == (byte)1);
+
+        if (TextUtils.isEmpty(mName))
+        {
+            mName = null;
+        }
+
+        if (TextUtils.isEmpty(mImageName))
+        {
+            mImageName = null;
+        }
     }
 }

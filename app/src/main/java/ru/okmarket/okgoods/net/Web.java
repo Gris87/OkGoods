@@ -386,9 +386,10 @@ public class Web
                             category.setParentId(parentCategoryId);
                             category.setName(categoryName);
                             category.setImageName(imageName);
+                            category.setPriority(categories.size() + 1);
                             category.setUpdateTime(0);
-                            category.setExpanded(false);
                             category.setEnabled(MainDatabase.ENABLED);
+                            category.setExpanded(false);
 
                             categories.add(category);
                         }
@@ -746,6 +747,11 @@ public class Web
 
                     if (!found)
                     {
+                        JSONObject goodAttrs = new JSONObject();
+                        goodAttrs.put(GoodEntity.ATTRIBUTE_BRAND, goodBrand);
+
+
+
                         GoodEntity good = new GoodEntity();
 
                         good.setId(goodId);
@@ -755,6 +761,11 @@ public class Web
                         good.setCost(goodCost);
                         good.setUnit(goodUnit);
                         good.setUnitType(goodUnitType);
+                        good.setCountIncrement(goodCountIncrement);
+                        good.setCountType(goodCountType);
+                        good.setAttrs(goodAttrs);
+                        good.setAttrsDetails(null);
+                        good.setPriority(goods.size() + 1);
                         good.setUpdateTime(0);
                         good.setEnabled(goodEnabled);
 
