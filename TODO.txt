@@ -1,3 +1,5 @@
+Sort categories and goods on load
+AsyncTasks for parsing
 nulls in shops table
 Improve settings
 Settings class
