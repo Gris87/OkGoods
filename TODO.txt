@@ -1,3 +1,4 @@
+Remove activity_*_margin
 Sort categories and goods on load
 AsyncTasks for parsing
 nulls in shops table
