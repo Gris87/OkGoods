@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Application theme colors -->
     <color name="colorPrimary">#FF8C9EFF</color>
     <color name="colorPrimaryDark">#FF303F9F</color>
     <color name="colorAccent">#FFFF4081</color>
     <color name="windowBackground">#FFFFFFFF</color>
     <color name="textColorPrimary">#FFFFFFFF</color>
     <color name="textColor">#FF000000</color>
+
     <color name="black_overlay">#66000000</color>
     <color name="selectedShop">#FFFFECB3</color>
     <color name="progressBarInToolbar">#FFFFFFFF</color>
     <color name="noInformationColor">#80000000</color>
+
 </resources>
