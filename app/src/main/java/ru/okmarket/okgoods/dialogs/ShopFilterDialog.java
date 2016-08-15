@@ -81,6 +81,8 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
 
         View rootView = inflater.inflate(R.layout.dialog_shop_filter, null, false);
 
+
+
         mSupermarketCheckBox               = (CheckBox)              rootView.findViewById(R.id.supermarketCheckBox);
         mHypermarketCheckBox               = (CheckBox)              rootView.findViewById(R.id.hypermarketCheckBox);
         mAllDayCheckBox                    = (CheckBox)              rootView.findViewById(R.id.allDayCheckBox);
