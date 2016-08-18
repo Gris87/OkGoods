@@ -1,4 +1,5 @@
 ApplicationExtras,Preferences,Settings
+Change Preferences name
 Update to the latest SDK
 Add Google Analytics
 Send exceptions to Google Analytics
