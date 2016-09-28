@@ -1,3 +1,7 @@
+Remove paddings
+Code analysis in all files
+Add comments to colors.xml
+Gravity for each TextView
 ApplicationExtras,Preferences,Settings
 Change Preferences name
 Update to the latest SDK
