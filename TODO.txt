@@ -1,3 +1,10 @@
+Use Standard Android Material Icons
+DialogTheme/AlertTheme
+AppTheme.Blah-Blah => Blah-Blah
+FullscreenTheme => AppTheme.FullscreenTheme
+Remove "styles"
+Move pref keys and values in consts.xml
+Sepparate strings.xml in several files
 Remove paddings
 Code analysis in all files
 Add comments to colors.xml
@@ -43,10 +50,13 @@ Updater class with callbacks
 Show 10 second timer on update db action
 Auto-update options (Frequency, Wi-Fi)
 Cost statistics
-Release keys
-Free money everywhere
-Find more free money
 Google analytics
 Walls in 3D
 Stairs
 Check for noinspection, @SuppressWarnings, tools:ignore
+
+-----------------------------------
+
+Release keys
+Free money
+Publish
