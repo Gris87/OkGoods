@@ -4,7 +4,7 @@ AppTheme.Blah-Blah => Blah-Blah
 FullscreenTheme => AppTheme.FullscreenTheme
 Remove "styles"
 Move pref keys and values in consts.xml
-Sepparate strings.xml in several files
+Separate strings.xml in several files
 Remove paddings
 Code analysis in all files
 Add comments to colors.xml
@@ -53,7 +53,16 @@ Cost statistics
 Google analytics
 Walls in 3D
 Stairs
-Check for noinspection, @SuppressWarnings, tools:ignore
+
+-----------------------------------
+
+Code analysis in all files
+
+suppressLint
+suppressWarning
+//noinspection
+tools:ignore
+<!--suppress
 
 -----------------------------------
 
