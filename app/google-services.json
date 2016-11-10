@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "479557377437",
+    "project_id": "firebase-okgoods"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479557377437:android:3f4171c747fe8808",
+        "android_client_info": {
+          "package_name": "ru.okmarket.okgoods"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCn1JM86x9jHcBzEVEPaIXhbwJSPJJNs-U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-51133429-2"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

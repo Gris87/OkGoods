@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+
+    <string  name="ga_trackingId"              >UA-51133429-2</string>
+    <string  name="ga_logLevel"                >warning</string>
+    <integer name="ga_dispatchPeriod"          >1800</integer>
+    <string  name="ga_sampleFrequency"         >100.0</string>
+    <bool    name="ga_autoActivityTracking"    >true</bool>
+    <bool    name="ga_anonymizeIp"             >false</bool>
+    <bool    name="ga_reportUncaughtExceptions">true</bool>
+    <integer name="ga_sessionTimeout"          >1800</integer>
+
+    <screenName name="ru.okmarket.okgoods.activities.GoodsCatalogActivity"  >GoodsCatalogActivity</screenName>
+    <screenName name="ru.okmarket.okgoods.activities.HistoryActivity"       >HistoryActivity</screenName>
+    <screenName name="ru.okmarket.okgoods.activities.HistoryDetailsActivity">HistoryDetailsActivity</screenName>
+    <screenName name="ru.okmarket.okgoods.activities.MainActivity"          >MainActivity</screenName>
+    <screenName name="ru.okmarket.okgoods.activities.PhotoViewerActivity"   >PhotoViewerActivity</screenName>
+    <screenName name="ru.okmarket.okgoods.activities.SelectShopActivity"    >SelectShopActivity</screenName>
+    <screenName name="ru.okmarket.okgoods.activities.SettingsActivity"      >SettingsActivity</screenName>
+
+</resources>
