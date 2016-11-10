@@ -6,7 +6,6 @@ Remove "styles"
 Move pref keys and values in consts.xml
 Separate strings.xml in several files
 Remove paddings
-Code analysis in all files
 Add comments to colors.xml
 Gravity for each TextView
 ApplicationExtras,Preferences,Settings
