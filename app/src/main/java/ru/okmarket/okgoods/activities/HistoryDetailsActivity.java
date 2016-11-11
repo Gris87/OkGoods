@@ -1,6 +1,7 @@
 package ru.okmarket.okgoods.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -26,6 +27,7 @@ import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.CachedImageView;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class HistoryDetailsActivity extends AppCompatActivity
 {
     @SuppressWarnings("unused")
@@ -42,6 +44,16 @@ public class HistoryDetailsActivity extends AppCompatActivity
     private HttpClient             mHttpClient             = null;
 
 
+
+    @Override
+    public String toString()
+    {
+        return "HistoryDetailsActivity{" +
+                "mShopImageView="            + mShopImageView          +
+                ", mHistoryDetailsFragment=" + mHistoryDetailsFragment +
+                ", mHttpClient="             + mHttpClient             +
+                '}';
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -82,7 +94,7 @@ public class HistoryDetailsActivity extends AppCompatActivity
         setTitle(history);
 
         //noinspection deprecation
-        ((ProgressBar)mShopImageView.getProgressView()).getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.progressBarInToolbar), android.graphics.PorterDuff.Mode.SRC_IN);
+        ((ProgressBar)mShopImageView.getProgressView()).getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.progressBarInToolbar), PorterDuff.Mode.SRC_IN);
         ((ImageView)mShopImageView.getContentView()).setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         mHistoryDetailsFragment.setHistoryDetails(details);

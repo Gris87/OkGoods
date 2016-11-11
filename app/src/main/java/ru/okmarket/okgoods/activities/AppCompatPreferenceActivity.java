@@ -14,9 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
+ * A {@link PreferenceActivity} which implements and proxies the necessary calls
  * to be used with AppCompat.
  */
+@SuppressWarnings("ClassWithoutConstructor")
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity
 {
     @SuppressWarnings("unused")
@@ -27,6 +28,14 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
     private AppCompatDelegate mDelegate = null;
 
 
+
+    @Override
+    public String toString()
+    {
+        return "AppCompatPreferenceActivity{" +
+                "mDelegate=" + mDelegate +
+                '}';
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -127,6 +136,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
         getDelegate().onDestroy();
     }
 
+    @Override
     public void invalidateOptionsMenu()
     {
         getDelegate().invalidateOptionsMenu();

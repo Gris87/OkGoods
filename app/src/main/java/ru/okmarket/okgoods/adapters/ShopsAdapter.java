@@ -14,7 +14,7 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.other.ShopFilter;
 
-public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
+public final class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ShopViewHolder>
 {
     @SuppressWarnings("unused")
     private static final String TAG = "ShopsAdapter";
@@ -30,11 +30,24 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
 
 
 
-    public ShopsAdapter(Context context, ArrayList<ShopEntity> shops)
+    @Override
+    public String toString()
+    {
+        return "ShopsAdapter{" +
+                "mContext="               + mContext             +
+                ", mOriginalShops="       + mOriginalShops       +
+                ", mShops="               + mShops               +
+                ", mNearestShop="         + mNearestShop         +
+                ", mSelectedShop="        + mSelectedShop        +
+                ", mOnItemClickListener=" + mOnItemClickListener +
+                '}';
+    }
+
+    private ShopsAdapter(Context context, ArrayList<ShopEntity> shops)
     {
         mContext             = context;
         mOriginalShops       = shops;
-        mShops               = new ArrayList<>();
+        mShops               = new ArrayList<>(0);
         mNearestShop         = null;
         mSelectedShop        = null;
         mOnItemClickListener = null;
@@ -42,42 +55,47 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
         filter(null);
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public static ShopsAdapter newInstance(Context context, ArrayList<ShopEntity> shops)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_shop, parent, false);
-
-        return new ViewHolder(view);
+        return new ShopsAdapter(context, shops);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position)
+    public ShopViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_shop, parent, false);
+
+        return ShopViewHolder.newInstance(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final ShopViewHolder holder, int position)
     {
         final ShopEntity item = mShops.get(position);
 
-        holder.mNameTextView.setText(item.getName());
+        holder.getNameTextView().setText(item.getName());
 
         if (item == mNearestShop)
         {
-            holder.mNearestShopImageView.setVisibility(View.VISIBLE);
+            holder.getNearestShopImageView().setVisibility(View.VISIBLE);
         }
         else
         {
-            holder.mNearestShopImageView.setVisibility(View.GONE);
+            holder.getNearestShopImageView().setVisibility(View.GONE);
         }
 
         if (mSelectedShop != null && mSelectedShop.equals(item))
         {
             // noinspection deprecation
-            holder.mView.setBackgroundColor(mContext.getResources().getColor(R.color.selectedShop));
+            holder.getView().setBackgroundColor(mContext.getResources().getColor(R.color.selectedShop));
         }
         else
         {
             // noinspection deprecation
-            holder.mView.setBackgroundColor(mContext.getResources().getColor(R.color.windowBackground));
+            holder.getView().setBackgroundColor(mContext.getResources().getColor(R.color.windowBackground));
         }
 
-        holder.mView.setOnClickListener(new View.OnClickListener()
+        holder.getView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -96,13 +114,16 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
         return mShops.size();
     }
 
+    @SuppressWarnings("unused")
     public ArrayList<ShopEntity> getItems()
     {
         return mShops;
     }
 
+    @SuppressWarnings("unused")
     public void setItems(ArrayList<ShopEntity> items)
     {
+        //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         mOriginalShops = items;
 
         filter(null);
@@ -129,7 +150,10 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
         {
             ShopEntity shop = mShops.get(i);
 
-            double distance = Math.sqrt((latitude - shop.getLatitude()) * (latitude - shop.getLatitude()) + (longitude - shop.getLongitude()) * (longitude - shop.getLongitude()));
+            double dx = latitude  - shop.getLatitude();
+            double dy = longitude - shop.getLongitude();
+
+            double distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < minDistance)
             {
@@ -141,7 +165,7 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
 
         if (mNearestShop != nearestShop)
         {
-            if (mNearestShop != null && mShops.size() > 0 && mShops.get(0) == mNearestShop)
+            if (mNearestShop != null && !mShops.isEmpty() && mShops.get(0) == mNearestShop)
             {
                 mShops.remove(0);
 
@@ -194,15 +218,26 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
+    public static final class ShopViewHolder extends RecyclerView.ViewHolder
     {
-        public View      mView;
-        public TextView  mNameTextView;
-        public ImageView mNearestShopImageView;
+        private View      mView                 = null;
+        private TextView  mNameTextView         = null;
+        private ImageView mNearestShopImageView = null;
 
 
 
-        public ViewHolder(View view)
+        @Override
+        public String toString()
+        {
+            return "ShopViewHolder{" +
+                    "mView="                   + mView                 +
+                    ", mNameTextView="         + mNameTextView         +
+                    ", mNearestShopImageView=" + mNearestShopImageView +
+                    '}';
+        }
+
+        private ShopViewHolder(View view)
         {
             super(view);
 
@@ -210,12 +245,33 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder>
             mNameTextView         = (TextView) view.findViewById(R.id.nameTextView);
             mNearestShopImageView = (ImageView)view.findViewById(R.id.nearestShopImageView);
         }
+
+        public static ShopViewHolder newInstance(View view)
+        {
+            return new ShopViewHolder(view);
+        }
+
+        public View getView()
+        {
+            return mView;
+        }
+
+        public TextView getNameTextView()
+        {
+            return mNameTextView;
+        }
+
+        public ImageView getNearestShopImageView()
+        {
+            return mNearestShopImageView;
+        }
     }
 
 
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnItemClickListener
     {
-        void onShopClicked(ViewHolder viewHolder, ShopEntity shop);
+        void onShopClicked(ShopViewHolder holder, ShopEntity shop);
     }
 }

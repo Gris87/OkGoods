@@ -34,7 +34,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     private RecyclerView                     mRecyclerView           = null;
     private HistoryDetailsAdapter            mAdapter                = null;
     private TextView                         mTotalTextView          = null;
-    private HistoryDetailsAdapter.ViewHolder mSelectedViewHolder     = null;
+    private HistoryDetailsAdapter.HistoryDetailsViewHolder mSelectedViewHolder     = null;
     private HistoryDetailsEntity             mSelectedHistoryDetails = null;
     private double                           mTotal                  = 0;
 
@@ -58,7 +58,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
 
 
 
-        mAdapter = new HistoryDetailsAdapter(getActivity());
+        mAdapter = HistoryDetailsAdapter.newInstance(getActivity());
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnBindViewHolderListener(this);
 
@@ -72,7 +72,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     {
         mAdapter.setItems(details);
 
-        if (details.size() > 0)
+        if (!details.isEmpty())
         {
             mNoInformationTextView.setVisibility(View.GONE);
             mRecyclerView.setVisibility(         View.VISIBLE);
@@ -112,7 +112,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     }
 
     @Override
-    public void onHistoryDetailsClicked(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsEntity details)
+    public void onHistoryDetailsClicked(HistoryDetailsAdapter.HistoryDetailsViewHolder holder, HistoryDetailsEntity details)
     {
         if (details.equals(mSelectedHistoryDetails))
         {
@@ -120,36 +120,38 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         }
         else
         {
-            selectHistoryDetails(viewHolder, details);
+            selectHistoryDetails(holder, details);
         }
     }
 
     @Override
-    public void onHistoryDetailsBindViewHolder(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsEntity details)
+    public void onHistoryDetailsBindViewHolder(HistoryDetailsAdapter.HistoryDetailsViewHolder holder, HistoryDetailsEntity details)
     {
-        if (mSelectedViewHolder == viewHolder)
+        if (mSelectedViewHolder == holder)
         {
             mSelectedViewHolder = null;
         }
 
         if (details.equals(mSelectedHistoryDetails))
         {
-            mSelectedViewHolder = viewHolder;
+            mSelectedViewHolder = holder;
 
             expandSelectedViewHolder(true);
         }
     }
 
-    private void selectHistoryDetails(HistoryDetailsAdapter.ViewHolder viewHolder, HistoryDetailsEntity details)
+    private void selectHistoryDetails(HistoryDetailsAdapter.HistoryDetailsViewHolder holder, HistoryDetailsEntity details)
     {
+        //noinspection VariableNotUsedInsideIf
         if (mSelectedViewHolder != null)
         {
             collapseSelectedViewHolder();
         }
 
-        mSelectedViewHolder     = viewHolder;
+        mSelectedViewHolder     = holder;
         mSelectedHistoryDetails = details;
 
+        //noinspection VariableNotUsedInsideIf
         if (mSelectedViewHolder != null)
         {
             expandSelectedViewHolder(false);
@@ -160,25 +162,25 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     {
         if (immediately)
         {
-            mSelectedViewHolder.mExpandedView.setVisibility(View.VISIBLE);
-            mSelectedViewHolder.mCostTextView.setVisibility(View.GONE);
+            mSelectedViewHolder.getExpandedView().setVisibility(View.VISIBLE);
+            mSelectedViewHolder.getCostTextView().setVisibility(View.GONE);
 
-            mSelectedViewHolder.mExpandedView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            mSelectedViewHolder.getExpandedView().getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
         else
         {
-            AnimationUtils.expand(mSelectedViewHolder.mExpandedView,  EXPAND_ANIMATION_SPEED);
-            AnimationUtils.fadeOut(mSelectedViewHolder.mCostTextView, FADE_ANIMATION_DURATION);
+            AnimationUtils.expand(mSelectedViewHolder.getExpandedView(),  EXPAND_ANIMATION_SPEED);
+            AnimationUtils.fadeOut(mSelectedViewHolder.getCostTextView(), FADE_ANIMATION_DURATION);
         }
 
-        mSelectedViewHolder.mGoodNameTextView.setHorizontallyScrolling(true);
-        mSelectedViewHolder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(true);
-        mSelectedViewHolder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        mSelectedViewHolder.mGoodNameTextView.setSelected(true);
+        mSelectedViewHolder.getGoodNameTextView().setHorizontallyScrolling(true);
+        mSelectedViewHolder.getGoodNameTextView().setHorizontalFadingEdgeEnabled(true);
+        mSelectedViewHolder.getGoodNameTextView().setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        mSelectedViewHolder.getGoodNameTextView().setSelected(true);
 
-        if (!TextUtils.isEmpty(mSelectedViewHolder.mCostTextView.getText()))
+        if (!TextUtils.isEmpty(mSelectedViewHolder.getCostTextView().getText()))
         {
-            mSelectedViewHolder.mSecondCostTextView.setText(mSelectedViewHolder.mCostTextView.getText());
+            mSelectedViewHolder.getSecondCostTextView().setText(mSelectedViewHolder.getCostTextView().getText());
         }
         else
         {
@@ -186,28 +188,28 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
             {
                 if (mSelectedHistoryDetails.getGoodId() != MainDatabase.SPECIAL_ID_ROOT)
                 {
-                    mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_good);
+                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.own_good);
                 }
                 else
                 {
-                    mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_category);
+                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.own_category);
                 }
             }
             else
             {
-                mSelectedViewHolder.mSecondCostTextView.setText(R.string.category);
+                mSelectedViewHolder.getSecondCostTextView().setText(R.string.category);
             }
         }
     }
 
     private void collapseSelectedViewHolder()
     {
-        AnimationUtils.collapse(mSelectedViewHolder.mExpandedView, EXPAND_ANIMATION_SPEED);
-        AnimationUtils.fadeIn(mSelectedViewHolder.mCostTextView,   FADE_ANIMATION_DURATION);
+        AnimationUtils.collapse(mSelectedViewHolder.getExpandedView(), EXPAND_ANIMATION_SPEED);
+        AnimationUtils.fadeIn(mSelectedViewHolder.getCostTextView(),   FADE_ANIMATION_DURATION);
 
-        mSelectedViewHolder.mGoodNameTextView.setHorizontallyScrolling(false);
-        mSelectedViewHolder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(false);
-        mSelectedViewHolder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.END);
-        mSelectedViewHolder.mGoodNameTextView.setSelected(false);
+        mSelectedViewHolder.getGoodNameTextView().setHorizontallyScrolling(false);
+        mSelectedViewHolder.getGoodNameTextView().setHorizontalFadingEdgeEnabled(false);
+        mSelectedViewHolder.getGoodNameTextView().setEllipsize(TextUtils.TruncateAt.END);
+        mSelectedViewHolder.getGoodNameTextView().setSelected(false);
     }
 }

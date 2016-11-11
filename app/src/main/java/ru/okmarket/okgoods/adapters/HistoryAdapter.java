@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.entities.HistoryEntity;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>
+public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>
 {
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryAdapter";
@@ -25,32 +25,48 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
 
 
-    public HistoryAdapter(Context context, ArrayList<HistoryEntity> items)
+    @Override
+    public String toString()
+    {
+        return "HistoryAdapter{" +
+                "mContext="               + mContext             +
+                ", mItems="               + mItems               +
+                ", mOnItemClickListener=" + mOnItemClickListener +
+                '}';
+    }
+
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
+    private HistoryAdapter(Context context, ArrayList<HistoryEntity> items)
     {
         mContext             = context;
         mItems               = items;
         mOnItemClickListener = null;
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public static HistoryAdapter newInstance(Context context, ArrayList<HistoryEntity> items)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history, parent, false);
-
-        return new ViewHolder(view);
+        return new HistoryAdapter(context, items);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position)
+    public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history, parent, false);
+
+        return HistoryViewHolder.newInstance(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final HistoryViewHolder holder, int position)
     {
         final HistoryEntity item = mItems.get(position);
 
-        holder.mShopNameTextView.setText(item.getShopName());
-        holder.mDateTextView.setText(    item.getDate());
-        holder.mDurationTextView.setText(mContext.getString(R.string.time,         item.getDurationString()));
-        holder.mTotalTextView.setText(   mContext.getString(R.string.rub_currency, item.getTotal()));
+        holder.getShopNameTextView().setText(item.getShopName());
+        holder.getDateTextView().setText(    item.getDate());
+        holder.getDurationTextView().setText(mContext.getString(R.string.time,         item.getDurationString()));
+        holder.getTotalTextView().setText(   mContext.getString(R.string.rub_currency, item.getTotal()));
 
-        holder.mView.setOnClickListener(new View.OnClickListener()
+        holder.getView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -69,13 +85,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return mItems.size();
     }
 
+    @SuppressWarnings("unused")
     public ArrayList<HistoryEntity> getItems()
     {
         return mItems;
     }
 
+    @SuppressWarnings("unused")
     public void setItems(ArrayList<HistoryEntity> items)
     {
+        //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         mItems = items;
 
         notifyDataSetChanged();
@@ -88,17 +107,30 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
+    public static final class HistoryViewHolder extends RecyclerView.ViewHolder
     {
-        public View     mView;
-        public TextView mShopNameTextView;
-        public TextView mDateTextView;
-        public TextView mDurationTextView;
-        public TextView mTotalTextView;
+        private View     mView             = null;
+        private TextView mShopNameTextView = null;
+        private TextView mDateTextView     = null;
+        private TextView mDurationTextView = null;
+        private TextView mTotalTextView    = null;
 
 
 
-        public ViewHolder(View view)
+        @Override
+        public String toString()
+        {
+            return "HistoryViewHolder{" +
+                    "mView="               + mView             +
+                    ", mShopNameTextView=" + mShopNameTextView +
+                    ", mDateTextView="     + mDateTextView     +
+                    ", mDurationTextView=" + mDurationTextView +
+                    ", mTotalTextView="    + mTotalTextView    +
+                    '}';
+        }
+
+        private HistoryViewHolder(View view)
         {
             super(view);
 
@@ -108,12 +140,43 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             mDurationTextView = (TextView)view.findViewById(R.id.durationTextView);
             mTotalTextView    = (TextView)view.findViewById(R.id.totalTextView);
         }
+
+        public static HistoryViewHolder newInstance(View view)
+        {
+            return new HistoryViewHolder(view);
+        }
+
+        public View getView()
+        {
+            return mView;
+        }
+
+        public TextView getShopNameTextView()
+        {
+            return mShopNameTextView;
+        }
+
+        public TextView getDateTextView()
+        {
+            return mDateTextView;
+        }
+
+        public TextView getDurationTextView()
+        {
+            return mDurationTextView;
+        }
+
+        public TextView getTotalTextView()
+        {
+            return mTotalTextView;
+        }
     }
 
 
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnItemClickListener
     {
-        void onHistoryClicked(ViewHolder viewHolder, HistoryEntity history);
+        void onHistoryClicked(HistoryViewHolder holder, HistoryEntity history);
     }
 }

@@ -19,13 +19,14 @@ import ru.okmarket.okgoods.net.HttpClient;
 import ru.okmarket.okgoods.net.Web;
 import ru.okmarket.okgoods.widgets.CachedImageView;
 
-public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
+public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodViewHolder>
 {
     @SuppressWarnings("unused")
     private static final String TAG = "GoodsAdapter";
 
 
 
+    @SuppressWarnings("FieldCanBeLocal")
     private Context                        mContext                 = null;
     private ArrayList<GoodsCategoryEntity> mCategories              = null;
     private ArrayList<GoodEntity>          mGoods                   = null;
@@ -36,57 +37,76 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 
 
 
-    public GoodsAdapter(Context context, int width)
+    @Override
+    public String toString()
+    {
+        return "GoodsAdapter{" +
+                "mContext="                   + mContext                 +
+                ", mCategories="              + mCategories              +
+                ", mGoods="                   + mGoods                   +
+                ", mHttpClient="              + mHttpClient              +
+                ", mOnCategoryClickListener=" + mOnCategoryClickListener +
+                ", mOnGoodClickListener="     + mOnGoodClickListener     +
+                ", mImageLayoutParams="       + mImageLayoutParams       +
+                '}';
+    }
+
+    private GoodsAdapter(Context context, int width)
     {
         mContext             = context;
-        mCategories          = new ArrayList<>();
-        mGoods               = new ArrayList<>();
+        mCategories          = new ArrayList<>(0);
+        mGoods               = new ArrayList<>(0);
         mHttpClient          = HttpClient.getInstance(mContext);
         mOnGoodClickListener = null;
-        mImageLayoutParams   = new LinearLayout.LayoutParams(width, width * 2 / 3);
+        mImageLayoutParams   = new LinearLayout.LayoutParams(width, (width << 1) / 3);
+    }
+
+    public static GoodsAdapter newInstance(Context context, int width)
+    {
+        return new GoodsAdapter(context, width);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public GoodViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_good, parent, false);
 
-        return new ViewHolder(view);
+        return GoodViewHolder.newInstance(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position)
+    public void onBindViewHolder(final GoodViewHolder holder, int position)
     {
         if (position < mCategories.size())
         {
             final GoodsCategoryEntity item = mCategories.get(position);
 
-            holder.mCategoryView.setVisibility(View.VISIBLE);
-            holder.mGoodView.setVisibility(    View.GONE);
+            holder.getCategoryView().setVisibility(View.VISIBLE);
+            holder.getGoodView().setVisibility(    View.GONE);
 
-            holder.mCategoryImageView.setLayoutParams(mImageLayoutParams);
-            holder.mCategoryImageView.setErrorImageResId(R.drawable.download_error);
-            ((ImageView)holder.mCategoryImageView.getContentView()).setScaleType(ImageView.ScaleType.FIT_CENTER);
+            holder.getCategoryImageView().setLayoutParams(mImageLayoutParams);
+            holder.getCategoryImageView().setErrorImageResId(R.drawable.download_error);
+            ((ImageView) holder.getCategoryImageView().getContentView()).setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             if (!TextUtils.isEmpty(item.getImageName()))
             {
-                holder.mCategoryImageView.setDefaultImageResId(0);
-                holder.mCategoryImageView.setImageUrl(Web.getCategoryPhotoUrl(item.getImageName()), mHttpClient.getImageLoader());
+                holder.getCategoryImageView().setDefaultImageResId(0);
+                holder.getCategoryImageView().setImageUrl(Web.getCategoryPhotoUrl(item.getImageName()), mHttpClient.getImageLoader());
             }
             else
             {
-                holder.mCategoryImageView.setDefaultImageResId(R.drawable.no_image);
-                holder.mCategoryImageView.setImageUrl("", mHttpClient.getImageLoader());
+                holder.getCategoryImageView().setDefaultImageResId(R.drawable.no_image);
+                holder.getCategoryImageView().setImageUrl("", mHttpClient.getImageLoader());
             }
 
-            holder.mCategoryNameTextView.setText(item.getName());
+            holder.getCategoryNameTextView().setText(item.getName());
 
-            holder.mView.setOnClickListener(new View.OnClickListener()
+            holder.getView().setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
                 {
-                    if (mOnGoodClickListener != null)
+                    if (mOnCategoryClickListener != null)
                     {
                         mOnCategoryClickListener.onCategoryClicked(holder, item);
                     }
@@ -97,27 +117,27 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
         {
             final GoodEntity item = mGoods.get(position - mCategories.size());
 
-            holder.mCategoryView.setVisibility(View.GONE);
-            holder.mGoodView.setVisibility(    View.VISIBLE);
+            holder.getCategoryView().setVisibility(View.GONE);
+            holder.getGoodView().setVisibility(    View.VISIBLE);
 
-            holder.mGoodImageView.setLayoutParams(mImageLayoutParams);
-            holder.mGoodImageView.setErrorImageResId(R.drawable.download_error);
-            ((ImageView)holder.mGoodImageView.getContentView()).setScaleType(ImageView.ScaleType.FIT_CENTER);
+            holder.getGoodImageView().setLayoutParams(mImageLayoutParams);
+            holder.getGoodImageView().setErrorImageResId(R.drawable.download_error);
+            ((ImageView) holder.getGoodImageView().getContentView()).setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             if (item.getImageId() > 0)
             {
-                holder.mGoodImageView.setDefaultImageResId(0);
-                holder.mGoodImageView.setImageUrl(Web.getGoodPhotoThumbnailUrl(item.getImageId()), mHttpClient.getImageLoader());
+                holder.getGoodImageView().setDefaultImageResId(0);
+                holder.getGoodImageView().setImageUrl(Web.getGoodPhotoThumbnailUrl(item.getImageId()), mHttpClient.getImageLoader());
             }
             else
             {
-                holder.mGoodImageView.setDefaultImageResId(R.drawable.no_image);
-                holder.mGoodImageView.setImageUrl("", mHttpClient.getImageLoader());
+                holder.getGoodImageView().setDefaultImageResId(R.drawable.no_image);
+                holder.getGoodImageView().setImageUrl("", mHttpClient.getImageLoader());
             }
 
-            holder.mGoodNameTextView.setText(item.getName());
+            holder.getGoodNameTextView().setText(item.getName());
 
-            holder.mView.setOnClickListener(new View.OnClickListener()
+            holder.getView().setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
@@ -137,13 +157,16 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
         return mCategories.size() + mGoods.size();
     }
 
+    @SuppressWarnings("unused")
     public ArrayList<GoodsCategoryEntity> getCategories()
     {
         return mCategories;
     }
 
+    @SuppressWarnings("unused")
     public void setCategories(ArrayList<GoodsCategoryEntity> categories)
     {
+        //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         mCategories = categories;
 
         notifyDataSetChanged();
@@ -156,6 +179,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 
     public void setGoods(ArrayList<GoodEntity> goods)
     {
+        //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         mGoods = goods;
 
         notifyDataSetChanged();
@@ -163,7 +187,9 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 
     public void setItems(ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods)
     {
+        //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         mCategories = categories;
+        //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         mGoods      = goods;
 
         notifyDataSetChanged();
@@ -181,19 +207,34 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
+    public static final class GoodViewHolder extends RecyclerView.ViewHolder
     {
-        public View            mView;
-        public View            mCategoryView;
-        public View            mGoodView;
-        public CachedImageView mCategoryImageView;
-        public TextView        mCategoryNameTextView;
-        public CachedImageView mGoodImageView;
-        public TextView        mGoodNameTextView;
+        private View            mView                 = null;
+        private View            mCategoryView         = null;
+        private View            mGoodView             = null;
+        private CachedImageView mCategoryImageView    = null;
+        private TextView        mCategoryNameTextView = null;
+        private CachedImageView mGoodImageView        = null;
+        private TextView        mGoodNameTextView     = null;
 
 
 
-        public ViewHolder(View view)
+        @Override
+        public String toString()
+        {
+            return "GoodViewHolder{" +
+                    "mView="                   + mView                 +
+                    ", mCategoryView="         + mCategoryView         +
+                    ", mGoodView="             + mGoodView             +
+                    ", mCategoryImageView="    + mCategoryImageView    +
+                    ", mCategoryNameTextView=" + mCategoryNameTextView +
+                    ", mGoodImageView="        + mGoodImageView        +
+                    ", mGoodNameTextView="     + mGoodNameTextView     +
+                    '}';
+        }
+
+        private GoodViewHolder(View view)
         {
             super(view);
 
@@ -205,17 +246,59 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
             mGoodImageView        = (CachedImageView)view.findViewById(R.id.goodImageView);
             mGoodNameTextView     = (TextView)       view.findViewById(R.id.goodNameTextView);
         }
+
+        public static GoodViewHolder newInstance(View view)
+        {
+            return new GoodViewHolder(view);
+        }
+
+        public View getView()
+        {
+            return mView;
+        }
+
+        public View getCategoryView()
+        {
+            return mCategoryView;
+        }
+
+        public View getGoodView()
+        {
+            return mGoodView;
+        }
+
+        public CachedImageView getCategoryImageView()
+        {
+            return mCategoryImageView;
+        }
+
+        public TextView getCategoryNameTextView()
+        {
+            return mCategoryNameTextView;
+        }
+
+        public CachedImageView getGoodImageView()
+        {
+            return mGoodImageView;
+        }
+
+        public TextView getGoodNameTextView()
+        {
+            return mGoodNameTextView;
+        }
     }
 
 
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnCategoryClickListener
     {
-        void onCategoryClicked(ViewHolder viewHolder, GoodsCategoryEntity category);
+        void onCategoryClicked(GoodViewHolder holder, GoodsCategoryEntity category);
     }
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnGoodClickListener
     {
-        void onGoodClicked(ViewHolder viewHolder, GoodEntity good);
+        void onGoodClicked(GoodViewHolder holder, GoodEntity good);
     }
 }

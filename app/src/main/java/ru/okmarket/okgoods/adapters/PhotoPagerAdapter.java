@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import ru.okmarket.okgoods.fragments.PhotoFragment;
 
-public class PhotoPagerAdapter extends FragmentStatePagerAdapter
+public final class PhotoPagerAdapter extends FragmentStatePagerAdapter
 {
     @SuppressWarnings("unused")
     private static final String TAG = "PhotoPagerAdapter";
@@ -19,11 +19,25 @@ public class PhotoPagerAdapter extends FragmentStatePagerAdapter
 
 
 
-    public PhotoPagerAdapter(FragmentManager fm, ArrayList<String> urls)
+    @Override
+    public String toString()
+    {
+        return "PhotoPagerAdapter{" +
+                "mUrls=" + mUrls +
+                '}';
+    }
+
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
+    private PhotoPagerAdapter(FragmentManager fm, ArrayList<String> urls)
     {
         super(fm);
 
         mUrls = urls;
+    }
+
+    public static PhotoPagerAdapter newInstance(FragmentManager fm, ArrayList<String> urls)
+    {
+        return new PhotoPagerAdapter(fm, urls);
     }
 
     @Override

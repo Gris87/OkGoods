@@ -21,6 +21,7 @@ import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class HistoryActivity extends AppCompatActivity implements HistoryAdapter.OnItemClickListener
 {
     @SuppressWarnings("unused")
@@ -39,6 +40,14 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
 
     @Override
+    public String toString()
+    {
+        return "HistoryActivity{" +
+                "mHistoryDetailsFragment=" + mHistoryDetailsFragment +
+                '}';
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -49,8 +58,6 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         Toolbar toolbar           = (Toolbar)               findViewById(R.id.toolbar);
         RecyclerView recyclerView = (RecyclerView)          findViewById(R.id.historyRecyclerView);
         mHistoryDetailsFragment   = (HistoryDetailsFragment)getSupportFragmentManager().findFragmentById(R.id.historyDetailsFragment);
-
-        assert recyclerView != null;
 
 
 
@@ -68,7 +75,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         MainDatabase   mainDatabase = new MainDatabase(this);
         SQLiteDatabase db           = mainDatabase.getReadableDatabase();
 
-        HistoryAdapter adapter = new HistoryAdapter(this, mainDatabase.getHistory(db, false));
+        HistoryAdapter adapter = HistoryAdapter.newInstance(this, mainDatabase.getHistory(db, false));
         adapter.setOnItemClickListener(this);
 
         db.close();
@@ -125,9 +132,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     }
 
     @Override
-    public void onHistoryClicked(HistoryAdapter.ViewHolder viewHolder, HistoryEntity history)
+    public void onHistoryClicked(HistoryAdapter.HistoryViewHolder holder, HistoryEntity history)
     {
-        MainDatabase   mainDatabase = new MainDatabase(HistoryActivity.this);
+        MainDatabase   mainDatabase = new MainDatabase(this);
         SQLiteDatabase db           = mainDatabase.getReadableDatabase();
 
         ArrayList<HistoryDetailsEntity> details = mainDatabase.getHistoryDetails(db, history.getId(), false);
@@ -144,7 +151,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         }
         else
         {
-            Intent intent = new Intent(HistoryActivity.this, HistoryDetailsActivity.class);
+            Intent intent = new Intent(this, HistoryDetailsActivity.class);
 
             intent.putExtra(Extras.SHOP,            history.getShopId());
             intent.putExtra(Extras.HISTORY,         history.getDate() + ". " + history.getShopName());

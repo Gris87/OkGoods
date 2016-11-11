@@ -3,8 +3,10 @@ package ru.okmarket.okgoods.activities;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -36,6 +38,7 @@ import ru.okmarket.okgoods.util.Utils;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTouchListener, GoodsCategoriesAdapter.OnItemClickListener, GoodsAdapter.OnCategoryClickListener, GoodsAdapter.OnGoodClickListener
 {
     @SuppressWarnings("unused")
@@ -66,6 +69,25 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
     @Override
+    public String toString()
+    {
+        return "GoodsCatalogActivity{" +
+                "mDrawerLayout="             + mDrawerLayout           +
+                ", mDrawerToggle="           + mDrawerToggle           +
+                ", mLoadingProgressBar="     + mLoadingProgressBar     +
+                ", mGoodsCategoriesView="    + mGoodsCategoriesView    +
+                ", mGoodsCategoriesAdapter=" + mGoodsCategoriesAdapter +
+                ", mGoodsAdapter="           + mGoodsAdapter           +
+                ", mMainDatabase="           + mMainDatabase           +
+                ", mDB="                     + mDB                     +
+                ", mSelectedCategory="       + mSelectedCategory       +
+                ", mGoodsLoadingTask="       + mGoodsLoadingTask       +
+                ", mHttpClient="             + mHttpClient             +
+                ", mRequestsInProgress="     + mRequestsInProgress     +
+                '}';
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -80,9 +102,6 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mGoodsCategoriesView                     = (FrameLayout)             findViewById(R.id.goodsCategoriesView);
         RecyclerView goodsCategoriesRecyclerView = (RecyclerView)            findViewById(R.id.goodsCategoriesRecyclerView);
         RecyclerView goodsRecyclerView           = (RecyclerView)            findViewById(R.id.goodsRecyclerView);
-
-        assert goodsCategoriesRecyclerView != null;
-        assert goodsRecyclerView           != null;
         // endregion
 
 
@@ -131,8 +150,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mMainDatabase = new MainDatabase(this);
         mDB           = mMainDatabase.getReadableDatabase();
 
-        mGoodsCategoriesAdapter = new GoodsCategoriesAdapter(this, mMainDatabase.getGoodsCategoriesTree(mDB, MainDatabase.SPECIAL_ID_ROOT));
-        mGoodsAdapter           = new GoodsAdapter(this, screenWidth / columnCount);
+        mGoodsCategoriesAdapter = GoodsCategoriesAdapter.newInstance(this, mMainDatabase.getGoodsCategoriesTree(mDB, MainDatabase.SPECIAL_ID_ROOT));
+        mGoodsAdapter           = GoodsAdapter.newInstance(this, screenWidth / columnCount);
 
         mGoodsCategoriesAdapter.setOnItemClickListener(this);
         mGoodsAdapter.setOnCategoryClickListener(this);
@@ -153,7 +172,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mRequestsInProgress = 0;
 
         //noinspection deprecation
-        mLoadingProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.progressBarInToolbar), android.graphics.PorterDuff.Mode.SRC_IN);
+        mLoadingProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.progressBarInToolbar), PorterDuff.Mode.SRC_IN);
         mLoadingProgressBar.setVisibility(View.GONE);
 
         selectCategory(mGoodsCategoriesAdapter.getTree());
@@ -198,7 +217,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
             @Override
             protected ArrayList<GoodsCategoryEntity> init()
             {
-                return new ArrayList<>();
+                return new ArrayList<>(0);
             }
 
             @Override
@@ -219,10 +238,10 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     {
         super.onRestoreInstanceState(savedInstanceState);
 
-        final ArrayList<GoodsCategoryEntity> allNodes           = savedInstanceState.getParcelableArrayList(SAVED_STATE_TREE);
-        final int                            selectedCategoryId = savedInstanceState.getInt(                SAVED_STATE_SELECTED_CATEGORY, MainDatabase.SPECIAL_ID_NONE);
+        ArrayList<GoodsCategoryEntity> allNodes           = savedInstanceState.getParcelableArrayList(SAVED_STATE_TREE);
+        final int                      selectedCategoryId = savedInstanceState.getInt(                SAVED_STATE_SELECTED_CATEGORY, MainDatabase.SPECIAL_ID_NONE);
 
-        if (allNodes != null && allNodes.size() > 0)
+        if (allNodes != null && !allNodes.isEmpty())
         {
             Tree<GoodsCategoryEntity> tree = Utils.buildCategoriesTreeFromList(allNodes, allNodes.get(0));
 
@@ -234,12 +253,14 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                     return currentResult == null;
                 }
 
+                @Nullable
                 @Override
                 protected Tree<GoodsCategoryEntity> init()
                 {
                     return null;
                 }
 
+                @Nullable
                 @Override
                 protected Tree<GoodsCategoryEntity> run(Tree<GoodsCategoryEntity> node, Tree<GoodsCategoryEntity> currentResult)
                 {
@@ -300,14 +321,14 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown view: " + String.valueOf(view));
+            AppLog.wtf(TAG, "Unknown view: " + view);
         }
 
         return false;
     }
 
     @Override
-    public void onGoodsCategoryClicked(GoodsCategoriesAdapter.ViewHolder viewHolder, Tree<GoodsCategoryEntity> category)
+    public void onGoodsCategoryClicked(GoodsCategoriesAdapter.GoodsCategoryViewHolder holder, Tree<GoodsCategoryEntity> category)
     {
         mDrawerLayout.closeDrawer(mGoodsCategoriesView);
 
@@ -315,7 +336,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     }
 
     @Override
-    public void onCategoryClicked(GoodsAdapter.ViewHolder viewHolder, GoodsCategoryEntity category)
+    public void onCategoryClicked(GoodsAdapter.GoodViewHolder holder, GoodsCategoryEntity category)
     {
         for (int i = 0; i < mSelectedCategory.size(); ++i)
         {
@@ -334,9 +355,9 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     }
 
     @Override
-    public void onGoodClicked(GoodsAdapter.ViewHolder viewHolder, GoodEntity good)
+    public void onGoodClicked(GoodsAdapter.GoodViewHolder holder, GoodEntity good)
     {
-
+        // TODO: Implement it
     }
 
     private void selectCategory(Tree<GoodsCategoryEntity> category)
@@ -354,7 +375,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
             mGoodsLoadingTask.cancel(true);
         }
 
-        mGoodsLoadingTask = new GoodsLoadingTask(mSelectedCategory.getData().getId());
+        mGoodsLoadingTask = new GoodsLoadingTask(this);
         mGoodsLoadingTask.execute();
 
         if (mRequestsInProgress > 0)
@@ -368,7 +389,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
     private void loadPartiallyCompleted(ArrayList<GoodsCategoryEntity> webCategories, ArrayList<GoodEntity> webGoods)
     {
-        if (webCategories.size() > 0 || webGoods.size() > 0)
+        if (!webCategories.isEmpty() || !webGoods.isEmpty())
         {
             ArrayList<GoodsCategoryEntity> categoriesInDB = mMainDatabase.getGoodsCategories(mDB, mSelectedCategory.getData().getId(), true);
 
@@ -425,6 +446,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                         else
                         {
                             mSelectedCategory.removeChild(i);
+
+                            //noinspection AssignmentToForLoopParameter
                             --i;
                         }
                     }
@@ -516,6 +539,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                         else
                         {
                             goods.remove(i);
+
+                            //noinspection AssignmentToForLoopParameter
                             --i;
                         }
                     }
@@ -545,7 +570,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
     private void loadCompleted(ArrayList<GoodsCategoryEntity> webCategories, ArrayList<GoodEntity> webGoods)
     {
-        if (webCategories.size() > 0 || webGoods.size() > 0)
+        if (!webCategories.isEmpty() || !webGoods.isEmpty())
         {
             mSelectedCategory.getData().setUpdateTime(System.currentTimeMillis());
             mMainDatabase.updateGoodsCategoryUpdateTime(mDB, mSelectedCategory.getData());
@@ -556,17 +581,31 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
 
-    private class GoodsLoadingTask extends AsyncTask<Void, Void, ArrayList<GoodEntity>>
+    private static final class GoodsLoadingTask extends AsyncTask<Void, Void, ArrayList<GoodEntity>>
     {
-        private int mCategoryId = 0;
+        @SuppressWarnings("FieldNotUsedInToString")
+        private GoodsCatalogActivity mGoodsCatalogActivity = null;
+        private int                  mCategoryId           = 0;
 
 
 
-        public GoodsLoadingTask(int categoryId)
+
+        @Override
+        public String toString()
         {
-            mCategoryId = categoryId;
+            return "GoodsLoadingTask{" +
+                    "mCategoryId=" + mCategoryId +
+                    '}';
         }
 
+        @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
+        private GoodsLoadingTask(GoodsCatalogActivity goodsCatalogActivity)
+        {
+            mGoodsCatalogActivity = goodsCatalogActivity;
+            mCategoryId           = mGoodsCatalogActivity.mSelectedCategory.getData().getId();
+        }
+
+        @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
         @Override
         protected ArrayList<GoodEntity> doInBackground(Void... params)
         {
@@ -574,9 +613,9 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
             try
             {
-                res = mMainDatabase.getGoods(mDB, mCategoryId, false, false);
+                res = mGoodsCatalogActivity.mMainDatabase.getGoods(mGoodsCatalogActivity.mDB, mCategoryId, false, false);
             }
-            catch (Exception e)
+            catch (Exception ignored)
             {
                 // Nothing
             }
@@ -589,36 +628,38 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
             return res;
         }
 
+        @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
         @Override
-        protected void onPostExecute(final ArrayList<GoodEntity> goods)
+        protected void onPostExecute(ArrayList<GoodEntity> goods)
         {
-            if (goods != null && mCategoryId == mSelectedCategory.getData().getId())
+            if (goods != null && mCategoryId == mGoodsCatalogActivity.mSelectedCategory.getData().getId())
             {
-                mGoodsLoadingTask = null;
+                mGoodsCatalogActivity.mGoodsLoadingTask = null;
 
-                mGoodsAdapter.setGoods(goods);
+                mGoodsCatalogActivity.mGoodsAdapter.setGoods(goods);
 
                 if (
                     mCategoryId >= MainDatabase.SPECIAL_ID_ROOT
                     &&
-                    System.currentTimeMillis() - mSelectedCategory.getData().getUpdateTime() > 900000 // 15 minutes = 15 * 60 * 1000 = 900000
+                    System.currentTimeMillis() - mGoodsCatalogActivity.mSelectedCategory.getData().getUpdateTime() > 900000 // 15 minutes = 15 * 60 * 1000 = 900000
                    )
                 {
-                    mLoadingProgressBar.setVisibility(View.VISIBLE);
+                    mGoodsCatalogActivity.mLoadingProgressBar.setVisibility(View.VISIBLE);
 
-                    final ArrayList<GoodsCategoryEntity> webCategories = new ArrayList<>();
-                    final ArrayList<GoodEntity>          webGoods      = new ArrayList<>();
+                    final ArrayList<GoodsCategoryEntity> webCategories = new ArrayList<>(0);
+                    final ArrayList<GoodEntity>          webGoods      = new ArrayList<>(0);
 
                     for (int i = 0; i < Web.OKEY_DOSTAVKA_RU_SHOPS.length; ++i)
                     {
                         StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mCategoryId, true)
                                 , new Response.Listener<String>()
                                 {
-                                    private String mShop;
-                                    private int    mShopId;
+                                    private String mShop   = null;
+                                    private int    mShopId = 0;
 
 
 
+                                    @SuppressWarnings({"WeakerAccess", "ReturnOfThis"})
                                     public Response.Listener<String> init(String shop, int shopId)
                                     {
                                         mShop   = shop;
@@ -633,24 +674,25 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     public void onResponse(String response)
                                     {
                                         boolean hasPages = Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mCategoryId, true);
-                                        loadPartiallyCompleted(webCategories, webGoods);
+                                        mGoodsCatalogActivity.loadPartiallyCompleted(webCategories, webGoods);
 
-                                        --mRequestsInProgress;
+                                        --mGoodsCatalogActivity.mRequestsInProgress;
 
                                         if (hasPages)
                                         {
                                             StringRequest request2 = new StringRequest(Request.Method.GET, Web.getCatalogUrl(mShop, mShopId, mCategoryId, false)
                                                     , new Response.Listener<String>()
                                                     {
-                                                        private String mShop;
-                                                        private int    mShopId;
+                                                        private String mInnerShop   = null;
+                                                        private int    mInnerShopId = 0;
 
 
 
+                                                        @SuppressWarnings({"WeakerAccess", "ReturnOfThis"})
                                                         public Response.Listener<String> init(String shop, int shopId)
                                                         {
-                                                            mShop      = shop;
-                                                            mShopId    = shopId;
+                                                            mInnerShop   = shop;
+                                                            mInnerShopId = shopId;
 
                                                             return this;
                                                         }
@@ -658,31 +700,32 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
                                                         @Override
-                                                        public void onResponse(String response)
+                                                        public void onResponse(String innerResponse)
                                                         {
-                                                            Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mCategoryId, false);
-                                                            loadPartiallyCompleted(webCategories, webGoods);
+                                                            Web.getCatalogItemsFromResponse(innerResponse, webCategories, webGoods, mInnerShop, mInnerShopId, mCategoryId, false);
+                                                            mGoodsCatalogActivity.loadPartiallyCompleted(webCategories, webGoods);
 
-                                                            --mRequestsInProgress;
+                                                            --mGoodsCatalogActivity.mRequestsInProgress;
 
-                                                            if (mRequestsInProgress == 0)
+                                                            if (mGoodsCatalogActivity.mRequestsInProgress == 0)
                                                             {
-                                                                loadCompleted(webCategories, webGoods);
+                                                                mGoodsCatalogActivity.loadCompleted(webCategories, webGoods);
                                                             }
                                                         }
                                                     }
                                                     .init(mShop, mShopId)
                                                     , new Response.ErrorListener()
                                                     {
-                                                        private String mShop;
-                                                        private int    mShopId;
+                                                        private String mInnerShop   = null;
+                                                        private int    mInnerShopId = 0;
 
 
 
+                                                        @SuppressWarnings({"WeakerAccess", "ReturnOfThis"})
                                                         public Response.ErrorListener init(String shop, int shopId)
                                                         {
-                                                            mShop      = shop;
-                                                            mShopId    = shopId;
+                                                            mInnerShop   = shop;
+                                                            mInnerShopId = shopId;
 
                                                             return this;
                                                         }
@@ -692,13 +735,13 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                                         @Override
                                                         public void onErrorResponse(VolleyError error)
                                                         {
-                                                            AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mShop, mShopId, mCategoryId, false));
+                                                            AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mInnerShop, mInnerShopId, mCategoryId, false));
 
-                                                            --mRequestsInProgress;
+                                                            --mGoodsCatalogActivity.mRequestsInProgress;
 
-                                                            if (mRequestsInProgress == 0)
+                                                            if (mGoodsCatalogActivity.mRequestsInProgress == 0)
                                                             {
-                                                                loadCompleted(webCategories, webGoods);
+                                                                mGoodsCatalogActivity.loadCompleted(webCategories, webGoods);
                                                             }
                                                         }
                                                     }
@@ -707,14 +750,14 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
                                             request2.setTag(TAG);
 
-                                            mHttpClient.addToRequestQueue(request2);
-                                            ++mRequestsInProgress;
+                                            mGoodsCatalogActivity.mHttpClient.addToRequestQueue(request2);
+                                            ++mGoodsCatalogActivity.mRequestsInProgress;
                                         }
                                         else
                                         {
-                                            if (mRequestsInProgress == 0)
+                                            if (mGoodsCatalogActivity.mRequestsInProgress == 0)
                                             {
-                                                loadCompleted(webCategories, webGoods);
+                                                mGoodsCatalogActivity.loadCompleted(webCategories, webGoods);
                                             }
                                         }
                                     }
@@ -722,11 +765,12 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                 .init(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i])
                                 , new Response.ErrorListener()
                                 {
-                                    private String mShop;
-                                    private int    mShopId;
+                                    private String mShop   = null;
+                                    private int    mShopId = 0;
 
 
 
+                                    @SuppressWarnings({"WeakerAccess", "ReturnOfThis"})
                                     public Response.ErrorListener init(String shop, int shopId)
                                     {
                                         mShop   = shop;
@@ -742,11 +786,11 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     {
                                         AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mShop, mShopId, mCategoryId, true));
 
-                                        --mRequestsInProgress;
+                                        --mGoodsCatalogActivity.mRequestsInProgress;
 
-                                        if (mRequestsInProgress == 0)
+                                        if (mGoodsCatalogActivity.mRequestsInProgress == 0)
                                         {
-                                            loadCompleted(webCategories, webGoods);
+                                            mGoodsCatalogActivity.loadCompleted(webCategories, webGoods);
                                         }
                                     }
                                 }
@@ -755,8 +799,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
                         request.setTag(TAG);
 
-                        mHttpClient.addToRequestQueue(request);
-                        ++mRequestsInProgress;
+                        mGoodsCatalogActivity.mHttpClient.addToRequestQueue(request);
+                        ++mGoodsCatalogActivity.mRequestsInProgress;
                     }
                 }
             }

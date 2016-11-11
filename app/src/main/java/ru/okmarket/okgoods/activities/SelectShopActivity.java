@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +20,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.ShopsAdapter;
@@ -46,6 +45,7 @@ import ru.yandex.yandexmapkit.overlay.location.MyLocationOverlay;
 import ru.yandex.yandexmapkit.overlay.location.OnMyLocationListener;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class SelectShopActivity extends AppCompatActivity implements View.OnTouchListener, OnMyLocationListener, OnBalloonListener, ShopsAdapter.OnItemClickListener, ShopDetailsFragment.OnFragmentInteractionListener, ShopFilterDialog.OnFragmentInteractionListener
 {
     @SuppressWarnings("unused")
@@ -71,25 +71,49 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
 
 
-    private MapView                   mMapView                     = null;
-    private Overlay                   mShopsOverlay                = null;
-    private Map<Integer, OverlayItem> mShopsOverlayItems           = null;
-    private Drawable                  mSupermarketDrawable         = null;
-    private Drawable                  mHypermarketDrawable         = null;
-    private Drawable                  mSupermarketSelectedDrawable = null;
-    private Drawable                  mHypermarketSelectedDrawable = null;
-    private NoScrollableDrawerLayout  mDrawerLayout                = null;
-    private ActionBarDrawerToggle     mDrawerToggle                = null;
-    private RecyclerView              mShopsRecyclerView           = null;
-    private ShopsAdapter              mShopsAdapter                = null;
-    private FrameLayout               mShopDetailsView             = null;
-    private ShopDetailsFragment       mShopDetailsFragment         = null;
-    private ShopFilter                mShopFilter                  = null;
-    private ShopEntity                mSelectedShop                = null;
-    private double                    mLastKnownPositionLatitude   = 0;
-    private double                    mLastKnownPositionLongitude  = 0;
+    private MapView                  mMapView                     = null;
+    private Overlay                  mShopsOverlay                = null;
+    private SparseArray<OverlayItem> mShopsOverlayItems           = null;
+    private Drawable                 mSupermarketDrawable         = null;
+    private Drawable                 mHypermarketDrawable         = null;
+    private Drawable                 mSupermarketSelectedDrawable = null;
+    private Drawable                 mHypermarketSelectedDrawable = null;
+    private NoScrollableDrawerLayout mDrawerLayout                = null;
+    private ActionBarDrawerToggle    mDrawerToggle                = null;
+    private RecyclerView             mShopsRecyclerView           = null;
+    private ShopsAdapter             mShopsAdapter                = null;
+    private FrameLayout              mShopDetailsView             = null;
+    private ShopDetailsFragment      mShopDetailsFragment         = null;
+    private ShopFilter               mShopFilter                  = null;
+    private ShopEntity               mSelectedShop                = null;
+    private double                   mLastKnownPositionLatitude   = 0;
+    private double                   mLastKnownPositionLongitude  = 0;
 
 
+
+    @Override
+    public String toString()
+    {
+        return "SelectShopActivity{" +
+                "mMapView="                       + mMapView                     +
+                ", mShopsOverlay="                + mShopsOverlay                +
+                ", mShopsOverlayItems="           + mShopsOverlayItems           +
+                ", mSupermarketDrawable="         + mSupermarketDrawable         +
+                ", mHypermarketDrawable="         + mHypermarketDrawable         +
+                ", mSupermarketSelectedDrawable=" + mSupermarketSelectedDrawable +
+                ", mHypermarketSelectedDrawable=" + mHypermarketSelectedDrawable +
+                ", mDrawerLayout="                + mDrawerLayout                +
+                ", mDrawerToggle="                + mDrawerToggle                +
+                ", mShopsRecyclerView="           + mShopsRecyclerView           +
+                ", mShopsAdapter="                + mShopsAdapter                +
+                ", mShopDetailsView="             + mShopDetailsView             +
+                ", mShopDetailsFragment="         + mShopDetailsFragment         +
+                ", mShopFilter="                  + mShopFilter                  +
+                ", mSelectedShop="                + mSelectedShop                +
+                ", mLastKnownPositionLatitude="   + mLastKnownPositionLatitude   +
+                ", mLastKnownPositionLongitude="  + mLastKnownPositionLongitude  +
+                '}';
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -128,7 +152,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
         mMapView.showBuiltInScreenButtons(true);
         mShopsOverlay = new Overlay(mapController);
-        mShopsOverlayItems = new HashMap<>();
+        mShopsOverlayItems = new SparseArray<>();
 
         // noinspection deprecation
         mSupermarketDrawable         = getResources().getDrawable(R.drawable.supermarket_overlay);
@@ -178,7 +202,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
 
 
-        mShopsAdapter = new ShopsAdapter(this, shops);
+        mShopsAdapter = ShopsAdapter.newInstance(this, shops);
         mShopsAdapter.setOnItemClickListener(this);
 
         mShopsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
@@ -326,7 +350,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown view: " + String.valueOf(view));
+            AppLog.wtf(TAG, "Unknown view: " + view);
         }
 
         return false;
@@ -402,7 +426,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
     }
 
     @Override
-    public void onShopClicked(ShopsAdapter.ViewHolder viewHolder, ShopEntity shop)
+    public void onShopClicked(ShopsAdapter.ShopViewHolder holder, ShopEntity shop)
     {
         selectShop(shop);
 

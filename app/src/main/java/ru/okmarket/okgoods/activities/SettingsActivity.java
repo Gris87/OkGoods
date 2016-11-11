@@ -31,6 +31,7 @@ import ru.okmarket.okgoods.other.Preferences;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class SettingsActivity extends AppCompatPreferenceActivity
 {
     @SuppressWarnings("unused")
@@ -42,7 +43,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener()
+    @SuppressWarnings("ConstantNamingConvention")
+    private static final Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener()
     {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value)
@@ -163,6 +165,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      * This method stops fragment injection in malicious applications.
      * Make sure to deny any unknown fragments here.
      */
+    @Override
     protected boolean isValidFragment(String fragmentName)
     {
         return fragmentName.equals(PreferenceFragment.class.getName())
@@ -176,12 +179,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
+    @SuppressWarnings({"PublicInnerClass", "ClassWithoutConstructor", "PublicConstructor"})
     public static class GeneralPreferenceFragment extends PreferenceFragment
     {
         private MainDatabase   mMainDatabase = null;
         private SQLiteDatabase mDB           = null;
 
 
+
+        @Override
+        public String toString()
+        {
+            return "GeneralPreferenceFragment{" +
+                    "mMainDatabase=" + mMainDatabase +
+                    ", mDB="         + mDB           +
+                    '}';
+        }
 
         @Override
         public void onCreate(Bundle savedInstanceState)
@@ -232,6 +245,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      * This fragment shows notification preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
+    @SuppressWarnings({"PublicInnerClass", "ClassWithoutConstructor", "PublicConstructor"})
     public static class NotificationPreferenceFragment extends PreferenceFragment
     {
         @Override

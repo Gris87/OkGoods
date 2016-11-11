@@ -11,6 +11,7 @@ import ru.okmarket.okgoods.adapters.PhotoPagerAdapter;
 import ru.okmarket.okgoods.other.Extras;
 import ru.okmarket.okgoods.widgets.PhotoViewPager;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class PhotoViewerActivity extends FragmentActivity
 {
     @SuppressWarnings("unused")
@@ -35,7 +36,7 @@ public class PhotoViewerActivity extends FragmentActivity
 
         PhotoViewPager viewPager = (PhotoViewPager)findViewById(R.id.photoViewPager);
 
-        viewPager.setAdapter(new PhotoPagerAdapter(getSupportFragmentManager(), urls));
+        viewPager.setAdapter(PhotoPagerAdapter.newInstance(getSupportFragmentManager(), urls));
         viewPager.setCurrentItem(selectedIndex, false);
     }
 }

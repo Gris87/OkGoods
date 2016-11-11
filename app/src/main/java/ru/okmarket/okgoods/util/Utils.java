@@ -18,7 +18,7 @@ public class Utils
 
     public static Tree<GoodsCategoryEntity> buildCategoriesTreeFromList(ArrayList<GoodsCategoryEntity> categories, GoodsCategoryEntity rootCategory)
     {
-        Tree<GoodsCategoryEntity> res = new Tree<>(rootCategory);
+        Tree<GoodsCategoryEntity> res = Tree.newInstance(rootCategory);
 
         Stack<Tree<GoodsCategoryEntity>> stack = new Stack<>();
         stack.push(res);

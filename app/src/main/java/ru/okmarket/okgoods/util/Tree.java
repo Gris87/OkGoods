@@ -1,42 +1,64 @@
 package ru.okmarket.okgoods.util;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-public class Tree<T>
+@SuppressWarnings("WeakerAccess")
+public final class Tree<T>
 {
     @SuppressWarnings("unused")
     private static final String TAG = "Tree";
 
 
 
-    private T                  mData;
-    private int                mLevel;
-    private Tree<T>            mParent;
-    private ArrayList<Tree<T>> mChildren;
+    private T                  mData     = null;
+    private int                mLevel    = 0;
+    private Tree<T>            mParent   = null;
+    private ArrayList<Tree<T>> mChildren = null;
 
 
 
-    public Tree(T data)
+    @Override
+    public String toString()
+    {
+        return "Tree{" +
+                "mData="       + mData     +
+                ", mLevel="    + mLevel    +
+                ", mParent="   + mParent   +
+                ", mChildren=" + mChildren +
+                '}';
+    }
+
+    private Tree(T data)
     {
         mData     = data;
         mLevel    = 0;
         mParent   = null;
-        mChildren = new ArrayList<>();
+        mChildren = new ArrayList<>(0);
     }
 
+    public static <T> Tree<T> newInstance(T data)
+    {
+        return new Tree<>(data);
+    }
+
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     private Tree(T data, Tree<T> parent)
     {
         mData     = data;
         mLevel    = parent.mLevel + 1;
         mParent   = parent;
-        mChildren = new ArrayList<>();
+        mChildren = new ArrayList<>(0);
 
+        //noinspection ThisEscapedInObjectConstruction
         mParent.mChildren.add(this);
     }
 
+    @SuppressWarnings({"AccessingNonPublicFieldOfAnotherObject", "unused"})
     public void doBreadth(Operation<T> operation)
     {
         Queue<Tree<T>> queue = new LinkedList<>();
@@ -60,6 +82,7 @@ public class Tree<T>
         } while (!queue.isEmpty());
     }
 
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public void doDepth(Operation<T> operation)
     {
         Stack<Tree<T>> stack = new Stack<>();
@@ -83,6 +106,8 @@ public class Tree<T>
         } while (!stack.isEmpty());
     }
 
+    @SuppressWarnings({"AccessingNonPublicFieldOfAnotherObject", "unused"})
+    @Nullable
     public <R> R doBreadthForResult(OperationWithResult<T, R> operation)
     {
         R res = operation.init();
@@ -110,6 +135,8 @@ public class Tree<T>
         return res;
     }
 
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
+    @Nullable
     public <R> R doDepthForResult(OperationWithResult<T, R> operation)
     {
         R res = operation.init();
@@ -152,33 +179,37 @@ public class Tree<T>
         return mChildren.get(index);
     }
 
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public T get(int index)
     {
-        return mChildren.get(index).getData();
+        return mChildren.get(index).mData;
     }
 
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public void set(int index, T data)
     {
-        mChildren.get(index).setData(data);
+        mChildren.get(index).mData = data;
     }
 
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public ArrayList<T> getAll()
     {
-        ArrayList<T> res = new ArrayList<>();
+        ArrayList<T> res = new ArrayList<>(0);
 
         for (int i = 0; i < mChildren.size(); ++i)
         {
-            res.add(mChildren.get(i).getData());
+            res.add(mChildren.get(i).mData);
         }
 
         return res;
     }
 
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public int indexOf(T data)
     {
         for (int i = 0; i < mChildren.size(); ++i)
         {
-            if (mChildren.get(i).getData().equals(data))
+            if (mChildren.get(i).mData.equals(data))
             {
                 return i;
             }
@@ -217,6 +248,7 @@ public class Tree<T>
         return mParent;
     }
 
+    @SuppressWarnings("unused")
     public ArrayList<Tree<T>> getChildren()
     {
         return mChildren;
@@ -224,8 +256,14 @@ public class Tree<T>
 
 
 
-    public static abstract class Operation<T>
+    @SuppressWarnings("PublicInnerClass")
+    public abstract static class Operation<T>
     {
+        protected Operation()
+        {
+            // Nothing
+        }
+
         protected boolean filter(Tree<T> node)
         {
             return true;
@@ -234,14 +272,23 @@ public class Tree<T>
         protected abstract void run(Tree<T> node);
     }
 
-    public static abstract class OperationWithResult<T, R>
+    @SuppressWarnings("PublicInnerClass")
+    public abstract static class OperationWithResult<T, R>
     {
+        protected OperationWithResult()
+        {
+            // Nothing
+        }
+
         protected boolean filter(Tree<T> node, R currentResult)
         {
             return true;
         }
 
+        @Nullable
         protected abstract R init();
+
+        @Nullable
         protected abstract R run(Tree<T> node, R currentResult);
     }
 }

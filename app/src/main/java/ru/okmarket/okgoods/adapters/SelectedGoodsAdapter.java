@@ -15,7 +15,7 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.SelectedGoodEntity;
 
-public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdapter.ViewHolder>
+public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdapter.SelectedGoodViewHolder>
 {
     @SuppressWarnings("unused")
     private static final String TAG = "SelectedGoodsAdapter";
@@ -31,53 +31,71 @@ public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdap
 
 
 
-    public SelectedGoodsAdapter(Context context, MainDatabase mainDatabase, SQLiteDatabase db)
+    @Override
+    public String toString()
+    {
+        return "SelectedGoodsAdapter{" +
+                "mContext="                    + mContext                  +
+                ", mMainDatabase="             + mMainDatabase             +
+                ", mDB="                       + mDB                       +
+                ", mItems="                    + mItems                    +
+                ", mOnItemClickListener="      + mOnItemClickListener      +
+                ", mOnBindViewHolderListener=" + mOnBindViewHolderListener +
+                '}';
+    }
+
+    private SelectedGoodsAdapter(Context context, MainDatabase mainDatabase, SQLiteDatabase db)
     {
         mContext                  = context;
         mMainDatabase             = mainDatabase;
         mDB                       = db;
-        mItems                    = new ArrayList<>();
+        mItems                    = new ArrayList<>(0);
         mOnItemClickListener      = null;
         mOnBindViewHolderListener = null;
 
         updateFromDatabase();
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public static SelectedGoodsAdapter newInstance(Context context, MainDatabase mainDatabase, SQLiteDatabase db)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_selected_good, parent, false);
-
-        return new ViewHolder(view);
+        return new SelectedGoodsAdapter(context, mainDatabase, db);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position)
+    public SelectedGoodViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_selected_good, parent, false);
+
+        return SelectedGoodViewHolder.newInstance(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final SelectedGoodViewHolder holder, int position)
     {
         final SelectedGoodEntity item = mItems.get(position);
 
-        holder.mGoodNameTextView.setText(item.getName());
-        holder.mGoodNameTextView.setHorizontallyScrolling(false);
-        holder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(false);
-        holder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.END);
-        holder.mGoodNameTextView.setMarqueeRepeatLimit(-1);
-        holder.mGoodNameTextView.setSelected(false);
+        holder.getGoodNameTextView().setText(item.getName());
+        holder.getGoodNameTextView().setHorizontallyScrolling(false);
+        holder.getGoodNameTextView().setHorizontalFadingEdgeEnabled(false);
+        holder.getGoodNameTextView().setEllipsize(TextUtils.TruncateAt.END);
+        holder.getGoodNameTextView().setMarqueeRepeatLimit(-1);
+        holder.getGoodNameTextView().setSelected(false);
 
         if (item.getGoodId() != MainDatabase.SPECIAL_ID_ROOT && item.getCost() > 0 && item.getCount() > 0)
         {
-            holder.mCostTextView.setVisibility(View.VISIBLE);
-            holder.mCostTextView.setAlpha(1);
-            holder.mCostTextView.setText(mContext.getString(R.string.rub_currency_count, item.getCost(), item.getCount()));
+            holder.getCostTextView().setVisibility(View.VISIBLE);
+            holder.getCostTextView().setAlpha(1);
+            holder.getCostTextView().setText(mContext.getString(R.string.rub_currency_count, item.getCost(), item.getCount()));
         }
         else
         {
-            holder.mCostTextView.setVisibility(View.GONE);
-            holder.mCostTextView.setText("");
+            holder.getCostTextView().setVisibility(View.GONE);
+            holder.getCostTextView().setText("");
         }
 
-        holder.mExpandedView.setVisibility(View.GONE);
+        holder.getExpandedView().setVisibility(View.GONE);
 
-        holder.mView.setOnClickListener(new View.OnClickListener()
+        holder.getView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -101,13 +119,16 @@ public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdap
         return mItems.size();
     }
 
+    @SuppressWarnings("unused")
     public ArrayList<SelectedGoodEntity> getItems()
     {
         return mItems;
     }
 
+    @SuppressWarnings("unused")
     public void setItems(ArrayList<SelectedGoodEntity> items)
     {
+        //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         mItems = items;
 
         notifyDataSetChanged();
@@ -132,17 +153,30 @@ public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdap
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
+    public static final class SelectedGoodViewHolder extends RecyclerView.ViewHolder
     {
-        public View     mView;
-        public TextView mGoodNameTextView;
-        public TextView mCostTextView;
-        public View     mExpandedView;
-        public TextView mSecondCostTextView;
+        private View     mView               = null;
+        private TextView mGoodNameTextView   = null;
+        private TextView mCostTextView       = null;
+        private View     mExpandedView       = null;
+        private TextView mSecondCostTextView = null;
 
 
 
-        public ViewHolder(View view)
+        @Override
+        public String toString()
+        {
+            return "SelectedGoodViewHolder{" +
+                    "mView="                 + mView               +
+                    ", mGoodNameTextView="   + mGoodNameTextView   +
+                    ", mCostTextView="       + mCostTextView       +
+                    ", mExpandedView="       + mExpandedView       +
+                    ", mSecondCostTextView=" + mSecondCostTextView +
+                    '}';
+        }
+
+        private SelectedGoodViewHolder(View view)
         {
             super(view);
 
@@ -152,17 +186,50 @@ public class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdap
             mExpandedView       =           view.findViewById(R.id.expandedView);
             mSecondCostTextView = (TextView)view.findViewById(R.id.secondCostTextView);
         }
+
+        public static SelectedGoodViewHolder newInstance(View view)
+        {
+            return new SelectedGoodViewHolder(view);
+        }
+
+        public View getView()
+        {
+            return mView;
+        }
+
+        public TextView getGoodNameTextView()
+        {
+            return mGoodNameTextView;
+        }
+
+        public TextView getCostTextView()
+        {
+            return mCostTextView;
+        }
+
+        public View getExpandedView()
+        {
+            return mExpandedView;
+        }
+
+        @SuppressWarnings("unused")
+        public TextView getSecondCostTextView()
+        {
+            return mSecondCostTextView;
+        }
     }
 
 
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnItemClickListener
     {
-        void onSelectedGoodClicked(ViewHolder viewHolder, SelectedGoodEntity good);
+        void onSelectedGoodClicked(SelectedGoodViewHolder holder, SelectedGoodEntity good);
     }
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnBindViewHolderListener
     {
-        void onSelectedGoodBindViewHolder(ViewHolder viewHolder, SelectedGoodEntity good);
+        void onSelectedGoodBindViewHolder(SelectedGoodViewHolder holder, SelectedGoodEntity good);
     }
 }

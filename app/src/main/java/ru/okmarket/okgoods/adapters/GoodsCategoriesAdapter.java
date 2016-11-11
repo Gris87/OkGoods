@@ -17,7 +17,7 @@ import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 import ru.okmarket.okgoods.util.Tree;
 import ru.okmarket.okgoods.widgets.ImageButtonWithTooltip;
 
-public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategoriesAdapter.ViewHolder>
+public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategoriesAdapter.GoodsCategoryViewHolder>
 {
     @SuppressWarnings("unused")
     private static final String TAG = "GoodsCategoriesAdapter";
@@ -31,26 +31,42 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
 
 
 
-    public GoodsCategoriesAdapter(Context context, Tree<GoodsCategoryEntity> tree)
+    @Override
+    public String toString()
+    {
+        return "GoodsCategoriesAdapter{" +
+                "mContext="               + mContext             +
+                ", mTree="                + mTree                +
+                ", mItems="               + mItems               +
+                ", mOnItemClickListener=" + mOnItemClickListener +
+                '}';
+    }
+
+    private GoodsCategoriesAdapter(Context context, Tree<GoodsCategoryEntity> tree)
     {
         mContext             = context;
         mTree                = tree;
-        mItems               = new ArrayList<>();
+        mItems               = new ArrayList<>(0);
         mOnItemClickListener = null;
 
         invalidate();
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public static GoodsCategoriesAdapter newInstance(Context context, Tree<GoodsCategoryEntity> tree)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_goods_category, parent, false);
-
-        return new ViewHolder(view);
+        return new GoodsCategoriesAdapter(context, tree);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position)
+    public GoodsCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_goods_category, parent, false);
+
+        return GoodsCategoryViewHolder.newInstance(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final GoodsCategoryViewHolder holder, int position)
     {
         final Tree<GoodsCategoryEntity> node      = mItems.get(position);
         final GoodsCategoryEntity       item      = node.getData();
@@ -58,29 +74,29 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
 
         int margin      = resources.getDimensionPixelSize(R.dimen.common_margin);
         int indentation = resources.getDimensionPixelSize(R.dimen.expand_category_indentation);
-        int button_size = resources.getDimensionPixelSize(R.dimen.expand_category_button_size);
+        int buttonSize  = resources.getDimensionPixelSize(R.dimen.expand_category_button_size);
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(button_size, button_size);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(buttonSize, buttonSize);
         layoutParams.setMargins(margin + indentation * (node.getLevel() - 1), margin, 0, margin);
-        holder.mExpandCategoryButton.setLayoutParams(layoutParams);
+        holder.getExpandCategoryButton().setLayoutParams(layoutParams);
 
-        holder.mNameTextView.setText(item.getName());
-        holder.mNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18 - node.getLevel() * 2);
+        holder.getNameTextView().setText(item.getName());
+        holder.getNameTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 18 - (node.getLevel() << 1));
 
         if (node.size() > 0)
         {
-            holder.mExpandCategoryButton.setVisibility(View.VISIBLE);
+            holder.getExpandCategoryButton().setVisibility(View.VISIBLE);
 
             if (item.isExpanded())
             {
-                holder.mExpandCategoryButton.setImageResource(R.drawable.collapse);
+                holder.getExpandCategoryButton().setImageResource(R.drawable.collapse);
             }
             else
             {
-                holder.mExpandCategoryButton.setImageResource(R.drawable.expand);
+                holder.getExpandCategoryButton().setImageResource(R.drawable.expand);
             }
 
-            holder.mExpandCategoryButton.setOnClickListener(new View.OnClickListener()
+            holder.getExpandCategoryButton().setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
@@ -100,7 +116,7 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
                             @Override
                             protected ArrayList<Tree<GoodsCategoryEntity>> init()
                             {
-                                return new ArrayList<>();
+                                return new ArrayList<>(0);
                             }
 
                             @Override
@@ -119,7 +135,7 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
                     }
                     else
                     {
-                        int childCount = node.doDepthForResult(new Tree.OperationWithResult<GoodsCategoryEntity, Integer>()
+                        Integer childCount = node.doDepthForResult(new Tree.OperationWithResult<GoodsCategoryEntity, Integer>()
                         {
                             @Override
                             protected boolean filter(Tree<GoodsCategoryEntity> recursiveNode, Integer currentResult)
@@ -140,12 +156,15 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
                             }
                         });
 
-                        for (int i = childCount; i >= 1; --i)
+                        if (childCount != null)
                         {
-                            mItems.remove(holder.getAdapterPosition() + i);
-                        }
+                            for (int i = childCount; i >= 1; --i)
+                            {
+                                mItems.remove(holder.getAdapterPosition() + i);
+                            }
 
-                        item.setExpanded(false);
+                            item.setExpanded(false);
+                        }
                     }
 
                     notifyDataSetChanged();
@@ -154,10 +173,10 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
         }
         else
         {
-            holder.mExpandCategoryButton.setVisibility(View.INVISIBLE);
+            holder.getExpandCategoryButton().setVisibility(View.INVISIBLE);
         }
 
-        holder.mView.setOnClickListener(new View.OnClickListener()
+        holder.getView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -217,15 +236,26 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
+    public static final class GoodsCategoryViewHolder extends RecyclerView.ViewHolder
     {
-        public View                   mView;
-        public ImageButtonWithTooltip mExpandCategoryButton;
-        public TextView               mNameTextView;
+        private View                   mView                 = null;
+        private ImageButtonWithTooltip mExpandCategoryButton = null;
+        private TextView               mNameTextView         = null;
 
 
 
-        public ViewHolder(View view)
+        @Override
+        public String toString()
+        {
+            return "GoodsCategoryViewHolder{" +
+                    "mView="                   + mView                 +
+                    ", mExpandCategoryButton=" + mExpandCategoryButton +
+                    ", mNameTextView="         + mNameTextView         +
+                    '}';
+        }
+
+        private GoodsCategoryViewHolder(View view)
         {
             super(view);
 
@@ -233,12 +263,33 @@ public class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategories
             mExpandCategoryButton = (ImageButtonWithTooltip)view.findViewById(R.id.expandCategoryButton);
             mNameTextView         = (TextView)              view.findViewById(R.id.nameTextView);
         }
+
+        public static GoodsCategoryViewHolder newInstance(View view)
+        {
+            return new GoodsCategoryViewHolder(view);
+        }
+
+        public View getView()
+        {
+            return mView;
+        }
+
+        public ImageButtonWithTooltip getExpandCategoryButton()
+        {
+            return mExpandCategoryButton;
+        }
+
+        public TextView getNameTextView()
+        {
+            return mNameTextView;
+        }
     }
 
 
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnItemClickListener
     {
-        void onGoodsCategoryClicked(ViewHolder viewHolder, Tree<GoodsCategoryEntity> category);
+        void onGoodsCategoryClicked(GoodsCategoryViewHolder holder, Tree<GoodsCategoryEntity> category);
     }
 }

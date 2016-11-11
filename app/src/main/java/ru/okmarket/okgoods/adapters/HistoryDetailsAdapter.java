@@ -14,7 +14,7 @@ import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 
-public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAdapter.ViewHolder>
+public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAdapter.HistoryDetailsViewHolder>
 {
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryDetailsAdapter";
@@ -28,49 +28,65 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
 
 
 
-    public HistoryDetailsAdapter(Context context)
+    @Override
+    public String toString()
+    {
+        return "HistoryDetailsAdapter{" +
+                "mContext="                    + mContext                  +
+                ", mItems="                    + mItems                    +
+                ", mOnItemClickListener="      + mOnItemClickListener      +
+                ", mOnBindViewHolderListener=" + mOnBindViewHolderListener +
+                '}';
+    }
+
+    private HistoryDetailsAdapter(Context context)
     {
         mContext                  = context;
-        mItems                    = new ArrayList<>();
+        mItems                    = new ArrayList<>(0);
         mOnItemClickListener      = null;
         mOnBindViewHolderListener = null;
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public static HistoryDetailsAdapter newInstance(Context context)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_details, parent, false);
-
-        return new ViewHolder(view);
+        return new HistoryDetailsAdapter(context);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position)
+    public HistoryDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_details, parent, false);
+
+        return HistoryDetailsViewHolder.newInstance(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final HistoryDetailsViewHolder holder, int position)
     {
         final HistoryDetailsEntity item = mItems.get(position);
 
-        holder.mGoodNameTextView.setText(item.getName());
-        holder.mGoodNameTextView.setHorizontallyScrolling(false);
-        holder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(false);
-        holder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.END);
-        holder.mGoodNameTextView.setMarqueeRepeatLimit(-1);
-        holder.mGoodNameTextView.setSelected(false);
+        holder.getGoodNameTextView().setText(item.getName());
+        holder.getGoodNameTextView().setHorizontallyScrolling(false);
+        holder.getGoodNameTextView().setHorizontalFadingEdgeEnabled(false);
+        holder.getGoodNameTextView().setEllipsize(TextUtils.TruncateAt.END);
+        holder.getGoodNameTextView().setMarqueeRepeatLimit(-1);
+        holder.getGoodNameTextView().setSelected(false);
 
         if (item.getGoodId() != MainDatabase.SPECIAL_ID_ROOT && item.getCost() > 0 && item.getCount() > 0)
         {
-            holder.mCostTextView.setVisibility(View.VISIBLE);
-            holder.mCostTextView.setAlpha(1);
-            holder.mCostTextView.setText(mContext.getString(R.string.rub_currency_count, item.getCost(), item.getCount()));
+            holder.getCostTextView().setVisibility(View.VISIBLE);
+            holder.getCostTextView().setAlpha(1);
+            holder.getCostTextView().setText(mContext.getString(R.string.rub_currency_count, item.getCost(), item.getCount()));
         }
         else
         {
-            holder.mCostTextView.setVisibility(View.GONE);
-            holder.mCostTextView.setText("");
+            holder.getCostTextView().setVisibility(View.GONE);
+            holder.getCostTextView().setText("");
         }
 
-        holder.mExpandedView.setVisibility(View.GONE);
+        holder.getExpandedView().setVisibility(View.GONE);
 
-        holder.mView.setOnClickListener(new View.OnClickListener()
+        holder.getView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -101,6 +117,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
 
     public void setItems(ArrayList<HistoryDetailsEntity> items)
     {
+        //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         mItems = items;
 
         notifyDataSetChanged();
@@ -118,17 +135,30 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
+    public static final class HistoryDetailsViewHolder extends RecyclerView.ViewHolder
     {
-        public View     mView;
-        public TextView mGoodNameTextView;
-        public TextView mCostTextView;
-        public View     mExpandedView;
-        public TextView mSecondCostTextView;
+        private View     mView               = null;
+        private TextView mGoodNameTextView   = null;
+        private TextView mCostTextView       = null;
+        private View     mExpandedView       = null;
+        private TextView mSecondCostTextView = null;
 
 
 
-        public ViewHolder(View view)
+        @Override
+        public String toString()
+        {
+            return "HistoryDetailsViewHolder{" +
+                    "mView="                 + mView               +
+                    ", mGoodNameTextView="   + mGoodNameTextView   +
+                    ", mCostTextView="       + mCostTextView       +
+                    ", mExpandedView="       + mExpandedView       +
+                    ", mSecondCostTextView=" + mSecondCostTextView +
+                    '}';
+        }
+
+        private HistoryDetailsViewHolder(View view)
         {
             super(view);
 
@@ -138,17 +168,50 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAd
             mExpandedView       =           view.findViewById(R.id.expandedView);
             mSecondCostTextView = (TextView)view.findViewById(R.id.secondCostTextView);
         }
+
+        public static HistoryDetailsViewHolder newInstance(View view)
+        {
+            return new HistoryDetailsViewHolder(view);
+        }
+
+        public View getView()
+        {
+            return mView;
+        }
+
+        public TextView getGoodNameTextView()
+        {
+            return mGoodNameTextView;
+        }
+
+        public TextView getCostTextView()
+        {
+            return mCostTextView;
+        }
+
+        public View getExpandedView()
+        {
+            return mExpandedView;
+        }
+
+        @SuppressWarnings("unused")
+        public TextView getSecondCostTextView()
+        {
+            return mSecondCostTextView;
+        }
     }
 
 
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnItemClickListener
     {
-        void onHistoryDetailsClicked(ViewHolder viewHolder, HistoryDetailsEntity details);
+        void onHistoryDetailsClicked(HistoryDetailsViewHolder holder, HistoryDetailsEntity details);
     }
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnBindViewHolderListener
     {
-        void onHistoryDetailsBindViewHolder(ViewHolder viewHolder, HistoryDetailsEntity details);
+        void onHistoryDetailsBindViewHolder(HistoryDetailsViewHolder holder, HistoryDetailsEntity details);
     }
 }

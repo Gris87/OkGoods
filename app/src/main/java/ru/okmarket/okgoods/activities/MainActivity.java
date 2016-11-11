@@ -35,6 +35,7 @@ import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener, SelectCityDialog.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener, SelectedGoodsAdapter.OnItemClickListener, SelectedGoodsAdapter.OnBindViewHolderListener
 {
     @SuppressWarnings("unused")
@@ -67,10 +68,27 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private MainDatabase                    mMainDatabase       = null;
     private SQLiteDatabase                  mDB                 = null;
     private ShopEntity                      mSelectedShop       = null;
-    private SelectedGoodsAdapter.ViewHolder mSelectedViewHolder = null;
+    private SelectedGoodsAdapter.SelectedGoodViewHolder mSelectedViewHolder = null;
     private SelectedGoodEntity              mSelectedGood       = null;
 
 
+
+    @Override
+    public String toString()
+    {
+        return "MainActivity{" +
+                "mDrawerLayout="         + mDrawerLayout       +
+                ", mDrawerToggle="       + mDrawerToggle       +
+                ", mAdapter="            + mAdapter            +
+                ", mShopMapView="        + mShopMapView        +
+                ", mShopMapFragment="    + mShopMapFragment    +
+                ", mMainDatabase="       + mMainDatabase       +
+                ", mDB="                 + mDB                 +
+                ", mSelectedShop="       + mSelectedShop       +
+                ", mSelectedViewHolder=" + mSelectedViewHolder +
+                ", mSelectedGood="       + mSelectedGood       +
+                '}';
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -86,11 +104,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         mShopMapView              = (FrameLayout)             findViewById(R.id.shopMapView);
         mShopMapFragment          = (ShopMapFragment)         getSupportFragmentManager().findFragmentById(R.id.shopMapFragment);
 
-        assert recyclerView != null;
 
 
-
-        mMainDatabase = new MainDatabase(MainActivity.this);
+        mMainDatabase = new MainDatabase(this);
         mDB           = mMainDatabase.getWritableDatabase();
 
 
@@ -100,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
 
-        mAdapter = new SelectedGoodsAdapter(this, mMainDatabase, mDB);
+        mAdapter = SelectedGoodsAdapter.newInstance(this, mMainDatabase, mDB);
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnBindViewHolderListener(this);
 
@@ -288,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown view: " + String.valueOf(view));
+            AppLog.wtf(TAG, "Unknown view: " + view);
         }
 
         return false;
@@ -332,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
             else
             {
-                AppLog.wtf(TAG, "Unknown result code: " + String.valueOf(resultCode));
+                AppLog.wtf(TAG, "Unknown result code: " + resultCode);
             }
         }
         else
@@ -348,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown request code: " + String.valueOf(requestCode));
+            AppLog.wtf(TAG, "Unknown request code: " + requestCode);
         }
     }
 
@@ -373,6 +389,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         {
             mSelectedShop = mMainDatabase.getShop(mDB, selectedShopId);
 
+            //noinspection VariableNotUsedInsideIf
             if (mSelectedShop != null)
             {
                 updateSelectedShop();
@@ -422,7 +439,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     @Override
-    public void onSelectedGoodClicked(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodEntity good)
+    public void onSelectedGoodClicked(SelectedGoodsAdapter.SelectedGoodViewHolder holder, SelectedGoodEntity good)
     {
         if (good.equals(mSelectedGood))
         {
@@ -430,36 +447,38 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
         else
         {
-            selectSelectedGood(viewHolder, good);
+            selectSelectedGood(holder, good);
         }
     }
 
     @Override
-    public void onSelectedGoodBindViewHolder(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodEntity good)
+    public void onSelectedGoodBindViewHolder(SelectedGoodsAdapter.SelectedGoodViewHolder holder, SelectedGoodEntity good)
     {
-        if (mSelectedViewHolder == viewHolder)
+        if (mSelectedViewHolder == holder)
         {
             mSelectedViewHolder = null;
         }
 
         if (good.equals(mSelectedGood))
         {
-            mSelectedViewHolder = viewHolder;
+            mSelectedViewHolder = holder;
 
             expandSelectedViewHolder(true);
         }
     }
 
-    private void selectSelectedGood(SelectedGoodsAdapter.ViewHolder viewHolder, SelectedGoodEntity good)
+    private void selectSelectedGood(SelectedGoodsAdapter.SelectedGoodViewHolder holder, SelectedGoodEntity good)
     {
+        //noinspection VariableNotUsedInsideIf
         if (mSelectedViewHolder != null)
         {
             collapseSelectedViewHolder();
         }
 
-        mSelectedViewHolder = viewHolder;
+        mSelectedViewHolder = holder;
         mSelectedGood       = good;
 
+        //noinspection VariableNotUsedInsideIf
         if (mSelectedViewHolder != null)
         {
             expandSelectedViewHolder(false);
@@ -470,25 +489,25 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     {
         if (immediately)
         {
-            mSelectedViewHolder.mExpandedView.setVisibility(View.VISIBLE);
-            mSelectedViewHolder.mCostTextView.setVisibility(View.GONE);
+            mSelectedViewHolder.getExpandedView().setVisibility(View.VISIBLE);
+            mSelectedViewHolder.getCostTextView().setVisibility(View.GONE);
 
-            mSelectedViewHolder.mExpandedView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            mSelectedViewHolder.getExpandedView().getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
         else
         {
-            AnimationUtils.expand(mSelectedViewHolder.mExpandedView,  EXPAND_ANIMATION_SPEED);
-            AnimationUtils.fadeOut(mSelectedViewHolder.mCostTextView, FADE_ANIMATION_DURATION);
+            AnimationUtils.expand(mSelectedViewHolder.getExpandedView(),  EXPAND_ANIMATION_SPEED);
+            AnimationUtils.fadeOut(mSelectedViewHolder.getCostTextView(), FADE_ANIMATION_DURATION);
         }
 
-        mSelectedViewHolder.mGoodNameTextView.setHorizontallyScrolling(true);
-        mSelectedViewHolder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(true);
-        mSelectedViewHolder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        mSelectedViewHolder.mGoodNameTextView.setSelected(true);
+        mSelectedViewHolder.getGoodNameTextView().setHorizontallyScrolling(true);
+        mSelectedViewHolder.getGoodNameTextView().setHorizontalFadingEdgeEnabled(true);
+        mSelectedViewHolder.getGoodNameTextView().setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        mSelectedViewHolder.getGoodNameTextView().setSelected(true);
 
-        if (!TextUtils.isEmpty(mSelectedViewHolder.mCostTextView.getText()))
+        if (!TextUtils.isEmpty(mSelectedViewHolder.getCostTextView().getText()))
         {
-            mSelectedViewHolder.mSecondCostTextView.setText(mSelectedViewHolder.mCostTextView.getText());
+            mSelectedViewHolder.getSecondCostTextView().setText(mSelectedViewHolder.getCostTextView().getText());
         }
         else
         {
@@ -496,28 +515,28 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             {
                 if (mSelectedGood.getGoodId() != MainDatabase.SPECIAL_ID_ROOT)
                 {
-                    mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_good);
+                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.own_good);
                 }
                 else
                 {
-                    mSelectedViewHolder.mSecondCostTextView.setText(R.string.own_category);
+                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.own_category);
                 }
             }
             else
             {
-                mSelectedViewHolder.mSecondCostTextView.setText(R.string.category);
+                mSelectedViewHolder.getSecondCostTextView().setText(R.string.category);
             }
         }
     }
 
     private void collapseSelectedViewHolder()
     {
-        AnimationUtils.collapse(mSelectedViewHolder.mExpandedView, EXPAND_ANIMATION_SPEED);
-        AnimationUtils.fadeIn(mSelectedViewHolder.mCostTextView,   FADE_ANIMATION_DURATION);
+        AnimationUtils.collapse(mSelectedViewHolder.getExpandedView(), EXPAND_ANIMATION_SPEED);
+        AnimationUtils.fadeIn(mSelectedViewHolder.getCostTextView(),   FADE_ANIMATION_DURATION);
 
-        mSelectedViewHolder.mGoodNameTextView.setHorizontallyScrolling(false);
-        mSelectedViewHolder.mGoodNameTextView.setHorizontalFadingEdgeEnabled(false);
-        mSelectedViewHolder.mGoodNameTextView.setEllipsize(TextUtils.TruncateAt.END);
-        mSelectedViewHolder.mGoodNameTextView.setSelected(false);
+        mSelectedViewHolder.getGoodNameTextView().setHorizontallyScrolling(false);
+        mSelectedViewHolder.getGoodNameTextView().setHorizontalFadingEdgeEnabled(false);
+        mSelectedViewHolder.getGoodNameTextView().setEllipsize(TextUtils.TruncateAt.END);
+        mSelectedViewHolder.getGoodNameTextView().setSelected(false);
     }
 }
