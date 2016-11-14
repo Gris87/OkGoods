@@ -51,7 +51,7 @@ public class Web
 
     public static String getShopUrl(int shopId)
     {
-        return OK_MARKET_RU_URL + "/stores/" + String.valueOf(shopId) + "/";
+        return OK_MARKET_RU_URL + "/stores/" + shopId + '/';
     }
 
     public static ArrayList<String> getShopPhotosUrlsFromResponse(String response)
@@ -134,22 +134,22 @@ public class Web
     {
         if (categoryId == MainDatabase.SPECIAL_ID_ROOT)
         {
-            return OKEY_DOSTAVKA_RU_URL + "/" + shop + "/catalog";
+            return OKEY_DOSTAVKA_RU_URL + '/' + shop + "/catalog";
         }
         else
         {
             if (firstPage)
             {
                 return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/CategoryDisplay?" +
-                        "storeId="    + String.valueOf(shopId)     + "&" +
-                        "categoryId=" + String.valueOf(categoryId) + "&" +
+                        "storeId="    + shopId + '&' +
+                        "categoryId=" + categoryId + '&' +
                         "pageView=grid";
             }
             else
             {
                 return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/ProductListingView?" +
-                        "storeId="    + String.valueOf(shopId)     + "&" +
-                        "categoryId=" + String.valueOf(categoryId) + "&" +
+                        "storeId="    + shopId + '&' +
+                        "categoryId=" + categoryId + '&' +
                         "resultsPerPage=1000000";
             }
         }
@@ -162,12 +162,12 @@ public class Web
 
     public static String getGoodPhotoThumbnailUrl(int imageId)
     {
-        return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + String.valueOf(imageId) + "/" + String.valueOf(imageId) + "_thumbnail.jpg";
+        return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + imageId + '/' + imageId + "_thumbnail.jpg";
     }
 
     public static String getGoodPhotoFullImageUrl(int imageId)
     {
-        return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + String.valueOf(imageId) + "/" + String.valueOf(imageId) + "_fullimage.jpg" ;
+        return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + imageId + '/' + imageId + "_fullimage.jpg" ;
     }
 
     public static boolean getCatalogItemsFromResponse(String response, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods, String shop, int shopId, int parentCategoryId, boolean firstPage)
@@ -185,7 +185,7 @@ public class Web
 
                 if (startPoint >= 0)
                 {
-                    AppLog.wtf(TAG, "Please move page start point to " + String.valueOf(startPoint) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                    AppLog.wtf(TAG, "Please move page start point to " + startPoint + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
 
                     PAGE_START_POINT = startPoint;
                 }
@@ -197,7 +197,7 @@ public class Web
                 }
             }
 
-            startPoint = startPoint + 25;
+            startPoint += 25;
 
             try
             {
@@ -309,7 +309,7 @@ public class Web
                             {
                                 categoryId = Integer.parseInt(categoryIdStr);
                             }
-                            catch (Exception e)
+                            catch (Exception ignored)
                             {
                                 // Nothing
                             }
@@ -367,18 +367,19 @@ public class Web
 
                     if (categoryId != MainDatabase.SPECIAL_ID_NONE)
                     {
-                        boolean found = false;
+                        boolean absent = true;
 
                         for (int j = 0; j < categories.size(); ++j)
                         {
                             if (categories.get(j).getId() == categoryId)
                             {
-                                found = true;
+                                absent = false;
+
                                 break;
                             }
                         }
 
-                        if (!found)
+                        if (absent)
                         {
                             GoodsCategoryEntity category = GoodsCategoryEntity.newInstance();
 
@@ -460,7 +461,7 @@ public class Web
 
                         goodName = response.substring(index2 + 7, index3).trim();
 
-                        if (goodName.endsWith("\""))
+                        if (!goodName.isEmpty() && goodName.charAt(goodName.length() - 1) == '\"')
                         {
                             goodName = goodName.substring(0, goodName.length() - 1);
                         }
@@ -567,7 +568,7 @@ public class Web
                     if (response.startsWith("<div class=\"quantity_section\">", i))
                     {
                         ++divLevel;
-                        i = i + 30;
+                        i += 30;
 
                         while (i < response.length())
                         {
@@ -734,18 +735,19 @@ public class Web
 
 
 
-                    boolean found = false;
+                    boolean absent = true;
 
                     for (int j = 0; j < goods.size(); ++j)
                     {
                         if (goods.get(j).getId() == goodId)
                         {
-                            found = true;
+                            absent = false;
+
                             break;
                         }
                     }
 
-                    if (!found)
+                    if (absent)
                     {
                         JSONObject goodAttrs = new JSONObject();
                         goodAttrs.put(GoodEntity.ATTRIBUTE_BRAND, goodBrand);

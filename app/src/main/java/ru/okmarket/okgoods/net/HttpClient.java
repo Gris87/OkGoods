@@ -9,7 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-public class HttpClient
+public final class HttpClient
 {
     @SuppressWarnings("unused")
     private static final String TAG = "HttpClient";
@@ -22,6 +22,15 @@ public class HttpClient
     private ImageLoader  mImageLoader  = null;
 
 
+
+    @Override
+    public String toString()
+    {
+        return "HttpClient{" +
+                "mRequestQueue="  + mRequestQueue +
+                ", mImageLoader=" + mImageLoader  +
+                '}';
+    }
 
     private HttpClient(Context context)
     {
@@ -46,14 +55,17 @@ public class HttpClient
         });
     }
 
-    public static synchronized HttpClient getInstance(Context context)
+    public static HttpClient getInstance(Context context)
     {
-        if (sInstance == null)
+        synchronized (HttpClient.class)
         {
-            sInstance = new HttpClient(context);
-        }
+            if (sInstance == null)
+            {
+                sInstance = new HttpClient(context);
+            }
 
-        return sInstance;
+            return sInstance;
+        }
     }
 
     public <T> void addToRequestQueue(Request<T> req)
