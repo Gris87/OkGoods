@@ -6,12 +6,10 @@ import android.text.TextUtils;
 
 import org.json.JSONObject;
 
-import java.util.Locale;
-
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.util.AppLog;
 
-public class GoodEntity implements Parcelable
+public final class GoodEntity implements Parcelable
 {
     @SuppressWarnings("unused")
     private static final String TAG = "GoodEntity";
@@ -22,24 +20,45 @@ public class GoodEntity implements Parcelable
 
 
 
-    private int        mId;
-    private int        mCategoryId;
-    private String     mName;
-    private int        mImageId;
-    private double     mCost;
-    private double     mUnit;
-    private int        mUnitType;
-    private double     mCountIncrement;
-    private int        mCountType;
-    private JSONObject mAttrs;
-    private JSONObject mAttrsDetails;
-    private int        mPriority;
-    private long       mUpdateTime;
-    private int        mEnabled;
+    private int        mId             = 0;
+    private int        mCategoryId     = 0;
+    private String     mName           = null;
+    private int        mImageId        = 0;
+    private double     mCost           = 0;
+    private double     mUnit           = 0;
+    private int        mUnitType       = 0;
+    private double     mCountIncrement = 0;
+    private int        mCountType      = 0;
+    private JSONObject mAttrs          = null;
+    private JSONObject mAttrsDetails   = null;
+    private int        mPriority       = 0;
+    private long       mUpdateTime     = 0;
+    private int        mEnabled        = 0;
 
 
 
-    public GoodEntity()
+    @Override
+    public String toString()
+    {
+        return "GoodEntity{" +
+                "mId="               + mId             +
+                ", mCategoryId="     + mCategoryId     +
+                ", mName='"          + mName           + '\'' +
+                ", mImageId="        + mImageId        +
+                ", mCost="           + mCost           +
+                ", mUnit="           + mUnit           +
+                ", mUnitType="       + mUnitType       +
+                ", mCountIncrement=" + mCountIncrement +
+                ", mCountType="      + mCountType      +
+                ", mAttrs="          + mAttrs          +
+                ", mAttrsDetails="   + mAttrsDetails   +
+                ", mPriority="       + mPriority       +
+                ", mUpdateTime="     + mUpdateTime     +
+                ", mEnabled="        + mEnabled        +
+                '}';
+    }
+
+    private GoodEntity()
     {
         mId             = 0;
         mCategoryId     = 0;
@@ -57,21 +76,12 @@ public class GoodEntity implements Parcelable
         mEnabled        = 0;
     }
 
-    @Override
-    public String toString()
+    public static GoodEntity newInstance()
     {
-        return String.format(Locale.US, "{id = %1$d, categoryId = %2$d, name = %3$s, cost = %4$.2f, unit = %5$.2f, unitType = %6$d, updateTime = %7$d, enabled = %8$d}"
-                , mId
-                , mCategoryId
-                , String.valueOf(mName)
-                , mCost
-                , mUnit
-                , mUnitType
-                , mUpdateTime
-                , mEnabled
-        );
+        return new GoodEntity();
     }
 
+    @SuppressWarnings({"NonFinalFieldReferenceInEquals", "AccessingNonPublicFieldOfAnotherObject"})
     @Override
     public boolean equals(Object object)
     {
@@ -93,6 +103,13 @@ public class GoodEntity implements Parcelable
         GoodEntity good = (GoodEntity)object;
 
         return mId == good.mId;
+    }
+
+    @SuppressWarnings("NonFinalFieldReferencedInHashCode")
+    @Override
+    public int hashCode()
+    {
+        return mId;
     }
 
     public int getId()
@@ -309,8 +326,8 @@ public class GoodEntity implements Parcelable
 
         try
         {
-            mAttrs        = !TextUtils.isEmpty(attrs)        ? new JSONObject(attrs)        : null;
-            mAttrsDetails = !TextUtils.isEmpty(attrsDetails) ? new JSONObject(attrsDetails) : null;
+            mAttrs        = TextUtils.isEmpty(attrs)        ? null : new JSONObject(attrs);
+            mAttrsDetails = TextUtils.isEmpty(attrsDetails) ? null : new JSONObject(attrsDetails);
         }
         catch (Exception e)
         {

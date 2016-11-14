@@ -147,7 +147,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
         // region RecyclerViews initialization
-        mMainDatabase = new MainDatabase(this);
+        mMainDatabase = MainDatabase.newInstance(this);
         mDB           = mMainDatabase.getReadableDatabase();
 
         mGoodsCategoriesAdapter = GoodsCategoriesAdapter.newInstance(this, mMainDatabase.getGoodsCategoriesTree(mDB, MainDatabase.SPECIAL_ID_ROOT));

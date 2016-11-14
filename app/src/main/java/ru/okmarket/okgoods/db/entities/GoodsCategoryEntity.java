@@ -4,29 +4,42 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import java.util.Locale;
-
 import ru.okmarket.okgoods.db.MainDatabase;
 
-public class GoodsCategoryEntity implements Parcelable
+public final class GoodsCategoryEntity implements Parcelable
 {
     @SuppressWarnings("unused")
     private static final String TAG = "GoodsCategoryEntity";
 
 
 
-    private int     mId;
-    private int     mParentId;
-    private String  mName;
-    private String  mImageName;
-    private int     mPriority;
-    private long    mUpdateTime;
-    private int     mEnabled;
-    private boolean mExpanded;
+    private int     mId         = 0;
+    private int     mParentId   = 0;
+    private String  mName       = null;
+    private String  mImageName  = null;
+    private int     mPriority   = 0;
+    private long    mUpdateTime = 0;
+    private int     mEnabled    = 0;
+    private boolean mExpanded   = false;
 
 
 
-    public GoodsCategoryEntity()
+    @Override
+    public String toString()
+    {
+        return "GoodsCategoryEntity{" +
+                "mId="           + mId         +
+                ", mParentId="   + mParentId   +
+                ", mName='"      + mName       + '\'' +
+                ", mImageName='" + mImageName  + '\'' +
+                ", mPriority="   + mPriority   +
+                ", mUpdateTime=" + mUpdateTime +
+                ", mEnabled="    + mEnabled    +
+                ", mExpanded="   + mExpanded   +
+                '}';
+    }
+
+    private GoodsCategoryEntity()
     {
         mId         = 0;
         mParentId   = 0;
@@ -38,18 +51,12 @@ public class GoodsCategoryEntity implements Parcelable
         mExpanded   = false;
     }
 
-    @Override
-    public String toString()
+    public static GoodsCategoryEntity newInstance()
     {
-        return String.format(Locale.US, "{id = %1$d, parentId = %2$d, name = %3$s, updateTime = %4$d, enabled = %5$d}"
-                , mId
-                , mParentId
-                , String.valueOf(mName)
-                , mUpdateTime
-                , mEnabled
-        );
+        return new GoodsCategoryEntity();
     }
 
+    @SuppressWarnings({"NonFinalFieldReferenceInEquals", "AccessingNonPublicFieldOfAnotherObject"})
     @Override
     public boolean equals(Object object)
     {
@@ -71,6 +78,13 @@ public class GoodsCategoryEntity implements Parcelable
         GoodsCategoryEntity category = (GoodsCategoryEntity)object;
 
         return mId == category.mId;
+    }
+
+    @SuppressWarnings("NonFinalFieldReferencedInHashCode")
+    @Override
+    public int hashCode()
+    {
+        return mId;
     }
 
     public int getId()
@@ -179,7 +193,8 @@ public class GoodsCategoryEntity implements Parcelable
         out.writeInt(mPriority);
         out.writeLong(mUpdateTime);
         out.writeInt(mEnabled);
-        out.writeByte(mExpanded ? (byte)1 : (byte)0);
+        //noinspection NumericCastThatLosesPrecision
+        out.writeByte((byte)(mExpanded ? 1 : 0));
     }
 
     public static final Parcelable.Creator<GoodsCategoryEntity> CREATOR = new Parcelable.Creator<GoodsCategoryEntity>()
@@ -206,7 +221,7 @@ public class GoodsCategoryEntity implements Parcelable
         mPriority   = in.readInt();
         mUpdateTime = in.readLong();
         mEnabled    = in.readInt();
-        mExpanded   = (in.readByte() == (byte)1);
+        mExpanded   = in.readByte() == 1;
 
         if (TextUtils.isEmpty(mName))
         {

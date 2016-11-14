@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class SelectCityDialog extends DialogFragment
 {
     @SuppressWarnings("unused")
@@ -24,12 +25,20 @@ public class SelectCityDialog extends DialogFragment
 
 
     @Override
+    public String toString()
+    {
+        return "SelectCityDialog{" +
+                "mListener=" + mListener +
+                '}';
+    }
+
+    @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        MainDatabase mainDatabase = new MainDatabase(getActivity());
+        MainDatabase mainDatabase = MainDatabase.newInstance(getActivity());
         SQLiteDatabase db = mainDatabase.getReadableDatabase();
-        String[] cities = mainDatabase.getCities(db);
+        String[] cities = MainDatabase.getCities(db);
         db.close();
 
 
@@ -40,6 +49,7 @@ public class SelectCityDialog extends DialogFragment
                 .setCancelable(true)
                 .setItems(cities, new DialogInterface.OnClickListener()
                 {
+                    @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
                         onCitySelected(MainDatabase.CITIES[which]);
@@ -76,7 +86,8 @@ public class SelectCityDialog extends DialogFragment
         }
         else
         {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+            //noinspection ProhibitedExceptionThrown
+            throw new RuntimeException(context + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -90,6 +101,7 @@ public class SelectCityDialog extends DialogFragment
 
 
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnFragmentInteractionListener
     {
         void onCitySelected(String cityId);

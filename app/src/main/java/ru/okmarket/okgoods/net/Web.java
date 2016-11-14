@@ -380,7 +380,7 @@ public class Web
 
                         if (!found)
                         {
-                            GoodsCategoryEntity category = new GoodsCategoryEntity();
+                            GoodsCategoryEntity category = GoodsCategoryEntity.newInstance();
 
                             category.setId(categoryId);
                             category.setParentId(parentCategoryId);
@@ -752,7 +752,7 @@ public class Web
 
 
 
-                        GoodEntity good = new GoodEntity();
+                        GoodEntity good = GoodEntity.newInstance();
 
                         good.setId(goodId);
                         good.setCategoryId(parentCategoryId);

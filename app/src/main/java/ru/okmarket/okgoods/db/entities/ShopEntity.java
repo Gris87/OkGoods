@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
-public class ShopEntity implements Parcelable
+public final class ShopEntity implements Parcelable
 {
     @SuppressWarnings("unused")
     private static final String TAG = "ShopEntity";
@@ -28,7 +28,27 @@ public class ShopEntity implements Parcelable
 
 
 
-    public ShopEntity()
+    @Override
+    public String toString()
+    {
+        return "ShopEntity{" +
+                "mId="                  + mId                +
+                ", mCityId="            + mCityId            +
+                ", mName='"             + mName + '\''       +
+                ", mIsHypermarket="     + mIsHypermarket     +
+                ", mLatitude="          + mLatitude          +
+                ", mLongitude="         + mLongitude         +
+                ", mPhone='"            + mPhone + '\''      +
+                ", mWorkHours='"        + mWorkHours + '\''  +
+                ", mSquare="            + mSquare            +
+                ", mOpeningDate="       + mOpeningDate       +
+                ", mParkingPlaces="     + mParkingPlaces     +
+                ", mNumberOfCashboxes=" + mNumberOfCashboxes +
+                ", mServicesSet="       + mServicesSet       +
+                '}';
+    }
+
+    private ShopEntity()
     {
         mId                = 0;
         mCityId            = 0;
@@ -45,12 +65,12 @@ public class ShopEntity implements Parcelable
         mServicesSet       = 0;
     }
 
-    @Override
-    public String toString()
+    public static ShopEntity newInstance()
     {
-        return String.valueOf(mName);
+        return new ShopEntity();
     }
 
+    @SuppressWarnings({"NonFinalFieldReferenceInEquals", "AccessingNonPublicFieldOfAnotherObject"})
     @Override
     public boolean equals(Object object)
     {
@@ -72,6 +92,13 @@ public class ShopEntity implements Parcelable
         ShopEntity shop = (ShopEntity)object;
 
         return mId == shop.mId;
+    }
+
+    @SuppressWarnings("NonFinalFieldReferencedInHashCode")
+    @Override
+    public int hashCode()
+    {
+        return mId;
     }
 
     public int getId()
@@ -165,11 +192,13 @@ public class ShopEntity implements Parcelable
         mSquare = square;
     }
 
+    @SuppressWarnings("ReturnOfDateField")
     public Date getOpeningDate()
     {
         return mOpeningDate;
     }
 
+    @SuppressWarnings("AssignmentToDateFieldFromParameter")
     public void setOpeningDate(Date openingDate)
     {
         mOpeningDate = openingDate;
@@ -217,7 +246,8 @@ public class ShopEntity implements Parcelable
         out.writeInt(mId);
         out.writeInt(mCityId);
         out.writeString(mName);
-        out.writeByte(mIsHypermarket ? (byte)1 : (byte)0);
+        //noinspection NumericCastThatLosesPrecision
+        out.writeByte((byte)(mIsHypermarket ? 1 : 0));
         out.writeDouble(mLatitude);
         out.writeDouble(mLongitude);
         out.writeString(mPhone);
@@ -249,14 +279,14 @@ public class ShopEntity implements Parcelable
         mId                = in.readInt();
         mCityId            = in.readInt();
         mName              = in.readString();
-        mIsHypermarket     = (in.readByte() == (byte)1);
+        mIsHypermarket     = in.readByte() == 1;
         mLatitude          = in.readDouble();
         mLongitude         = in.readDouble();
         mPhone             = in.readString();
         mWorkHours         = in.readString();
         mSquare            = in.readInt();
         long openingDate   = in.readLong();
-        mOpeningDate       = openingDate != -1 ? new Date(openingDate) : null;
+        mOpeningDate       = openingDate == -1 ? null : new Date(openingDate);
         mParkingPlaces     = in.readInt();
         mNumberOfCashboxes = in.readInt();
         mServicesSet       = in.readInt();

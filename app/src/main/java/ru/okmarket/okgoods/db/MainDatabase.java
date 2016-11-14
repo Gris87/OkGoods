@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import org.json.JSONObject;
@@ -26,7 +27,8 @@ import ru.okmarket.okgoods.util.Tree;
 import ru.okmarket.okgoods.util.Utils;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
-public class MainDatabase extends SQLiteOpenHelper
+@SuppressWarnings("WeakerAccess")
+public final class MainDatabase extends SQLiteOpenHelper
 {
     // region Statics
     // region Tag
@@ -44,49 +46,49 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
     // region Column names
-    public static final String COLUMN_ID                  = "_id";
-    public static final String COLUMN_NAME                = "_name";
-    public static final String COLUMN_CITY_ID             = "_city_id";
-    public static final String COLUMN_IS_HYPERMARKET      = "_is_hypermarket";
-    public static final String COLUMN_LATITUDE            = "_latitude";
-    public static final String COLUMN_LONGITUDE           = "_longitude";
-    public static final String COLUMN_PHONE               = "_phone";
-    public static final String COLUMN_WORK_HOURS          = "_work_hours";
-    public static final String COLUMN_SQUARE              = "_square";
-    public static final String COLUMN_OPENING_DATE        = "_opening_date";
-    public static final String COLUMN_PARKING_PLACES      = "_parking_places";
-    public static final String COLUMN_NUMBER_OF_CASHBOXES = "_number_of_cashboxes";
-    public static final String COLUMN_SERVICES_SET        = "_services_set";
-    public static final String COLUMN_PARENT_ID           = "_parent_id";
-    public static final String COLUMN_IMAGE_NAME          = "_image_name";
-    public static final String COLUMN_PRIORITY            = "_priority";
-    public static final String COLUMN_UPDATE_TIME         = "_update_time";
-    public static final String COLUMN_ENABLED             = "_enabled";
-    public static final String COLUMN_CATEGORY_ID         = "_category_id";
-    public static final String COLUMN_IMAGE_ID            = "_image_id";
-    public static final String COLUMN_COST                = "_cost";
-    public static final String COLUMN_UNIT                = "_unit";
-    public static final String COLUMN_UNIT_TYPE           = "_unit_type";
-    public static final String COLUMN_COUNT_INCREMENT     = "_count_increment";
-    public static final String COLUMN_COUNT_TYPE          = "_count_type";
-    public static final String COLUMN_ATTRS               = "_attrs";
-    public static final String COLUMN_ATTRS_DETAILS       = "_attrs_details";
-    public static final String COLUMN_GOOD_ID             = "_good_id";
-    public static final String COLUMN_COUNT               = "_count";
-    public static final String COLUMN_DATE                = "_date";
-    public static final String COLUMN_DURATION            = "_duration";
-    public static final String COLUMN_SHOP_ID             = "_shop_id";
-    public static final String COLUMN_TOTAL               = "_total";
-    public static final String COLUMN_HISTORY_ID          = "_history_id";
+    private static final String COLUMN_ID                  = "_id";
+    private static final String COLUMN_NAME                = "_name";
+    private static final String COLUMN_CITY_ID             = "_city_id";
+    private static final String COLUMN_IS_HYPERMARKET      = "_is_hypermarket";
+    private static final String COLUMN_LATITUDE            = "_latitude";
+    private static final String COLUMN_LONGITUDE           = "_longitude";
+    private static final String COLUMN_PHONE               = "_phone";
+    private static final String COLUMN_WORK_HOURS          = "_work_hours";
+    private static final String COLUMN_SQUARE              = "_square";
+    private static final String COLUMN_OPENING_DATE        = "_opening_date";
+    private static final String COLUMN_PARKING_PLACES      = "_parking_places";
+    private static final String COLUMN_NUMBER_OF_CASHBOXES = "_number_of_cashboxes";
+    private static final String COLUMN_SERVICES_SET        = "_services_set";
+    private static final String COLUMN_PARENT_ID           = "_parent_id";
+    private static final String COLUMN_IMAGE_NAME          = "_image_name";
+    private static final String COLUMN_PRIORITY            = "_priority";
+    private static final String COLUMN_UPDATE_TIME         = "_update_time";
+    private static final String COLUMN_ENABLED             = "_enabled";
+    private static final String COLUMN_CATEGORY_ID         = "_category_id";
+    private static final String COLUMN_IMAGE_ID            = "_image_id";
+    private static final String COLUMN_COST                = "_cost";
+    private static final String COLUMN_UNIT                = "_unit";
+    private static final String COLUMN_UNIT_TYPE           = "_unit_type";
+    private static final String COLUMN_COUNT_INCREMENT     = "_count_increment";
+    private static final String COLUMN_COUNT_TYPE          = "_count_type";
+    private static final String COLUMN_ATTRS               = "_attrs";
+    private static final String COLUMN_ATTRS_DETAILS       = "_attrs_details";
+    private static final String COLUMN_GOOD_ID             = "_good_id";
+    private static final String COLUMN_COUNT               = "_count";
+    private static final String COLUMN_DATE                = "_date";
+    private static final String COLUMN_DURATION            = "_duration";
+    private static final String COLUMN_SHOP_ID             = "_shop_id";
+    private static final String COLUMN_TOTAL               = "_total";
+    private static final String COLUMN_HISTORY_ID          = "_history_id";
     // endregion
 
     // region Columns
-    public static final String[] CITIES_COLUMNS =           {
+    private static final String[] CITIES_COLUMNS =           {
                                                                 COLUMN_ID,
                                                                 COLUMN_NAME
-                                                            };
+                                                             };
 
-    public static final String[] SHOPS_COLUMNS =            {
+    private static final String[] SHOPS_COLUMNS =            {
                                                                 COLUMN_ID,
                                                                 COLUMN_CITY_ID,
                                                                 COLUMN_NAME,
@@ -100,9 +102,9 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 COLUMN_PARKING_PLACES,
                                                                 COLUMN_NUMBER_OF_CASHBOXES,
                                                                 COLUMN_SERVICES_SET
-                                                            };
+                                                             };
 
-    public static final String[] GOODS_CATEGORIES_COLUMNS = {
+    private static final String[] GOODS_CATEGORIES_COLUMNS = {
                                                                 COLUMN_ID,
                                                                 COLUMN_PARENT_ID,
                                                                 COLUMN_NAME,
@@ -110,9 +112,9 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 COLUMN_PRIORITY,
                                                                 COLUMN_UPDATE_TIME,
                                                                 COLUMN_ENABLED
-                                                            };
+                                                             };
 
-    public static final String[] GOODS_COLUMNS =            {
+    private static final String[] GOODS_COLUMNS =            {
                                                                 COLUMN_ID,
                                                                 COLUMN_CATEGORY_ID,
                                                                 COLUMN_NAME,
@@ -127,56 +129,56 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                 COLUMN_PRIORITY,
                                                                 COLUMN_UPDATE_TIME,
                                                                 COLUMN_ENABLED
-                                                            };
+                                                             };
 
-    public static final String[] SELECTED_GOODS_COLUMNS =   {
+    private static final String[] SELECTED_GOODS_COLUMNS =   {
                                                                 COLUMN_ID,
                                                                 COLUMN_GOOD_ID,
                                                                 COLUMN_CATEGORY_ID,
                                                                 COLUMN_COUNT
-                                                            };
+                                                             };
 
-    public static final String[] HISTORY_COLUMNS =          {
+    private static final String[] HISTORY_COLUMNS =          {
                                                                 COLUMN_ID,
                                                                 COLUMN_SHOP_ID,
                                                                 COLUMN_DATE,
                                                                 COLUMN_DURATION,
                                                                 COLUMN_TOTAL
-                                                            };
+                                                             };
 
-    public static final String[] HISTORY_DETAILS_COLUMNS =  {
+    private static final String[] HISTORY_DETAILS_COLUMNS =  {
                                                                 COLUMN_ID,
                                                                 COLUMN_HISTORY_ID,
                                                                 COLUMN_GOOD_ID,
                                                                 COLUMN_CATEGORY_ID,
                                                                 COLUMN_COST,
                                                                 COLUMN_COUNT
-                                                            };
+                                                             };
     // endregion
 
 
 
     // region Table names
-    public static final String CITIES_TABLE_NAME           = "cities";
-    public static final String SHOPS_TABLE_NAME            = "shops";
-    public static final String GOODS_CATEGORIES_TABLE_NAME = "goods_categories";
-    public static final String GOODS_TABLE_NAME            = "goods";
-    public static final String SELECTED_GOODS_TABLE_NAME   = "selected_goods";
-    public static final String HISTORY_TABLE_NAME          = "history";
-    public static final String HISTORY_DETAILS_TABLE_NAME  = "history_details";
+    private static final String CITIES_TABLE_NAME           = "cities";
+    private static final String SHOPS_TABLE_NAME            = "shops";
+    private static final String GOODS_CATEGORIES_TABLE_NAME = "goods_categories";
+    private static final String GOODS_TABLE_NAME            = "goods";
+    private static final String SELECTED_GOODS_TABLE_NAME   = "selected_goods";
+    private static final String HISTORY_TABLE_NAME          = "history";
+    private static final String HISTORY_DETAILS_TABLE_NAME  = "history_details";
     // endregion
 
     // region Create table statements
-    private static final String CITIES_TABLE_CREATE =           "CREATE TABLE " + CITIES_TABLE_NAME + " " +
-                                                                "(" +
+    private static final String CITIES_TABLE_CREATE =           "CREATE TABLE " + CITIES_TABLE_NAME + ' ' +
+            '(' +
                                                                     COLUMN_ID   + " INTEGER PRIMARY KEY, " +
                                                                     COLUMN_NAME + " TEXT NOT NULL "        +
                                                                 ");";
 
-    private static final String SHOPS_TABLE_CREATE =            "CREATE TABLE " + SHOPS_TABLE_NAME + " " +
-                                                                "(" +
+    private static final String SHOPS_TABLE_CREATE =            "CREATE TABLE " + SHOPS_TABLE_NAME + ' ' +
+            '(' +
                                                                     COLUMN_ID                  + " INTEGER PRIMARY KEY, "                                                                            +
-                                                                    COLUMN_CITY_ID             + " INTEGER NOT NULL REFERENCES " + CITIES_TABLE_NAME + "(" + COLUMN_ID + "), "                       +
+                                                                    COLUMN_CITY_ID             + " INTEGER NOT NULL REFERENCES " + CITIES_TABLE_NAME + '(' + COLUMN_ID + "), "                       +
                                                                     COLUMN_NAME                + " TEXT NOT NULL, "                                                                                  +
                                                                     COLUMN_IS_HYPERMARKET      + " INTEGER NOT NULL, "                                                                               +
                                                                     COLUMN_LATITUDE            + " REAL NOT NULL CHECK (" + COLUMN_LATITUDE  + " >= -90)  CHECK (" + COLUMN_LATITUDE  + " <= 90), "  +
@@ -190,8 +192,8 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                     COLUMN_SERVICES_SET        + " INTEGER NOT NULL "                                                                                +
                                                                 ");";
 
-    private static final String GOODS_CATEGORIES_TABLE_CREATE = "CREATE TABLE " + GOODS_CATEGORIES_TABLE_NAME + " " +
-                                                                "(" +
+    private static final String GOODS_CATEGORIES_TABLE_CREATE = "CREATE TABLE " + GOODS_CATEGORIES_TABLE_NAME + ' ' +
+            '(' +
                                                                     COLUMN_ID          + " INTEGER PRIMARY KEY, " +
                                                                     COLUMN_PARENT_ID   + " INTEGER NOT NULL, "    +
                                                                     COLUMN_NAME        + " TEXT, "                +
@@ -201,10 +203,10 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                     COLUMN_ENABLED     + " INTEGER NOT NULL "     +
                                                                 ");";
 
-    private static final String GOODS_TABLE_CREATE =            "CREATE TABLE " + GOODS_TABLE_NAME + " " +
-                                                                "(" +
+    private static final String GOODS_TABLE_CREATE =            "CREATE TABLE " + GOODS_TABLE_NAME + ' ' +
+            '(' +
                                                                     COLUMN_ID              + " INTEGER PRIMARY KEY, "                                                                +
-                                                                    COLUMN_CATEGORY_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + "(" + COLUMN_ID + "), " +
+                                                                    COLUMN_CATEGORY_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + '(' + COLUMN_ID + "), " +
                                                                     COLUMN_NAME            + " TEXT, "                                                                               +
                                                                     COLUMN_IMAGE_ID        + " INTEGER NOT NULL, "                                                                   +
                                                                     COLUMN_COST            + " REAL NOT NULL, "                                                                      +
@@ -219,16 +221,16 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                     COLUMN_ENABLED         + " INTEGER NOT NULL "                                                                    +
                                                                 ");";
 
-    private static final String SELECTED_GOODS_TABLE_CREATE =   "CREATE TABLE " + SELECTED_GOODS_TABLE_NAME + " " +
-                                                                "(" +
+    private static final String SELECTED_GOODS_TABLE_CREATE =   "CREATE TABLE " + SELECTED_GOODS_TABLE_NAME + ' ' +
+            '(' +
                                                                     COLUMN_ID          + " INTEGER PRIMARY KEY, "                                                                +
-                                                                    COLUMN_GOOD_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_TABLE_NAME            + "(" + COLUMN_ID + "), " +
-                                                                    COLUMN_CATEGORY_ID + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + "(" + COLUMN_ID + "), " +
+                                                                    COLUMN_GOOD_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_TABLE_NAME            + '(' + COLUMN_ID + "), " +
+                                                                    COLUMN_CATEGORY_ID + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + '(' + COLUMN_ID + "), " +
                                                                     COLUMN_COUNT       + " REAL NOT NULL "                                                                       +
                                                                 ");";
 
-    private static final String HISTORY_TABLE_CREATE =          "CREATE TABLE " + HISTORY_TABLE_NAME + " " +
-                                                                "(" +
+    private static final String HISTORY_TABLE_CREATE =          "CREATE TABLE " + HISTORY_TABLE_NAME + ' ' +
+            '(' +
                                                                     COLUMN_ID       + " INTEGER PRIMARY KEY, " +
                                                                     COLUMN_SHOP_ID  + " INTEGER NOT NULL, "    +
                                                                     COLUMN_DATE     + " TEXT NOT NULL, "       +
@@ -236,12 +238,12 @@ public class MainDatabase extends SQLiteOpenHelper
                                                                     COLUMN_TOTAL    + " REAL NOT NULL "        +
                                                                 ");";
 
-    private static final String HISTORY_DETAILS_TABLE_CREATE =  "CREATE TABLE " + HISTORY_DETAILS_TABLE_NAME + " " +
-                                                                "(" +
+    private static final String HISTORY_DETAILS_TABLE_CREATE =  "CREATE TABLE " + HISTORY_DETAILS_TABLE_NAME + ' ' +
+            '(' +
                                                                     COLUMN_ID          + " INTEGER PRIMARY KEY, "                                                                +
-                                                                    COLUMN_HISTORY_ID  + " INTEGER NOT NULL REFERENCES " + HISTORY_TABLE_NAME          + "(" + COLUMN_ID + "), " +
-                                                                    COLUMN_GOOD_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_TABLE_NAME            + "(" + COLUMN_ID + "), " +
-                                                                    COLUMN_CATEGORY_ID + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + "(" + COLUMN_ID + "), " +
+                                                                    COLUMN_HISTORY_ID  + " INTEGER NOT NULL REFERENCES " + HISTORY_TABLE_NAME          + '(' + COLUMN_ID + "), " +
+                                                                    COLUMN_GOOD_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_TABLE_NAME            + '(' + COLUMN_ID + "), " +
+                                                                    COLUMN_CATEGORY_ID + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + '(' + COLUMN_ID + "), " +
                                                                     COLUMN_COST        + " REAL NOT NULL, "                                                                      +
                                                                     COLUMN_COUNT       + " REAL NOT NULL "                                                                       +
                                                                 ");";
@@ -250,35 +252,36 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
     // region Cities
-    public static final int CITY_ID_MOSCOW           = 1;
-    public static final int CITY_ID_ST_PETERSBURG    = 2;
-    public static final int CITY_ID_ASTRAKHAN        = 3;
-    public static final int CITY_ID_VOLGOGRAD        = 4;
-    public static final int CITY_ID_VORONEZH         = 5;
-    public static final int CITY_ID_EKATERINBURG     = 6;
-    public static final int CITY_ID_IVANOVO          = 7;
-    public static final int CITY_ID_IRKUTSK          = 8;
-    public static final int CITY_ID_KRASNODAR        = 9;
-    public static final int CITY_ID_KRASNOYARSK      = 10;
-    public static final int CITY_ID_LIPETSK          = 11;
-    public static final int CITY_ID_MURMANSK         = 12;
-    public static final int CITY_ID_NIZHNIY_NOVGOROD = 13;
-    public static final int CITY_ID_NOVOSIBIRSK      = 14;
-    public static final int CITY_ID_NOVOCHERKASSK    = 15;
-    public static final int CITY_ID_OMSK             = 16;
-    public static final int CITY_ID_ORENBURG         = 17;
-    public static final int CITY_ID_ROSTOV_ON_DON    = 18;
-    public static final int CITY_ID_SARATOV          = 19;
-    public static final int CITY_ID_SOCHI            = 20;
-    public static final int CITY_ID_STAVROPOL        = 21;
-    public static final int CITY_ID_STERLITAMAK      = 22;
-    public static final int CITY_ID_SURGUT           = 23;
-    public static final int CITY_ID_SYKTYVKAR        = 24;
-    public static final int CITY_ID_TOLYATTI         = 25;
-    public static final int CITY_ID_TYUMEN           = 26;
-    public static final int CITY_ID_UFA              = 27;
-    public static final int CITY_ID_CHEREPOVETS      = 28;
+    private static final int CITY_ID_MOSCOW           = 1;
+    private static final int CITY_ID_ST_PETERSBURG    = 2;
+    private static final int CITY_ID_ASTRAKHAN        = 3;
+    private static final int CITY_ID_VOLGOGRAD        = 4;
+    private static final int CITY_ID_VORONEZH         = 5;
+    private static final int CITY_ID_EKATERINBURG     = 6;
+    private static final int CITY_ID_IVANOVO          = 7;
+    private static final int CITY_ID_IRKUTSK          = 8;
+    private static final int CITY_ID_KRASNODAR        = 9;
+    private static final int CITY_ID_KRASNOYARSK      = 10;
+    private static final int CITY_ID_LIPETSK          = 11;
+    private static final int CITY_ID_MURMANSK         = 12;
+    private static final int CITY_ID_NIZHNIY_NOVGOROD = 13;
+    private static final int CITY_ID_NOVOSIBIRSK      = 14;
+    private static final int CITY_ID_NOVOCHERKASSK    = 15;
+    private static final int CITY_ID_OMSK             = 16;
+    private static final int CITY_ID_ORENBURG         = 17;
+    private static final int CITY_ID_ROSTOV_ON_DON    = 18;
+    private static final int CITY_ID_SARATOV          = 19;
+    private static final int CITY_ID_SOCHI            = 20;
+    private static final int CITY_ID_STAVROPOL        = 21;
+    private static final int CITY_ID_STERLITAMAK      = 22;
+    private static final int CITY_ID_SURGUT           = 23;
+    private static final int CITY_ID_SYKTYVKAR        = 24;
+    private static final int CITY_ID_TOLYATTI         = 25;
+    private static final int CITY_ID_TYUMEN           = 26;
+    private static final int CITY_ID_UFA              = 27;
+    private static final int CITY_ID_CHEREPOVETS      = 28;
 
+    @SuppressWarnings("PublicStaticArrayField")
     public static final String[] CITIES = {
               "MOSCOW"
             , "ST_PETERSBURG"
@@ -310,6 +313,7 @@ public class MainDatabase extends SQLiteOpenHelper
             , "CHEREPOVETS"
     };
 
+    @SuppressWarnings("PublicStaticArrayField")
     public static final GeoPoint[] CITIES_COORDS = {
               new GeoPoint(55.8134869867940, 37.5976455649660) // MOSCOW
             , new GeoPoint(59.9374542637080, 30.3234307832030) // ST_PETERSBURG
@@ -360,114 +364,114 @@ public class MainDatabase extends SQLiteOpenHelper
     // endregion
 
     // region Shops
-    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_ROSTOKINO                                     = 284;
-    public static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_MOSCOW_LENINSKIY                              = 532;
-    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_PYATNITSKOE_7KM                               = 534;
-    public static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_VENEVSKAYA                                    = 536;
-    public static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_LOBNYA_KRASNOPOLYANSKIY                       = 538;
-    public static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_LYUBERTSY_GRENADA                             = 540;
-    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_PUTILKOVO                                     = 542;
-    public static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_VARSHAVSKOE_SOMBRERO                          = 546;
-    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_IYUN_MYTISHCHI                                = 548;
-    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_NOGINSK_BORILOVO                              = 550;
-    public static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_ZELENOGRAD_PANFILOVSKIY                       = 552;
-    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_GUD_ZON                                       = 554;
-    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_MOSCOW_RIO                                    = 556;
-    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_VESNA_ALTUFEVO                                = 558;
-    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_VODNYY                                        = 560;
-    public static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_KIROVOGRADSKAYA_KOLUMBUS                      = 564;
-    public static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_MOSCOW_BALAKLAVSKIY                           = 22116;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_LADOZHSKAYA                            = 69;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BOGATYRSKIY                            = 71;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_VYBORGSKOE                             = 73;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_ZELENOGORSK_VOKZALNAYA                 = 458;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_KOLPINO                                = 460;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_RYBATSKOE                              = 461;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_GRAND_KANON                            = 464;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_INDUSTRIALNYY                          = 466;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BALKANSKAYA                            = 468;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_LENEHKSPO                              = 470;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_OZERKI                                 = 472;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_PULKOVSKOE                             = 474;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_EHLEKTROSILA                           = 476;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_PARASHYUTNAYA                          = 478;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BOGATYRSKIY_YAKHTENNAYA                = 481;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_GATCHINA_LENINGRADSKOE                 = 484;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_TALLINSKOE_SHOSSE                      = 486;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_LENINSKIY                              = 490;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_GALEREYA                               = 492;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_SAVUSHKINA                             = 494;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KINGISEPP_OKTYABRSKAYA                 = 496;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_SHCHERBAKOVA                           = 498;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_NASTAVNIKOV                            = 500;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KRYLENKO                               = 502;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_ISKROVSKIY                             = 504;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_SOLIDARNOSTI                           = 506;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_SIZOVA                                 = 508;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_SESTRORETSK_VOLODARSKOGO               = 510;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KRASNOE_SELO_STRELNINSKOE              = 512;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_RIO                                    = 513;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_AKADEMICHESKAYA                        = 515;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_SAVUSHKINA                             = 517;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_PLANERNAYA                             = 519;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_LENSKAYA                               = 521;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BOLSHEVIKOV                            = 523;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_TIPANOVA                               = 525;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_ZHUKOVA                                = 527;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KOLPINO_TRUDYASHCHIKHSYA               = 529;
-    public static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KOLPINO_TVERSKAYA                      = 531;
-    public static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_PARTIZANA_GERMANA                      = 35988;
-    public static final int SHOP_ID_ASTRAKHAN_HYPERMARKET_OK_ASTRAKHAN_ALIMPIK                          = 680;
-    public static final int SHOP_ID_ASTRAKHAN_SUPERMARKET_OK_ASTRAKHAN_TRI_KOTA                         = 682;
-    public static final int SHOP_ID_ASTRAKHAN_HYPERMARKET_OK_ASTRAKHAN_VOKZALNAYA                       = 684;
-    public static final int SHOP_ID_VOLGOGRAD_HYPERMARKET_OK_VOLGOGRAD_DIAMANT                          = 674;
-    public static final int SHOP_ID_VOLGOGRAD_SUPERMARKET_OK_VOLGOGRAD_PIRAMIDA                         = 676;
-    public static final int SHOP_ID_VOLGOGRAD_SUPERMARKET_OK_VOLGOGRAD_VOROSHILOVSKIY                   = 678;
-    public static final int SHOP_ID_VORONEZH_HYPERMARKET_OK_VORONEZH_GALEREYA_CHIZHOVA                  = 666;
-    public static final int SHOP_ID_VORONEZH_HYPERMARKET_OK_VORONEZH_SHISHKOVA                          = 668;
-    public static final int SHOP_ID_VORONEZH_SUPERMARKET_OK_VORONEZH_ZHUKOVA                            = 670;
-    public static final int SHOP_ID_EKATERINBURG_HYPERMARKET_OK_EKATERINBURG_BABUSHKINA                 = 662;
-    public static final int SHOP_ID_EKATERINBURG_HYPERMARKET_OK_EKATERINBURG_RADUGA                     = 664;
-    public static final int SHOP_ID_IVANOVO_HYPERMARKET_OK_IVANOVO_LEZHNEVSKAYA_TOPOL                   = 658;
-    public static final int SHOP_ID_IRKUTSK_HYPERMARKET_OK_IRKUTSK_KOMSOMOLL                            = 656;
-    public static final int SHOP_ID_KRASNODAR_HYPERMARKET_OK_KRASNODAR_MINSKAYA                         = 646;
-    public static final int SHOP_ID_KRASNODAR_HYPERMARKET_OK_KRASNODAR_MACHUGI                          = 648;
-    public static final int SHOP_ID_KRASNODAR_HYPERMARKET_OK_KRASNODAR_GALAKTIKA                        = 650;
-    public static final int SHOP_ID_KRASNODAR_SUPERMARKET_OK_KRASNODAR_BOSS_KHAUZ                       = 652;
-    public static final int SHOP_ID_KRASNODAR_HYPERMARKET_OK_KRASNODAR_OZ                               = 654;
-    public static final int SHOP_ID_KRASNOYARSK_HYPERMARKET_OK_KRASNOYARSK_PLANETA                      = 640;
-    public static final int SHOP_ID_KRASNOYARSK_SUPERMARKET_OK_KRASNOYARSK_KRASNODARSKAYA               = 642;
-    public static final int SHOP_ID_KRASNOYARSK_HYPERMARKET_OK_KRASNOYARSK_SIBIRSKIY                    = 644;
-    public static final int SHOP_ID_LIPETSK_HYPERMARKET_OK_LIPETSK_EVROPA                               = 636;
-    public static final int SHOP_ID_LIPETSK_SUPERMARKET_OK_LIPETSK_PETRA_SMORODINA                      = 638;
-    public static final int SHOP_ID_MURMANSK_HYPERMARKET_OK_MURMANSK_SHMIDTA                            = 632;
-    public static final int SHOP_ID_NIZHNIY_NOVGOROD_HYPERMARKET_OK_NIZHNIY_NOVGOROD_TSEKH_TARY         = 626;
-    public static final int SHOP_ID_NIZHNIY_NOVGOROD_HYPERMARKET_OK_NIZHNIY_NOVGOROD_DEREVOOBDELOCHNAYA = 628;
-    public static final int SHOP_ID_NIZHNIY_NOVGOROD_HYPERMARKET_OK_NIZHNIY_NOVGOROD_SOVETSKAYA         = 630;
-    public static final int SHOP_ID_NOVOSIBIRSK_HYPERMARKET_OK_NOVOSIBIRSK_AURA                         = 609;
-    public static final int SHOP_ID_NOVOSIBIRSK_HYPERMARKET_OK_NOVOSIBIRSK_MALINKA                      = 624;
-    public static final int SHOP_ID_NOVOCHERKASSK_SUPERMARKET_OK_NOVOCHERKASSK_MAGNITNYY                = 607;
-    public static final int SHOP_ID_OMSK_HYPERMARKET_OK_OMSK_EHNTUZIASTOV                               = 603;
-    public static final int SHOP_ID_OMSK_SUPERMARKET_OK_OMSK_70_LET_OKTYABRYA                           = 605;
-    public static final int SHOP_ID_ORENBURG_HYPERMARKET_OK_ORENBURG_SALMYSHSKAYA                       = 601;
-    public static final int SHOP_ID_ROSTOV_ON_DON_HYPERMARKET_OK_ROSTOV_ON_DON_MALINOVSKOGO             = 597;
-    public static final int SHOP_ID_ROSTOV_ON_DON_HYPERMARKET_OK_ROSTOV_ON_DON_KOMAROVA                 = 599;
-    public static final int SHOP_ID_SARATOV_HYPERMARKET_OK_SARATOV_KHEHPPI_MOLL                         = 593;
-    public static final int SHOP_ID_SARATOV_SUPERMARKET_OK_SARATOV_TANKISTOV                            = 595;
-    public static final int SHOP_ID_SOCHI_HYPERMARKET_OK_SOCHI_MOREMOLL                                 = 591;
-    public static final int SHOP_ID_STAVROPOL_HYPERMARKET_OK_STAVROPOL_DOVATORTSEV                      = 589;
-    public static final int SHOP_ID_STERLITAMAK_HYPERMARKET_OK_STERLITAMAK_KHUDAYBERDINA                = 587;
-    public static final int SHOP_ID_SURGUT_HYPERMARKET_OK_SURGUT_SITI_MOLL                              = 583;
-    public static final int SHOP_ID_SURGUT_HYPERMARKET_OK_SURGUT_NEFTEYUGANSKOE_AURA                    = 585;
-    public static final int SHOP_ID_SYKTYVKAR_HYPERMARKET_OK_SYKTYVKAR_OKTYABRSKIY_IYUN                 = 581;
-    public static final int SHOP_ID_TOLYATTI_HYPERMARKET_OK_TOLYATTI_BORKOVSKAYA                        = 577;
-    public static final int SHOP_ID_TOLYATTI_SUPERMARKET_OK_TOLYATTI_SPORTIVNAYA_MALINA                 = 579;
-    public static final int SHOP_ID_TYUMEN_HYPERMARKET_OK_TYUMEN_SHIROTNAYA                             = 573;
-    public static final int SHOP_ID_TYUMEN_HYPERMARKET_OK_TYUMEN_FEDYUNINSKOGO_OSTROV                   = 575;
-    public static final int SHOP_ID_UFA_HYPERMARKET_OK_UFA_ZHUKOVA                                      = 567;
-    public static final int SHOP_ID_UFA_HYPERMARKET_OK_UFA_IYUN                                         = 569;
-    public static final int SHOP_ID_UFA_HYPERMARKET_OK_UFA_PLANETA                                      = 571;
-    public static final int SHOP_ID_CHEREPOVETS_HYPERMARKET_OK_CHEREPOVETS_RAAKHE                       = 565;
+    private static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_ROSTOKINO                                     = 284;
+    private static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_MOSCOW_LENINSKIY                              = 532;
+    private static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_PYATNITSKOE_7KM                               = 534;
+    private static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_VENEVSKAYA                                    = 536;
+    private static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_LOBNYA_KRASNOPOLYANSKIY                       = 538;
+    private static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_LYUBERTSY_GRENADA                             = 540;
+    private static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_PUTILKOVO                                     = 542;
+    private static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_VARSHAVSKOE_SOMBRERO                          = 546;
+    private static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_IYUN_MYTISHCHI                                = 548;
+    private static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_NOGINSK_BORILOVO                              = 550;
+    private static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_ZELENOGRAD_PANFILOVSKIY                       = 552;
+    private static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_GUD_ZON                                       = 554;
+    private static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_MOSCOW_RIO                                    = 556;
+    private static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_VESNA_ALTUFEVO                                = 558;
+    private static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_VODNYY                                        = 560;
+    private static final int SHOP_ID_MOSCOW_HYPERMARKET_OK_KIROVOGRADSKAYA_KOLUMBUS                      = 564;
+    private static final int SHOP_ID_MOSCOW_SUPERMARKET_OK_MOSCOW_BALAKLAVSKIY                           = 22116;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_LADOZHSKAYA                            = 69;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BOGATYRSKIY                            = 71;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_VYBORGSKOE                             = 73;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_ZELENOGORSK_VOKZALNAYA                 = 458;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_KOLPINO                                = 460;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_RYBATSKOE                              = 461;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_GRAND_KANON                            = 464;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_INDUSTRIALNYY                          = 466;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BALKANSKAYA                            = 468;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_LENEHKSPO                              = 470;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_OZERKI                                 = 472;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_PULKOVSKOE                             = 474;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_EHLEKTROSILA                           = 476;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_PARASHYUTNAYA                          = 478;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BOGATYRSKIY_YAKHTENNAYA                = 481;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_GATCHINA_LENINGRADSKOE                 = 484;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_TALLINSKOE_SHOSSE                      = 486;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_LENINSKIY                              = 490;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_GALEREYA                               = 492;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_SAVUSHKINA                             = 494;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KINGISEPP_OKTYABRSKAYA                 = 496;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_SHCHERBAKOVA                           = 498;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_NASTAVNIKOV                            = 500;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KRYLENKO                               = 502;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_ISKROVSKIY                             = 504;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_SOLIDARNOSTI                           = 506;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_SIZOVA                                 = 508;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_SESTRORETSK_VOLODARSKOGO               = 510;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KRASNOE_SELO_STRELNINSKOE              = 512;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_RIO                                    = 513;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_AKADEMICHESKAYA                        = 515;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_SAVUSHKINA                             = 517;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_PLANERNAYA                             = 519;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_LENSKAYA                               = 521;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_BOLSHEVIKOV                            = 523;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_TIPANOVA                               = 525;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_ZHUKOVA                                = 527;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KOLPINO_TRUDYASHCHIKHSYA               = 529;
+    private static final int SHOP_ID_ST_PETERSBURG_SUPERMARKET_OK_KOLPINO_TVERSKAYA                      = 531;
+    private static final int SHOP_ID_ST_PETERSBURG_HYPERMARKET_OK_PARTIZANA_GERMANA                      = 35988;
+    private static final int SHOP_ID_ASTRAKHAN_HYPERMARKET_OK_ASTRAKHAN_ALIMPIK                          = 680;
+    private static final int SHOP_ID_ASTRAKHAN_SUPERMARKET_OK_ASTRAKHAN_TRI_KOTA                         = 682;
+    private static final int SHOP_ID_ASTRAKHAN_HYPERMARKET_OK_ASTRAKHAN_VOKZALNAYA                       = 684;
+    private static final int SHOP_ID_VOLGOGRAD_HYPERMARKET_OK_VOLGOGRAD_DIAMANT                          = 674;
+    private static final int SHOP_ID_VOLGOGRAD_SUPERMARKET_OK_VOLGOGRAD_PIRAMIDA                         = 676;
+    private static final int SHOP_ID_VOLGOGRAD_SUPERMARKET_OK_VOLGOGRAD_VOROSHILOVSKIY                   = 678;
+    private static final int SHOP_ID_VORONEZH_HYPERMARKET_OK_VORONEZH_GALEREYA_CHIZHOVA                  = 666;
+    private static final int SHOP_ID_VORONEZH_HYPERMARKET_OK_VORONEZH_SHISHKOVA                          = 668;
+    private static final int SHOP_ID_VORONEZH_SUPERMARKET_OK_VORONEZH_ZHUKOVA                            = 670;
+    private static final int SHOP_ID_EKATERINBURG_HYPERMARKET_OK_EKATERINBURG_BABUSHKINA                 = 662;
+    private static final int SHOP_ID_EKATERINBURG_HYPERMARKET_OK_EKATERINBURG_RADUGA                     = 664;
+    private static final int SHOP_ID_IVANOVO_HYPERMARKET_OK_IVANOVO_LEZHNEVSKAYA_TOPOL                   = 658;
+    private static final int SHOP_ID_IRKUTSK_HYPERMARKET_OK_IRKUTSK_KOMSOMOLL                            = 656;
+    private static final int SHOP_ID_KRASNODAR_HYPERMARKET_OK_KRASNODAR_MINSKAYA                         = 646;
+    private static final int SHOP_ID_KRASNODAR_HYPERMARKET_OK_KRASNODAR_MACHUGI                          = 648;
+    private static final int SHOP_ID_KRASNODAR_HYPERMARKET_OK_KRASNODAR_GALAKTIKA                        = 650;
+    private static final int SHOP_ID_KRASNODAR_SUPERMARKET_OK_KRASNODAR_BOSS_KHAUZ                       = 652;
+    private static final int SHOP_ID_KRASNODAR_HYPERMARKET_OK_KRASNODAR_OZ                               = 654;
+    private static final int SHOP_ID_KRASNOYARSK_HYPERMARKET_OK_KRASNOYARSK_PLANETA                      = 640;
+    private static final int SHOP_ID_KRASNOYARSK_SUPERMARKET_OK_KRASNOYARSK_KRASNODARSKAYA               = 642;
+    private static final int SHOP_ID_KRASNOYARSK_HYPERMARKET_OK_KRASNOYARSK_SIBIRSKIY                    = 644;
+    private static final int SHOP_ID_LIPETSK_HYPERMARKET_OK_LIPETSK_EVROPA                               = 636;
+    private static final int SHOP_ID_LIPETSK_SUPERMARKET_OK_LIPETSK_PETRA_SMORODINA                      = 638;
+    private static final int SHOP_ID_MURMANSK_HYPERMARKET_OK_MURMANSK_SHMIDTA                            = 632;
+    private static final int SHOP_ID_NIZHNIY_NOVGOROD_HYPERMARKET_OK_NIZHNIY_NOVGOROD_TSEKH_TARY         = 626;
+    private static final int SHOP_ID_NIZHNIY_NOVGOROD_HYPERMARKET_OK_NIZHNIY_NOVGOROD_DEREVOOBDELOCHNAYA = 628;
+    private static final int SHOP_ID_NIZHNIY_NOVGOROD_HYPERMARKET_OK_NIZHNIY_NOVGOROD_SOVETSKAYA         = 630;
+    private static final int SHOP_ID_NOVOSIBIRSK_HYPERMARKET_OK_NOVOSIBIRSK_AURA                         = 609;
+    private static final int SHOP_ID_NOVOSIBIRSK_HYPERMARKET_OK_NOVOSIBIRSK_MALINKA                      = 624;
+    private static final int SHOP_ID_NOVOCHERKASSK_SUPERMARKET_OK_NOVOCHERKASSK_MAGNITNYY                = 607;
+    private static final int SHOP_ID_OMSK_HYPERMARKET_OK_OMSK_EHNTUZIASTOV                               = 603;
+    private static final int SHOP_ID_OMSK_SUPERMARKET_OK_OMSK_70_LET_OKTYABRYA                           = 605;
+    private static final int SHOP_ID_ORENBURG_HYPERMARKET_OK_ORENBURG_SALMYSHSKAYA                       = 601;
+    private static final int SHOP_ID_ROSTOV_ON_DON_HYPERMARKET_OK_ROSTOV_ON_DON_MALINOVSKOGO             = 597;
+    private static final int SHOP_ID_ROSTOV_ON_DON_HYPERMARKET_OK_ROSTOV_ON_DON_KOMAROVA                 = 599;
+    private static final int SHOP_ID_SARATOV_HYPERMARKET_OK_SARATOV_KHEHPPI_MOLL                         = 593;
+    private static final int SHOP_ID_SARATOV_SUPERMARKET_OK_SARATOV_TANKISTOV                            = 595;
+    private static final int SHOP_ID_SOCHI_HYPERMARKET_OK_SOCHI_MOREMOLL                                 = 591;
+    private static final int SHOP_ID_STAVROPOL_HYPERMARKET_OK_STAVROPOL_DOVATORTSEV                      = 589;
+    private static final int SHOP_ID_STERLITAMAK_HYPERMARKET_OK_STERLITAMAK_KHUDAYBERDINA                = 587;
+    private static final int SHOP_ID_SURGUT_HYPERMARKET_OK_SURGUT_SITI_MOLL                              = 583;
+    private static final int SHOP_ID_SURGUT_HYPERMARKET_OK_SURGUT_NEFTEYUGANSKOE_AURA                    = 585;
+    private static final int SHOP_ID_SYKTYVKAR_HYPERMARKET_OK_SYKTYVKAR_OKTYABRSKIY_IYUN                 = 581;
+    private static final int SHOP_ID_TOLYATTI_HYPERMARKET_OK_TOLYATTI_BORKOVSKAYA                        = 577;
+    private static final int SHOP_ID_TOLYATTI_SUPERMARKET_OK_TOLYATTI_SPORTIVNAYA_MALINA                 = 579;
+    private static final int SHOP_ID_TYUMEN_HYPERMARKET_OK_TYUMEN_SHIROTNAYA                             = 573;
+    private static final int SHOP_ID_TYUMEN_HYPERMARKET_OK_TYUMEN_FEDYUNINSKOGO_OSTROV                   = 575;
+    private static final int SHOP_ID_UFA_HYPERMARKET_OK_UFA_ZHUKOVA                                      = 567;
+    private static final int SHOP_ID_UFA_HYPERMARKET_OK_UFA_IYUN                                         = 569;
+    private static final int SHOP_ID_UFA_HYPERMARKET_OK_UFA_PLANETA                                      = 571;
+    private static final int SHOP_ID_CHEREPOVETS_HYPERMARKET_OK_CHEREPOVETS_RAAKHE                       = 565;
     // endregion
 
 
@@ -495,6 +499,16 @@ public class MainDatabase extends SQLiteOpenHelper
     public static final int UNIT_TYPE_LITER    = 2;
     public static final int UNIT_TYPE_ITEMS    = 3;
     // endregion
+
+    // region limit values
+    public static final int LIMIT_UNLIMITED = 0;
+    public static final int LIMIT_STANDARD  = 10;
+    // endregion
+
+    // region allowDisabled values
+    public static final int ALLOW_DISABLED_NO  = 0;
+    public static final int ALLOW_DISABLED_YES = 1;
+    // endregion
     // endregion
 
 
@@ -505,11 +519,24 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
 
-    public MainDatabase(Context context)
+    @Override
+    public String toString()
+    {
+        return "MainDatabase{" +
+                "mContext=" + mContext +
+                '}';
+    }
+
+    private MainDatabase(Context context)
     {
         super(context, DB_NAME, null, DB_VERSION);
 
         mContext = context;
+    }
+
+    public static MainDatabase newInstance(Context context)
+    {
+        return new MainDatabase(context);
     }
 
     @Override
@@ -532,16 +559,16 @@ public class MainDatabase extends SQLiteOpenHelper
     }
 
     // region Create/Drop methods
-    private void createStaticTables(SQLiteDatabase db)
+    private static void createStaticTables(SQLiteDatabase db)
     {
         db.execSQL(CITIES_TABLE_CREATE);
         db.execSQL(SHOPS_TABLE_CREATE);
     }
 
-    private void dropStaticTables(SQLiteDatabase db)
+    private static void dropStaticTables(SQLiteDatabase db)
     {
-        db.execSQL("DROP TABLE IF EXISTS " + SHOPS_TABLE_NAME  + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + CITIES_TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + SHOPS_TABLE_NAME  + ';');
+        db.execSQL("DROP TABLE IF EXISTS " + CITIES_TABLE_NAME + ';');
     }
 
     public void recreateStaticTables(SQLiteDatabase db)
@@ -551,7 +578,7 @@ public class MainDatabase extends SQLiteOpenHelper
         fillStaticTables(db);
     }
 
-    private void createDynamicTables(SQLiteDatabase db)
+    private static void createDynamicTables(SQLiteDatabase db)
     {
         db.execSQL(GOODS_CATEGORIES_TABLE_CREATE);
         db.execSQL(GOODS_TABLE_CREATE);
@@ -568,7 +595,7 @@ public class MainDatabase extends SQLiteOpenHelper
         fillShopsTable(db);
     }
 
-    private void fillDynamicTables(SQLiteDatabase db)
+    private static void fillDynamicTables(SQLiteDatabase db)
     {
         fillGoodsCategoriesTable(db);
         fillGoodsTable(db);
@@ -3210,7 +3237,7 @@ public class MainDatabase extends SQLiteOpenHelper
         );
     }
 
-    private void fillGoodsCategoriesTable(SQLiteDatabase db)
+    private static void fillGoodsCategoriesTable(SQLiteDatabase db)
     {
         insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS, SPECIAL_ID_ROOT, SPECIAL_ID_NONE, null, null, 0, 0, ENABLED);
 
@@ -3227,7 +3254,7 @@ public class MainDatabase extends SQLiteOpenHelper
         }
     }
 
-    private void fillGoodsTable(SQLiteDatabase db)
+    private static void fillGoodsTable(SQLiteDatabase db)
     {
         insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS, SPECIAL_ID_ROOT, SPECIAL_ID_NONE, null, 0, 0.00, 0, UNIT_TYPE_NOTHING, 0, UNIT_TYPE_NOTHING, null, null, 0, 0, DISABLED);
 
@@ -3256,7 +3283,7 @@ public class MainDatabase extends SQLiteOpenHelper
         }
     }
 
-    private void fillSelectedGoodsTable(SQLiteDatabase db)
+    private static void fillSelectedGoodsTable(SQLiteDatabase db)
     {
         if (BuildConfig.DEBUG)
         {
@@ -3283,7 +3310,7 @@ public class MainDatabase extends SQLiteOpenHelper
         }
     }
 
-    private void fillHistoryTable(SQLiteDatabase db)
+    private static void fillHistoryTable(SQLiteDatabase db)
     {
         if (BuildConfig.DEBUG)
         {
@@ -3294,7 +3321,7 @@ public class MainDatabase extends SQLiteOpenHelper
         }
     }
 
-    private void fillHistoryDetailsTable(SQLiteDatabase db)
+    private static void fillHistoryDetailsTable(SQLiteDatabase db)
     {
         if (BuildConfig.DEBUG)
         {
@@ -3325,18 +3352,18 @@ public class MainDatabase extends SQLiteOpenHelper
         }
     }
 
-    public void insertToTable(SQLiteDatabase db, String tableName, String[] columns, Object... values)
+    private static void insertToTable(SQLiteDatabase db, String tableName, String[] columns, Object... values)
     {
         if (columns.length != values.length)
         {
-            AppLog.wtf(TAG, "Incorrect amount of columns and values: " + String.valueOf(columns.length) + " != " + String.valueOf(values.length));
+            AppLog.wtf(TAG, "Incorrect amount of columns and values: " + columns.length + " != " + values.length);
 
             return;
         }
 
 
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(0);
 
         builder.append("INSERT INTO ");
         builder.append(tableName);
@@ -3353,9 +3380,9 @@ public class MainDatabase extends SQLiteOpenHelper
 
             if (values[i] != null)
             {
-                builder.append("\'");
+                builder.append('\'');
                 builder.append(String.valueOf(values[i]).replace("\'", "\'\'"));
-                builder.append("\'");
+                builder.append('\'');
             }
             else
             {
@@ -3370,7 +3397,7 @@ public class MainDatabase extends SQLiteOpenHelper
     // endregion
 
     // region Getters
-    public String[] getCities(SQLiteDatabase db)
+    public static String[] getCities(SQLiteDatabase db)
     {
         Cursor cursor = db.query(CITIES_TABLE_NAME, CITIES_COLUMNS, null, null, null, null, null);
 
@@ -3400,7 +3427,7 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public int getCityId(String city)
+    public static int getCityId(String city)
     {
         for (int i = 0; i < CITIES.length; ++i)
         {
@@ -3413,9 +3440,9 @@ public class MainDatabase extends SQLiteOpenHelper
         return -1;
     }
 
-    public ArrayList<ShopEntity> getShops(SQLiteDatabase db, int cityId, boolean limit)
+    public static ArrayList<ShopEntity> getShops(SQLiteDatabase db, int cityId, int limit)
     {
-        ArrayList<ShopEntity> res = new ArrayList<>();
+        ArrayList<ShopEntity> res = new ArrayList<>(0);
 
 
 
@@ -3430,7 +3457,7 @@ public class MainDatabase extends SQLiteOpenHelper
                                     String.valueOf(cityId)
                             }
                     , null, null, null
-                    , limit ? "10" : null);
+                    , limit == LIMIT_UNLIMITED ? null : String.valueOf(limit));
         }
         else
         {
@@ -3438,7 +3465,7 @@ public class MainDatabase extends SQLiteOpenHelper
                     , null
                     , null
                     , null, null, null
-                    , limit ? "10" : null);
+                    , limit == LIMIT_UNLIMITED ? null : String.valueOf(limit));
         }
 
 
@@ -3465,7 +3492,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         while (!cursor.isAfterLast())
         {
-            ShopEntity shop = new ShopEntity();
+            ShopEntity shop = ShopEntity.newInstance();
 
             shop.setId(           cursor.getInt(idColumnIndex));
             shop.setCityId(       cursor.getInt(cityIdColumnIndex));
@@ -3481,7 +3508,7 @@ public class MainDatabase extends SQLiteOpenHelper
             {
                 shop.setOpeningDate(dateFormat.parse(cursor.getString(openingDateColumnIndex)));
             }
-            catch (Exception e)
+            catch (Exception ignored)
             {
                 shop.setOpeningDate(null);
             }
@@ -3504,7 +3531,7 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ShopEntity getShop(SQLiteDatabase db, int shopId)
+    public static ShopEntity getShop(SQLiteDatabase db, int shopId)
     {
         ShopEntity res = null;
 
@@ -3540,7 +3567,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         if (!cursor.isAfterLast())
         {
-            res = new ShopEntity();
+            res = ShopEntity.newInstance();
 
             res.setId(           cursor.getInt(idColumnIndex));
             res.setCityId(       cursor.getInt(cityIdColumnIndex));
@@ -3556,7 +3583,7 @@ public class MainDatabase extends SQLiteOpenHelper
             {
                 res.setOpeningDate(dateFormat.parse(cursor.getString(openingDateColumnIndex)));
             }
-            catch (Exception e)
+            catch (Exception ignored)
             {
                 res.setOpeningDate(null);
             }
@@ -3573,9 +3600,9 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<GoodsCategoryEntity> getGoodsCategories(SQLiteDatabase db, int parentCategoryId, boolean allowDisabled)
+    public static ArrayList<GoodsCategoryEntity> getGoodsCategories(SQLiteDatabase db, int parentCategoryId, int allowDisabled)
     {
-        ArrayList<GoodsCategoryEntity> res = new ArrayList<>();
+        ArrayList<GoodsCategoryEntity> res = new ArrayList<>(0);
 
 
 
@@ -3588,7 +3615,7 @@ public class MainDatabase extends SQLiteOpenHelper
                     , new String[]
                             {
                                     String.valueOf(parentCategoryId),
-                                    String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
+                                    String.valueOf(allowDisabled == ALLOW_DISABLED_YES ? FORCE_ENABLED : DISABLED)
                             }
                     , null, null, COLUMN_PRIORITY);
         }
@@ -3598,7 +3625,7 @@ public class MainDatabase extends SQLiteOpenHelper
                     , COLUMN_ENABLED + " != ?"
                     , new String[]
                             {
-                                    String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
+                                    String.valueOf(allowDisabled == ALLOW_DISABLED_YES ? FORCE_ENABLED : DISABLED)
                             }
                     , null, null, COLUMN_ENABLED + ", " + COLUMN_PRIORITY);
         }
@@ -3619,7 +3646,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         while (!cursor.isAfterLast())
         {
-            GoodsCategoryEntity category = new GoodsCategoryEntity();
+            GoodsCategoryEntity category = GoodsCategoryEntity.newInstance();
 
             category.setId(        cursor.getInt(idColumnIndex));
             category.setParentId(  cursor.getInt(parentIdColumnIndex));
@@ -3644,9 +3671,10 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
+    @Nullable
     public Tree<GoodsCategoryEntity> getGoodsCategoriesTree(SQLiteDatabase db, int rootCategoryId)
     {
-        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, SPECIAL_ID_NONE, false);
+        ArrayList<GoodsCategoryEntity> categories = getGoodsCategories(db, SPECIAL_ID_NONE, ALLOW_DISABLED_NO);
         GoodsCategoryEntity rootCategory = null;
 
         for (int i = 0; i < categories.size(); ++i)
@@ -3677,9 +3705,9 @@ public class MainDatabase extends SQLiteOpenHelper
         return Utils.buildCategoriesTreeFromList(categories, rootCategory);
     }
 
-    public ArrayList<GoodEntity> getGoods(SQLiteDatabase db, int categoryId, boolean allowDisabled, boolean limit)
+    public static ArrayList<GoodEntity> getGoods(SQLiteDatabase db, int categoryId, int allowDisabled, int limit)
     {
-        ArrayList<GoodEntity> res = new ArrayList<>();
+        ArrayList<GoodEntity> res = new ArrayList<>(0);
 
 
 
@@ -3692,10 +3720,10 @@ public class MainDatabase extends SQLiteOpenHelper
                     , new String[]
                             {
                                     String.valueOf(categoryId),
-                                    String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
+                                    String.valueOf(allowDisabled == ALLOW_DISABLED_YES ? FORCE_ENABLED : DISABLED)
                             }
                     , null, null, COLUMN_PRIORITY
-                    , limit ? "10" : null);
+                    , limit == LIMIT_UNLIMITED ? null : String.valueOf(limit));
         }
         else
         {
@@ -3703,10 +3731,10 @@ public class MainDatabase extends SQLiteOpenHelper
                     , COLUMN_ENABLED + " != ?"
                     , new String[]
                             {
-                                    String.valueOf(allowDisabled ? FORCE_ENABLED : DISABLED)
+                                    String.valueOf(allowDisabled == ALLOW_DISABLED_YES ? FORCE_ENABLED : DISABLED)
                             }
                     , null, null, COLUMN_ENABLED + ", " + COLUMN_PRIORITY
-                    , limit ? "10" : null);
+                    , limit == LIMIT_UNLIMITED ? null : String.valueOf(limit));
         }
 
 
@@ -3732,7 +3760,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         while (!cursor.isAfterLast())
         {
-            GoodEntity good = new GoodEntity();
+            GoodEntity good = GoodEntity.newInstance();
 
             good.setId(            cursor.getInt(idColumnIndex));
             good.setCategoryId(    cursor.getInt(categoryIdColumnIndex));
@@ -3751,8 +3779,8 @@ public class MainDatabase extends SQLiteOpenHelper
 
             try
             {
-                good.setAttrs(       !TextUtils.isEmpty(attrs)        ? new JSONObject(attrs)        : null);
-                good.setAttrsDetails(!TextUtils.isEmpty(attrsDetails) ? new JSONObject(attrsDetails) : null);
+                good.setAttrs(       TextUtils.isEmpty(attrs)        ? null : new JSONObject(attrs));
+                good.setAttrsDetails(TextUtils.isEmpty(attrsDetails) ? null : new JSONObject(attrsDetails));
             }
             catch (Exception e)
             {
@@ -3776,29 +3804,29 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<SelectedGoodEntity> getSelectedGoods(SQLiteDatabase db, boolean limit)
+    public static ArrayList<SelectedGoodEntity> getSelectedGoods(SQLiteDatabase db, int limit)
     {
-        ArrayList<SelectedGoodEntity> res = new ArrayList<>();
+        ArrayList<SelectedGoodEntity> res = new ArrayList<>(0);
 
 
 
-        Cursor cursor = db.rawQuery("SELECT"                                                                                                             + " "  +
-                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_ID                                                                    + ", " +
-                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_GOOD_ID                                                               + ", " +
-                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_CATEGORY_ID                                                           + ", " +
-                                        GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                + ", " +
-                                        GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                            + ", " +
-                                        GOODS_TABLE_NAME            + "." + COLUMN_COST                                                                  + ", " +
-                                        SELECTED_GOODS_TABLE_NAME   + "." + COLUMN_COUNT                                                                 + ", " +
-                                        GOODS_TABLE_NAME            + "." + COLUMN_ENABLED + " AS good_enabled"                                          + ", " +
-                                        GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ENABLED + " AS category_enabled"                                      + " "  +
-                                    "FROM " + SELECTED_GOODS_TABLE_NAME                                                                                  + " "  +
-                                    "INNER JOIN " + GOODS_TABLE_NAME                                                                                     + " "  +
-                                    "ON " + SELECTED_GOODS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
-                                    "INNER JOIN " + GOODS_CATEGORIES_TABLE_NAME                                                                          + " "  +
-                                    "ON " + SELECTED_GOODS_TABLE_NAME + "." + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ID + " "  +
-                                    (limit ? "LIMIT 10" : "")                                                                                            + " "  +
-                                    ";", null );
+        Cursor cursor = db.rawQuery("SELECT"                                                                                                             + ' ' +
+                                        SELECTED_GOODS_TABLE_NAME   + '.' + COLUMN_ID                                                                    + ", " +
+                                        SELECTED_GOODS_TABLE_NAME   + '.' + COLUMN_GOOD_ID                                                               + ", " +
+                                        SELECTED_GOODS_TABLE_NAME   + '.' + COLUMN_CATEGORY_ID                                                           + ", " +
+                                        GOODS_TABLE_NAME            + '.' + COLUMN_NAME + " AS good_name"                                                + ", " +
+                                        GOODS_CATEGORIES_TABLE_NAME + '.' + COLUMN_NAME + " AS category_name"                                            + ", " +
+                                        GOODS_TABLE_NAME            + '.' + COLUMN_COST                                                                  + ", " +
+                                        SELECTED_GOODS_TABLE_NAME   + '.' + COLUMN_COUNT                                                                 + ", " +
+                                        GOODS_TABLE_NAME            + '.' + COLUMN_ENABLED + " AS good_enabled"                                          + ", " +
+                                        GOODS_CATEGORIES_TABLE_NAME + '.' + COLUMN_ENABLED + " AS category_enabled"                                      + ' ' +
+                                    "FROM " + SELECTED_GOODS_TABLE_NAME                                                                                  + ' ' +
+                                    "INNER JOIN " + GOODS_TABLE_NAME                                                                                     + ' ' +
+                                    "ON " + SELECTED_GOODS_TABLE_NAME + '.' + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + '.' + COLUMN_ID + ' ' +
+                                    "INNER JOIN " + GOODS_CATEGORIES_TABLE_NAME                                                                          + ' ' +
+                                    "ON " + SELECTED_GOODS_TABLE_NAME + '.' + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + '.' + COLUMN_ID + ' ' +
+                                    (limit == LIMIT_UNLIMITED ? "" : "LIMIT " + limit)                                                                   + ' ' +
+                ';', null );
 
 
 
@@ -3825,15 +3853,15 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
 
-            SelectedGoodEntity good = new SelectedGoodEntity();
+            SelectedGoodEntity good = SelectedGoodEntity.newInstance();
 
             good.setId(        cursor.getInt(idColumnIndex));
             good.setGoodId(    cursor.getInt(goodIdColumnIndex));
             good.setCategoryId(cursor.getInt(categoryIdColumnIndex));
-            good.setName(      good.getGoodId() != SPECIAL_ID_ROOT ? goodName : categoryName);
+            good.setName(      good.getGoodId() == SPECIAL_ID_ROOT ? categoryName : goodName);
             good.setCost(      cursor.getDouble(costColumnIndex));
             good.setCount(     cursor.getDouble(countColumnIndex));
-            good.setEnabled(   good.getGoodId() != SPECIAL_ID_ROOT ? goodEnabled : categoryEnabled);
+            good.setEnabled(   good.getGoodId() == SPECIAL_ID_ROOT ? categoryEnabled : goodEnabled);
 
             res.add(good);
 
@@ -3849,25 +3877,25 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<HistoryEntity> getHistory(SQLiteDatabase db, boolean limit)
+    public static ArrayList<HistoryEntity> getHistory(SQLiteDatabase db, int limit)
     {
-        ArrayList<HistoryEntity> res = new ArrayList<>();
+        ArrayList<HistoryEntity> res = new ArrayList<>(0);
 
 
 
-        Cursor cursor = db.rawQuery("SELECT"                                                                                       + " "  +
-                                        HISTORY_TABLE_NAME + "." + COLUMN_ID                                                       + ", " +
-                                        HISTORY_TABLE_NAME + "." + COLUMN_SHOP_ID                                                  + ", " +
-                                        SHOPS_TABLE_NAME   + "." + COLUMN_NAME                                                     + ", " +
-                                        HISTORY_TABLE_NAME + "." + COLUMN_DATE                                                     + ", " +
-                                        HISTORY_TABLE_NAME + "." + COLUMN_DURATION                                                 + ", " +
-                                        HISTORY_TABLE_NAME + "." + COLUMN_TOTAL                                                    + " "  +
-                                    "FROM " + HISTORY_TABLE_NAME                                                                   + " "  +
-                                    "INNER JOIN " + SHOPS_TABLE_NAME                                                               + " "  +
-                                    "ON " + HISTORY_TABLE_NAME + "." + COLUMN_SHOP_ID + " = " + SHOPS_TABLE_NAME + "." + COLUMN_ID + " "  +
-                                    "ORDER BY " + HISTORY_TABLE_NAME + "." + COLUMN_ID + " DESC"                                   + " "  +
-                                    (limit ? "LIMIT 10" : "")                                                                      + " "  +
-                                    ";", null);
+        Cursor cursor = db.rawQuery("SELECT"                                                                                       + ' ' +
+                                        HISTORY_TABLE_NAME + '.' + COLUMN_ID                                                       + ", " +
+                                        HISTORY_TABLE_NAME + '.' + COLUMN_SHOP_ID                                                  + ", " +
+                                        SHOPS_TABLE_NAME   + '.' + COLUMN_NAME                                                     + ", " +
+                                        HISTORY_TABLE_NAME + '.' + COLUMN_DATE                                                     + ", " +
+                                        HISTORY_TABLE_NAME + '.' + COLUMN_DURATION                                                 + ", " +
+                                        HISTORY_TABLE_NAME + '.' + COLUMN_TOTAL                                                    + ' ' +
+                                    "FROM " + HISTORY_TABLE_NAME                                                                   + ' ' +
+                                    "INNER JOIN " + SHOPS_TABLE_NAME                                                               + ' ' +
+                                    "ON " + HISTORY_TABLE_NAME + '.' + COLUMN_SHOP_ID + " = " + SHOPS_TABLE_NAME + '.' + COLUMN_ID + ' ' +
+                                    "ORDER BY " + HISTORY_TABLE_NAME + '.' + COLUMN_ID + " DESC"                                   + ' ' +
+                                    (limit == LIMIT_UNLIMITED ? "" : "LIMIT " + limit)                                             + ' ' +
+                ';', null);
 
 
 
@@ -3884,7 +3912,7 @@ public class MainDatabase extends SQLiteOpenHelper
 
         while (!cursor.isAfterLast())
         {
-            HistoryEntity history = new HistoryEntity();
+            HistoryEntity history = HistoryEntity.newInstance();
 
             history.setId(      cursor.getInt(idColumnIndex));
             history.setShopId(  cursor.getInt(shopIdColumnIndex));
@@ -3907,30 +3935,30 @@ public class MainDatabase extends SQLiteOpenHelper
         return res;
     }
 
-    public ArrayList<HistoryDetailsEntity> getHistoryDetails(SQLiteDatabase db, int historyId, boolean limit)
+    public static ArrayList<HistoryDetailsEntity> getHistoryDetails(SQLiteDatabase db, int historyId, int limit)
     {
-        ArrayList<HistoryDetailsEntity> res = new ArrayList<>();
+        ArrayList<HistoryDetailsEntity> res = new ArrayList<>(0);
 
 
 
-        Cursor cursor = db.rawQuery("SELECT"                                                                                                              + " "  +
-                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_ID                                                                     + ", " +
-                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_GOOD_ID                                                                + ", " +
-                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_CATEGORY_ID                                                            + ", " +
-                                        GOODS_TABLE_NAME            + "." + COLUMN_NAME + " AS good_name"                                                 + ", " +
-                                        GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_NAME + " AS category_name"                                             + ", " +
-                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_COST                                                                   + ", " +
-                                        HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_COUNT                                                                  + ", " +
-                                        GOODS_TABLE_NAME            + "." + COLUMN_ENABLED + " AS good_enabled"                                           + ", " +
-                                        GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ENABLED + " AS category_enabled"                                       + " "  +
-                                    "FROM " + HISTORY_DETAILS_TABLE_NAME                                                                                  + " "  +
-                                    "INNER JOIN " + GOODS_TABLE_NAME                                                                                      + " "  +
-                                    "ON " + HISTORY_DETAILS_TABLE_NAME + "." + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + "." + COLUMN_ID + " "  +
-                                    "INNER JOIN " + GOODS_CATEGORIES_TABLE_NAME                                                                           + " "  +
-                                    "ON " + HISTORY_DETAILS_TABLE_NAME + "." + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + "." + COLUMN_ID + " "  +
-                                    "WHERE " + HISTORY_DETAILS_TABLE_NAME  + "." + COLUMN_HISTORY_ID + " = ?"                                             + " "  +
-                                    (limit ? "LIMIT 10" : "")                                                                                             + " "  +
-                                    ";", new String[] { String.valueOf(historyId) } );
+        Cursor cursor = db.rawQuery("SELECT"                                                                                                              + ' ' +
+                                        HISTORY_DETAILS_TABLE_NAME  + '.' + COLUMN_ID                                                                     + ", " +
+                                        HISTORY_DETAILS_TABLE_NAME  + '.' + COLUMN_GOOD_ID                                                                + ", " +
+                                        HISTORY_DETAILS_TABLE_NAME  + '.' + COLUMN_CATEGORY_ID                                                            + ", " +
+                                        GOODS_TABLE_NAME            + '.' + COLUMN_NAME + " AS good_name"                                                 + ", " +
+                                        GOODS_CATEGORIES_TABLE_NAME + '.' + COLUMN_NAME + " AS category_name"                                             + ", " +
+                                        HISTORY_DETAILS_TABLE_NAME  + '.' + COLUMN_COST                                                                   + ", " +
+                                        HISTORY_DETAILS_TABLE_NAME  + '.' + COLUMN_COUNT                                                                  + ", " +
+                                        GOODS_TABLE_NAME            + '.' + COLUMN_ENABLED + " AS good_enabled"                                           + ", " +
+                                        GOODS_CATEGORIES_TABLE_NAME + '.' + COLUMN_ENABLED + " AS category_enabled"                                       + ' ' +
+                                    "FROM " + HISTORY_DETAILS_TABLE_NAME                                                                                  + ' ' +
+                                    "INNER JOIN " + GOODS_TABLE_NAME                                                                                      + ' ' +
+                                    "ON " + HISTORY_DETAILS_TABLE_NAME + '.' + COLUMN_GOOD_ID     + " = " + GOODS_TABLE_NAME            + '.' + COLUMN_ID + ' ' +
+                                    "INNER JOIN " + GOODS_CATEGORIES_TABLE_NAME                                                                           + ' ' +
+                                    "ON " + HISTORY_DETAILS_TABLE_NAME + '.' + COLUMN_CATEGORY_ID + " = " + GOODS_CATEGORIES_TABLE_NAME + '.' + COLUMN_ID + ' ' +
+                                    "WHERE " + HISTORY_DETAILS_TABLE_NAME  + '.' + COLUMN_HISTORY_ID + " = ?"                                             + ' ' +
+                                    (limit == LIMIT_UNLIMITED ? "" : "LIMIT " + limit)                                                                    + ' ' +
+                ';', new String[] { String.valueOf(historyId) } );
 
 
 
@@ -3957,15 +3985,15 @@ public class MainDatabase extends SQLiteOpenHelper
 
 
 
-            HistoryDetailsEntity details = new HistoryDetailsEntity();
+            HistoryDetailsEntity details = HistoryDetailsEntity.newInstance();
 
             details.setId(        cursor.getInt(idColumnIndex));
             details.setGoodId(    cursor.getInt(goodIdColumnIndex));
             details.setCategoryId(cursor.getInt(categoryIdColumnIndex));
-            details.setName(      details.getGoodId() != SPECIAL_ID_ROOT ? goodName : categoryName);
+            details.setName(      details.getGoodId() == SPECIAL_ID_ROOT ? categoryName : goodName);
             details.setCost(      cursor.getDouble(costColumnIndex));
             details.setCount(     cursor.getDouble(countColumnIndex));
-            details.setEnabled(   details.getGoodId() != SPECIAL_ID_ROOT ? goodEnabled : categoryEnabled);
+            details.setEnabled(   details.getGoodId() == SPECIAL_ID_ROOT ? categoryEnabled : goodEnabled);
 
             res.add(details);
 
@@ -3983,7 +4011,7 @@ public class MainDatabase extends SQLiteOpenHelper
     // endregion
 
     // region Setters
-    public void insertGoodsCategory(SQLiteDatabase db, GoodsCategoryEntity category)
+    public static void insertGoodsCategory(SQLiteDatabase db, GoodsCategoryEntity category)
     {
         insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS
                 , category.getId()
@@ -3995,7 +4023,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 , category.getEnabled());
     }
 
-    public void updateGoodsCategory(SQLiteDatabase db, GoodsCategoryEntity category)
+    public static void updateGoodsCategory(SQLiteDatabase db, GoodsCategoryEntity category)
     {
         ContentValues values = new ContentValues();
 
@@ -4012,7 +4040,7 @@ public class MainDatabase extends SQLiteOpenHelper
                         });
     }
 
-    public void updateGoodsCategoryUpdateTime(SQLiteDatabase db, GoodsCategoryEntity category)
+    public static void updateGoodsCategoryUpdateTime(SQLiteDatabase db, GoodsCategoryEntity category)
     {
         ContentValues values = new ContentValues();
 
@@ -4026,7 +4054,7 @@ public class MainDatabase extends SQLiteOpenHelper
                         });
     }
 
-    public void insertGood(SQLiteDatabase db, GoodEntity good)
+    public static void insertGood(SQLiteDatabase db, GoodEntity good)
     {
         insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS
                 , good.getId()
@@ -4045,7 +4073,7 @@ public class MainDatabase extends SQLiteOpenHelper
                 , good.getEnabled());
     }
 
-    public void updateGood(SQLiteDatabase db, GoodEntity good)
+    public static void updateGood(SQLiteDatabase db, GoodEntity good)
     {
         ContentValues values = new ContentValues();
 
@@ -4069,7 +4097,7 @@ public class MainDatabase extends SQLiteOpenHelper
                         });
     }
 
-    public void updateGoodUpdateTime(SQLiteDatabase db, GoodEntity good)
+    public static void updateGoodUpdateTime(SQLiteDatabase db, GoodEntity good)
     {
         ContentValues values = new ContentValues();
 

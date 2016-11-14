@@ -204,7 +204,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            mMainDatabase = new MainDatabase(getActivity());
+            mMainDatabase = MainDatabase.newInstance(getActivity());
             mDB           = mMainDatabase.getReadableDatabase();
 
             ListPreference cities = (ListPreference)findPreference(Preferences.SETTINGS_CITY);

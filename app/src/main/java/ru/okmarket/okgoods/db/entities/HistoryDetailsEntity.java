@@ -3,11 +3,9 @@ package ru.okmarket.okgoods.db.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Locale;
-
 import ru.okmarket.okgoods.db.MainDatabase;
 
-public class HistoryDetailsEntity implements Parcelable
+public final class HistoryDetailsEntity implements Parcelable
 {
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryDetailsEntity";
@@ -24,7 +22,21 @@ public class HistoryDetailsEntity implements Parcelable
 
 
 
-    public HistoryDetailsEntity()
+    @Override
+    public String toString()
+    {
+        return "HistoryDetailsEntity{" +
+                "mId="           + mId         +
+                ", mGoodId="     + mGoodId     +
+                ", mCategoryId=" + mCategoryId +
+                ", mName='"      + mName       + '\'' +
+                ", mCost="       + mCost       +
+                ", mCount="      + mCount      +
+                ", mEnabled="    + mEnabled    +
+                '}';
+    }
+
+    private HistoryDetailsEntity()
     {
         mId         = 0;
         mGoodId     = 0;
@@ -35,18 +47,12 @@ public class HistoryDetailsEntity implements Parcelable
         mEnabled    = 0;
     }
 
-    @Override
-    public String toString()
+    public static HistoryDetailsEntity newInstance()
     {
-        return String.format(Locale.US, "{id = %1$d, name = %2$s, cost = %3$.2f, count = %4$.2f, enabled = %5$d}"
-                , mId
-                , String.valueOf(mName)
-                , mCost
-                , mCount
-                , mEnabled
-        );
+        return new HistoryDetailsEntity();
     }
 
+    @SuppressWarnings({"NonFinalFieldReferenceInEquals", "AccessingNonPublicFieldOfAnotherObject"})
     @Override
     public boolean equals(Object object)
     {
@@ -70,6 +76,13 @@ public class HistoryDetailsEntity implements Parcelable
         return mId == details.mId;
     }
 
+    @SuppressWarnings("NonFinalFieldReferencedInHashCode")
+    @Override
+    public int hashCode()
+    {
+        return mId;
+    }
+
     public int getId()
     {
         return mId;
@@ -90,6 +103,7 @@ public class HistoryDetailsEntity implements Parcelable
         mGoodId = goodId;
     }
 
+    @SuppressWarnings("unused")
     public int getCategoryId()
     {
         return mCategoryId;
@@ -130,6 +144,7 @@ public class HistoryDetailsEntity implements Parcelable
         mCount = count;
     }
 
+    @SuppressWarnings("unused")
     public int getEnabled()
     {
         return mEnabled;
@@ -140,6 +155,7 @@ public class HistoryDetailsEntity implements Parcelable
         mEnabled = enabled;
     }
 
+    @SuppressWarnings("unused")
     public boolean isEnabled()
     {
         return mEnabled != MainDatabase.DISABLED;

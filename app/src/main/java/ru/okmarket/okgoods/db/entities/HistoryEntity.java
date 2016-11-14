@@ -5,23 +5,36 @@ import android.os.Parcelable;
 
 import java.util.Locale;
 
-public class HistoryEntity implements Parcelable
+public final class HistoryEntity implements Parcelable
 {
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryEntity";
 
 
 
-    private int     mId;
-    private int     mShopId;
-    private String  mShopName;
-    private String  mDate;
-    private int     mDuration;
-    private double  mTotal;
+    private int     mId       = 0;
+    private int     mShopId   = 0;
+    private String  mShopName = null;
+    private String  mDate     = null;
+    private int     mDuration = 0;
+    private double  mTotal    = 0;
 
 
 
-    public HistoryEntity()
+    @Override
+    public String toString()
+    {
+        return "HistoryEntity{" +
+                "mId="          + mId              +
+                ", mShopId="    + mShopId          +
+                ", mShopName='" + mShopName + '\'' +
+                ", mDate='"     + mDate + '\''     +
+                ", mDuration="  + mDuration        +
+                ", mTotal="     + mTotal           +
+                '}';
+    }
+
+    private HistoryEntity()
     {
         mId       = 0;
         mShopId   = 0;
@@ -31,17 +44,12 @@ public class HistoryEntity implements Parcelable
         mTotal    = 0;
     }
 
-    @Override
-    public String toString()
+    public static HistoryEntity newInstance()
     {
-        return String.format(Locale.US, "{shopName = %1$s, date = %2$s, duration = %3$d, total = %4$.2f}"
-                , String.valueOf(mShopName)
-                , String.valueOf(mDate)
-                , mDuration
-                , mTotal
-        );
+        return new HistoryEntity();
     }
 
+    @SuppressWarnings({"NonFinalFieldReferenceInEquals", "AccessingNonPublicFieldOfAnotherObject"})
     @Override
     public boolean equals(Object object)
     {
@@ -63,6 +71,13 @@ public class HistoryEntity implements Parcelable
         HistoryEntity history = (HistoryEntity)object;
 
         return mId == history.mId;
+    }
+
+    @SuppressWarnings("NonFinalFieldReferencedInHashCode")
+    @Override
+    public int hashCode()
+    {
+        return mId;
     }
 
     public int getId()
@@ -105,6 +120,7 @@ public class HistoryEntity implements Parcelable
         mDate = date;
     }
 
+    @SuppressWarnings("unused")
     public int getDuration()
     {
         return mDuration;

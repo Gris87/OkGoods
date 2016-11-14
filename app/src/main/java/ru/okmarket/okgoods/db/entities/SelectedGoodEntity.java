@@ -3,28 +3,40 @@ package ru.okmarket.okgoods.db.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Locale;
-
 import ru.okmarket.okgoods.db.MainDatabase;
 
-public class SelectedGoodEntity implements Parcelable
+public final class SelectedGoodEntity implements Parcelable
 {
     @SuppressWarnings("unused")
     private static final String TAG = "SelectedGoodEntity";
 
 
 
-    private int     mId;
-    private int     mGoodId;
-    private int     mCategoryId;
-    private String  mName;
-    private double  mCost;
-    private double  mCount;
-    private int     mEnabled;
+    private int     mId         = 0;
+    private int     mGoodId     = 0;
+    private int     mCategoryId = 0;
+    private String  mName       = null;
+    private double  mCost       = 0;
+    private double  mCount      = 0;
+    private int     mEnabled    = 0;
 
 
 
-    public SelectedGoodEntity()
+    @Override
+    public String toString()
+    {
+        return "SelectedGoodEntity{" +
+                "mId="           + mId         +
+                ", mGoodId="     + mGoodId     +
+                ", mCategoryId=" + mCategoryId +
+                ", mName='"      + mName       + '\'' +
+                ", mCost="       + mCost       +
+                ", mCount="      + mCount      +
+                ", mEnabled="    + mEnabled    +
+                '}';
+    }
+
+    private SelectedGoodEntity()
     {
         mId         = 0;
         mGoodId     = 0;
@@ -35,18 +47,12 @@ public class SelectedGoodEntity implements Parcelable
         mEnabled    = 0;
     }
 
-    @Override
-    public String toString()
+    public static SelectedGoodEntity newInstance()
     {
-        return String.format(Locale.US, "{id = %1$d, name = %2$s, cost = %3$.2f, count = %4$.2f, enabled = %5$d}"
-                , mId
-                , String.valueOf(mName)
-                , mCost
-                , mCount
-                , mEnabled
-        );
+        return new SelectedGoodEntity();
     }
 
+    @SuppressWarnings({"NonFinalFieldReferenceInEquals", "AccessingNonPublicFieldOfAnotherObject"})
     @Override
     public boolean equals(Object object)
     {
@@ -70,6 +76,13 @@ public class SelectedGoodEntity implements Parcelable
         return mId == selectedGood.mId;
     }
 
+    @SuppressWarnings("NonFinalFieldReferencedInHashCode")
+    @Override
+    public int hashCode()
+    {
+        return mId;
+    }
+
     public int getId()
     {
         return mId;
@@ -90,6 +103,7 @@ public class SelectedGoodEntity implements Parcelable
         mGoodId = goodId;
     }
 
+    @SuppressWarnings("unused")
     public int getCategoryId()
     {
         return mCategoryId;
@@ -130,6 +144,7 @@ public class SelectedGoodEntity implements Parcelable
         mCount = count;
     }
 
+    @SuppressWarnings("unused")
     public int getEnabled()
     {
         return mEnabled;
@@ -140,6 +155,7 @@ public class SelectedGoodEntity implements Parcelable
         mEnabled = enabled;
     }
 
+    @SuppressWarnings("unused")
     public boolean isEnabled()
     {
         return mEnabled != MainDatabase.DISABLED;

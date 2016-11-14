@@ -134,7 +134,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        MainDatabase mainDatabase = new MainDatabase(this);
+        MainDatabase mainDatabase = MainDatabase.newInstance(this);
         SQLiteDatabase db = mainDatabase.getReadableDatabase();
         int cityId = mainDatabase.getCityId(prefs.getString(Preferences.SETTINGS_CITY, "MOSCOW"));
         ArrayList<ShopEntity> shops = mainDatabase.getShops(db, cityId, false);

@@ -20,6 +20,7 @@ import ru.okmarket.okgoods.other.ShopFilter;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.ImageButtonWithTooltip;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class ShopFilterDialog extends DialogFragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener
 {
     @SuppressWarnings("unused")
@@ -52,6 +53,32 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
     private ShopFilter                    mShopFilter                        = null;
 
 
+
+    @Override
+    public String toString()
+    {
+        return "ShopFilterDialog{" +
+                "mListener="                            + mListener                          +
+                ", mSupermarketCheckBox="               + mSupermarketCheckBox               +
+                ", mHypermarketCheckBox="               + mHypermarketCheckBox               +
+                ", mAllDayCheckBox="                    + mAllDayCheckBox                    +
+                ", mServiceClearingSettlementButton="   + mServiceClearingSettlementButton   +
+                ", mServiceCosmeticsButton="            + mServiceCosmeticsButton            +
+                ", mServicePlaygroundButton="           + mServicePlaygroundButton           +
+                ", mServiceFishIslandButton="           + mServiceFishIslandButton           +
+                ", mServiceBakeryButton="               + mServiceBakeryButton               +
+                ", mServiceCookeryButton="              + mServiceCookeryButton              +
+                ", mServiceTaxiOrderingButton="         + mServiceTaxiOrderingButton         +
+                ", mServicePharmacyButton="             + mServicePharmacyButton             +
+                ", mServiceDegustationButton="          + mServiceDegustationButton          +
+                ", mServiceOrderingFoodButton="         + mServiceOrderingFoodButton         +
+                ", mServiceCafeButton="                 + mServiceCafeButton                 +
+                ", mServiceGiftCardsButton="            + mServiceGiftCardsButton            +
+                ", mServiceParkingButton="              + mServiceParkingButton              +
+                ", mServicePointOfIssuingOrdersButton=" + mServicePointOfIssuingOrdersButton +
+                ", mShopFilter="                        + mShopFilter                        +
+                '}';
+    }
 
     public static ShopFilterDialog newInstance(ShopFilter filter)
     {
@@ -173,7 +200,7 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown button view: " + String.valueOf(buttonView));
+            AppLog.wtf(TAG, "Unknown button view: " + buttonView);
         }
     }
 
@@ -251,7 +278,7 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown view: " + String.valueOf(view));
+            AppLog.wtf(TAG, "Unknown view: " + view);
         }
     }
 
@@ -324,7 +351,8 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         }
         else
         {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+            //noinspection ProhibitedExceptionThrown
+            throw new RuntimeException(context + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -338,6 +366,7 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
 
 
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnFragmentInteractionListener
     {
         void onShopFilterApplied(ShopFilter filter);

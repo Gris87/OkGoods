@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
 
-        mMainDatabase = new MainDatabase(this);
+        mMainDatabase = MainDatabase.newInstance(this);
         mDB           = mMainDatabase.getWritableDatabase();
 
 

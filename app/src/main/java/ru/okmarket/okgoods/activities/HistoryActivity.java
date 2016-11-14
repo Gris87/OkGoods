@@ -72,7 +72,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
 
 
-        MainDatabase   mainDatabase = new MainDatabase(this);
+        MainDatabase   mainDatabase = MainDatabase.newInstance(this);
         SQLiteDatabase db           = mainDatabase.getReadableDatabase();
 
         HistoryAdapter adapter = HistoryAdapter.newInstance(this, mainDatabase.getHistory(db, false));
@@ -134,7 +134,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     @Override
     public void onHistoryClicked(HistoryAdapter.HistoryViewHolder holder, HistoryEntity history)
     {
-        MainDatabase   mainDatabase = new MainDatabase(this);
+        MainDatabase   mainDatabase = MainDatabase.newInstance(this);
         SQLiteDatabase db           = mainDatabase.getReadableDatabase();
 
         ArrayList<HistoryDetailsEntity> details = mainDatabase.getHistoryDetails(db, history.getId(), false);
