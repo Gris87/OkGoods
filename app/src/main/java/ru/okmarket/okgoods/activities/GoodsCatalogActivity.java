@@ -368,7 +368,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
 
-        mGoodsAdapter.setItems(mSelectedCategory.getAll(), mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), false, true));
+        mGoodsAdapter.setItems(mSelectedCategory.getAll(), mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), MainDatabase.ALLOW_DISABLED_NO, MainDatabase.LIMIT_STANDARD));
 
         if (mGoodsLoadingTask != null)
         {
@@ -391,7 +391,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     {
         if (!webCategories.isEmpty() || !webGoods.isEmpty())
         {
-            ArrayList<GoodsCategoryEntity> categoriesInDB = mMainDatabase.getGoodsCategories(mDB, mSelectedCategory.getData().getId(), true);
+            ArrayList<GoodsCategoryEntity> categoriesInDB = mMainDatabase.getGoodsCategories(mDB, mSelectedCategory.getData().getId(), MainDatabase.ALLOW_DISABLED_YES);
 
             for (int i = 0; i < categoriesInDB.size(); ++i)
             {
@@ -470,7 +470,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
 
-            ArrayList<GoodEntity> goodsInDB = mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), true, false);
+            ArrayList<GoodEntity> goodsInDB = mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), MainDatabase.ALLOW_DISABLED_YES, MainDatabase.LIMIT_UNLIMITED);
 
             for (int i = 0; i < goodsInDB.size(); ++i)
             {
@@ -613,7 +613,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
             try
             {
-                res = mGoodsCatalogActivity.mMainDatabase.getGoods(mGoodsCatalogActivity.mDB, mCategoryId, false, false);
+                res = mGoodsCatalogActivity.mMainDatabase.getGoods(mGoodsCatalogActivity.mDB, mCategoryId, MainDatabase.ALLOW_DISABLED_NO, MainDatabase.LIMIT_UNLIMITED);
             }
             catch (Exception ignored)
             {

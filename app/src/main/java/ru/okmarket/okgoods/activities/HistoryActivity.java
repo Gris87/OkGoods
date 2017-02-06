@@ -75,7 +75,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         MainDatabase   mainDatabase = MainDatabase.newInstance(this);
         SQLiteDatabase db           = mainDatabase.getReadableDatabase();
 
-        HistoryAdapter adapter = HistoryAdapter.newInstance(this, mainDatabase.getHistory(db, false));
+        HistoryAdapter adapter = HistoryAdapter.newInstance(this, mainDatabase.getHistory(db, MainDatabase.LIMIT_UNLIMITED));
         adapter.setOnItemClickListener(this);
 
         db.close();
@@ -137,7 +137,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         MainDatabase   mainDatabase = MainDatabase.newInstance(this);
         SQLiteDatabase db           = mainDatabase.getReadableDatabase();
 
-        ArrayList<HistoryDetailsEntity> details = mainDatabase.getHistoryDetails(db, history.getId(), false);
+        ArrayList<HistoryDetailsEntity> details = mainDatabase.getHistoryDetails(db, history.getId(), MainDatabase.LIMIT_UNLIMITED);
 
         db.close();
 

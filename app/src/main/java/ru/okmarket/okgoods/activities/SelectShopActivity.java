@@ -137,7 +137,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
         MainDatabase mainDatabase = MainDatabase.newInstance(this);
         SQLiteDatabase db = mainDatabase.getReadableDatabase();
         int cityId = mainDatabase.getCityId(prefs.getString(Preferences.SETTINGS_CITY, "MOSCOW"));
-        ArrayList<ShopEntity> shops = mainDatabase.getShops(db, cityId, false);
+        ArrayList<ShopEntity> shops = mainDatabase.getShops(db, cityId, MainDatabase.LIMIT_UNLIMITED);
         db.close();
 
 

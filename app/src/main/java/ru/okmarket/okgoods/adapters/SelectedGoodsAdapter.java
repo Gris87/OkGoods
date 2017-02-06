@@ -136,7 +136,7 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
 
     public void updateFromDatabase()
     {
-        mItems = mMainDatabase.getSelectedGoods(mDB, false);
+        mItems = mMainDatabase.getSelectedGoods(mDB, MainDatabase.LIMIT_UNLIMITED);
 
         notifyDataSetChanged();
     }
