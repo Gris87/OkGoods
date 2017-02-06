@@ -59,16 +59,16 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
 
-    private NoScrollableDrawerLayout        mDrawerLayout       = null;
-    private ActionBarDrawerToggle           mDrawerToggle       = null;
-    private SelectedGoodsAdapter            mAdapter            = null;
-    private FrameLayout                     mShopMapView        = null;
-    private ShopMapFragment                 mShopMapFragment    = null;
-    private MainDatabase                    mMainDatabase       = null;
-    private SQLiteDatabase                  mDB                 = null;
-    private ShopEntity                      mSelectedShop       = null;
+    private NoScrollableDrawerLayout                    mDrawerLayout       = null;
+    private ActionBarDrawerToggle                       mDrawerToggle       = null;
+    private SelectedGoodsAdapter                        mAdapter            = null;
+    private FrameLayout                                 mShopMapView        = null;
+    private ShopMapFragment                             mShopMapFragment    = null;
+    private MainDatabase                                mMainDatabase       = null;
+    private SQLiteDatabase                              mDB                 = null;
+    private ShopEntity                                  mSelectedShop       = null;
     private SelectedGoodsAdapter.SelectedGoodViewHolder mSelectedViewHolder = null;
-    private SelectedGoodEntity              mSelectedGood       = null;
+    private SelectedGoodEntity                          mSelectedGood       = null;
 
 
 

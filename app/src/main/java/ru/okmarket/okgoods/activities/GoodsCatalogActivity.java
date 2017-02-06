@@ -651,7 +651,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
                     for (int i = 0; i < Web.OKEY_DOSTAVKA_RU_SHOPS.length; ++i)
                     {
-                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mCategoryId, true)
+                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mCategoryId, Web.FIRST_PAGE)
                                 , new Response.Listener<String>()
                                 {
                                     private String mShop   = null;
@@ -673,14 +673,14 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     @Override
                                     public void onResponse(String response)
                                     {
-                                        boolean hasPages = Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mCategoryId, true);
+                                        boolean hasPages = Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mCategoryId, Web.FIRST_PAGE);
                                         mGoodsCatalogActivity.loadPartiallyCompleted(webCategories, webGoods);
 
                                         --mGoodsCatalogActivity.mRequestsInProgress;
 
                                         if (hasPages)
                                         {
-                                            StringRequest request2 = new StringRequest(Request.Method.GET, Web.getCatalogUrl(mShop, mShopId, mCategoryId, false)
+                                            StringRequest request2 = new StringRequest(Request.Method.GET, Web.getCatalogUrl(mShop, mShopId, mCategoryId, Web.HUGE_PAGE)
                                                     , new Response.Listener<String>()
                                                     {
                                                         private String mInnerShop   = null;
@@ -702,7 +702,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                                         @Override
                                                         public void onResponse(String innerResponse)
                                                         {
-                                                            Web.getCatalogItemsFromResponse(innerResponse, webCategories, webGoods, mInnerShop, mInnerShopId, mCategoryId, false);
+                                                            Web.getCatalogItemsFromResponse(innerResponse, webCategories, webGoods, mInnerShop, mInnerShopId, mCategoryId, Web.HUGE_PAGE);
                                                             mGoodsCatalogActivity.loadPartiallyCompleted(webCategories, webGoods);
 
                                                             --mGoodsCatalogActivity.mRequestsInProgress;
@@ -735,7 +735,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                                         @Override
                                                         public void onErrorResponse(VolleyError error)
                                                         {
-                                                            AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mInnerShop, mInnerShopId, mCategoryId, false));
+                                                            AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mInnerShop, mInnerShopId, mCategoryId, Web.HUGE_PAGE));
 
                                                             --mGoodsCatalogActivity.mRequestsInProgress;
 
@@ -784,7 +784,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     @Override
                                     public void onErrorResponse(VolleyError error)
                                     {
-                                        AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mShop, mShopId, mCategoryId, true));
+                                        AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mShop, mShopId, mCategoryId, Web.FIRST_PAGE));
 
                                         --mGoodsCatalogActivity.mRequestsInProgress;
 

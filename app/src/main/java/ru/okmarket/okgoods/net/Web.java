@@ -49,6 +49,13 @@ public class Web
 
 
 
+    // region firstPage values
+    public static final int FIRST_PAGE = 0;
+    public static final int HUGE_PAGE  = 1;
+    // endregion
+
+
+
     public static String getShopUrl(int shopId)
     {
         return OK_MARKET_RU_URL + "/stores/" + shopId + '/';
@@ -130,7 +137,7 @@ public class Web
         return null;
     }
 
-    public static String getCatalogUrl(String shop, int shopId, int categoryId, boolean firstPage)
+    public static String getCatalogUrl(String shop, int shopId, int categoryId, int firstPage)
     {
         if (categoryId == MainDatabase.SPECIAL_ID_ROOT)
         {
@@ -138,7 +145,7 @@ public class Web
         }
         else
         {
-            if (firstPage)
+            if (firstPage == FIRST_PAGE)
             {
                 return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/CategoryDisplay?" +
                         "storeId="    + shopId + '&' +
@@ -170,12 +177,12 @@ public class Web
         return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + imageId + '/' + imageId + "_fullimage.jpg" ;
     }
 
-    public static boolean getCatalogItemsFromResponse(String response, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods, String shop, int shopId, int parentCategoryId, boolean firstPage)
+    public static boolean getCatalogItemsFromResponse(String response, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods, String shop, int shopId, int parentCategoryId, int firstPage)
     {
         int startPoint = 0;
 
         // region Parse categories
-        if (firstPage)
+        if (firstPage == FIRST_PAGE)
         {
             startPoint = response.indexOf("<div class=\"rowContainer\"", PAGE_START_POINT);
 
@@ -798,7 +805,7 @@ public class Web
         // endregion
 
         // region Check for pages
-        if (firstPage)
+        if (firstPage == FIRST_PAGE)
         {
             try
             {

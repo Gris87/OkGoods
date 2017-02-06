@@ -1,6 +1,5 @@
 Update OkMarket.ru parser
 Use Standard Android Material Icons
-Move pref keys and values in consts.xml
 Remove paddings
 Add comments to colors.xml
 Gravity for each TextView

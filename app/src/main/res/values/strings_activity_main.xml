@@ -14,11 +14,9 @@
     <string name="main_show_map">Show map</string>
     <string name="main_hide_map">Hide map</string>
 
-    <string name="main_rub_currency">%1$.2f rub.</string>
     <string name="main_rub_currency_count">%1$.2f rub. x %2$.1f</string>
     <string name="main_category">Category</string>
     <string name="main_own_category">Own category</string>
     <string name="main_own_good">Own good</string>
     <string name="main_good_details">Good details</string>
-    <string name="main_total">Total:</string>
 </resources>

@@ -22,6 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="100"
-        tools:layout="@layout/fragment_history_details" />
+        tools:layout="@layout/fragment_history_details"
+        tools:ignore="InconsistentLayout"/>
 
 </LinearLayout>

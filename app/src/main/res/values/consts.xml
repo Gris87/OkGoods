@@ -14,8 +14,8 @@
 
 
     <!-- Values -->
-    <string name="pref_default_city">MOSCOW</string>
+    <string name="pref_default_city"             translatable="false">MOSCOW</string>
 
-    <bool name="pref_default_show_notifications">true</bool>
+    <bool name="pref_default_show_notifications" translatable="false">true</bool>
 
 </resources>

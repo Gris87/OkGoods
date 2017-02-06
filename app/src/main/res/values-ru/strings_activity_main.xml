@@ -14,11 +14,9 @@
     <string name="main_show_map">Показать карту</string>
     <string name="main_hide_map">Скрыть карту</string>
 
-    <string name="main_rub_currency">%1$.2f руб.</string>
     <string name="main_rub_currency_count">%1$.2f руб. x %2$.1f</string>
     <string name="main_category">Категория</string>
     <string name="main_own_category">Своя категория</string>
     <string name="main_own_good">Свой товар</string>
     <string name="main_good_details">Описание товара</string>
-    <string name="main_total">Итого:</string>
 </resources>
