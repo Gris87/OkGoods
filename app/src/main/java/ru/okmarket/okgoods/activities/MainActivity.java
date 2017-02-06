@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -28,8 +27,8 @@ import ru.okmarket.okgoods.db.entities.SelectedGoodEntity;
 import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.dialogs.SelectCityDialog;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
-import ru.okmarket.okgoods.other.Extras;
-import ru.okmarket.okgoods.other.Preferences;
+import ru.okmarket.okgoods.other.ApplicationExtras;
+import ru.okmarket.okgoods.other.ApplicationPreferences;
 import ru.okmarket.okgoods.util.AnimationUtils;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
@@ -142,14 +141,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         if (savedInstanceState == null)
         {
-            SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences defaultSharedPreferences = getSharedPreferences(ApplicationPreferences.MAIN_SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
-            SharedPreferences contextSharedPreferences = getSharedPreferences(Preferences.CONTEXT_FILE_NAME, Context.MODE_PRIVATE);
+            SharedPreferences contextSharedPreferences = getSharedPreferences(ApplicationPreferences.CONTEXT_SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = contextSharedPreferences.edit();
 
-            if (!defaultSharedPreferences.contains(Preferences.SETTINGS_CITY))
+            if (!defaultSharedPreferences.contains(getString(R.string.pref_key_city)))
             {
-                editor.putString(Preferences.CONTEXT_LOCALE, Locale.getDefault().toString());
+                editor.putString(ApplicationPreferences.CONTEXT_LOCALE, Locale.getDefault().toString());
                 editor.apply();
 
                 SelectCityDialog dialog = new SelectCityDialog();
@@ -330,14 +329,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             else
             if (resultCode == SelectShopActivity.SHOP_SELECTED)
             {
-                mSelectedShop = data.getParcelableExtra(Extras.SHOP);
+                mSelectedShop = data.getParcelableExtra(ApplicationExtras.SHOP);
 
 
 
-                SharedPreferences prefs = getSharedPreferences(Preferences.CONTEXT_FILE_NAME, Context.MODE_PRIVATE);
+                SharedPreferences prefs = getSharedPreferences(ApplicationPreferences.CONTEXT_SHARED_PREFERENCES, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
 
-                editor.putInt(Preferences.CONTEXT_SELECTED_SHOP, mSelectedShop.getId());
+                editor.putInt(ApplicationPreferences.CONTEXT_SELECTED_SHOP, mSelectedShop.getId());
 
                 editor.apply();
 
@@ -371,18 +370,18 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     {
         boolean modified = false;
 
-        SharedPreferences prefs = getSharedPreferences(Preferences.CONTEXT_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(ApplicationPreferences.CONTEXT_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        if (!prefs.getString(Preferences.CONTEXT_LOCALE, "").equals(Locale.getDefault().toString()))
+        if (!prefs.getString(ApplicationPreferences.CONTEXT_LOCALE, "").equals(Locale.getDefault().toString()))
         {
             mMainDatabase.recreateStaticTables(mDB);
 
-            editor.putString(Preferences.CONTEXT_LOCALE, Locale.getDefault().toString());
+            editor.putString(ApplicationPreferences.CONTEXT_LOCALE, Locale.getDefault().toString());
             modified = true;
         }
 
-        int selectedShopId = prefs.getInt(Preferences.CONTEXT_SELECTED_SHOP, 0);
+        int selectedShopId = prefs.getInt(ApplicationPreferences.CONTEXT_SELECTED_SHOP, 0);
 
         if (selectedShopId != 0)
         {
@@ -395,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
             else
             {
-                editor.putInt(Preferences.CONTEXT_SELECTED_SHOP, 0);
+                editor.putInt(ApplicationPreferences.CONTEXT_SELECTED_SHOP, 0);
                 modified = true;
             }
         }
@@ -421,10 +420,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public void onCitySelected(String cityId)
     {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = getSharedPreferences(ApplicationPreferences.MAIN_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        editor.putString(Preferences.SETTINGS_CITY, cityId);
+        editor.putString(getString(R.string.pref_key_city), cityId);
 
         editor.apply();
     }
@@ -433,7 +432,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     public void onShopMapSelectShopClicked()
     {
         Intent intent = new Intent(this, SelectShopActivity.class);
-        intent.putExtra(Extras.SHOP, mSelectedShop);
+        intent.putExtra(ApplicationExtras.SHOP, mSelectedShop);
         startActivityForResult(intent, SELECT_SHOP);
     }
 

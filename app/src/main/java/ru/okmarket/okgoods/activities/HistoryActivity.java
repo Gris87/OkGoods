@@ -18,7 +18,7 @@ import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 import ru.okmarket.okgoods.db.entities.HistoryEntity;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
-import ru.okmarket.okgoods.other.Extras;
+import ru.okmarket.okgoods.other.ApplicationExtras;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
@@ -153,10 +153,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         {
             Intent intent = new Intent(this, HistoryDetailsActivity.class);
 
-            intent.putExtra(Extras.SHOP,            history.getShopId());
-            intent.putExtra(Extras.HISTORY,         history.getDate() + ". " + history.getShopName());
-            intent.putExtra(Extras.HISTORY_DETAILS, details);
-            intent.putExtra(Extras.TOTAL,           history.getTotal());
+            intent.putExtra(ApplicationExtras.SHOP,            history.getShopId());
+            intent.putExtra(ApplicationExtras.HISTORY,         history.getDate() + ". " + history.getShopName());
+            intent.putExtra(ApplicationExtras.HISTORY_DETAILS, details);
+            intent.putExtra(ApplicationExtras.TOTAL,           history.getTotal());
 
             startActivity(intent);
         }

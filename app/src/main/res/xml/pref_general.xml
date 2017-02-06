@@ -2,9 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="CITY"
-        android:title="@string/settings_pref_title_general_city"
-        android:summary="@string/settings_pref_description_general_city"
-        android:defaultValue="MOSCOW" />
+        android:key="@string/pref_key_city"
+        android:defaultValue="@string/pref_default_city"
+        android:title="@string/settings_pref_title_city"
+        android:summary="@string/settings_pref_description_city" />
 
 </PreferenceScreen>

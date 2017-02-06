@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.adapters.PhotoPagerAdapter;
-import ru.okmarket.okgoods.other.Extras;
+import ru.okmarket.okgoods.other.ApplicationExtras;
 import ru.okmarket.okgoods.widgets.PhotoViewPager;
 
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
@@ -29,8 +29,8 @@ public class PhotoViewerActivity extends FragmentActivity
 
         Intent intent = getIntent();
 
-        ArrayList<String> urls          = intent.getStringArrayListExtra(Extras.URLS);
-        int               selectedIndex = intent.getIntExtra(            Extras.SELECTED_INDEX, -1);
+        ArrayList<String> urls          = intent.getStringArrayListExtra(ApplicationExtras.URLS);
+        int               selectedIndex = intent.getIntExtra(            ApplicationExtras.SELECTED_INDEX, -1);
 
 
 

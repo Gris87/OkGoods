@@ -18,7 +18,7 @@ import java.util.List;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
-import ru.okmarket.okgoods.other.Preferences;
+import ru.okmarket.okgoods.other.ApplicationPreferences;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -98,8 +98,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
         // Trigger the listener immediately with the preference's
         // current value.
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
+                preference.getContext().getSharedPreferences(ApplicationPreferences.MAIN_SHARED_PREFERENCES, Context.MODE_PRIVATE)
                         .getString(preference.getKey(), ""));
     }
 
@@ -201,13 +200,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity
         {
             super.onCreate(savedInstanceState);
 
+            // Change preference file name
+            PreferenceManager prefManager = getPreferenceManager();
+            prefManager.setSharedPreferencesName(ApplicationPreferences.MAIN_SHARED_PREFERENCES);
+            prefManager.setSharedPreferencesMode(MODE_PRIVATE);
+
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
             mMainDatabase = MainDatabase.newInstance(getActivity());
             mDB           = mMainDatabase.getReadableDatabase();
 
-            ListPreference cities = (ListPreference)findPreference(Preferences.SETTINGS_CITY);
+            ListPreference cities = (ListPreference)findPreference(getString(R.string.pref_key_city));
             cities.setEntries(mMainDatabase.getCities(mDB));
             cities.setEntryValues(MainDatabase.CITIES);
 
@@ -252,6 +256,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity
         public void onCreate(Bundle savedInstanceState)
         {
             super.onCreate(savedInstanceState);
+
+            // Change preference file name
+            PreferenceManager prefManager = getPreferenceManager();
+            prefManager.setSharedPreferencesName(ApplicationPreferences.MAIN_SHARED_PREFERENCES);
+            prefManager.setSharedPreferencesMode(MODE_PRIVATE);
 
             addPreferencesFromResource(R.xml.pref_notification);
             setHasOptionsMenu(true);

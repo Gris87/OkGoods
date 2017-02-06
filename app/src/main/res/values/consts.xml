@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- No value -->
     <string name="no_value" translatable="false">--------</string>
+
+
+
+    <!-- Keys -->
+    <string name="pref_key_city"               translatable="false">City</string>
+
+    <string name="pref_key_show_notifications" translatable="false">ShowNotifications</string>
+
+
+
+    <!-- Values -->
+    <string name="pref_default_city">MOSCOW</string>
+
+    <bool name="pref_default_show_notifications">true</bool>
+
 </resources>

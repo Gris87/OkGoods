@@ -5,6 +5,8 @@ import android.app.Application;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
+import ru.okmarket.okgoods.other.ApplicationSettings;
+
 /**
  * OkGoods application
  */
@@ -36,6 +38,8 @@ public class OkGoodsApplication extends Application
         super.onCreate();
 
         mTracker = GoogleAnalytics.getInstance(this).newTracker(R.xml.tracker_config);
+
+        ApplicationSettings.update(this);
     }
 
     /**

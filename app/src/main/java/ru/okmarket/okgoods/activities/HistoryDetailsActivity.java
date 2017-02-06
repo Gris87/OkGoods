@@ -23,7 +23,7 @@ import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 import ru.okmarket.okgoods.net.HttpClient;
 import ru.okmarket.okgoods.net.Web;
-import ru.okmarket.okgoods.other.Extras;
+import ru.okmarket.okgoods.other.ApplicationExtras;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.CachedImageView;
 
@@ -73,10 +73,10 @@ public class HistoryDetailsActivity extends AppCompatActivity
 
         Intent intent = getIntent();
 
-        int                             shopId  = intent.getIntExtra(                Extras.SHOP, 0);
-        final String                    history = intent.getStringExtra(             Extras.HISTORY);
-        ArrayList<HistoryDetailsEntity> details = intent.getParcelableArrayListExtra(Extras.HISTORY_DETAILS);
-        double                          total   = intent.getDoubleExtra(             Extras.TOTAL, 0);
+        int                             shopId  = intent.getIntExtra(                ApplicationExtras.SHOP, 0);
+        final String                    history = intent.getStringExtra(             ApplicationExtras.HISTORY);
+        ArrayList<HistoryDetailsEntity> details = intent.getParcelableArrayListExtra(ApplicationExtras.HISTORY_DETAILS);
+        double                          total   = intent.getDoubleExtra(             ApplicationExtras.TOTAL, 0);
 
 
 

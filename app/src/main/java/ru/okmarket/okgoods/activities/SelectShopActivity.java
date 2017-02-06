@@ -1,12 +1,10 @@
 package ru.okmarket.okgoods.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -27,8 +25,8 @@ import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.dialogs.ShopFilterDialog;
 import ru.okmarket.okgoods.fragments.ShopDetailsFragment;
-import ru.okmarket.okgoods.other.Extras;
-import ru.okmarket.okgoods.other.Preferences;
+import ru.okmarket.okgoods.other.ApplicationExtras;
+import ru.okmarket.okgoods.other.ApplicationSettings;
 import ru.okmarket.okgoods.other.ShopFilter;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
@@ -132,11 +130,9 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
 
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         MainDatabase mainDatabase = MainDatabase.newInstance(this);
         SQLiteDatabase db = mainDatabase.getReadableDatabase();
-        int cityId = mainDatabase.getCityId(prefs.getString(Preferences.SETTINGS_CITY, "MOSCOW"));
+        int cityId = mainDatabase.getCityId(ApplicationSettings.getCity());
         ArrayList<ShopEntity> shops = mainDatabase.getShops(db, cityId, MainDatabase.LIMIT_UNLIMITED);
         db.close();
 
@@ -220,7 +216,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
         Intent intent = getIntent();
 
-        ShopEntity shop = intent.getParcelableExtra(Extras.SHOP);
+        ShopEntity shop = intent.getParcelableExtra(ApplicationExtras.SHOP);
         selectShop(shop);
     }
 
@@ -456,8 +452,8 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
     {
         Intent intent = new Intent(this, PhotoViewerActivity.class);
 
-        intent.putStringArrayListExtra(Extras.URLS,           urls);
-        intent.putExtra(               Extras.SELECTED_INDEX, selectedIndex);
+        intent.putStringArrayListExtra(ApplicationExtras.URLS,           urls);
+        intent.putExtra(               ApplicationExtras.SELECTED_INDEX, selectedIndex);
 
         startActivityForResult(intent, PHOTO_VIEWER);
     }
@@ -472,7 +468,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
     public void onShopDetailsOkClicked()
     {
         Intent intent = new Intent();
-        intent.putExtra(Extras.SHOP, mSelectedShop);
+        intent.putExtra(ApplicationExtras.SHOP, mSelectedShop);
         setResult(SHOP_SELECTED, intent);
 
         finish();
