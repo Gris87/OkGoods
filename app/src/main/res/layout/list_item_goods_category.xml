@@ -15,7 +15,7 @@
         android:contentDescription="@string/goods_catalog_expand"
         android:src="@drawable/expand"
         android:scaleType="centerInside"
-        style="@style/ExpandCategoryButtonStyle" />
+        android:background="@android:color/transparent" />
 
     <TextView
         android:id="@+id/nameTextView"

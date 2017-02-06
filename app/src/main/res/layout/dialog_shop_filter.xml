@@ -64,7 +64,7 @@
                 android:contentDescription="@string/service_clearing_settlement"
                 android:src="@drawable/service_clearing_settlement"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/serviceCosmeticsButton"
@@ -73,7 +73,7 @@
                 android:contentDescription="@string/service_cosmetics"
                 android:src="@drawable/service_cosmetics"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/servicePlaygroundButton"
@@ -82,7 +82,7 @@
                 android:contentDescription="@string/service_playground"
                 android:src="@drawable/service_playground"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/serviceFishIslandButton"
@@ -91,7 +91,7 @@
                 android:contentDescription="@string/service_fish_island"
                 android:src="@drawable/service_fish_island"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/serviceBakeryButton"
@@ -100,7 +100,7 @@
                 android:contentDescription="@string/service_bakery"
                 android:src="@drawable/service_bakery"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/serviceCookeryButton"
@@ -109,7 +109,7 @@
                 android:contentDescription="@string/service_cookery"
                 android:src="@drawable/service_cookery"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/serviceTaxiOrderingButton"
@@ -118,7 +118,7 @@
                 android:contentDescription="@string/service_taxi_ordering"
                 android:src="@drawable/service_taxi_ordering"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/servicePharmacyButton"
@@ -127,7 +127,7 @@
                 android:contentDescription="@string/service_pharmacy"
                 android:src="@drawable/service_pharmacy"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/serviceDegustationButton"
@@ -136,7 +136,7 @@
                 android:contentDescription="@string/service_degustation"
                 android:src="@drawable/service_degustation"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/serviceOrderingFoodButton"
@@ -145,7 +145,7 @@
                 android:contentDescription="@string/service_ordering_food"
                 android:src="@drawable/service_ordering_food"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/serviceCafeButton"
@@ -154,7 +154,7 @@
                 android:contentDescription="@string/service_cafe"
                 android:src="@drawable/service_cafe"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/serviceGiftCardsButton"
@@ -163,7 +163,7 @@
                 android:contentDescription="@string/service_gift_cards"
                 android:src="@drawable/service_gift_cards"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/serviceParkingButton"
@@ -172,7 +172,7 @@
                 android:contentDescription="@string/service_parking"
                 android:src="@drawable/service_parking"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
             <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
                 android:id="@+id/servicePointOfIssuingOrdersButton"
@@ -181,7 +181,7 @@
                 android:contentDescription="@string/service_point_of_issuing_orders"
                 android:src="@drawable/service_point_of_issuing_orders"
                 android:scaleType="centerInside"
-                style="@style/ShopFilterServiceButtonStyle" />
+                android:background="@android:color/transparent" />
 
         </android.support.v7.widget.GridLayout>
 

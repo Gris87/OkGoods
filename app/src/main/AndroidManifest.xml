@@ -31,6 +31,7 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/activity_settings_title"
+            android:theme="@style/AppTheme"
             android:parentActivityName=".activities.MainActivity"
             tools:ignore="UnusedAttribute">
 
@@ -49,13 +50,13 @@
             android:name=".activities.PhotoViewerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:immersive="true"
-            android:theme="@style/FullscreenTheme" />
+            android:theme="@style/AppTheme.FullscreenTheme" />
 
         <activity
             android:name=".activities.HistoryActivity"
             android:label="@string/activity_history_title"
-            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.MainActivity"
             tools:ignore="UnusedAttribute">
 
             <meta-data
@@ -67,8 +68,8 @@
         <activity
             android:name=".activities.HistoryDetailsActivity"
             android:label="@string/activity_history_details_title"
-            android:parentActivityName=".activities.HistoryActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.HistoryActivity"
             tools:ignore="UnusedAttribute">
 
             <meta-data

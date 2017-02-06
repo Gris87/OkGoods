@@ -1,11 +1,7 @@
 Update OkMarket.ru parser
 Use Standard Android Material Icons
 DialogTheme/AlertTheme
-AppTheme.Blah-Blah => Blah-Blah
-FullscreenTheme => AppTheme.FullscreenTheme
-Remove "styles"
 Move pref keys and values in consts.xml
-Separate strings.xml in several files
 Remove paddings
 Add comments to colors.xml
 Gravity for each TextView
