@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
         setSupportActionBar(toolbar); // TODO: Check for Logo image in API < 21. Remove this logo with setDisplayShowHomeEnabled(false)
+        getSupportActionBar().setTitle(R.string.activity_main_title);
 
 
 
