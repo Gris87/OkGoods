@@ -21,7 +21,7 @@ android
         applicationId "ru.okmarket.okgoods"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
+        versionCode 10
         versionName "1.0"
     }
 
