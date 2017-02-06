@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_clearing_settlement">Clearing settlement</string>
+    <string name="service_cosmetics">Cosmetics</string>
+    <string name="service_playground">Playground</string>
+    <string name="service_fish_island">Fish island</string>
+    <string name="service_bakery">Bakery</string>
+    <string name="service_cookery">Cookery</string>
+    <string name="service_taxi_ordering">Taxi ordering</string>
+    <string name="service_pharmacy">Pharmacy</string>
+    <string name="service_ordering_food">Ordering food</string>
+    <string name="service_degustation">Degustation</string>
+    <string name="service_cafe">Cafe</string>
+    <string name="service_gift_cards">Gift cards</string>
+    <string name="service_parking">Parking</string>
+    <string name="service_point_of_issuing_orders">Point of issuing orders</string>
+</resources>

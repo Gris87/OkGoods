@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="city_moscow">Москва</string>
+    <string name="city_st_petersburg">Санкт-Петербург</string>
+    <string name="city_astrakhan">Астрахань</string>
+    <string name="city_volgograd">Волгоград</string>
+    <string name="city_voronezh">Воронеж</string>
+    <string name="city_ekaterinburg">Екатеринбург</string>
+    <string name="city_ivanovo">Иваново</string>
+    <string name="city_irkutsk">Иркутск</string>
+    <string name="city_krasnodar">Краснодар</string>
+    <string name="city_krasnoyarsk">Красноярск</string>
+    <string name="city_lipetsk">Липецк</string>
+    <string name="city_murmansk">Мурманск</string>
+    <string name="city_nizhniy_novgorod">Нижний Новгород</string>
+    <string name="city_novosibirsk">Новосибирск</string>
+    <string name="city_novocherkassk">Новочеркасск</string>
+    <string name="city_omsk">Омск</string>
+    <string name="city_orenburg">Оренбург</string>
+    <string name="city_rostov_on_don">Ростов-на-Дону</string>
+    <string name="city_saratov">Саратов</string>
+    <string name="city_sochi">Сочи</string>
+    <string name="city_stavropol">Ставрополь</string>
+    <string name="city_sterlitamak">Стерлитамак</string>
+    <string name="city_surgut">Сургут</string>
+    <string name="city_syktyvkar">Сыктывкар</string>
+    <string name="city_tolyatti">Тольятти</string>
+    <string name="city_tyumen">Тюмень</string>
+    <string name="city_ufa">Уфа</string>
+    <string name="city_cherepovets">Череповец</string>
+</resources>
