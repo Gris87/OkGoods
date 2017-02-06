@@ -12,7 +12,7 @@
         android:layout_marginStart="@dimen/common_margin"
         android:layout_marginTop="@dimen/common_margin"
         android:layout_marginBottom="@dimen/common_margin"
-        android:contentDescription="@string/expand"
+        android:contentDescription="@string/goods_catalog_expand"
         android:src="@drawable/expand"
         android:scaleType="centerInside"
         style="@style/ExpandCategoryButtonStyle" />

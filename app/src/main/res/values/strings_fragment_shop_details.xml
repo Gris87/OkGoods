@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shop_details_undefined_shop">Undefined shop</string>
+    <string name="shop_details_phone">Phone:</string>
+    <string name="shop_details_work_hours">Work hours:</string>
+    <string name="shop_details_square">Square:</string>
+    <string name="shop_details_opening_date">Opening date:</string>
+    <string name="shop_details_parking_places">Parking places:</string>
+    <string name="shop_details_number_of_cashboxes">Number of cashboxes:</string>
+    <string name="shop_details_services">Services:</string>
+    <string name="shop_details_photos">Photos:</string>
+    <string name="shop_details_all_day">All day</string>
+    <string name="shop_details_square_value">%1$d m&#178;</string>
+</resources>

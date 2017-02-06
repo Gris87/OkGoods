@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_history_details_title">Описание</string>
+
+    <string name="history_details_add_good_to_list">Добавить товар в список</string>
+    <string name="history_details_good_details">Описание товара</string>
+    <string name="history_details_rub_currency">%1$.2f руб.</string>
+    <string name="history_details_category">Категория</string>
+    <string name="history_details_own_category">Своя категория</string>
+    <string name="history_details_own_good">Свой товар</string>
+    <string name="history_details_rub_currency_count">%1$.2f руб. x %2$.1f</string>
+</resources>

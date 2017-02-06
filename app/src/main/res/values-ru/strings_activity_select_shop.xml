@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_select_shop_title">Выбор магазина</string>
+
+    <string name="select_shop_filter">Фильтр</string>
+    <string name="select_shop_details_for_shop">Информация о магазине</string>
+
+    <string name="select_shop_show_list">Показать список</string>
+    <string name="select_shop_hide_list">Скрыть список</string>
+
+    <string name="select_shop_nearest_shop">Ближайший магазин</string>
+</resources>

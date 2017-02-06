@@ -85,7 +85,7 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
         {
             holder.getCostTextView().setVisibility(View.VISIBLE);
             holder.getCostTextView().setAlpha(1);
-            holder.getCostTextView().setText(mContext.getString(R.string.rub_currency_count, item.getCost(), item.getCount()));
+            holder.getCostTextView().setText(mContext.getString(R.string.main_rub_currency_count, item.getCost(), item.getCount()));
         }
         else
         {

@@ -21,14 +21,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
-                android:text="@string/supermarket" />
+                android:text="@string/dialog_shop_filter_supermarket" />
 
             <CheckBox
                 android:id="@+id/hypermarketCheckBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
-                android:text="@string/hypermarket" />
+                android:text="@string/dialog_shop_filter_hypermarket" />
 
         </LinearLayout>
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/common_margin"
             android:layout_marginRight="@dimen/common_margin"
-            android:text="@string/all_day" />
+            android:text="@string/dialog_shop_filter_all_day" />
 
         <TextView
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@
             android:layout_marginRight="@dimen/common_margin"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
-            android:text="@string/services" />
+            android:text="@string/dialog_shop_filter_services" />
 
         <android.support.v7.widget.GridLayout
             android:layout_width="match_parent"

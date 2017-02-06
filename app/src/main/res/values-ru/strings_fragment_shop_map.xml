@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shop_map_shop">Магазин:</string>
+    <string name="shop_map_select_shop">Выбрать магазин</string>
+</resources>

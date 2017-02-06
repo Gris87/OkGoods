@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_main_title">О\'КЕЙ</string>
+
+    <string name="main_add_good">Добавить товар</string>
+    <string name="main_delete_goods">Удалить товары</string>
+    <string name="main_start">Старт</string>
+    <string name="main_select_shop">Выбрать магазин</string>
+    <string name="main_history">История</string>
+    <string name="main_update_db">Обновить базу данных</string>
+    <string name="main_settings">Настройки</string>
+    <string name="main_exit">Выход</string>
+
+    <string name="main_show_map">Показать карту</string>
+    <string name="main_hide_map">Скрыть карту</string>
+
+    <string name="main_rub_currency">%1$.2f руб.</string>
+    <string name="main_rub_currency_count">%1$.2f руб. x %2$.1f</string>
+    <string name="main_category">Категория</string>
+    <string name="main_own_category">Своя категория</string>
+    <string name="main_own_good">Свой товар</string>
+    <string name="main_good_details">Описание товара</string>
+    <string name="main_total">Итого:</string>
+</resources>

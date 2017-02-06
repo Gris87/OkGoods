@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_details_no_information">Нет информации</string>
+    <string name="history_details_total">Итого:</string>
+</resources>

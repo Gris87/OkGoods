@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_shop_filter_title">Filter</string>
+
+    <string name="dialog_shop_filter_supermarket">Supermarket</string>
+    <string name="dialog_shop_filter_hypermarket">Hypermarket</string>
+    <string name="dialog_shop_filter_all_day">All day</string>
+    <string name="dialog_shop_filter_services">Services:</string>
+</resources>

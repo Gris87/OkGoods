@@ -56,7 +56,7 @@
             android:id="@+id/goodDetailsButton"
             android:layout_width="@dimen/good_details_button_size"
             android:layout_height="@dimen/good_details_button_size"
-            android:contentDescription="@string/good_details"
+            android:contentDescription="@string/main_good_details"
             android:src="@drawable/good_details"
             android:scaleType="centerInside" />
 

@@ -6,49 +6,49 @@
 
     <item android:id="@+id/menu_add_good"
         android:icon="@drawable/add"
-        android:title="@string/add_good"
+        android:title="@string/main_add_good"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/menu_delete_goods"
         android:icon="@drawable/delete"
-        android:title="@string/delete_goods"
+        android:title="@string/main_delete_goods"
         android:orderInCategory="200"
         app:showAsAction="never" />
 
     <item android:id="@+id/menu_start"
         android:icon="@drawable/start"
-        android:title="@string/start"
+        android:title="@string/main_start"
         android:orderInCategory="300"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/menu_select_shop"
         android:icon="@drawable/select_shop"
-        android:title="@string/select_shop"
+        android:title="@string/main_select_shop"
         android:orderInCategory="400"
         app:showAsAction="never" />
 
     <item android:id="@+id/menu_history"
         android:icon="@drawable/history"
-        android:title="@string/history"
+        android:title="@string/main_history"
         android:orderInCategory="500"
         app:showAsAction="never" />
 
     <item android:id="@+id/menu_update_db"
         android:icon="@drawable/update_db"
-        android:title="@string/update_db"
+        android:title="@string/main_update_db"
         android:orderInCategory="600"
         app:showAsAction="never" />
 
     <item android:id="@+id/menu_settings"
         android:icon="@drawable/settings"
-        android:title="@string/settings"
+        android:title="@string/main_settings"
         android:orderInCategory="700"
         app:showAsAction="never" />
 
     <item android:id="@+id/menu_exit"
         android:icon="@drawable/exit"
-        android:title="@string/exit"
+        android:title="@string/main_exit"
         android:orderInCategory="800"
         app:showAsAction="never" />
 

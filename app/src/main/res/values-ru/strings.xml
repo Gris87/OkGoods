@@ -1,66 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Application name -->
     <string name="app_name">Покупки в О\'КЕЙ</string>
 
-    <string name="title_activity_main">О\'КЕЙ</string>
-    <string name="title_activity_settings">Настройки</string>
-    <string name="title_activity_select_shop">Выбор магазина</string>
-    <string name="title_activity_history">История</string>
-    <string name="title_activity_history_details">Описание</string>
-    <string name="title_activity_goods_catalog">Каталог товаров</string>
-
-    <string name="pref_header_general">Основные</string>
-    <string name="pref_header_notifications">Уведомления</string>
-    <string name="pref_title_general_city">Город</string>
-    <string name="pref_description_general_city">Выберите свой город</string>
-    <string name="pref_title_notifications_show_notification">Показывать уведомление</string>
-    <string name="pref_description_notifications_show_notification">Включает уведомление</string>
-
-    <string name="rub_currency">%1$.2f руб.</string>
-    <string name="rub_currency_count">%1$.2f руб. x %2$.1f</string>
-    <string name="add_good_to_list">Добавить товар в список</string>
-    <string name="category">Категория</string>
-    <string name="own_category">Своя категория</string>
-    <string name="own_good">Свой товар</string>
-    <string name="good_details">Описание товара</string>
-    <string name="total">Итого:</string>
-
-    <string name="add_good">Добавить товар</string>
-    <string name="delete_goods">Удалить товары</string>
-    <string name="start">Старт</string>
-    <string name="history">История</string>
-    <string name="update_db">Обновить базу данных</string>
-    <string name="settings">Настройки</string>
-    <string name="exit">Выход</string>
-    <string name="show_map">Показать карту</string>
-    <string name="hide_map">Скрыть карту</string>
-    <string name="shop">Магазин:</string>
-    <string name="select_shop">Выбрать магазин</string>
-
-    <string name="show_list">Показать список</string>
-    <string name="hide_list">Скрыть список</string>
-    <string name="filter">Фильтр</string>
-    <string name="details_for_shop">Информация о магазине</string>
-    <string name="nearest_shop">Ближайший магазин</string>
-    <string name="undefined_shop">Магазин не выбран</string>
-    <string name="phone">Телефон:</string>
-    <string name="work_hours">Часы работы:</string>
-    <string name="square">Площадь:</string>
-    <string name="opening_date">Дата открытия:</string>
-    <string name="parking_places">Парковочные места:</string>
-    <string name="number_of_cashboxes">Количество касс:</string>
-    <string name="services">Услуги:</string>
-    <string name="photos">Фото:</string>
-    <string name="all_day">Круглосуточно</string>
-    <string name="square_value">%1$d м&#178;</string>
-    <string name="hypermarket">Гипермаркет</string>
-    <string name="supermarket">Супермаркет</string>
-
-    <string name="goods_catalog">Каталог товаров</string>
-    <string name="show_catalog">Показать каталог товаров</string>
-    <string name="hide_catalog">Скрыть каталог товаров</string>
-    <string name="expand">Раскрыть</string>
-
-    <string name="time">Время: %1$s</string>
-    <string name="no_information">Нет информации</string>
 </resources>

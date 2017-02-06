@@ -3699,7 +3699,7 @@ public final class MainDatabase extends SQLiteOpenHelper
 
         if (TextUtils.isEmpty(rootCategory.getName()))
         {
-            rootCategory.setName(mContext.getString(R.string.goods_catalog));
+            rootCategory.setName(mContext.getString(R.string.db_goods_catalog));
         }
 
         return Utils.buildCategoriesTreeFromList(categories, rootCategory);

@@ -28,7 +28,7 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textColor="@color/textColorPrimary"
-                android:text="@string/shop" />
+                android:text="@string/shop_map_shop" />
 
             <TextView
                 android:id="@+id/selectShopTextView"
@@ -44,7 +44,7 @@
                 android:ellipsize="start"
                 android:gravity="center"
                 android:textColor="@color/textColorPrimary"
-                android:text="@string/select_shop" />
+                android:text="@string/shop_map_select_shop" />
 
         </RelativeLayout>
 

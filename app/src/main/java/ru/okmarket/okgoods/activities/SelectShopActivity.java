@@ -180,8 +180,8 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
                 this,
                 mDrawerLayout,
                 toolbar,
-                R.string.show_list,
-                R.string.hide_list
+                R.string.select_shop_show_list,
+                R.string.select_shop_hide_list
         )
         {
             @Override

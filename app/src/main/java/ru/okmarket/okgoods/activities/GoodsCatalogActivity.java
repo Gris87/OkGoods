@@ -135,8 +135,8 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                 this,
                 mDrawerLayout,
                 toolbar,
-                R.string.show_catalog,
-                R.string.hide_catalog
+                R.string.goods_catalog_show_catalog,
+                R.string.goods_catalog_hide_catalog
         );
 
         mDrawerLayout.addDrawerListener(mDrawerToggle);

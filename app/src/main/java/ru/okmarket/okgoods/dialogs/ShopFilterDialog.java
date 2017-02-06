@@ -156,7 +156,7 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.filter)
+        builder.setTitle(R.string.dialog_shop_filter_title)
                 .setCancelable(true)
                 .setView(rootView)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()

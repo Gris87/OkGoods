@@ -45,7 +45,7 @@ public class SelectCityDialog extends DialogFragment
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.pref_description_general_city)
+        builder.setTitle(R.string.dialog_select_city_title)
                 .setCancelable(true)
                 .setItems(cities, new DialogInterface.OnClickListener()
                 {

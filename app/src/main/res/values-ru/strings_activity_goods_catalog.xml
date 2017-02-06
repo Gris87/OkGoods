@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_goods_catalog_title">Каталог товаров</string>
+
+    <string name="goods_catalog_goods_catalog">Каталог товаров</string>
+    <string name="goods_catalog_show_catalog">Показать каталог товаров</string>
+    <string name="goods_catalog_hide_catalog">Скрыть каталог товаров</string>
+    <string name="goods_catalog_expand">Раскрыть</string>
+</resources>

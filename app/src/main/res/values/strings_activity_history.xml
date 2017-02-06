@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_history_title">History</string>
+
+    <string name="history_time">Time: %1$s</string>
+    <string name="history_rub_currency">%1$.2f rub.</string>
+</resources>

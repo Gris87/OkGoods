@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
         setSupportActionBar(toolbar); // TODO: Check for Logo image in API < 21. Remove this logo with setDisplayShowHomeEnabled(false)
-        setTitle(R.string.title_activity_main);
 
 
 
@@ -131,8 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 this,
                 mDrawerLayout,
                 toolbar,
-                R.string.show_map,
-                R.string.hide_map
+                R.string.main_show_map,
+                R.string.main_hide_map
         );
 
         mDrawerLayout.addDrawerListener(mDrawerToggle);
@@ -515,16 +514,16 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             {
                 if (mSelectedGood.getGoodId() != MainDatabase.SPECIAL_ID_ROOT)
                 {
-                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.own_good);
+                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.main_own_good);
                 }
                 else
                 {
-                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.own_category);
+                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.main_own_category);
                 }
             }
             else
             {
-                mSelectedViewHolder.getSecondCostTextView().setText(R.string.category);
+                mSelectedViewHolder.getSecondCostTextView().setText(R.string.main_category);
             }
         }
     }

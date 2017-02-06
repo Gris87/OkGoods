@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_select_shop_title">Select shop</string>
+
+    <string name="select_shop_filter">Filter</string>
+    <string name="select_shop_details_for_shop">Shop details</string>
+
+    <string name="select_shop_show_list">Show list</string>
+    <string name="select_shop_hide_list">Hide list</string>
+
+    <string name="select_shop_nearest_shop">The nearest shop</string>
+</resources>

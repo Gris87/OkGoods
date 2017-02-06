@@ -76,7 +76,7 @@ public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDet
         {
             holder.getCostTextView().setVisibility(View.VISIBLE);
             holder.getCostTextView().setAlpha(1);
-            holder.getCostTextView().setText(mContext.getString(R.string.rub_currency_count, item.getCost(), item.getCount()));
+            holder.getCostTextView().setText(mContext.getString(R.string.history_details_rub_currency_count, item.getCost(), item.getCount()));
         }
         else
         {

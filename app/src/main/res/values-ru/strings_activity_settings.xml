@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_settings_title">Настройки</string>
+
+    <string name="settings_pref_header_general">Основные</string>
+    <string name="settings_pref_header_notifications">Уведомления</string>
+
+    <string name="settings_pref_title_general_city">Город</string>
+    <string name="settings_pref_description_general_city">Выберите свой город</string>
+
+    <string name="settings_pref_title_notifications_show_notification">Показывать уведомление</string>
+    <string name="settings_pref_description_notifications_show_notification">Включает уведомление</string>
+</resources>

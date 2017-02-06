@@ -390,7 +390,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         }
         else
         {
-            mNameTextView.setText(R.string.undefined_shop);
+            mNameTextView.setText(R.string.shop_details_undefined_shop);
         }
     }
 
@@ -419,7 +419,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         {
             if (workHours.equals("0:00 - 24:00"))
             {
-                mWorkHoursTextView.setText(R.string.all_day);
+                mWorkHoursTextView.setText(R.string.shop_details_all_day);
             }
             else
             {
@@ -436,7 +436,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     {
         if (square > 0)
         {
-            mSquareTextView.setText(getString(R.string.square_value, square));
+            mSquareTextView.setText(getString(R.string.shop_details_square_value, square));
         }
         else
         {

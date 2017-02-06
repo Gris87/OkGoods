@@ -50,7 +50,7 @@ public class ShopMapFragment extends Fragment implements View.OnClickListener
 
     public void resetSelectedShop()
     {
-        setSelectedShopText(getContext().getResources().getString(R.string.select_shop));
+        setSelectedShopText(getContext().getResources().getString(R.string.shop_map_select_shop));
     }
 
     public void setSelectedShopText(String text)

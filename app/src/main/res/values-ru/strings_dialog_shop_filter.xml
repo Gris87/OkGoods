@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_shop_filter_title">Фильтр</string>
+
+    <string name="dialog_shop_filter_supermarket">Супермаркет</string>
+    <string name="dialog_shop_filter_hypermarket">Гипермаркет</string>
+    <string name="dialog_shop_filter_all_day">Круглосуточно</string>
+    <string name="dialog_shop_filter_services">Услуги:</string>
+</resources>

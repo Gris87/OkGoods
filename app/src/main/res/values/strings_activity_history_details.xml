@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_history_details_title">History details</string>
+
+    <string name="history_details_add_good_to_list">Add good to list</string>
+    <string name="history_details_good_details">Good details</string>
+    <string name="history_details_rub_currency">%1$.2f rub.</string>
+    <string name="history_details_category">Category</string>
+    <string name="history_details_own_category">Own category</string>
+    <string name="history_details_own_good">Own good</string>
+    <string name="history_details_rub_currency_count">%1$.2f rub. x %2$.1f</string>
+</resources>

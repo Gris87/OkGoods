@@ -14,7 +14,7 @@
         android:layout_alignWithParentIfMissing="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:gravity="center_horizontal|top"
-        android:text="@string/undefined_shop" />
+        android:text="@string/shop_details_undefined_shop" />
 
     <android.support.v7.widget.GridLayout
         android:id="@+id/shopDetailsGridLayout"
@@ -33,7 +33,7 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
-            android:text="@string/phone" />
+            android:text="@string/shop_details_phone" />
 
         <TextView
             android:id="@+id/phoneTextView"
@@ -51,7 +51,7 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
-            android:text="@string/work_hours" />
+            android:text="@string/shop_details_work_hours" />
 
         <TextView
             android:id="@+id/workHoursTextView"
@@ -69,7 +69,7 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
-            android:text="@string/square" />
+            android:text="@string/shop_details_square" />
 
         <TextView
             android:id="@+id/squareTextView"
@@ -87,7 +87,7 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
-            android:text="@string/opening_date" />
+            android:text="@string/shop_details_opening_date" />
 
         <TextView
             android:id="@+id/openingDateTextView"
@@ -105,7 +105,7 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
-            android:text="@string/parking_places" />
+            android:text="@string/shop_details_parking_places" />
 
         <TextView
             android:id="@+id/parkingPlacesTextView"
@@ -123,7 +123,7 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
-            android:text="@string/number_of_cashboxes" />
+            android:text="@string/shop_details_number_of_cashboxes" />
 
         <TextView
             android:id="@+id/numberOfCashboxesTextView"
@@ -152,7 +152,7 @@
             grid:layout_gravity="fill_horizontal|center_vertical"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
-            android:text="@string/services" />
+            android:text="@string/shop_details_services" />
 
         <HorizontalScrollView
             android:id="@+id/servicesHorizontalScrollView"
@@ -322,7 +322,7 @@
             grid:layout_gravity="fill_horizontal|center_vertical"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
-            android:text="@string/photos" />
+            android:text="@string/shop_details_photos" />
 
         <FrameLayout
             android:layout_width="0dp"

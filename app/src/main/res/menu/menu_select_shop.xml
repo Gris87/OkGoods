@@ -6,13 +6,13 @@
 
     <item android:id="@+id/menu_filter"
         android:icon="@drawable/filter"
-        android:title="@string/filter"
+        android:title="@string/select_shop_filter"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/menu_shop_details"
         android:icon="@drawable/menu_overflow"
-        android:title="@string/details_for_shop"
+        android:title="@string/select_shop_details_for_shop"
         android:orderInCategory="200"
         app:showAsAction="ifRoom" />
 

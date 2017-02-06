@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_goods_catalog_title">Goods catalog</string>
+
+    <string name="goods_catalog_goods_catalog">Goods catalog</string>
+    <string name="goods_catalog_show_catalog">Show catalog</string>
+    <string name="goods_catalog_hide_catalog">Hide catalog</string>
+    <string name="goods_catalog_expand">Expand</string>
+</resources>

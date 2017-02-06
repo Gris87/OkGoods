@@ -4,11 +4,11 @@
     <header
         android:fragment="ru.okmarket.okgoods.activities.SettingsActivity$GeneralPreferenceFragment"
         android:icon="@drawable/settings_general"
-        android:title="@string/pref_header_general" />
+        android:title="@string/settings_pref_header_general" />
 
     <header
         android:fragment="ru.okmarket.okgoods.activities.SettingsActivity$NotificationPreferenceFragment"
         android:icon="@drawable/settings_notification"
-        android:title="@string/pref_header_notifications" />
+        android:title="@string/settings_pref_header_notifications" />
 
 </preference-headers>

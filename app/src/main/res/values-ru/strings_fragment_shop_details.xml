@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shop_details_undefined_shop">Магазин не выбран</string>
+    <string name="shop_details_phone">Телефон:</string>
+    <string name="shop_details_work_hours">Часы работы:</string>
+    <string name="shop_details_square">Площадь:</string>
+    <string name="shop_details_opening_date">Дата открытия:</string>
+    <string name="shop_details_parking_places">Парковочные места:</string>
+    <string name="shop_details_number_of_cashboxes">Количество касс:</string>
+    <string name="shop_details_services">Услуги:</string>
+    <string name="shop_details_photos">Фото:</string>
+    <string name="shop_details_all_day">Круглосуточно</string>
+    <string name="shop_details_square_value">%1$d м&#178;</string>
+</resources>

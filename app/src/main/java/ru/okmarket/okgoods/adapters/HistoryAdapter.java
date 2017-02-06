@@ -63,8 +63,8 @@ public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Hi
 
         holder.getShopNameTextView().setText(item.getShopName());
         holder.getDateTextView().setText(    item.getDate());
-        holder.getDurationTextView().setText(mContext.getString(R.string.time,         item.getDurationString()));
-        holder.getTotalTextView().setText(   mContext.getString(R.string.rub_currency, item.getTotal()));
+        holder.getDurationTextView().setText(mContext.getString(R.string.history_time,         item.getDurationString()));
+        holder.getTotalTextView().setText(   mContext.getString(R.string.history_rub_currency, item.getTotal()));
 
         holder.getView().setOnClickListener(new View.OnClickListener()
         {

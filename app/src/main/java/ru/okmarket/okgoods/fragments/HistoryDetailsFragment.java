@@ -103,7 +103,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     {
         mTotal = total;
 
-        mTotalTextView.setText(getString(R.string.rub_currency, mTotal));
+        mTotalTextView.setText(getString(R.string.history_details_rub_currency, mTotal));
     }
 
     public double getTotal()
@@ -188,16 +188,16 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
             {
                 if (mSelectedHistoryDetails.getGoodId() != MainDatabase.SPECIAL_ID_ROOT)
                 {
-                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.own_good);
+                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.history_details_own_good);
                 }
                 else
                 {
-                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.own_category);
+                    mSelectedViewHolder.getSecondCostTextView().setText(R.string.history_details_own_category);
                 }
             }
             else
             {
-                mSelectedViewHolder.getSecondCostTextView().setText(R.string.category);
+                mSelectedViewHolder.getSecondCostTextView().setText(R.string.history_details_category);
             }
         }
     }
