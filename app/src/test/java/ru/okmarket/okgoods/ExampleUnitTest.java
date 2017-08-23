@@ -4,7 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * To work on unit tests, switch the Test Artifact in the Build Variants view.
+ * Example local unit test, which will execute on the development machine (host).
+ *
+ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @SuppressWarnings({"PublicConstructor", "JUnitTestNG", "ClassWithoutConstructor"})
 public class ExampleUnitTest
