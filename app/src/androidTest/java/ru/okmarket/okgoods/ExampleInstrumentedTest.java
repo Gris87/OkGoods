@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@SuppressWarnings({"PublicConstructor", "JUnitTestNG", "ClassWithoutConstructor"})
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest
 {
@@ -27,6 +28,6 @@ public class ExampleInstrumentedTest
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        Assert.assertEquals("ru.okmarket.okgoods", appContext.getPackageName());
+        Assert.assertEquals("WTF", "ru.okmarket.okgoods", appContext.getPackageName());
     }
 }
