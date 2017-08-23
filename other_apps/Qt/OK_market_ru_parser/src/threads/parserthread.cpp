@@ -98,6 +98,8 @@ QString ParserThread::russianTransliteration(const QString &text)
 {
     QString res;
 
+
+
     static QString transliteration[] = { "a", "b", "v", "g", "d", "e", "zh", "z", "i", "y", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "kh", "ts", "ch", "sh", "shch", "", "y", "", "eh", "yu", "ya" };
 
     for (int i = 0; i < text.length(); ++i)
@@ -144,6 +146,8 @@ QString ParserThread::russianTransliteration(const QString &text)
         res.append(letterTransliteration);
     }
 
+
+
     return res;
 }
 
@@ -176,11 +180,7 @@ void ParserThread::writeStringListToFile(const QStringList &fileContents, QFile 
 
     for (int i = 0; i < fileContents.length(); ++i)
     {
-#ifdef Q_OS_WIN
-        stream << fileContents.at(i) << "\r\n";
-#else
         stream << fileContents.at(i) << "\n";
-#endif
     }
 
     file.close();
@@ -219,6 +219,13 @@ bool ParserThread::getProjectDir()
     }
 
     mProjectDir = res;
+
+
+
+    qDebug() << "";
+    qDebug() << "Project found in folder:" << mProjectDir;
+
+
 
     return true;
 }
@@ -276,47 +283,51 @@ bool ParserThread::requestCitiesAndServices()
                 QString service = line.mid(42, index - 42);
 
                 if (
-                        service == "Оплата карточкой"
-                        ||
-                        service == "Бутик косметики"
-                        ||
-                        service == "Детская площадка"
-                        ||
-                        service == "Рыбный остров"
-                        ||
-                        service == "Пекарня"
-                        ||
-                        service == "Кулинария"
-                        ||
-                        service == "Заказ такси"
-                        ||
-                        service == "Аптека"
-                        ||
-                        service == "Блюда на заказ"
-                        ||
-                        service == "Дегустации"
-                        ||
-                        service == "Кафе"
-                        ||
-                        service == "Подарочные карты"
-                        ||
-                        service == "Парковка"
-                        ||
-                        service == "ПВЗ интернет-магазина"
+                    service == "Оплата карточкой"
+                    ||
+                    service == "Бутик косметики"
+                    ||
+                    service == "Детская площадка"
+                    ||
+                    service == "Рыбный остров"
+                    ||
+                    service == "Пекарня"
+                    ||
+                    service == "Кулинария"
+                    ||
+                    service == "Заказ такси"
+                    ||
+                    service == "Аптека"
+                    ||
+                    service == "Блюда на заказ"
+                    ||
+                    service == "Дегустации"
+                    ||
+                    service == "Кафе"
+                    ||
+                    service == "Подарочные карты"
+                    ||
+                    service == "Парковка"
+                    ||
+                    service == "ПВЗ интернет-магазина"
                    )
                 {
                     if (!mServices.contains(service))
                     {
                         mServices.append(service);
                     }
+                    else
+                    {
+                        addError(tr("Service \"%1\" already added").arg(service));
+                    }
                 }
                 else
                 if (
-                        service != "Супермаркет"
-                        &&
-                        service != "Гипермаркет"
-                        &&
-                        service != "Круглосуточно"
+                    service != "Супермаркет"
+                    &&
+                    service != "Гипермаркет"
+                    &&
+                    service != "Круглосуточно"
                    )
                 {
                     addError(tr("Unknown service: \"%1\"").arg(service));
@@ -348,6 +359,26 @@ bool ParserThread::requestCitiesAndServices()
         addError(tr("Failed to get services list"));
 
         return false;
+    }
+
+
+
+    qDebug() << "";
+    qDebug() << "Cities found:";
+
+    for (int i = 0; i < mCities.length() && !mTerminated; ++i)
+    {
+        qDebug() << mCities.at(i);
+    }
+
+
+
+    qDebug() << "";
+    qDebug() << "Services found:";
+
+    for (int i = 0; i < mServices.length() && !mTerminated; ++i)
+    {
+        qDebug() << mServices.at(i);
     }
 
 
