@@ -37,28 +37,39 @@ import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener, SelectCityDialog.OnFragmentInteractionListener, ShopMapFragment.OnFragmentInteractionListener, SelectedGoodsAdapter.OnItemClickListener, SelectedGoodsAdapter.OnBindViewHolderListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "MainActivity";
+    // endregion
 
 
 
+    // region Animation
     private static final float EXPAND_ANIMATION_SPEED  = 0.5f;
     private static final int   FADE_ANIMATION_DURATION = 150;
+    // endregion
 
 
 
+    // region Activities ID
     private static final int SETTINGS      = 1;
     private static final int SELECT_SHOP   = 2;
     private static final int HISTORY       = 3;
     private static final int GOODS_CATALOG = 4;
+    // endregion
 
 
 
+    // region Save state constants
     private static final String SAVED_STATE_SELECTED_SHOP = "SELECTED_SHOP";
     private static final String SAVED_STATE_SELECTED_GOOD = "SELECTED_GOOD";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private NoScrollableDrawerLayout                    mDrawerLayout       = null;
     private ActionBarDrawerToggle                       mDrawerToggle       = null;
     private SelectedGoodsAdapter                        mAdapter            = null;
@@ -69,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private ShopEntity                                  mSelectedShop       = null;
     private SelectedGoodsAdapter.SelectedGoodViewHolder mSelectedViewHolder = null;
     private SelectedGoodEntity                          mSelectedGood       = null;
+    // endregion
 
 
 
@@ -89,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 '}';
     }
 
+    @SuppressWarnings("RedundantCast")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -110,8 +123,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
 
-        setSupportActionBar(toolbar); // TODO: Check for Logo image in API < 21. Remove this logo with setDisplayShowHomeEnabled(false)
-        getSupportActionBar().setTitle(R.string.activity_main_title);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.activity_main_title);
 
 
 
@@ -248,11 +261,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         if (id == R.id.menu_delete_goods)
         {
+            // TODO: Implement it
+
             return true;
         }
 
         if (id == R.id.menu_start)
         {
+            // TODO: Implement it
+
             return true;
         }
 
@@ -273,6 +290,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         if (id == R.id.menu_update_db)
         {
+            // TODO: Implement it
+
             return true;
         }
 

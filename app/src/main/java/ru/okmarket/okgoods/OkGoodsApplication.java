@@ -13,12 +13,18 @@ import ru.okmarket.okgoods.other.ApplicationSettings;
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class OkGoodsApplication extends Application
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "OkGoodsApplication";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private Tracker mTracker = null;
+    // endregion
 
 
 
