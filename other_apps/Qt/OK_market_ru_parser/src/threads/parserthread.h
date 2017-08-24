@@ -40,13 +40,13 @@ private:
     void generateIDs();
     void updateStringsXml();
     void updateRussianStringsXml();
-    void updateRussianStringsXmlCities(QStringList &fileContents);
-    void updateRussianStringsXmlServices(QStringList &fileContents);
-    void updateRussianStringsXmlShops(QStringList &fileContents);
+    void updateRussianStringsXmlCities();
+    void updateRussianStringsXmlServices();
+    void updateRussianStringsXmlShops();
     void updateEnglishStringsXml();
-    void updateEnglishStringsXmlCities(QStringList &fileContents);
-    void updateEnglishStringsXmlServices(QStringList &fileContents);
-    void updateEnglishStringsXmlShops(QStringList &fileContents);
+    void updateEnglishStringsXmlCities();
+    void updateEnglishStringsXmlServices();
+    void updateEnglishStringsXmlShops();
     void updateMainDatabaseJava();
     void updateMainDatabaseJavaCities(QStringList &fileContents);
     void updateMainDatabaseJavaCitiesIDs(QStringList &fileContents);
@@ -56,6 +56,8 @@ private:
     void updateMainDatabaseJavaShops(QStringList &fileContents);
     void updateMainDatabaseJavaShopsIDs(QStringList &fileContents);
     void updateMainDatabaseJavaShopsFilling(QStringList &fileContents);
+
+
 
     bool            mTerminated;
     QString         mProxyHost;

@@ -253,6 +253,8 @@ bool ParserThread::requestCitiesAndServices()
     QObject::connect(reply, SIGNAL(sslErrors(QList<QSslError>)),        &loop, SLOT(quit()));
     loop.exec();
 
+
+
     while (!reply->atEnd() && !mTerminated)
     {
         QString line = reply->readLine().trimmed();
@@ -316,10 +318,6 @@ bool ParserThread::requestCitiesAndServices()
                     {
                         mServices.append(service);
                     }
-                    else
-                    {
-                        addError(tr("Service \"%1\" already added").arg(service));
-                    }
                 }
                 else
                 if (
@@ -368,7 +366,7 @@ bool ParserThread::requestCitiesAndServices()
 
     for (int i = 0; i < mCities.length() && !mTerminated; ++i)
     {
-        qDebug() << mCities.at(i);
+        qDebug() << mCities.at(i).name;
     }
 
 
@@ -420,6 +418,8 @@ bool ParserThread::requestShops()
         QObject::connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), &loop, SLOT(quit()));
         QObject::connect(reply, SIGNAL(sslErrors(QList<QSslError>)),        &loop, SLOT(quit()));
         loop.exec();
+
+
 
         while (!reply->atEnd() && !mTerminated)
         {
@@ -570,6 +570,8 @@ bool ParserThread::requestShops()
         QObject::connect(reply, SIGNAL(sslErrors(QList<QSslError>)),        &loop, SLOT(quit()));
         loop.exec();
 
+
+
         while (!reply->atEnd() && !mTerminated)
         {
             QString line = reply->readLine().trimmed();
@@ -594,17 +596,17 @@ bool ParserThread::requestShops()
                 }
 
                 if (
-                        property == "Телефон"
-                        ||
-                        property == "Часы работы"
-                        ||
-                        property == "Площадь магазина"
-                        ||
-                        property == "Дата открытия"
-                        ||
-                        property == "Парковка"
-                        ||
-                        property == "Количество касс"
+                    property == "Телефон"
+                    ||
+                    property == "Часы работы"
+                    ||
+                    property == "Площадь магазина"
+                    ||
+                    property == "Дата открытия"
+                    ||
+                    property == "Парковка"
+                    ||
+                    property == "Количество касс"
                    )
                 {
                     bool    propertyRead  = false;
@@ -686,11 +688,11 @@ bool ParserThread::requestShops()
                 }
                 else
                 if (
-                        property != "Адрес"
-                        &&
-                        property != "Ближайшее метро"
-                        &&
-                        property != "Как добраться"
+                    property != "Адрес"
+                    &&
+                    property != "Ближайшее метро"
+                    &&
+                    property != "Как добраться"
                    )
                 {
                     addError(tr("Unknown property \"%1\" in shop \"%2\" (%3)").arg(property).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
@@ -773,11 +775,6 @@ bool ParserThread::requestShops()
                     {
                         break;
                     }
-                    else
-                    if (line != "")
-                    {
-                        addError(tr("Unexpected line during parsing services set: \"%1\"").arg(line));
-                    }
                 }
             }
         }
@@ -844,6 +841,8 @@ bool ParserThread::requestShops()
             if (shop.parking_places > 0)
             {
                 addError(tr("Parking places \"%1\" specified for shop \"%2\" (%3) while parking service is not available").arg(shop.parking_places).arg(shop.name).arg(mCities.at(shop.city_id - 1).name));
+
+                shop.services_set.append("Парковка");
             }
             else
             {
@@ -949,6 +948,8 @@ void ParserThread::generateIDs()
         mCitiesIDs.append(cityId);
     }
 
+
+
     for (int i = 0; i < mServices.length(); ++i)
     {
         QString service = mServices.at(i);
@@ -1034,6 +1035,8 @@ void ParserThread::generateIDs()
         mServicesIDs.append(serviceId);
     }
 
+
+
     for (int i = 0; i < mShops.length(); ++i)
     {
         QString shop = mShops.at(i).name;
@@ -1061,213 +1064,85 @@ void ParserThread::updateStringsXml()
 
 void ParserThread::updateRussianStringsXml()
 {
-    QFile file(mProjectDir + "/app/src/main/res/values-ru/strings.xml");
-
-    if (file.exists())
-    {
-        QStringList fileContents;
-
-        readFileToStringList(file, fileContents);
-
-        updateRussianStringsXmlCities(fileContents);
-        updateRussianStringsXmlServices(fileContents);
-        updateRussianStringsXmlShops(fileContents);
-
-        writeStringListToFile(fileContents, file);
-    }
-    else
-    {
-        addError(tr("File \"%1\" not found").arg(file.fileName()));
-    }
+    updateRussianStringsXmlCities();
+    updateRussianStringsXmlServices();
+    updateRussianStringsXmlShops();
 }
 
-void ParserThread::updateRussianStringsXmlCities(QStringList &fileContents)
+void ParserThread::updateRussianStringsXmlCities()
 {
-    QStringList newLines;
+    QStringList fileContents;
+
+    fileContents.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+    fileContents.append("<resources>");
 
     for (int i = 0; i < mCities.length(); ++i)
     {
-        newLines.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + precedeTranslations(mCities.at(i).name) + "</string>");
+        fileContents.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + precedeTranslations(mCities.at(i).name) + "</string>");
     }
 
-
-
-    int start = -1;
-    int end   = -1;
-
-    for (int i = 0; i < fileContents.length(); ++i)
-    {
-        if (fileContents.at(i).trimmed().startsWith("<string name=\"city_"))
-        {
-            if (start < 0)
-            {
-                start = i;
-            }
-
-            end = i;
-        }
-        else
-        {
-            if (end >= 0)
-            {
-                break;
-            }
-        }
-    }
+    fileContents.append("</resources>");
 
 
 
-    if (start >= 0 && start <= end)
-    {
-        for (int i = end; i >= start; --i)
-        {
-            fileContents.removeAt(i);
-        }
-
-        for (int i = 0; i < newLines.length(); ++i)
-        {
-            fileContents.insert(start + i, newLines.at(i));
-        }
-    }
-    else
-    {
-        addError(tr("Failed to modify cities in values-ru/strings.xml"));
-    }
+    QFile file(mProjectDir + "/app/src/main/res/values-ru/strings_db_cities.xml");
+    writeStringListToFile(fileContents, file);
 }
 
-void ParserThread::updateRussianStringsXmlServices(QStringList &fileContents)
+void ParserThread::updateRussianStringsXmlServices()
 {
-    QStringList newLines;
+    QStringList fileContents;
+
+    fileContents.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+    fileContents.append("<resources>");
 
     for (int i = 0; i < mServices.length(); ++i)
     {
-        newLines.append("    <string name=\"service_" + mServicesIDs.at(i) + "\">" + precedeTranslations(mServices.at(i)) + "</string>");
+        fileContents.append("    <string name=\"service_" + mServicesIDs.at(i) + "\">" + precedeTranslations(mServices.at(i)) + "</string>");
     }
 
-
-
-    int start = -1;
-    int end   = -1;
-
-    for (int i = 0; i < fileContents.length(); ++i)
-    {
-        if (fileContents.at(i).trimmed().startsWith("<string name=\"service_"))
-        {
-            if (start < 0)
-            {
-                start = i;
-            }
-
-            end = i;
-        }
-        else
-        {
-            if (end >= 0)
-            {
-                break;
-            }
-        }
-    }
+    fileContents.append("</resources>");
 
 
 
-    if (start >= 0 && start <= end)
-    {
-        for (int i = end; i >= start; --i)
-        {
-            fileContents.removeAt(i);
-        }
-
-        for (int i = 0; i < newLines.length(); ++i)
-        {
-            fileContents.insert(start + i, newLines.at(i));
-        }
-    }
-    else
-    {
-        addError(tr("Failed to modify services in values-ru/strings.xml"));
-    }
+    QFile file(mProjectDir + "/app/src/main/res/values-ru/strings_db_services.xml");
+    writeStringListToFile(fileContents, file);
 }
 
-void ParserThread::updateRussianStringsXmlShops(QStringList &fileContents)
+void ParserThread::updateRussianStringsXmlShops()
 {
-    QStringList newLines;
+
+    QStringList fileContents;
+
+    fileContents.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+    fileContents.append("<resources>");
 
     for (int i = 0; i < mShops.length(); ++i)
     {
-        newLines.append("    <string name=\"shop_" + mShopsIDs.at(i) + "\">" + precedeTranslations(mShops.at(i).name) + "</string>");
+        fileContents.append("    <string name=\"shop_" + mShopsIDs.at(i) + "\">" + precedeTranslations(mShops.at(i).name) + "</string>");
     }
 
-
-
-    int start = -1;
-    int end   = -1;
-
-    for (int i = 0; i < fileContents.length(); ++i)
-    {
-        if (fileContents.at(i).trimmed().startsWith("<string name=\"shop_"))
-        {
-            if (start < 0)
-            {
-                start = i;
-            }
-
-            end = i;
-        }
-        else
-        {
-            if (end >= 0)
-            {
-                break;
-            }
-        }
-    }
+    fileContents.append("</resources>");
 
 
 
-    if (start >= 0 && start <= end)
-    {
-        for (int i = end; i >= start; --i)
-        {
-            fileContents.removeAt(i);
-        }
-
-        for (int i = 0; i < newLines.length(); ++i)
-        {
-            fileContents.insert(start + i, newLines.at(i));
-        }
-    }
-    else
-    {
-        addError(tr("Failed to modify shops in values-ru/strings.xml"));
-    }
+    QFile file(mProjectDir + "/app/src/main/res/values-ru/strings_db_shops.xml");
+    writeStringListToFile(fileContents, file);
 }
 
 void ParserThread::updateEnglishStringsXml()
 {
-    QFile file(mProjectDir + "/app/src/main/res/values/strings.xml");
-
-    if (file.exists())
-    {
-        QStringList fileContents;
-
-        readFileToStringList(file, fileContents);
-
-        updateEnglishStringsXmlCities(fileContents);
-        updateEnglishStringsXmlServices(fileContents);
-        updateEnglishStringsXmlShops(fileContents);
-
-        writeStringListToFile(fileContents, file);
-    }
-    else
-    {
-        addError(tr("File \"%1\" not found").arg(file.fileName()));
-    }
+    updateEnglishStringsXmlCities();
+    updateEnglishStringsXmlServices();
+    updateEnglishStringsXmlShops();
 }
 
-void ParserThread::updateEnglishStringsXmlCities(QStringList &fileContents)
+void ParserThread::updateEnglishStringsXmlCities()
 {
-    QStringList newLines;
+    QStringList fileContents;
+
+    fileContents.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+    fileContents.append("<resources>");
 
     for (int i = 0; i < mCities.length(); ++i)
     {
@@ -1292,57 +1167,23 @@ void ParserThread::updateEnglishStringsXmlCities(QStringList &fileContents)
             city = russianTransliteration(city);
         }
 
-        newLines.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + precedeTranslations(city) + "</string>");
+        fileContents.append("    <string name=\"city_" + mCitiesIDs.at(i) + "\">" + precedeTranslations(city) + "</string>");
     }
 
-
-
-    int start = -1;
-    int end   = -1;
-
-    for (int i = 0; i < fileContents.length(); ++i)
-    {
-        if (fileContents.at(i).trimmed().startsWith("<string name=\"city_"))
-        {
-            if (start < 0)
-            {
-                start = i;
-            }
-
-            end = i;
-        }
-        else
-        {
-            if (end >= 0)
-            {
-                break;
-            }
-        }
-    }
+    fileContents.append("</resources>");
 
 
 
-    if (start >= 0 && start <= end)
-    {
-        for (int i = end; i >= start; --i)
-        {
-            fileContents.removeAt(i);
-        }
-
-        for (int i = 0; i < newLines.length(); ++i)
-        {
-            fileContents.insert(start + i, newLines.at(i));
-        }
-    }
-    else
-    {
-        addError(tr("Failed to modify cities in values-ru/strings.xml"));
-    }
+    QFile file(mProjectDir + "/app/src/main/res/values/strings_db_cities.xml");
+    writeStringListToFile(fileContents, file);
 }
 
-void ParserThread::updateEnglishStringsXmlServices(QStringList &fileContents)
+void ParserThread::updateEnglishStringsXmlServices()
 {
-    QStringList newLines;
+    QStringList fileContents;
+
+    fileContents.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+    fileContents.append("<resources>");
 
     for (int i = 0; i < mServices.length(); ++i)
     {
@@ -1424,57 +1265,23 @@ void ParserThread::updateEnglishStringsXmlServices(QStringList &fileContents)
             service = russianTransliteration(service);
         }
 
-        newLines.append("    <string name=\"service_" + mServicesIDs.at(i) + "\">" + precedeTranslations(service) + "</string>");
+        fileContents.append("    <string name=\"service_" + mServicesIDs.at(i) + "\">" + precedeTranslations(service) + "</string>");
     }
 
-
-
-    int start = -1;
-    int end   = -1;
-
-    for (int i = 0; i < fileContents.length(); ++i)
-    {
-        if (fileContents.at(i).trimmed().startsWith("<string name=\"service_"))
-        {
-            if (start < 0)
-            {
-                start = i;
-            }
-
-            end = i;
-        }
-        else
-        {
-            if (end >= 0)
-            {
-                break;
-            }
-        }
-    }
+    fileContents.append("</resources>");
 
 
 
-    if (start >= 0 && start <= end)
-    {
-        for (int i = end; i >= start; --i)
-        {
-            fileContents.removeAt(i);
-        }
-
-        for (int i = 0; i < newLines.length(); ++i)
-        {
-            fileContents.insert(start + i, newLines.at(i));
-        }
-    }
-    else
-    {
-        addError(tr("Failed to modify services in values-ru/strings.xml"));
-    }
+    QFile file(mProjectDir + "/app/src/main/res/values/strings_db_services.xml");
+    writeStringListToFile(fileContents, file);
 }
 
-void ParserThread::updateEnglishStringsXmlShops(QStringList &fileContents)
+void ParserThread::updateEnglishStringsXmlShops()
 {
-    QStringList newLines;
+    QStringList fileContents;
+
+    fileContents.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+    fileContents.append("<resources>");
 
     for (int i = 0; i < mShops.length(); ++i)
     {
@@ -1485,52 +1292,15 @@ void ParserThread::updateEnglishStringsXmlShops(QStringList &fileContents)
 
         shop = russianTransliteration(shop);
 
-        newLines.append("    <string name=\"shop_" + mShopsIDs.at(i) + "\">" + precedeTranslations(shop) + "</string>");
+        fileContents.append("    <string name=\"shop_" + mShopsIDs.at(i) + "\">" + precedeTranslations(shop) + "</string>");
     }
 
-
-
-    int start = -1;
-    int end   = -1;
-
-    for (int i = 0; i < fileContents.length(); ++i)
-    {
-        if (fileContents.at(i).trimmed().startsWith("<string name=\"shop_"))
-        {
-            if (start < 0)
-            {
-                start = i;
-            }
-
-            end = i;
-        }
-        else
-        {
-            if (end >= 0)
-            {
-                break;
-            }
-        }
-    }
+    fileContents.append("</resources>");
 
 
 
-    if (start >= 0 && start <= end)
-    {
-        for (int i = end; i >= start; --i)
-        {
-            fileContents.removeAt(i);
-        }
-
-        for (int i = 0; i < newLines.length(); ++i)
-        {
-            fileContents.insert(start + i, newLines.at(i));
-        }
-    }
-    else
-    {
-        addError(tr("Failed to modify shops in values-ru/strings.xml"));
-    }
+    QFile file(mProjectDir + "/app/src/main/res/values/strings_db_shops.xml");
+    writeStringListToFile(fileContents, file);
 }
 
 void ParserThread::updateMainDatabaseJava()
