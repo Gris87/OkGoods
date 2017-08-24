@@ -21,11 +21,9 @@
     <string name="city_saratov">Saratov</string>
     <string name="city_sochi">Sochi</string>
     <string name="city_stavropol">Stavropol</string>
-    <string name="city_sterlitamak">Sterlitamak</string>
     <string name="city_surgut">Surgut</string>
     <string name="city_syktyvkar">Syktyvkar</string>
     <string name="city_tolyatti">Tolyatti</string>
     <string name="city_tyumen">Tyumen</string>
     <string name="city_ufa">Ufa</string>
-    <string name="city_cherepovets">Cherepovets</string>
 </resources>

@@ -17,6 +17,7 @@
     <string name="shop_moscow_hypermarket_ok_vodnyy">Гипермаркет О\'КЕЙ «Водный»</string>
     <string name="shop_moscow_hypermarket_ok_kirovogradskaya_kolumbus">Гипермаркет О\'КЕЙ «Кировоградская Колумбус»</string>
     <string name="shop_moscow_supermarket_ok_moscow_balaklavskiy">Супермаркет О\'КЕЙ «Москва Балаклавский»</string>
+    <string name="shop_moscow_hypermarket_ok_svyatoozerskaya">Гипермаркет О’КЕЙ «Святоозерская»</string>
     <string name="shop_st_petersburg_hypermarket_ok_ladozhskaya">Гипермаркет О’КЕЙ «Ладожская»</string>
     <string name="shop_st_petersburg_hypermarket_ok_bogatyrskiy">Гипермаркет О’КЕЙ «Богатырский»</string>
     <string name="shop_st_petersburg_hypermarket_ok_vyborgskoe">Гипермаркет О\'КЕЙ «Выборгское»</string>
@@ -57,6 +58,8 @@
     <string name="shop_st_petersburg_supermarket_ok_kolpino_trudyashchikhsya">Супермаркет О’КЕЙ «Колпино Трудящихся»</string>
     <string name="shop_st_petersburg_supermarket_ok_kolpino_tverskaya">Супермаркет О’КЕЙ «Колпино Тверская»</string>
     <string name="shop_st_petersburg_hypermarket_ok_partizana_germana">Гипермаркет О’КЕЙ «Партизана Германа»</string>
+    <string name="shop_st_petersburg_hypermarket_ok_river_house">Гипермаркет О’КЕЙ «RIVER HOUSE»</string>
+    <string name="shop_st_petersburg_supermarket_ok_sestroretsk">Супермаркет О’КЕЙ «Сестрорецк»</string>
     <string name="shop_astrakhan_hypermarket_ok_astrakhan_alimpik">Гипермаркет О’КЕЙ «Астрахань Алимпик»</string>
     <string name="shop_astrakhan_supermarket_ok_astrakhan_tri_kota">Супермаркет О’КЕЙ «Астрахань Три кота»</string>
     <string name="shop_astrakhan_hypermarket_ok_astrakhan_vokzalnaya">Гипермаркет О’КЕЙ «Астрахань Вокзальная»</string>
@@ -76,7 +79,6 @@
     <string name="shop_krasnodar_supermarket_ok_krasnodar_boss_khauz">Супермаркет О’КЕЙ «Краснодар Босс Хауз»</string>
     <string name="shop_krasnodar_hypermarket_ok_krasnodar_oz">Гипермаркет О’КЕЙ «Краснодар Oz»</string>
     <string name="shop_krasnoyarsk_hypermarket_ok_krasnoyarsk_planeta">Гипермаркет О’КЕЙ «Красноярск Планета»</string>
-    <string name="shop_krasnoyarsk_supermarket_ok_krasnoyarsk_krasnodarskaya">Супермаркет О\'КЕЙ «Красноярск Краснодарская»</string>
     <string name="shop_krasnoyarsk_hypermarket_ok_krasnoyarsk_sibirskiy">Гипермаркет О’КЕЙ «Красноярск Сибирский»</string>
     <string name="shop_lipetsk_hypermarket_ok_lipetsk_evropa">Гипермаркет О\'КЕЙ «Липецк Европа»</string>
     <string name="shop_lipetsk_supermarket_ok_lipetsk_petra_smorodina">Супермаркет О\'КЕЙ «Липецк Петра Смородина»</string>
@@ -96,7 +98,6 @@
     <string name="shop_saratov_supermarket_ok_saratov_tankistov">Супермаркет О’КЕЙ «Саратов Танкистов»</string>
     <string name="shop_sochi_hypermarket_ok_sochi_moremoll">Гипермаркет О’КЕЙ «Сочи МореМолл»</string>
     <string name="shop_stavropol_hypermarket_ok_stavropol_dovatortsev">Гипермаркет О’КЕЙ «Ставрополь Доваторцев»</string>
-    <string name="shop_sterlitamak_hypermarket_ok_sterlitamak_khudayberdina">Гипермаркет О\'КЕЙ «Стерлитамак Худайбердина»</string>
     <string name="shop_surgut_hypermarket_ok_surgut_siti_moll">Гипермаркет О’КЕЙ «Сургут Сити Молл»</string>
     <string name="shop_surgut_hypermarket_ok_surgut_nefteyuganskoe_aura">Гипермаркет О’КЕЙ «Сургут Нефтеюганское Аура»</string>
     <string name="shop_syktyvkar_hypermarket_ok_syktyvkar_oktyabrskiy_iyun">Гипермаркет О’КЕЙ «Сыктывкар Октябрьский Июнь»</string>
@@ -104,8 +105,8 @@
     <string name="shop_tolyatti_supermarket_ok_tolyatti_sportivnaya_malina">Супермаркет О’КЕЙ «Тольятти Спортивная Малина»</string>
     <string name="shop_tyumen_hypermarket_ok_tyumen_shirotnaya">Гипермаркет О’КЕЙ «Тюмень Широтная»</string>
     <string name="shop_tyumen_hypermarket_ok_tyumen_fedyuninskogo_ostrov">Гипермаркет О’КЕЙ «Тюмень Федюнинского Остров»</string>
+    <string name="shop_tyumen_hypermarket_ok_tyumen_profsoyuznaya">Гипермаркет О’КЕЙ «Тюмень Профсоюзная»</string>
     <string name="shop_ufa_hypermarket_ok_ufa_zhukova">Гипермаркет О’КЕЙ «Уфа Жукова»</string>
     <string name="shop_ufa_hypermarket_ok_ufa_iyun">Гипермаркет О’КЕЙ «Уфа Июнь»</string>
     <string name="shop_ufa_hypermarket_ok_ufa_planeta">Гипермаркет О’КЕЙ «Уфа Планета»</string>
-    <string name="shop_cherepovets_hypermarket_ok_cherepovets_raakhe">Гипермаркет О\'КЕЙ «Череповец Раахе»</string>
 </resources>

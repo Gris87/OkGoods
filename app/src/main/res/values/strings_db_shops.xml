@@ -17,6 +17,7 @@
     <string name="shop_moscow_hypermarket_ok_vodnyy">Hypermarket OK «Vodnyy»</string>
     <string name="shop_moscow_hypermarket_ok_kirovogradskaya_kolumbus">Hypermarket OK «Kirovogradskaya Kolumbus»</string>
     <string name="shop_moscow_supermarket_ok_moscow_balaklavskiy">Supermarket OK «Moscow Balaklavskiy»</string>
+    <string name="shop_moscow_hypermarket_ok_svyatoozerskaya">Hypermarket OK «Svyatoozerskaya»</string>
     <string name="shop_st_petersburg_hypermarket_ok_ladozhskaya">Hypermarket OK «Ladozhskaya»</string>
     <string name="shop_st_petersburg_hypermarket_ok_bogatyrskiy">Hypermarket OK «Bogatyrskiy»</string>
     <string name="shop_st_petersburg_hypermarket_ok_vyborgskoe">Hypermarket OK «Vyborgskoe»</string>
@@ -57,6 +58,8 @@
     <string name="shop_st_petersburg_supermarket_ok_kolpino_trudyashchikhsya">Supermarket OK «Kolpino Trudyashchikhsya»</string>
     <string name="shop_st_petersburg_supermarket_ok_kolpino_tverskaya">Supermarket OK «Kolpino Tverskaya»</string>
     <string name="shop_st_petersburg_hypermarket_ok_partizana_germana">Hypermarket OK «Partizana Germana»</string>
+    <string name="shop_st_petersburg_hypermarket_ok_river_house">Hypermarket OK «RIVER HOUSE»</string>
+    <string name="shop_st_petersburg_supermarket_ok_sestroretsk">Supermarket OK «Sestroretsk»</string>
     <string name="shop_astrakhan_hypermarket_ok_astrakhan_alimpik">Hypermarket OK «Astrakhan Alimpik»</string>
     <string name="shop_astrakhan_supermarket_ok_astrakhan_tri_kota">Supermarket OK «Astrakhan Tri kota»</string>
     <string name="shop_astrakhan_hypermarket_ok_astrakhan_vokzalnaya">Hypermarket OK «Astrakhan Vokzalnaya»</string>
@@ -76,7 +79,6 @@
     <string name="shop_krasnodar_supermarket_ok_krasnodar_boss_khauz">Supermarket OK «Krasnodar Boss Khauz»</string>
     <string name="shop_krasnodar_hypermarket_ok_krasnodar_oz">Hypermarket OK «Krasnodar Oz»</string>
     <string name="shop_krasnoyarsk_hypermarket_ok_krasnoyarsk_planeta">Hypermarket OK «Krasnoyarsk Planeta»</string>
-    <string name="shop_krasnoyarsk_supermarket_ok_krasnoyarsk_krasnodarskaya">Supermarket OK «Krasnoyarsk Krasnodarskaya»</string>
     <string name="shop_krasnoyarsk_hypermarket_ok_krasnoyarsk_sibirskiy">Hypermarket OK «Krasnoyarsk Sibirskiy»</string>
     <string name="shop_lipetsk_hypermarket_ok_lipetsk_evropa">Hypermarket OK «Lipetsk Evropa»</string>
     <string name="shop_lipetsk_supermarket_ok_lipetsk_petra_smorodina">Supermarket OK «Lipetsk Petra Smorodina»</string>
@@ -96,7 +98,6 @@
     <string name="shop_saratov_supermarket_ok_saratov_tankistov">Supermarket OK «Saratov Tankistov»</string>
     <string name="shop_sochi_hypermarket_ok_sochi_moremoll">Hypermarket OK «Sochi MoreMoll»</string>
     <string name="shop_stavropol_hypermarket_ok_stavropol_dovatortsev">Hypermarket OK «Stavropol Dovatortsev»</string>
-    <string name="shop_sterlitamak_hypermarket_ok_sterlitamak_khudayberdina">Hypermarket OK «Sterlitamak Khudayberdina»</string>
     <string name="shop_surgut_hypermarket_ok_surgut_siti_moll">Hypermarket OK «Surgut Siti Moll»</string>
     <string name="shop_surgut_hypermarket_ok_surgut_nefteyuganskoe_aura">Hypermarket OK «Surgut Nefteyuganskoe Aura»</string>
     <string name="shop_syktyvkar_hypermarket_ok_syktyvkar_oktyabrskiy_iyun">Hypermarket OK «Syktyvkar Oktyabrskiy Iyun»</string>
@@ -104,8 +105,8 @@
     <string name="shop_tolyatti_supermarket_ok_tolyatti_sportivnaya_malina">Supermarket OK «Tolyatti Sportivnaya Malina»</string>
     <string name="shop_tyumen_hypermarket_ok_tyumen_shirotnaya">Hypermarket OK «Tyumen Shirotnaya»</string>
     <string name="shop_tyumen_hypermarket_ok_tyumen_fedyuninskogo_ostrov">Hypermarket OK «Tyumen Fedyuninskogo Ostrov»</string>
+    <string name="shop_tyumen_hypermarket_ok_tyumen_profsoyuznaya">Hypermarket OK «Tyumen Profsoyuznaya»</string>
     <string name="shop_ufa_hypermarket_ok_ufa_zhukova">Hypermarket OK «Ufa Zhukova»</string>
     <string name="shop_ufa_hypermarket_ok_ufa_iyun">Hypermarket OK «Ufa Iyun»</string>
     <string name="shop_ufa_hypermarket_ok_ufa_planeta">Hypermarket OK «Ufa Planeta»</string>
-    <string name="shop_cherepovets_hypermarket_ok_cherepovets_raakhe">Hypermarket OK «Cherepovets Raakhe»</string>
 </resources>
