@@ -38,6 +38,11 @@ public class SelectCityDialog extends DialogFragment
                 '}';
     }
 
+    public static SelectCityDialog newInstance()
+    {
+        return new SelectCityDialog();
+    }
+
     @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState)

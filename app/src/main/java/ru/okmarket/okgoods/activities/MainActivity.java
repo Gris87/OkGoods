@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 editor.putString(ApplicationPreferences.CONTEXT_LOCALE, Locale.getDefault().toString());
                 editor.apply();
 
-                SelectCityDialog dialog = new SelectCityDialog();
+                SelectCityDialog dialog = SelectCityDialog.newInstance();
                 dialog.show(getSupportFragmentManager(), "SelectCityDialog");
             }
 

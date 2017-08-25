@@ -18,33 +18,52 @@ import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 import ru.okmarket.okgoods.util.AnimationUtils;
 import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAdapter.OnItemClickListener, HistoryDetailsAdapter.OnBindViewHolderListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryDetailsFragment";
+    // endregion
 
 
 
+    // region Animation
     private static final float EXPAND_ANIMATION_SPEED  = 0.5f;
     private static final int   FADE_ANIMATION_DURATION = 150;
+    // endregion
+    // endregion
 
 
 
-    private TextView                         mNoInformationTextView  = null;
-    private RecyclerView                     mRecyclerView           = null;
-    private HistoryDetailsAdapter            mAdapter                = null;
-    private TextView                         mTotalTextView          = null;
+    // region Attributes
+    private TextView                                       mNoInformationTextView  = null;
+    private RecyclerView                                   mRecyclerView           = null;
+    private HistoryDetailsAdapter                          mAdapter                = null;
+    private TextView                                       mTotalTextView          = null;
     private HistoryDetailsAdapter.HistoryDetailsViewHolder mSelectedViewHolder     = null;
-    private HistoryDetailsEntity             mSelectedHistoryDetails = null;
-    private double                           mTotal                  = 0;
+    private HistoryDetailsEntity                           mSelectedHistoryDetails = null;
+    private double                                         mTotal                  = 0;
+    // endregion
 
 
 
-    public HistoryDetailsFragment()
+    @Override
+    public String toString()
     {
-        // Nothing
+        return "HistoryDetailsFragment{" +
+                "mNoInformationTextView="    + mNoInformationTextView  +
+                ", mRecyclerView="           + mRecyclerView           +
+                ", mAdapter="                + mAdapter                +
+                ", mTotalTextView="          + mTotalTextView          +
+                ", mSelectedViewHolder="     + mSelectedViewHolder     +
+                ", mSelectedHistoryDetails=" + mSelectedHistoryDetails +
+                ", mTotal="                  + mTotal                  +
+                '}';
     }
 
+    @SuppressWarnings("RedundantCast")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -64,6 +83,8 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setAdapter(mAdapter);
+
+
 
         return rootView;
     }
@@ -173,10 +194,14 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
             AnimationUtils.fadeOut(mSelectedViewHolder.getCostTextView(), FADE_ANIMATION_DURATION);
         }
 
+
+
         mSelectedViewHolder.getGoodNameTextView().setHorizontallyScrolling(true);
         mSelectedViewHolder.getGoodNameTextView().setHorizontalFadingEdgeEnabled(true);
         mSelectedViewHolder.getGoodNameTextView().setEllipsize(TextUtils.TruncateAt.MARQUEE);
         mSelectedViewHolder.getGoodNameTextView().setSelected(true);
+
+
 
         if (!TextUtils.isEmpty(mSelectedViewHolder.getCostTextView().getText()))
         {
@@ -206,6 +231,8 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
     {
         AnimationUtils.collapse(mSelectedViewHolder.getExpandedView(), EXPAND_ANIMATION_SPEED);
         AnimationUtils.fadeIn(mSelectedViewHolder.getCostTextView(),   FADE_ANIMATION_DURATION);
+
+
 
         mSelectedViewHolder.getGoodNameTextView().setHorizontallyScrolling(false);
         mSelectedViewHolder.getGoodNameTextView().setHorizontalFadingEdgeEnabled(false);

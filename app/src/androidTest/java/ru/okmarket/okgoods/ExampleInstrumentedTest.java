@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-@SuppressWarnings({"PublicConstructor", "JUnitTestNG", "ClassWithoutConstructor"})
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor", "JUnitTestNG"})
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest
 {

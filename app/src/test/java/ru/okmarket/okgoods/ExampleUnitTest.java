@@ -8,7 +8,7 @@ import org.junit.Test;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-@SuppressWarnings({"PublicConstructor", "JUnitTestNG", "ClassWithoutConstructor"})
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor", "JUnitTestNG"})
 public class ExampleUnitTest
 {
     // region Statics
