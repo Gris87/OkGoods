@@ -25,8 +25,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration
 
 
 
-    private Drawable mDivider;
-    private int      mOrientation;
+    private Drawable mDivider     = null;
+    private int      mOrientation = 0;
 
 
 

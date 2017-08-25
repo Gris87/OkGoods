@@ -206,7 +206,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
 
 
-        mShopFilter = new ShopFilter();
+        mShopFilter = ShopFilter.newInstance();
 
 
 

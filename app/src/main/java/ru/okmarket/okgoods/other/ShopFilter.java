@@ -3,24 +3,39 @@ package ru.okmarket.okgoods.other;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Locale;
-
 import ru.okmarket.okgoods.db.entities.ShopEntity;
 
-public class ShopFilter implements Parcelable
+public final class ShopFilter implements Parcelable
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ShopFilter";
+    // endregion
+    // endregion
 
 
-    private boolean mIsHypermarket;
-    private boolean mIsSupermarket;
-    private boolean mIsAllDay;
-    private int     mServicesSet;
+    // region Attributes
+    private boolean mIsHypermarket = false;
+    private boolean mIsSupermarket = false;
+    private boolean mIsAllDay      = false;
+    private int     mServicesSet   = 0;
+    // endregion
 
 
 
-    public ShopFilter()
+    @Override
+    public String toString()
+    {
+        return "ShopFilter{" +
+                "mIsHypermarket="   + mIsHypermarket +
+                ", mIsSupermarket=" + mIsSupermarket +
+                ", mIsAllDay="      + mIsAllDay      +
+                ", mServicesSet="   + mServicesSet   +
+                '}';
+    }
+
+    private ShopFilter()
     {
         mIsHypermarket = false;
         mIsSupermarket = false;
@@ -28,7 +43,8 @@ public class ShopFilter implements Parcelable
         mServicesSet   = 0;
     }
 
-    public ShopFilter(ShopFilter another)
+    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
+    private ShopFilter(ShopFilter another)
     {
         mIsHypermarket = another.mIsHypermarket;
         mIsSupermarket = another.mIsSupermarket;
@@ -36,15 +52,14 @@ public class ShopFilter implements Parcelable
         mServicesSet   = another.mServicesSet;
     }
 
-    @Override
-    public String toString()
+    public static ShopFilter newInstance()
     {
-        return String.format(Locale.US, "{isHypermarket = %1$d, isSupermarket = %2$d, isAllDay = %3$d, servicesSet = %4$d}"
-                                        , mIsHypermarket ? 1 : 0
-                                        , mIsSupermarket ? 1 : 0
-                                        , mIsAllDay      ? 1 : 0
-                                        , mServicesSet
-        );
+        return new ShopFilter();
+    }
+
+    public static ShopFilter newInstance(ShopFilter another)
+    {
+        return new ShopFilter(another);
     }
 
     public boolean isHypermarket()
@@ -122,12 +137,13 @@ public class ShopFilter implements Parcelable
         return 0;
     }
 
+    @SuppressWarnings("NumericCastThatLosesPrecision")
     @Override
     public void writeToParcel(Parcel out, int flags)
     {
-        out.writeByte(mIsHypermarket ? (byte)1 : (byte)0);
-        out.writeByte(mIsSupermarket ? (byte)1 : (byte)0);
-        out.writeByte(mIsAllDay      ? (byte)1 : (byte)0);
+        out.writeByte((byte) (mIsHypermarket ? 1 : 0));
+        out.writeByte((byte) (mIsSupermarket ? 1 : 0));
+        out.writeByte((byte) (mIsAllDay ? 1 : 0));
         out.writeInt(mServicesSet);
     }
 
@@ -146,6 +162,7 @@ public class ShopFilter implements Parcelable
         }
     };
 
+    @SuppressWarnings("UnnecessaryParentheses")
     private ShopFilter(Parcel in)
     {
         mIsHypermarket = (in.readByte() == (byte)1);

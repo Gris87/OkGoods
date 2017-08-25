@@ -93,7 +93,7 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
         ShopFilterDialog fragment = new ShopFilterDialog();
 
         Bundle args = new Bundle();
-        args.putParcelable(ARG_SHOP_FILTER, new ShopFilter(filter));
+        args.putParcelable(ARG_SHOP_FILTER, ShopFilter.newInstance(filter));
         fragment.setArguments(args);
 
         return fragment;

@@ -8,16 +8,21 @@ import ru.okmarket.okgoods.R;
 /**
  * Application settings
  */
-@SuppressWarnings("WeakerAccess")
 public final class ApplicationSettings
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ApplicationSettings";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private static String  sCity              = null;
     private static boolean sShowNotifications = false;
+    // endregion
 
 
 
@@ -54,6 +59,7 @@ public final class ApplicationSettings
      * Returns true if user wants to show notifications, otherwise false
      * @return true if user wants to show notifications, otherwise false
      */
+    @SuppressWarnings("unused")
     public static boolean isShowNotifications()
     {
         return sShowNotifications;
