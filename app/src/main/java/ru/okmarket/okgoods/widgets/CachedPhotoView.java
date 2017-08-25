@@ -6,10 +6,15 @@ import android.view.View;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
+@SuppressWarnings("PublicConstructor")
 public class CachedPhotoView extends CachedImageView
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "CachedPhotoView";
+    // endregion
+    // endregion
 
 
 

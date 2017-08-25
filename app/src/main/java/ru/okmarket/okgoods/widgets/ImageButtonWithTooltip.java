@@ -4,22 +4,37 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class ImageButtonWithTooltip extends ImageButton implements View.OnLongClickListener
+@SuppressWarnings("PublicConstructor")
+public class ImageButtonWithTooltip extends AppCompatImageButton implements View.OnLongClickListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ImageButtonWithTooltip";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private OnLongClickListener mOnLongClickListener = null;
+    // endregion
 
 
+
+    @Override
+    public String toString()
+    {
+        return "ImageButtonWithTooltip{" +
+                "mOnLongClickListener=" + mOnLongClickListener +
+                '}';
+    }
 
     public ImageButtonWithTooltip(Context context)
     {
@@ -69,7 +84,7 @@ public class ImageButtonWithTooltip extends ImageButton implements View.OnLongCl
 
         if (ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_LTR)
         {
-            final int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
             centerX = screenWidth - centerX;
         }
 
@@ -106,6 +121,8 @@ public class ImageButtonWithTooltip extends ImageButton implements View.OnLongCl
         {
             mOnLongClickListener.onLongClick(view);
         }
+
+
 
         return true;
     }

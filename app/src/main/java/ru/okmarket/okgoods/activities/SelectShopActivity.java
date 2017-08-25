@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
@@ -29,7 +30,6 @@ import ru.okmarket.okgoods.other.ApplicationExtras;
 import ru.okmarket.okgoods.other.ApplicationSettings;
 import ru.okmarket.okgoods.other.ShopFilter;
 import ru.okmarket.okgoods.util.AppLog;
-import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 import ru.yandex.yandexmapkit.MapController;
 import ru.yandex.yandexmapkit.MapView;
@@ -201,7 +201,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
         mShopsAdapter = ShopsAdapter.newInstance(this, shops);
         mShopsAdapter.setOnItemClickListener(this);
 
-        mShopsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        mShopsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mShopsRecyclerView.setAdapter(mShopsAdapter);
 
 

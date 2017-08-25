@@ -5,16 +5,31 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+@SuppressWarnings("PublicConstructor")
 public class NoScrollableDrawerLayout extends DrawerLayout
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "NoScrollableDrawerLayout";
+    // endregion
+    // endregion
 
 
 
-    private boolean mScrollEnabled = true;
+    // region Attributes
+    private boolean mScrollEnabled = false;
+    // endregion
 
 
+
+    @Override
+    public String toString()
+    {
+        return "NoScrollableDrawerLayout{" +
+                "mScrollEnabled=" + mScrollEnabled +
+                '}';
+    }
 
     public NoScrollableDrawerLayout(Context context)
     {
@@ -48,13 +63,11 @@ public class NoScrollableDrawerLayout extends DrawerLayout
         return mScrollEnabled && super.onInterceptTouchEvent(ev);
     }
 
-    @SuppressWarnings("unused")
     public void disableScroll()
     {
         mScrollEnabled = false;
     }
 
-    @SuppressWarnings("unused")
     public void enableScroll()
     {
         mScrollEnabled = true;

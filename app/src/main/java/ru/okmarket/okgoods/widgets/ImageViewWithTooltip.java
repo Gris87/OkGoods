@@ -4,22 +4,37 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-public class ImageViewWithTooltip extends ImageView implements View.OnLongClickListener
+@SuppressWarnings("PublicConstructor")
+public class ImageViewWithTooltip extends AppCompatImageView implements View.OnLongClickListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ImageViewWithTooltip";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private OnLongClickListener mOnLongClickListener = null;
+    // endregion
 
 
+
+    @Override
+    public String toString()
+    {
+        return "ImageViewWithTooltip{" +
+                "mOnLongClickListener=" + mOnLongClickListener +
+                '}';
+    }
 
     public ImageViewWithTooltip(Context context)
     {
@@ -69,7 +84,7 @@ public class ImageViewWithTooltip extends ImageView implements View.OnLongClickL
 
         if (ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_LTR)
         {
-            final int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
             centerX = screenWidth - centerX;
         }
 
@@ -106,6 +121,8 @@ public class ImageViewWithTooltip extends ImageView implements View.OnLongClickL
         {
             mOnLongClickListener.onLongClick(view);
         }
+
+
 
         return true;
     }

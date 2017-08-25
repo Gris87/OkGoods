@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -31,7 +32,6 @@ import ru.okmarket.okgoods.other.ApplicationExtras;
 import ru.okmarket.okgoods.other.ApplicationPreferences;
 import ru.okmarket.okgoods.util.AnimationUtils;
 import ru.okmarket.okgoods.util.AppLog;
-import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnBindViewHolderListener(this);
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
 
 

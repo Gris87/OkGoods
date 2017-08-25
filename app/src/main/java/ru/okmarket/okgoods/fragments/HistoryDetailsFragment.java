@@ -2,6 +2,7 @@ package ru.okmarket.okgoods.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ import ru.okmarket.okgoods.adapters.HistoryDetailsAdapter;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 import ru.okmarket.okgoods.util.AnimationUtils;
-import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAdapter.OnItemClickListener, HistoryDetailsAdapter.OnBindViewHolderListener
@@ -81,7 +81,7 @@ public class HistoryDetailsFragment extends Fragment implements HistoryDetailsAd
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnBindViewHolderListener(this);
 
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
 
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -35,7 +36,6 @@ import ru.okmarket.okgoods.net.Web;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.util.Tree;
 import ru.okmarket.okgoods.util.Utils;
-import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
@@ -157,7 +157,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         mGoodsAdapter.setOnCategoryClickListener(this);
         mGoodsAdapter.setOnGoodClickListener(this);
 
-        goodsCategoriesRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        goodsCategoriesRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         goodsCategoriesRecyclerView.setAdapter(mGoodsCategoriesAdapter);
 
         goodsRecyclerView.setAdapter(mGoodsAdapter);

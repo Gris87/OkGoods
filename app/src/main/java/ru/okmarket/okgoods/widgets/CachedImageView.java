@@ -19,24 +19,38 @@ import com.android.volley.toolbox.ImageLoader;
 
 import ru.okmarket.okgoods.util.AppLog;
 
+@SuppressWarnings("PublicConstructor")
 public class CachedImageView extends FrameLayout implements View.OnTouchListener, View.OnClickListener, View.OnLongClickListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "CachedImageView";
+    // endregion
 
 
 
+    // region Dimensions
     private static final int     PROGRESS_VIEW_SIZE_DIP = 32;
     private static final int     ERROR_VIEW_SIZE_DIP    = 32;
+    // endregion
+
+
+
+    // region Animation
     private static final boolean USE_FADE_IN_ANIMATION  = true;
     private static final int     FADE_IN_DURATION       = 1000;
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private View                       mProgressView        = null;
     private View                       mErrorView           = null;
     private View                       mContentView         = null;
     private String                     mUrl                 = null;
+    @SuppressWarnings("BooleanVariableAlwaysNegated")
     private boolean                    mCached              = false;
     private int                        mDefaultImageId      = 0;
     private int                        mErrorImageId        = 0;
@@ -45,8 +59,28 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
     private OnTouchListener            mOnTouchListener     = null;
     private OnClickListener            mOnClickListener     = null;
     private OnLongClickListener        mOnLongClickListener = null;
+    // endregion
 
 
+
+    @Override
+    public String toString()
+    {
+        return "CachedImageView{" +
+                "mProgressView="          + mProgressView        +
+                ", mErrorView="           + mErrorView           +
+                ", mContentView="         + mContentView         +
+                ", mUrl='"                + mUrl                 + '\'' +
+                ", mCached="              + mCached              +
+                ", mDefaultImageId="      + mDefaultImageId      +
+                ", mErrorImageId="        + mErrorImageId        +
+                ", mImageLoader="         + mImageLoader         +
+                ", mImageContainer="      + mImageContainer      +
+                ", mOnTouchListener="     + mOnTouchListener     +
+                ", mOnClickListener="     + mOnClickListener     +
+                ", mOnLongClickListener=" + mOnLongClickListener +
+                '}';
+    }
 
     public CachedImageView(Context context)
     {
@@ -73,7 +107,9 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
     {
         Resources resources = getContext().getResources();
 
+        //noinspection NumericCastThatLosesPrecision
         int progressViewSize = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PROGRESS_VIEW_SIZE_DIP, resources.getDisplayMetrics());
+        //noinspection NumericCastThatLosesPrecision
         int errorViewSize    = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ERROR_VIEW_SIZE_DIP,    resources.getDisplayMetrics());
 
 
@@ -129,7 +165,7 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
         int width  = getWidth();
         int height = getHeight();
 
-        boolean wrapWidth = false;
+        boolean wrapWidth  = false;
         boolean wrapHeight = false;
 
         if (getLayoutParams() != null)
@@ -138,6 +174,7 @@ public class CachedImageView extends FrameLayout implements View.OnTouchListener
             wrapHeight = getLayoutParams().height == LayoutParams.WRAP_CONTENT;
         }
 
+        //noinspection BooleanVariableAlwaysNegated
         boolean isFullyWrapContent = wrapWidth && wrapHeight;
 
         if (width == 0 && height == 0 && !isFullyWrapContent)

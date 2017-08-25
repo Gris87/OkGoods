@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -19,7 +20,6 @@ import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 import ru.okmarket.okgoods.db.entities.HistoryEntity;
 import ru.okmarket.okgoods.fragments.HistoryDetailsFragment;
 import ru.okmarket.okgoods.other.ApplicationExtras;
-import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class HistoryActivity extends AppCompatActivity implements HistoryAdapter.OnItemClickListener
@@ -91,7 +91,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
 
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
     }
 
