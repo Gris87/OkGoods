@@ -375,10 +375,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             mAdapter.updateFromDatabase();
         }
         else
-        // noinspection StatementWithEmptyBody
         if (requestCode == GOODS_CATALOG)
         {
-            // TODO: Implement it
+            mAdapter.updateFromDatabase();
         }
         else
         {
@@ -405,7 +404,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         if (selectedShopId != 0)
         {
-            mSelectedShop = mMainDatabase.getShop(mDB, selectedShopId);
+            mSelectedShop = MainDatabase.getShop(mDB, selectedShopId);
 
             //noinspection VariableNotUsedInsideIf
             if (mSelectedShop != null)
@@ -518,10 +517,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             AnimationUtils.fadeOut(mSelectedViewHolder.getCostTextView(), FADE_ANIMATION_DURATION);
         }
 
+
+
         mSelectedViewHolder.getGoodNameTextView().setHorizontallyScrolling(true);
         mSelectedViewHolder.getGoodNameTextView().setHorizontalFadingEdgeEnabled(true);
         mSelectedViewHolder.getGoodNameTextView().setEllipsize(TextUtils.TruncateAt.MARQUEE);
         mSelectedViewHolder.getGoodNameTextView().setSelected(true);
+
+
 
         if (!TextUtils.isEmpty(mSelectedViewHolder.getCostTextView().getText()))
         {
@@ -551,6 +554,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     {
         AnimationUtils.collapse(mSelectedViewHolder.getExpandedView(), EXPAND_ANIMATION_SPEED);
         AnimationUtils.fadeIn(mSelectedViewHolder.getCostTextView(),   FADE_ANIMATION_DURATION);
+
+
 
         mSelectedViewHolder.getGoodNameTextView().setHorizontallyScrolling(false);
         mSelectedViewHolder.getGoodNameTextView().setHorizontalFadingEdgeEnabled(false);
