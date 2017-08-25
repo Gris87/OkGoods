@@ -25,7 +25,7 @@ import ru.okmarket.okgoods.other.ApplicationPreferences;
  * handset devices, settings are presented as a single list. On tablets,
  * settings are split by category, with category headers shown to the left of
  * the list of settings.
- * <p/>
+ * <p>
  * See <a href="http://developer.android.com/design/patterns/settings.html">
  * Android Design: Settings</a> for design guidelines and the <a
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
@@ -34,11 +34,16 @@ import ru.okmarket.okgoods.other.ApplicationPreferences;
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class SettingsActivity extends AppCompatPreferenceActivity
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "SettingsActivity";
+    // endregion
+    // endregion
 
 
 
+    // region sBindPreferenceSummaryToValueListener
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -71,6 +76,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
             return true;
         }
     };
+    // endregion
 
     /**
      * Helper method to determine if the device has an extra-large screen. For
@@ -91,7 +97,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      *
      * @see #sBindPreferenceSummaryToValueListener
      */
-    private static void bindPreferenceSummaryToValue(Preference preference) {
+    private static void bindPreferenceSummaryToValue(Preference preference)
+    {
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
@@ -181,8 +188,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity
     @SuppressWarnings({"PublicInnerClass", "ClassWithoutConstructor", "PublicConstructor"})
     public static class GeneralPreferenceFragment extends PreferenceFragment
     {
+        // region Attributes
         private MainDatabase   mMainDatabase = null;
         private SQLiteDatabase mDB           = null;
+        // endregion
 
 
 
@@ -200,6 +209,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity
         {
             super.onCreate(savedInstanceState);
 
+
+
             // Change preference file name
             PreferenceManager prefManager = getPreferenceManager();
             prefManager.setSharedPreferencesName(ApplicationPreferences.MAIN_SHARED_PREFERENCES);
@@ -208,11 +219,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
+
+
             mMainDatabase = MainDatabase.newInstance(getActivity());
             mDB           = mMainDatabase.getReadableDatabase();
 
+
+
             ListPreference cities = (ListPreference)findPreference(getString(R.string.pref_key_city));
-            cities.setEntries(mMainDatabase.getCities(mDB));
+            cities.setEntries(MainDatabase.getCities(mDB));
             cities.setEntryValues(MainDatabase.CITIES);
 
             bindPreferenceSummaryToValue(cities);
@@ -256,6 +271,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity
         public void onCreate(Bundle savedInstanceState)
         {
             super.onCreate(savedInstanceState);
+
+
 
             // Change preference file name
             PreferenceManager prefManager = getPreferenceManager();

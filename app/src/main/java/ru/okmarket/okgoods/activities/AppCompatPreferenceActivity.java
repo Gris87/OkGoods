@@ -20,12 +20,18 @@ import android.view.ViewGroup;
 @SuppressWarnings("ClassWithoutConstructor")
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "AppCompatPreferenceActivity";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private AppCompatDelegate mDelegate = null;
+    // endregion
 
 
 
