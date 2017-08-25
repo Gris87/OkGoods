@@ -7,18 +7,24 @@ import ru.okmarket.okgoods.db.MainDatabase;
 
 public final class HistoryDetailsEntity implements Parcelable
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryDetailsEntity";
+    // endregion
+    // endregion
 
 
 
-    private int     mId;
-    private int     mGoodId;
-    private int     mCategoryId;
-    private String  mName;
-    private double  mCost;
-    private double  mCount;
-    private int     mEnabled;
+    // region Attributes
+    private int     mId         = 0;
+    private int     mGoodId     = 0;
+    private int     mCategoryId = 0;
+    private String  mName       = null;
+    private double  mCost       = 0;
+    private double  mCount      = 0;
+    private int     mEnabled    = 0;
+    // endregion
 
 
 

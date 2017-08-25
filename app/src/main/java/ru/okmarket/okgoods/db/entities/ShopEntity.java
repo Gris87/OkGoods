@@ -7,24 +7,30 @@ import java.util.Date;
 
 public final class ShopEntity implements Parcelable
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ShopEntity";
+    // endregion
+    // endregion
 
 
 
-    private int     mId;
-    private int     mCityId;
-    private String  mName;
-    private boolean mIsHypermarket;
-    private double  mLatitude;
-    private double  mLongitude;
-    private String  mPhone;
-    private String  mWorkHours;
-    private int     mSquare;
-    private Date    mOpeningDate;
-    private int     mParkingPlaces;
-    private int     mNumberOfCashboxes;
-    private int     mServicesSet;
+    // region Attributes
+    private int     mId                = 0;
+    private int     mCityId            = 0;
+    private String  mName              = null;
+    private boolean mIsHypermarket     = false;
+    private double  mLatitude          = 0;
+    private double  mLongitude         = 0;
+    private String  mPhone             = null;
+    private String  mWorkHours         = null;
+    private int     mSquare            = 0;
+    private Date    mOpeningDate       = null;
+    private int     mParkingPlaces     = 0;
+    private int     mNumberOfCashboxes = 0;
+    private int     mServicesSet       = 0;
+    // endregion
 
 
 

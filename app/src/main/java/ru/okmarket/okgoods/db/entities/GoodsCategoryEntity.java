@@ -8,11 +8,16 @@ import ru.okmarket.okgoods.db.MainDatabase;
 
 public final class GoodsCategoryEntity implements Parcelable
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "GoodsCategoryEntity";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private int     mId         = 0;
     private int     mParentId   = 0;
     private String  mName       = null;
@@ -21,6 +26,7 @@ public final class GoodsCategoryEntity implements Parcelable
     private long    mUpdateTime = 0;
     private int     mEnabled    = 0;
     private boolean mExpanded   = false;
+    // endregion
 
 
 

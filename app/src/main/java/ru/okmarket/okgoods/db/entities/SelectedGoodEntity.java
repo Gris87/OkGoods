@@ -7,11 +7,16 @@ import ru.okmarket.okgoods.db.MainDatabase;
 
 public final class SelectedGoodEntity implements Parcelable
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "SelectedGoodEntity";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private int     mId         = 0;
     private int     mGoodId     = 0;
     private int     mCategoryId = 0;
@@ -19,6 +24,7 @@ public final class SelectedGoodEntity implements Parcelable
     private double  mCost       = 0;
     private double  mCount      = 0;
     private int     mEnabled    = 0;
+    // endregion
 
 
 

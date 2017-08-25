@@ -7,17 +7,23 @@ import java.util.Locale;
 
 public final class HistoryEntity implements Parcelable
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryEntity";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private int     mId       = 0;
     private int     mShopId   = 0;
     private String  mShopName = null;
     private String  mDate     = null;
     private int     mDuration = 0;
     private double  mTotal    = 0;
+    // endregion
 
 
 

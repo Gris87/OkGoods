@@ -10,12 +10,18 @@ import ru.okmarket.okgoods.fragments.PhotoFragment;
 
 public final class PhotoPagerAdapter extends FragmentStatePagerAdapter
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "PhotoPagerAdapter";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private ArrayList<String> mUrls = null;
+    // endregion
 
 
 

@@ -11,15 +11,22 @@ import ru.okmarket.okgoods.util.AppLog;
 
 public final class GoodEntity implements Parcelable
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "GoodEntity";
+    // endregion
 
 
 
+    // region Attribute constants
     public static final String ATTRIBUTE_BRAND = "brand";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private int        mId             = 0;
     private int        mCategoryId     = 0;
     private String     mName           = null;
@@ -34,6 +41,7 @@ public final class GoodEntity implements Parcelable
     private int        mPriority       = 0;
     private long       mUpdateTime     = 0;
     private int        mEnabled        = 0;
+    // endregion
 
 
 
