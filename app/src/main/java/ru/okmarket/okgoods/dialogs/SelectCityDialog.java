@@ -15,12 +15,18 @@ import ru.okmarket.okgoods.db.MainDatabase;
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class SelectCityDialog extends DialogFragment
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "SelectCityDialog";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private OnFragmentInteractionListener mListener = null;
+    // endregion
 
 
 
@@ -36,9 +42,11 @@ public class SelectCityDialog extends DialogFragment
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        MainDatabase mainDatabase = MainDatabase.newInstance(getActivity());
-        SQLiteDatabase db = mainDatabase.getReadableDatabase();
+        MainDatabase   mainDatabase = MainDatabase.newInstance(getActivity());
+        SQLiteDatabase db           = mainDatabase.getReadableDatabase();
+
         String[] cities = MainDatabase.getCities(db);
+
         db.close();
 
 

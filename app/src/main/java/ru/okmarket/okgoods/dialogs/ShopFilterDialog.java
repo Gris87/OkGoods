@@ -23,15 +23,22 @@ import ru.okmarket.okgoods.widgets.ImageButtonWithTooltip;
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class ShopFilterDialog extends DialogFragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ShopFilterDialog";
+    // endregion
 
 
 
+    // region Arguments
     private static final String ARG_SHOP_FILTER = "SHOP_FILTER";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private OnFragmentInteractionListener mListener                          = null;
     private CheckBox                      mSupermarketCheckBox               = null;
     private CheckBox                      mHypermarketCheckBox               = null;
@@ -51,6 +58,7 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
     private ImageButtonWithTooltip        mServiceParkingButton              = null;
     private ImageButtonWithTooltip        mServicePointOfIssuingOrdersButton = null;
     private ShopFilter                    mShopFilter                        = null;
+    // endregion
 
 
 
@@ -101,6 +109,7 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
 
     @Override
     @NonNull
+    @SuppressWarnings("RedundantCast")
     @SuppressLint("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
