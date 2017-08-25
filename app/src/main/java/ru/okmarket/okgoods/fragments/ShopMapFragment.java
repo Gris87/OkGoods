@@ -12,40 +12,53 @@ import android.widget.TextView;
 
 import ru.okmarket.okgoods.R;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class ShopMapFragment extends Fragment implements View.OnClickListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ShopMapFragment";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private OnFragmentInteractionListener mListener             = null;
     private TextView                      mSelectedShopTextView = null;
+    // endregion
 
 
 
-    public ShopMapFragment()
+    @Override
+    public String toString()
     {
-        // Nothing
+        return "ShopMapFragment{" +
+                "mListener="               + mListener             +
+                ", mSelectedShopTextView=" + mSelectedShopTextView +
+                '}';
     }
 
+    @SuppressWarnings("RedundantCast")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.fragment_shop_map, container, false);
 
+
+
         mSelectedShopTextView = (TextView)rootView.findViewById(R.id.selectShopTextView);
 
-        init();
 
-        return rootView;
-    }
 
-    private void init()
-    {
         mSelectedShopTextView.setOnClickListener(this);
 
         resetSelectedShop();
+
+
+
+        return rootView;
     }
 
     public void resetSelectedShop()
@@ -88,7 +101,8 @@ public class ShopMapFragment extends Fragment implements View.OnClickListener
         }
         else
         {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+            //noinspection ProhibitedExceptionThrown
+            throw new RuntimeException(context + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -102,6 +116,7 @@ public class ShopMapFragment extends Fragment implements View.OnClickListener
 
 
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnFragmentInteractionListener
     {
         void onShopMapSelectShopClicked();

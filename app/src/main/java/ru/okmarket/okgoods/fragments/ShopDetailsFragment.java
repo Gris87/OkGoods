@@ -35,13 +35,19 @@ import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.CachedImageView;
 import ru.okmarket.okgoods.widgets.ImageViewWithTooltip;
 
+@SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class ShopDetailsFragment extends Fragment implements View.OnTouchListener, View.OnClickListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ShopDetailsFragment";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private OnFragmentInteractionListener mListener                             = null;
     private TextView                      mNameTextView                         = null;
     private TextView                      mPhoneTextView                        = null;
@@ -75,14 +81,51 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
     private Button                        mCancelButton                         = null;
     private Button                        mOkButton                             = null;
     private HttpClient                    mHttpClient                           = null;
+    // endregion
 
 
 
-    public ShopDetailsFragment()
+    @Override
+    public String toString()
     {
-        // Nothing
+        return "ShopDetailsFragment{" +
+                "mListener="                               + mListener                             +
+                ", mNameTextView="                         + mNameTextView                         +
+                ", mPhoneTextView="                        + mPhoneTextView                        +
+                ", mWorkHoursTextView="                    + mWorkHoursTextView                    +
+                ", mSquareTextView="                       + mSquareTextView                       +
+                ", mOpeningDateTextView="                  + mOpeningDateTextView                  +
+                ", mParkingPlacesTextView="                + mParkingPlacesTextView                +
+                ", mNumberOfCashboxesTextView="            + mNumberOfCashboxesTextView            +
+                ", mServicesTextView="                     + mServicesTextView                     +
+                ", mServicesHorizontalScrollView="         + mServicesHorizontalScrollView         +
+                ", mServicesVerticalScrollView="           + mServicesVerticalScrollView           +
+                ", mServiceClearingSettlementImageView="   + mServiceClearingSettlementImageView   +
+                ", mServiceCosmeticsImageView="            + mServiceCosmeticsImageView            +
+                ", mServicePlaygroundImageView="           + mServicePlaygroundImageView           +
+                ", mServiceFishIslandImageView="           + mServiceFishIslandImageView           +
+                ", mServiceBakeryImageView="               + mServiceBakeryImageView               +
+                ", mServiceCookeryImageView="              + mServiceCookeryImageView              +
+                ", mServiceTaxiOrderingImageView="         + mServiceTaxiOrderingImageView         +
+                ", mServicePharmacyImageView="             + mServicePharmacyImageView             +
+                ", mServiceOrderingFoodImageView="         + mServiceOrderingFoodImageView         +
+                ", mServiceDegustationImageView="          + mServiceDegustationImageView          +
+                ", mServiceCafeImageView="                 + mServiceCafeImageView                 +
+                ", mServiceGiftCardsImageView="            + mServiceGiftCardsImageView            +
+                ", mServiceParkingImageView="              + mServiceParkingImageView              +
+                ", mServicePointOfIssuingOrdersImageView=" + mServicePointOfIssuingOrdersImageView +
+                ", mPhotosTextView="                       + mPhotosTextView                       +
+                ", mPhotosProgressBar="                    + mPhotosProgressBar                    +
+                ", mPhotosHorizontalScrollView="           + mPhotosHorizontalScrollView           +
+                ", mPhotosVerticalScrollView="             + mPhotosVerticalScrollView             +
+                ", mPhotosLinearLayout="                   + mPhotosLinearLayout                   +
+                ", mCancelButton="                         + mCancelButton                         +
+                ", mOkButton="                             + mOkButton                             +
+                ", mHttpClient="                           + mHttpClient                           +
+                '}';
     }
 
+    @SuppressWarnings("RedundantCast")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -121,6 +164,8 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         mPhotosLinearLayout                   = (LinearLayout)        rootView.findViewById(R.id.photosLinearLayout);
         mCancelButton                         = (Button)              rootView.findViewById(R.id.cancelButton);
         mOkButton                             = (Button)              rootView.findViewById(R.id.okButton);
+
+
 
         mHttpClient = HttpClient.getInstance(getActivity());
 
@@ -193,7 +238,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         }
         else
         {
-            AppLog.wtf(TAG, "Unknown view: " + String.valueOf(view));
+            AppLog.wtf(TAG, "Unknown view: " + view);
         }
     }
 
@@ -257,20 +302,20 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
             mPhotosHorizontalScrollView.setVisibility(  View.GONE);
             mPhotosVerticalScrollView.setVisibility(    View.GONE);
 
-            mServiceClearingSettlementImageView.setVisibility(  (shop.getServicesSet() & MainDatabase.SERVICE_CLEARING_SETTLEMENT_MASK)     != 0 ? View.VISIBLE : View.GONE);
-            mServiceCosmeticsImageView.setVisibility(           (shop.getServicesSet() & MainDatabase.SERVICE_COSMETICS_MASK)               != 0 ? View.VISIBLE : View.GONE);
-            mServicePlaygroundImageView.setVisibility(          (shop.getServicesSet() & MainDatabase.SERVICE_PLAYGROUND_MASK)              != 0 ? View.VISIBLE : View.GONE);
-            mServiceFishIslandImageView.setVisibility(          (shop.getServicesSet() & MainDatabase.SERVICE_FISH_ISLAND_MASK)             != 0 ? View.VISIBLE : View.GONE);
-            mServiceBakeryImageView.setVisibility(              (shop.getServicesSet() & MainDatabase.SERVICE_BAKERY_MASK)                  != 0 ? View.VISIBLE : View.GONE);
-            mServiceCookeryImageView.setVisibility(             (shop.getServicesSet() & MainDatabase.SERVICE_COOKERY_MASK)                 != 0 ? View.VISIBLE : View.GONE);
-            mServiceTaxiOrderingImageView.setVisibility(        (shop.getServicesSet() & MainDatabase.SERVICE_TAXI_ORDERING_MASK)           != 0 ? View.VISIBLE : View.GONE);
-            mServicePharmacyImageView.setVisibility(            (shop.getServicesSet() & MainDatabase.SERVICE_PHARMACY_MASK)                != 0 ? View.VISIBLE : View.GONE);
-            mServiceOrderingFoodImageView.setVisibility(        (shop.getServicesSet() & MainDatabase.SERVICE_ORDERING_FOOD_MASK)           != 0 ? View.VISIBLE : View.GONE);
-            mServiceDegustationImageView.setVisibility(         (shop.getServicesSet() & MainDatabase.SERVICE_DEGUSTATION_MASK)             != 0 ? View.VISIBLE : View.GONE);
-            mServiceCafeImageView.setVisibility(                (shop.getServicesSet() & MainDatabase.SERVICE_CAFE_MASK)                    != 0 ? View.VISIBLE : View.GONE);
-            mServiceGiftCardsImageView.setVisibility(           (shop.getServicesSet() & MainDatabase.SERVICE_GIFT_CARDS_MASK)              != 0 ? View.VISIBLE : View.GONE);
-            mServiceParkingImageView.setVisibility(             (shop.getServicesSet() & MainDatabase.SERVICE_PARKING_MASK)                 != 0 ? View.VISIBLE : View.GONE);
-            mServicePointOfIssuingOrdersImageView.setVisibility((shop.getServicesSet() & MainDatabase.SERVICE_POINT_OF_ISSUING_ORDERS_MASK) != 0 ? View.VISIBLE : View.GONE);
+            mServiceClearingSettlementImageView.setVisibility(  (shop.getServicesSet() & MainDatabase.SERVICE_CLEARING_SETTLEMENT_MASK)     == 0 ? View.GONE : View.VISIBLE);
+            mServiceCosmeticsImageView.setVisibility(           (shop.getServicesSet() & MainDatabase.SERVICE_COSMETICS_MASK)               == 0 ? View.GONE : View.VISIBLE);
+            mServicePlaygroundImageView.setVisibility(          (shop.getServicesSet() & MainDatabase.SERVICE_PLAYGROUND_MASK)              == 0 ? View.GONE : View.VISIBLE);
+            mServiceFishIslandImageView.setVisibility(          (shop.getServicesSet() & MainDatabase.SERVICE_FISH_ISLAND_MASK)             == 0 ? View.GONE : View.VISIBLE);
+            mServiceBakeryImageView.setVisibility(              (shop.getServicesSet() & MainDatabase.SERVICE_BAKERY_MASK)                  == 0 ? View.GONE : View.VISIBLE);
+            mServiceCookeryImageView.setVisibility(             (shop.getServicesSet() & MainDatabase.SERVICE_COOKERY_MASK)                 == 0 ? View.GONE : View.VISIBLE);
+            mServiceTaxiOrderingImageView.setVisibility(        (shop.getServicesSet() & MainDatabase.SERVICE_TAXI_ORDERING_MASK)           == 0 ? View.GONE : View.VISIBLE);
+            mServicePharmacyImageView.setVisibility(            (shop.getServicesSet() & MainDatabase.SERVICE_PHARMACY_MASK)                == 0 ? View.GONE : View.VISIBLE);
+            mServiceOrderingFoodImageView.setVisibility(        (shop.getServicesSet() & MainDatabase.SERVICE_ORDERING_FOOD_MASK)           == 0 ? View.GONE : View.VISIBLE);
+            mServiceDegustationImageView.setVisibility(         (shop.getServicesSet() & MainDatabase.SERVICE_DEGUSTATION_MASK)             == 0 ? View.GONE : View.VISIBLE);
+            mServiceCafeImageView.setVisibility(                (shop.getServicesSet() & MainDatabase.SERVICE_CAFE_MASK)                    == 0 ? View.GONE : View.VISIBLE);
+            mServiceGiftCardsImageView.setVisibility(           (shop.getServicesSet() & MainDatabase.SERVICE_GIFT_CARDS_MASK)              == 0 ? View.GONE : View.VISIBLE);
+            mServiceParkingImageView.setVisibility(             (shop.getServicesSet() & MainDatabase.SERVICE_PARKING_MASK)                 == 0 ? View.GONE : View.VISIBLE);
+            mServicePointOfIssuingOrdersImageView.setVisibility((shop.getServicesSet() & MainDatabase.SERVICE_POINT_OF_ISSUING_ORDERS_MASK) == 0 ? View.GONE : View.VISIBLE);
 
             mPhotosLinearLayout.removeAllViews();
 
@@ -297,7 +342,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
                             Resources resources = getResources();
 
                             int height = resources.getDimensionPixelSize(R.dimen.shop_photo_size);
-                            int width  = height * 4 / 3;
+                            int width  = (height << 2) / 3;
                             int margin = resources.getDimensionPixelSize(R.dimen.common_margin);
 
 
@@ -396,16 +441,18 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
     private void setPhone(String phone)
     {
-        if (!TextUtils.isEmpty(phone))
+        String res = phone;
+
+        if (!TextUtils.isEmpty(res))
         {
-            int index = phone.indexOf(',');
+            int index = res.indexOf(',');
 
             if (index >= 0)
             {
-                phone = phone.substring(0, index).trim();
+                res = res.substring(0, index).trim();
             }
 
-            mPhoneTextView.setText(phone);
+            mPhoneTextView.setText(res);
         }
         else
         {
@@ -493,7 +540,8 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
         }
         else
         {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+            //noinspection ProhibitedExceptionThrown
+            throw new RuntimeException(context + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -507,6 +555,7 @@ public class ShopDetailsFragment extends Fragment implements View.OnTouchListene
 
 
 
+    @SuppressWarnings("PublicInnerClass")
     public interface OnFragmentInteractionListener
     {
         void onShopDetailsDisableScroll();
