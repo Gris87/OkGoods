@@ -14,14 +14,20 @@ import ru.okmarket.okgoods.db.entities.HistoryEntity;
 
 public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryAdapter";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private Context                  mContext             = null;
     private ArrayList<HistoryEntity> mItems               = null;
     private OnItemClickListener      mOnItemClickListener = null;
+    // endregion
 
 
 
@@ -110,11 +116,13 @@ public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Hi
     @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
     public static final class HistoryViewHolder extends RecyclerView.ViewHolder
     {
+        // region Attributes
         private View     mView             = null;
         private TextView mShopNameTextView = null;
         private TextView mDateTextView     = null;
         private TextView mDurationTextView = null;
         private TextView mTotalTextView    = null;
+        // endregion
 
 
 
@@ -130,6 +138,7 @@ public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Hi
                     '}';
         }
 
+        @SuppressWarnings("RedundantCast")
         private HistoryViewHolder(View view)
         {
             super(view);

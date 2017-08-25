@@ -16,15 +16,21 @@ import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
 
 public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAdapter.HistoryDetailsViewHolder>
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryDetailsAdapter";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private Context                         mContext                  = null;
     private ArrayList<HistoryDetailsEntity> mItems                    = null;
     private OnItemClickListener             mOnItemClickListener      = null;
     private OnBindViewHolderListener        mOnBindViewHolderListener = null;
+    // endregion
 
 
 
@@ -138,11 +144,13 @@ public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDet
     @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
     public static final class HistoryDetailsViewHolder extends RecyclerView.ViewHolder
     {
+        // region Attributes
         private View     mView               = null;
         private TextView mGoodNameTextView   = null;
         private TextView mCostTextView       = null;
         private View     mExpandedView       = null;
         private TextView mSecondCostTextView = null;
+        // endregion
 
 
 
@@ -158,6 +166,7 @@ public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDet
                     '}';
         }
 
+        @SuppressWarnings("RedundantCast")
         private HistoryDetailsViewHolder(View view)
         {
             super(view);

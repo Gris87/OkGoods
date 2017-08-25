@@ -5,10 +5,15 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+@SuppressWarnings("PublicConstructor")
 public class PhotoViewPager extends ViewPager
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "PhotoViewPager";
+    // endregion
+    // endregion
 
 
 
@@ -38,7 +43,7 @@ public class PhotoViewPager extends ViewPager
         {
             return super.onInterceptTouchEvent(event);
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
             // Nothing
         }

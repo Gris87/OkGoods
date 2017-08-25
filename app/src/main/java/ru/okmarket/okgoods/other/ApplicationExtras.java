@@ -5,8 +5,12 @@ package ru.okmarket.okgoods.other;
  */
 public final class ApplicationExtras
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ApplicationExtras";
+    // endregion
+    // endregion
 
 
 

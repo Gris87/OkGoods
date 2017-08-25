@@ -53,6 +53,7 @@ public class OkGoodsApplication extends Application
      *
      * @return Google Analytics tracker
      */
+    @SuppressWarnings("unused")
     public Tracker getDefaultTracker()
     {
         return mTracker;

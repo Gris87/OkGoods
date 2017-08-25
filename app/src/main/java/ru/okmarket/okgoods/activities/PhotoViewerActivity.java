@@ -14,16 +14,25 @@ import ru.okmarket.okgoods.widgets.PhotoViewPager;
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class PhotoViewerActivity extends FragmentActivity
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "PhotoViewerActivity";
+    // endregion
+    // endregion
 
 
 
+    @SuppressWarnings("RedundantCast")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_viewer);
+
+
+
+        PhotoViewPager viewPager = (PhotoViewPager)findViewById(R.id.photoViewPager);
 
 
 
@@ -33,8 +42,6 @@ public class PhotoViewerActivity extends FragmentActivity
         int               selectedIndex = intent.getIntExtra(            ApplicationExtras.SELECTED_INDEX, -1);
 
 
-
-        PhotoViewPager viewPager = (PhotoViewPager)findViewById(R.id.photoViewPager);
 
         viewPager.setAdapter(PhotoPagerAdapter.newInstance(getSupportFragmentManager(), urls));
         viewPager.setCurrentItem(selectedIndex, false);
