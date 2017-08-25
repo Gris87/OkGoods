@@ -30,18 +30,26 @@ import ru.okmarket.okgoods.widgets.CachedImageView;
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class HistoryDetailsActivity extends AppCompatActivity
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryDetailsActivity";
+    // endregion
 
 
 
+    // region Save state constants
     private static final String SAVED_STATE_SELECTED_DETAILS = "SELECTED_DETAILS";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private CachedImageView        mShopImageView          = null;
     private HistoryDetailsFragment mHistoryDetailsFragment = null;
     private HttpClient             mHttpClient             = null;
+    // endregion
 
 
 
@@ -55,6 +63,7 @@ public class HistoryDetailsActivity extends AppCompatActivity
                 '}';
     }
 
+    @SuppressWarnings("RedundantCast")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

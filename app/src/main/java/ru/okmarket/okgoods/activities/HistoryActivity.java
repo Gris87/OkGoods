@@ -24,18 +24,26 @@ import ru.okmarket.okgoods.widgets.DividerItemDecoration;
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class HistoryActivity extends AppCompatActivity implements HistoryAdapter.OnItemClickListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "HistoryActivity";
+    // endregion
 
 
 
+    // region Save state constants
     private static final String SAVED_STATE_HISTORY_DETAILS  = "HISTORY_DETAILS";
     private static final String SAVED_STATE_SELECTED_DETAILS = "SELECTED_DETAILS";
     private static final String SAVED_STATE_TOTAL            = "TOTAL";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private HistoryDetailsFragment mHistoryDetailsFragment = null;
+    // endregion
 
 
 
@@ -47,6 +55,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
                 '}';
     }
 
+    @SuppressWarnings("RedundantCast")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -75,7 +84,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         MainDatabase   mainDatabase = MainDatabase.newInstance(this);
         SQLiteDatabase db           = mainDatabase.getReadableDatabase();
 
-        HistoryAdapter adapter = HistoryAdapter.newInstance(this, mainDatabase.getHistory(db, MainDatabase.LIMIT_UNLIMITED));
+        HistoryAdapter adapter = HistoryAdapter.newInstance(this, MainDatabase.getHistory(db, MainDatabase.LIMIT_UNLIMITED));
         adapter.setOnItemClickListener(this);
 
         db.close();
@@ -137,7 +146,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         MainDatabase   mainDatabase = MainDatabase.newInstance(this);
         SQLiteDatabase db           = mainDatabase.getReadableDatabase();
 
-        ArrayList<HistoryDetailsEntity> details = mainDatabase.getHistoryDetails(db, history.getId(), MainDatabase.LIMIT_UNLIMITED);
+        ArrayList<HistoryDetailsEntity> details = MainDatabase.getHistoryDetails(db, history.getId(), MainDatabase.LIMIT_UNLIMITED);
 
         db.close();
 
