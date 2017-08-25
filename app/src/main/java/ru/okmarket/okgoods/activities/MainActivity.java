@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
 
-        mAdapter = SelectedGoodsAdapter.newInstance(this, mMainDatabase, mDB);
+        mAdapter = SelectedGoodsAdapter.newInstance(this, mDB);
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnBindViewHolderListener(this);
 

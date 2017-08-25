@@ -11,8 +11,12 @@ import org.junit.Test;
 @SuppressWarnings({"PublicConstructor", "JUnitTestNG", "ClassWithoutConstructor"})
 public class ExampleUnitTest
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ExampleUnitTest";
+    // endregion
+    // endregion
 
 
 

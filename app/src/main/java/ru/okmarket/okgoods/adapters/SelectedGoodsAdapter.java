@@ -17,17 +17,22 @@ import ru.okmarket.okgoods.db.entities.SelectedGoodEntity;
 
 public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdapter.SelectedGoodViewHolder>
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "SelectedGoodsAdapter";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private Context                       mContext                  = null;
-    private MainDatabase                  mMainDatabase             = null;
     private SQLiteDatabase                mDB                       = null;
     private ArrayList<SelectedGoodEntity> mItems                    = null;
     private OnItemClickListener           mOnItemClickListener      = null;
     private OnBindViewHolderListener      mOnBindViewHolderListener = null;
+    // endregion
 
 
 
@@ -36,7 +41,6 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
     {
         return "SelectedGoodsAdapter{" +
                 "mContext="                    + mContext                  +
-                ", mMainDatabase="             + mMainDatabase             +
                 ", mDB="                       + mDB                       +
                 ", mItems="                    + mItems                    +
                 ", mOnItemClickListener="      + mOnItemClickListener      +
@@ -44,10 +48,9 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
                 '}';
     }
 
-    private SelectedGoodsAdapter(Context context, MainDatabase mainDatabase, SQLiteDatabase db)
+    private SelectedGoodsAdapter(Context context, SQLiteDatabase db)
     {
         mContext                  = context;
-        mMainDatabase             = mainDatabase;
         mDB                       = db;
         mItems                    = new ArrayList<>(0);
         mOnItemClickListener      = null;
@@ -56,9 +59,9 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
         updateFromDatabase();
     }
 
-    public static SelectedGoodsAdapter newInstance(Context context, MainDatabase mainDatabase, SQLiteDatabase db)
+    public static SelectedGoodsAdapter newInstance(Context context, SQLiteDatabase db)
     {
-        return new SelectedGoodsAdapter(context, mainDatabase, db);
+        return new SelectedGoodsAdapter(context, db);
     }
 
     @Override
@@ -136,7 +139,7 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
 
     public void updateFromDatabase()
     {
-        mItems = mMainDatabase.getSelectedGoods(mDB, MainDatabase.LIMIT_UNLIMITED);
+        mItems = MainDatabase.getSelectedGoods(mDB, MainDatabase.LIMIT_UNLIMITED);
 
         notifyDataSetChanged();
     }
@@ -156,11 +159,13 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
     @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
     public static final class SelectedGoodViewHolder extends RecyclerView.ViewHolder
     {
+        // region Attributes
         private View     mView               = null;
         private TextView mGoodNameTextView   = null;
         private TextView mCostTextView       = null;
         private View     mExpandedView       = null;
         private TextView mSecondCostTextView = null;
+        // endregion
 
 
 
@@ -176,6 +181,7 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
                     '}';
         }
 
+        @SuppressWarnings("RedundantCast")
         private SelectedGoodViewHolder(View view)
         {
             super(view);

@@ -17,8 +17,12 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ExampleInstrumentedTest";
+    // endregion
+    // endregion
 
 
 
