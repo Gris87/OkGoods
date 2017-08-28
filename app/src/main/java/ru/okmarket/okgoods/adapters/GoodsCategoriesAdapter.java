@@ -19,15 +19,21 @@ import ru.okmarket.okgoods.widgets.ImageButtonWithTooltip;
 
 public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategoriesAdapter.GoodsCategoryViewHolder>
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "GoodsCategoriesAdapter";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private Context                              mContext             = null;
     private Tree<GoodsCategoryEntity>            mTree                = null;
     private ArrayList<Tree<GoodsCategoryEntity>> mItems               = null;
     private OnItemClickListener                  mOnItemClickListener = null;
+    // endregion
 
 
 
@@ -105,6 +111,8 @@ public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCate
                     {
                         item.setExpanded(true);
 
+
+
                         ArrayList<Tree<GoodsCategoryEntity>> children = node.doDepthForResult(new Tree.OperationWithResult<GoodsCategoryEntity, ArrayList<Tree<GoodsCategoryEntity>>>()
                         {
                             @Override
@@ -131,7 +139,12 @@ public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCate
                             }
                         });
 
-                        mItems.addAll(holder.getAdapterPosition() + 1, children);
+
+
+                        if (children != null)
+                        {
+                            mItems.addAll(holder.getAdapterPosition() + 1, children);
+                        }
                     }
                     else
                     {
@@ -239,9 +252,11 @@ public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCate
     @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
     public static final class GoodsCategoryViewHolder extends RecyclerView.ViewHolder
     {
+        // region Attributes
         private View                   mView                 = null;
         private ImageButtonWithTooltip mExpandCategoryButton = null;
         private TextView               mNameTextView         = null;
+        // endregion
 
 
 
@@ -255,6 +270,7 @@ public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCate
                     '}';
         }
 
+        @SuppressWarnings("RedundantCast")
         private GoodsCategoryViewHolder(View view)
         {
             super(view);

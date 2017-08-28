@@ -21,12 +21,16 @@ import ru.okmarket.okgoods.widgets.CachedImageView;
 
 public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodViewHolder>
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "GoodsAdapter";
+    // endregion
+    // endregion
 
 
 
-    @SuppressWarnings("FieldCanBeLocal")
+    // region Attributes
     private Context                        mContext                 = null;
     private ArrayList<GoodsCategoryEntity> mCategories              = null;
     private ArrayList<GoodEntity>          mGoods                   = null;
@@ -34,6 +38,7 @@ public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodVi
     private OnCategoryClickListener        mOnCategoryClickListener = null;
     private OnGoodClickListener            mOnGoodClickListener     = null;
     private LinearLayout.LayoutParams      mImageLayoutParams       = null;
+    // endregion
 
 
 
@@ -210,6 +215,7 @@ public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodVi
     @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
     public static final class GoodViewHolder extends RecyclerView.ViewHolder
     {
+        // region Attributes
         private View            mView                 = null;
         private View            mCategoryView         = null;
         private View            mGoodView             = null;
@@ -217,6 +223,7 @@ public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodVi
         private TextView        mCategoryNameTextView = null;
         private CachedImageView mGoodImageView        = null;
         private TextView        mGoodNameTextView     = null;
+        // endregion
 
 
 
@@ -234,6 +241,7 @@ public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodVi
                     '}';
         }
 
+        @SuppressWarnings("RedundantCast")
         private GoodViewHolder(View view)
         {
             super(view);
