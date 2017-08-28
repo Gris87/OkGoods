@@ -1,5 +1,7 @@
 package ru.okmarket.okgoods.util;
 
+import android.support.annotation.Nullable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,12 +11,21 @@ import java.util.Stack;
 
 import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 
-public class Utils
+public final class Utils
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "Utils";
+    // endregion
+    // endregion
 
 
+
+    private Utils()
+    {
+        // Nothing
+    }
 
     public static Tree<GoodsCategoryEntity> buildCategoriesTreeFromList(ArrayList<GoodsCategoryEntity> categories, GoodsCategoryEntity rootCategory)
     {
@@ -41,6 +52,7 @@ public class Utils
         return res;
     }
 
+    @Nullable
     public static JSONObject mergeJSONObjects(JSONObject first, JSONObject second)
     {
         if (first != null)

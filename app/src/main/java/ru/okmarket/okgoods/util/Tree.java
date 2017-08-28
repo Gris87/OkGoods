@@ -7,18 +7,23 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-@SuppressWarnings("WeakerAccess")
 public final class Tree<T>
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "Tree";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private T                  mData     = null;
     private int                mLevel    = 0;
     private Tree<T>            mParent   = null;
     private ArrayList<Tree<T>> mChildren = null;
+    // endregion
 
 
 
@@ -204,7 +209,7 @@ public final class Tree<T>
         return res;
     }
 
-    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
+    @SuppressWarnings({"AccessingNonPublicFieldOfAnotherObject", "WeakerAccess"})
     public int indexOf(T data)
     {
         for (int i = 0; i < mChildren.size(); ++i)

@@ -3,15 +3,20 @@ package ru.okmarket.okgoods.util;
 import android.util.Log;
 
 @SuppressWarnings("unused")
-public class AppLog
+public final class AppLog
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "AppLog";
+    // endregion
+    // endregion
 
 
 
     private AppLog()
     {
+        // Nothing
     }
 
     public static int v(String tag, String msg)
@@ -73,6 +78,7 @@ public class AppLog
     {
         try
         {
+            //noinspection ProhibitedExceptionThrown
             throw new Exception("Logged stacktrace");
         }
         catch (Exception e)
@@ -85,6 +91,7 @@ public class AppLog
     {
         try
         {
+            //noinspection ProhibitedExceptionThrown
             throw new Exception("Logged stacktrace");
         }
         catch (Exception e)
@@ -97,6 +104,7 @@ public class AppLog
     {
         try
         {
+            //noinspection ProhibitedExceptionThrown
             throw new Exception("Logged stacktrace");
         }
         catch (Exception e)

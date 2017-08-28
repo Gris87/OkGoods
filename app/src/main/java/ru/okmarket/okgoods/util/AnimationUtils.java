@@ -7,13 +7,23 @@ import android.view.animation.Transformation;
 
 import java.util.Locale;
 
-public class AnimationUtils
+public final class AnimationUtils
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "AnimationUtils";
+    // endregion
+    // endregion
 
 
 
+    private AnimationUtils()
+    {
+        // Nothing
+    }
+
+    @SuppressWarnings("NumericCastThatLosesPrecision")
     public static void expand(final View view, float speed)
     {
         if (speed <= 0)
@@ -33,7 +43,7 @@ public class AnimationUtils
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation transformation)
             {
-                view.getLayoutParams().height = interpolatedTime == 1
+                view.getLayoutParams().height = interpolatedTime >= 1
                         ? ViewGroup.LayoutParams.WRAP_CONTENT
                         : (int)(targetHeight * interpolatedTime);
 
@@ -52,6 +62,7 @@ public class AnimationUtils
         view.startAnimation(animation);
     }
 
+    @SuppressWarnings("NumericCastThatLosesPrecision")
     public static void collapse(final View view, float speed)
     {
         if (speed <= 0)
@@ -66,7 +77,7 @@ public class AnimationUtils
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation transformation)
             {
-                if (interpolatedTime == 1)
+                if (interpolatedTime >= 1)
                 {
                     view.setVisibility(View.GONE);
                 }
@@ -133,7 +144,7 @@ public class AnimationUtils
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation transformation)
             {
-                if (interpolatedTime == 1)
+                if (interpolatedTime >= 1)
                 {
                     view.setVisibility(View.GONE);
                 }
