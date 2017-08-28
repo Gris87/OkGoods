@@ -16,17 +16,23 @@ import ru.okmarket.okgoods.other.ShopFilter;
 
 public final class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ShopViewHolder>
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "ShopsAdapter";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private Context               mContext             = null;
     private ArrayList<ShopEntity> mOriginalShops       = null;
     private ArrayList<ShopEntity> mShops               = null;
     private ShopEntity            mNearestShop         = null;
     private ShopEntity            mSelectedShop        = null;
     private OnItemClickListener   mOnItemClickListener = null;
+    // endregion
 
 
 
@@ -221,9 +227,11 @@ public final class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ShopVi
     @SuppressWarnings({"PublicInnerClass", "WeakerAccess"})
     public static final class ShopViewHolder extends RecyclerView.ViewHolder
     {
+        // region Attributes
         private View      mView                 = null;
         private TextView  mNameTextView         = null;
         private ImageView mNearestShopImageView = null;
+        // endregion
 
 
 
@@ -237,6 +245,7 @@ public final class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ShopVi
                     '}';
         }
 
+        @SuppressWarnings("RedundantCast")
         private ShopViewHolder(View view)
         {
             super(view);

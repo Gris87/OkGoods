@@ -46,29 +46,40 @@ import ru.yandex.yandexmapkit.utils.GeoPoint;
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class SelectShopActivity extends AppCompatActivity implements View.OnTouchListener, OnMyLocationListener, OnBalloonListener, ShopsAdapter.OnItemClickListener, ShopDetailsFragment.OnFragmentInteractionListener, ShopFilterDialog.OnFragmentInteractionListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "SelectShopActivity";
+    // endregion
 
 
 
+    // region Activities ID
     private static final int PHOTO_VIEWER = 1;
+    // endregion
 
 
 
+    // region Activity Response
     public static final int NOTHING       = 0;
     public static final int SHOP_SELECTED = 1;
+    // endregion
 
 
 
+    // region Save state constants
     private static final String SAVED_STATE_MAP_CENTER                    = "MAP_CENTER";
     private static final String SAVED_STATE_MAP_ZOOM                      = "MAP_ZOOM";
     private static final String SAVED_STATE_SHOP_FILTER                   = "SHOP_FILTER";
     private static final String SAVED_STATE_SELECTED_SHOP                 = "SELECTED_SHOP";
     private static final String SAVED_STATE_LAST_KNOWN_POSITION_LATITUDE  = "LAST_KNOWN_POSITION_LATITUDE";
     private static final String SAVED_STATE_LAST_KNOWN_POSITION_LONGITUDE = "LAST_KNOWN_POSITION_LONGITUDE";
+    // endregion
+    // endregion
 
 
 
+    // region Attributes
     private MapView                  mMapView                     = null;
     private Overlay                  mShopsOverlay                = null;
     private SparseArray<OverlayItem> mShopsOverlayItems           = null;
@@ -86,6 +97,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
     private ShopEntity               mSelectedShop                = null;
     private double                   mLastKnownPositionLatitude   = 0;
     private double                   mLastKnownPositionLongitude  = 0;
+    // endregion
 
 
 
@@ -113,6 +125,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
                 '}';
     }
 
+    @SuppressWarnings("RedundantCast")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -132,8 +145,16 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
         MainDatabase mainDatabase = MainDatabase.newInstance(this);
         SQLiteDatabase db = mainDatabase.getReadableDatabase();
-        int cityId = mainDatabase.getCityId(ApplicationSettings.getCity());
-        ArrayList<ShopEntity> shops = mainDatabase.getShops(db, cityId, MainDatabase.LIMIT_UNLIMITED);
+
+        int cityId = MainDatabase.getCityId(ApplicationSettings.getCity());
+
+        if (cityId <= 0)
+        {
+            cityId = 1;
+        }
+
+        ArrayList<ShopEntity> shops = MainDatabase.getShops(db, cityId, MainDatabase.LIMIT_UNLIMITED);
+
         db.close();
 
 
