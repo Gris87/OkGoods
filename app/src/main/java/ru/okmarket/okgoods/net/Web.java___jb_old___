@@ -246,7 +246,7 @@ public final class Web
         // region Parse goods
         try
         {
-            int index = startPoint;   // TODO: Start point for goods?
+            int index = startPoint;
 
             do
             {
