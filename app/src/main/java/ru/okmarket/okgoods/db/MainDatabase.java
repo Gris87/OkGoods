@@ -170,13 +170,13 @@ public final class MainDatabase extends SQLiteOpenHelper
 
     // region Create table statements
     private static final String CITIES_TABLE_CREATE =           "CREATE TABLE " + CITIES_TABLE_NAME + ' ' +
-            '(' +
+                                                                '(' +
                                                                     COLUMN_ID   + " INTEGER PRIMARY KEY, " +
                                                                     COLUMN_NAME + " TEXT NOT NULL "        +
                                                                 ");";
 
     private static final String SHOPS_TABLE_CREATE =            "CREATE TABLE " + SHOPS_TABLE_NAME + ' ' +
-            '(' +
+                                                                '(' +
                                                                     COLUMN_ID                  + " INTEGER PRIMARY KEY, "                                                                            +
                                                                     COLUMN_CITY_ID             + " INTEGER NOT NULL REFERENCES " + CITIES_TABLE_NAME + '(' + COLUMN_ID + "), "                       +
                                                                     COLUMN_NAME                + " TEXT NOT NULL, "                                                                                  +
@@ -193,7 +193,7 @@ public final class MainDatabase extends SQLiteOpenHelper
                                                                 ");";
 
     private static final String GOODS_CATEGORIES_TABLE_CREATE = "CREATE TABLE " + GOODS_CATEGORIES_TABLE_NAME + ' ' +
-            '(' +
+                                                                '(' +
                                                                     COLUMN_ID          + " INTEGER PRIMARY KEY, " +
                                                                     COLUMN_PARENT_ID   + " INTEGER NOT NULL, "    +
                                                                     COLUMN_NAME        + " TEXT, "                +
@@ -204,7 +204,7 @@ public final class MainDatabase extends SQLiteOpenHelper
                                                                 ");";
 
     private static final String GOODS_TABLE_CREATE =            "CREATE TABLE " + GOODS_TABLE_NAME + ' ' +
-            '(' +
+                                                                '(' +
                                                                     COLUMN_ID              + " INTEGER PRIMARY KEY, "                                                                +
                                                                     COLUMN_CATEGORY_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + '(' + COLUMN_ID + "), " +
                                                                     COLUMN_NAME            + " TEXT, "                                                                               +
@@ -222,7 +222,7 @@ public final class MainDatabase extends SQLiteOpenHelper
                                                                 ");";
 
     private static final String SELECTED_GOODS_TABLE_CREATE =   "CREATE TABLE " + SELECTED_GOODS_TABLE_NAME + ' ' +
-            '(' +
+                                                                '(' +
                                                                     COLUMN_ID          + " INTEGER PRIMARY KEY, "                                                                +
                                                                     COLUMN_GOOD_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_TABLE_NAME            + '(' + COLUMN_ID + "), " +
                                                                     COLUMN_CATEGORY_ID + " INTEGER NOT NULL REFERENCES " + GOODS_CATEGORIES_TABLE_NAME + '(' + COLUMN_ID + "), " +
@@ -230,7 +230,7 @@ public final class MainDatabase extends SQLiteOpenHelper
                                                                 ");";
 
     private static final String HISTORY_TABLE_CREATE =          "CREATE TABLE " + HISTORY_TABLE_NAME + ' ' +
-            '(' +
+                                                                '(' +
                                                                     COLUMN_ID       + " INTEGER PRIMARY KEY, " +
                                                                     COLUMN_SHOP_ID  + " INTEGER NOT NULL, "    +
                                                                     COLUMN_DATE     + " TEXT NOT NULL, "       +
@@ -239,7 +239,7 @@ public final class MainDatabase extends SQLiteOpenHelper
                                                                 ");";
 
     private static final String HISTORY_DETAILS_TABLE_CREATE =  "CREATE TABLE " + HISTORY_DETAILS_TABLE_NAME + ' ' +
-            '(' +
+                                                                '(' +
                                                                     COLUMN_ID          + " INTEGER PRIMARY KEY, "                                                                +
                                                                     COLUMN_HISTORY_ID  + " INTEGER NOT NULL REFERENCES " + HISTORY_TABLE_NAME          + '(' + COLUMN_ID + "), " +
                                                                     COLUMN_GOOD_ID     + " INTEGER NOT NULL REFERENCES " + GOODS_TABLE_NAME            + '(' + COLUMN_ID + "), " +
@@ -4066,13 +4066,13 @@ public final class MainDatabase extends SQLiteOpenHelper
     public static void insertGoodsCategory(SQLiteDatabase db, GoodsCategoryEntity category)
     {
         insertToTable(db, GOODS_CATEGORIES_TABLE_NAME, GOODS_CATEGORIES_COLUMNS
-                , category.getId()
-                , category.getParentId()
-                , category.getName()
-                , category.getImageName()
-                , category.getPriority()
-                , category.getUpdateTime()
-                , category.getEnabled());
+                , category.getId()          // COLUMN_ID
+                , category.getParentId()    // COLUMN_PARENT_ID
+                , category.getName()        // COLUMN_NAME
+                , category.getImageName()   // COLUMN_IMAGE_NAME
+                , category.getPriority()    // COLUMN_PRIORITY
+                , category.getUpdateTime()  // COLUMN_UPDATE_TIME
+                , category.getEnabled());   // COLUMN_ENABLED
     }
 
     public static void updateGoodsCategory(SQLiteDatabase db, GoodsCategoryEntity category)
@@ -4109,20 +4109,20 @@ public final class MainDatabase extends SQLiteOpenHelper
     public static void insertGood(SQLiteDatabase db, GoodEntity good)
     {
         insertToTable(db, GOODS_TABLE_NAME, GOODS_COLUMNS
-                , good.getId()
-                , good.getCategoryId()
-                , good.getName()
-                , good.getImageId()
-                , good.getCost()
-                , good.getUnit()
-                , good.getUnitType()
-                , good.getCountIncrement()
-                , good.getCountType()
-                , good.getAttrs()        != null ? good.getAttrs().toString()        : null
-                , good.getAttrsDetails() != null ? good.getAttrsDetails().toString() : null
-                , good.getPriority()
-                , good.getUpdateTime()
-                , good.getEnabled());
+                , good.getId()                                                                  // COLUMN_ID
+                , good.getCategoryId()                                                          // COLUMN_CATEGORY_ID
+                , good.getName()                                                                // COLUMN_NAME
+                , good.getImageId()                                                             // COLUMN_IMAGE_ID
+                , good.getCost()                                                                // COLUMN_COST
+                , good.getUnit()                                                                // COLUMN_UNIT
+                , good.getUnitType()                                                            // COLUMN_UNIT_TYPE
+                , good.getCountIncrement()                                                      // COLUMN_COUNT_INCREMENT
+                , good.getCountType()                                                           // COLUMN_COUNT_TYPE
+                , good.getAttrs()        != null ? good.getAttrs().toString()        : null     // COLUMN_ATTRS
+                , good.getAttrsDetails() != null ? good.getAttrsDetails().toString() : null     // COLUMN_ATTRS_DETAILS
+                , good.getPriority()                                                            // COLUMN_PRIORITY
+                , good.getUpdateTime()                                                          // COLUMN_UPDATE_TIME
+                , good.getEnabled());                                                           // COLUMN_ENABLED
     }
 
     public static void updateGood(SQLiteDatabase db, GoodEntity good)

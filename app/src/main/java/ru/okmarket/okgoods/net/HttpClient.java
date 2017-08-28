@@ -11,15 +11,26 @@ import com.android.volley.toolbox.Volley;
 
 public final class HttpClient
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "HttpClient";
+    // endregion
 
 
 
-    private static HttpClient sInstance = null;
+    // region Singleton
+    private static final Object     sLock = new Object();
+    private static       HttpClient sInstance = null;
+    // endregion
+    // endregion
 
+
+
+    // region Attributes
     private RequestQueue mRequestQueue = null;
     private ImageLoader  mImageLoader  = null;
+    // endregion
 
 
 
@@ -57,7 +68,8 @@ public final class HttpClient
 
     public static HttpClient getInstance(Context context)
     {
-        synchronized (HttpClient.class)
+        //noinspection SynchronizationOnStaticField
+        synchronized (sLock)
         {
             if (sInstance == null)
             {
