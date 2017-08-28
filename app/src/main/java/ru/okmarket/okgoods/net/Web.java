@@ -13,39 +13,71 @@ import ru.okmarket.okgoods.db.entities.GoodEntity;
 import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 import ru.okmarket.okgoods.util.AppLog;
 
-public class Web
+public final class Web
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "Web";
+    // endregion
 
 
 
+    // region URL parameters
     private static final String OK_MARKET_RU_URL     = "http://okmarket.ru";
     private static final String OKEY_DOSTAVKA_RU_URL = "https://www.okeydostavka.ru";
 
-    public static final String[] OKEY_DOSTAVKA_RU_SHOPS = {
-              "spb"
-            , "spb1"
-            , "spb2"
-            , "spb3"
-            , "msk"
-            , "msk1"
-            , "msk2"
-    };
-
+    @SuppressWarnings("PublicStaticArrayField")
     public static final int[] OKEY_DOSTAVKA_RU_SHOP_IDS = {
               10653
-            , 10654
-            , 10655
-            , 10656
+            , 10653
+            , 10653
+            , 10653
+            , 10653
+            , 10653
             , 10151
-            , 10651
-            , 10652
+            , 10151
+            , 10151
+            , 10151
+            , 10151
     };
 
+    @SuppressWarnings("PublicStaticArrayField")
+    public static final int[] OKEY_DOSTAVKA_RU_SHOP_FFC_IDS = {
+              13156
+            , 13651
+            , 13157
+            , 13158
+            , 13159
+            , 13160
+            , 13151
+            , 13152
+            , 13153
+            , 13154
+            , 13155
+    };
+
+    @SuppressWarnings("PublicStaticArrayField")
+    public static final String[] OKEY_DOSTAVKA_RU_SHOP_GROUPS = {
+              "spb1"
+            , "spb1"
+            , "spb1"
+            , "spb1"
+            , "spb1"
+            , "spb1"
+            , "msk1"
+            , "msk2"
+            , "msk3"
+            , "msk4"
+            , "msk5"
+    };
+    // endregion
 
 
-    private static int PAGE_START_POINT = 292316;
+
+    // region Parser constants
+    private static int sPageStartPoint = 292316;
+    // endregion
 
 
 
@@ -53,8 +85,14 @@ public class Web
     public static final int FIRST_PAGE = 0;
     public static final int HUGE_PAGE  = 1;
     // endregion
+    // endregion
 
 
+
+    private Web()
+    {
+        // Nothing
+    }
 
     public static String getShopUrl(int shopId)
     {
@@ -63,7 +101,7 @@ public class Web
 
     public static ArrayList<String> getShopPhotosUrlsFromResponse(String response)
     {
-        ArrayList<String> res = new ArrayList<>();
+        ArrayList<String> res = new ArrayList<>(0);
 
         int index = -1;
 
@@ -137,25 +175,27 @@ public class Web
         return null;
     }
 
-    public static String getCatalogUrl(String shop, int shopId, int categoryId, int firstPage)
+    public static String getCatalogUrl(String shop, int shopId, int ffcId, int categoryId, int firstPage)
     {
         if (categoryId == MainDatabase.SPECIAL_ID_ROOT)
         {
-            return OKEY_DOSTAVKA_RU_URL + '/' + shop + "/catalog";
+            return OKEY_DOSTAVKA_RU_URL + '/' + shop.substring(0, 3) + "/catalog";
         }
         else
         {
             if (firstPage == FIRST_PAGE)
             {
                 return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/CategoryDisplay?" +
-                        "storeId="    + shopId + '&' +
+                        "storeId="    + shopId     + '&' +
+                        "ffcId="      + ffcId      + '&' +
                         "categoryId=" + categoryId + '&' +
                         "pageView=grid";
             }
             else
             {
                 return OKEY_DOSTAVKA_RU_URL + "/webapp/wcs/stores/servlet/ProductListingView?" +
-                        "storeId="    + shopId + '&' +
+                        "storeId="    + shopId     + '&' +
+                        "ffcId="      + ffcId      + '&' +
                         "categoryId=" + categoryId + '&' +
                         "resultsPerPage=1000000";
             }
@@ -177,28 +217,28 @@ public class Web
         return OKEY_DOSTAVKA_RU_URL + "/wcsstore/OKMarketCAS/cat_entries/" + imageId + '/' + imageId + "_fullimage.jpg" ;
     }
 
-    public static boolean getCatalogItemsFromResponse(String response, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods, String shop, int shopId, int parentCategoryId, int firstPage)
+    public static boolean getCatalogItemsFromResponse(String response, ArrayList<GoodsCategoryEntity> categories, ArrayList<GoodEntity> goods, String shop, int shopId, int ffcId, int parentCategoryId, int firstPage)
     {
         int startPoint = 0;
 
         // region Parse categories
         if (firstPage == FIRST_PAGE)
         {
-            startPoint = response.indexOf("<div class=\"rowContainer\"", PAGE_START_POINT);
+            startPoint = response.indexOf("<div class=\"rowContainer\"", sPageStartPoint);
 
             if (startPoint < 0)
             {
-                startPoint = response.lastIndexOf("<div class=\"rowContainer\"", PAGE_START_POINT);
+                startPoint = response.lastIndexOf("<div class=\"rowContainer\"", sPageStartPoint);
 
                 if (startPoint >= 0)
                 {
-                    AppLog.wtf(TAG, "Please move page start point to " + startPoint + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                    AppLog.wtf(TAG, "Please move page start point to " + startPoint + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
-                    PAGE_START_POINT = startPoint;
+                    sPageStartPoint = startPoint;
                 }
                 else
                 {
-                    AppLog.wtf(TAG, "Failed to find start point for parsing categories and goods | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                    AppLog.wtf(TAG, "Failed to find start point for parsing categories and goods | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                     return false;
                 }
@@ -233,7 +273,7 @@ public class Web
 
                             if (index2 < 0)
                             {
-                                AppLog.wtf(TAG, "Failed to get category image name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                AppLog.wtf(TAG, "Failed to get category image name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                 return false;
                             }
@@ -246,7 +286,7 @@ public class Web
                             }
                             else
                             {
-                                AppLog.wtf(TAG, "Invalid image url: " + imageName + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                AppLog.wtf(TAG, "Invalid image url: " + imageName + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                 imageName = "";
                             }
@@ -259,7 +299,7 @@ public class Web
                         {
                             if (!response.startsWith("</a>", i - 4))
                             {
-                                AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                 return false;
                             }
@@ -276,7 +316,7 @@ public class Web
 
                             if (index2 < 0)
                             {
-                                AppLog.wtf(TAG, "Failed to get category link from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                AppLog.wtf(TAG, "Failed to get category link from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                 return false;
                             }
@@ -303,7 +343,7 @@ public class Web
 
                                     if (index4 < 0)
                                     {
-                                        AppLog.wtf(TAG, "Failed to get category id from category link: " + categoryLink + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                        AppLog.wtf(TAG, "Failed to get category id from category link: " + categoryLink + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                         return false;
                                     }
@@ -329,7 +369,7 @@ public class Web
                         {
                             if (!response.startsWith("</a>", i - 4))
                             {
-                                AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                 return false;
                             }
@@ -346,7 +386,7 @@ public class Web
 
                             if (index2 < 0)
                             {
-                                AppLog.wtf(TAG, "Failed to get category name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                AppLog.wtf(TAG, "Failed to get category name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                 return false;
                             }
@@ -361,7 +401,7 @@ public class Web
                         {
                             if (!response.startsWith("</a>", i - 4))
                             {
-                                AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                 return false;
                             }
@@ -406,7 +446,7 @@ public class Web
             }
             catch (Exception e)
             {
-                AppLog.e(TAG, "Failed to parse categories | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage), e);
+                AppLog.e(TAG, "Failed to parse categories | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage), e);
             }
         }
         // endregion
@@ -452,7 +492,7 @@ public class Web
 
                         if (index2 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                             return false;
                         }
@@ -461,7 +501,7 @@ public class Web
 
                         if (index3 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                             return false;
                         }
@@ -474,7 +514,7 @@ public class Web
                         }
                         else
                         {
-                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                             return false;
                         }
@@ -494,7 +534,7 @@ public class Web
 
                         if (divLevel == 0)
                         {
-                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                             return false;
                         }
@@ -511,7 +551,7 @@ public class Web
 
                         if (index2 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get good metadata from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                            AppLog.wtf(TAG, "Failed to get good metadata from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                             return false;
                         }
@@ -539,7 +579,7 @@ public class Web
 
                         if (divLevel == 0)
                         {
-                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                             return false;
                         }
@@ -556,7 +596,7 @@ public class Web
 
                         if (index2 < 0)
                         {
-                            AppLog.wtf(TAG, "Failed to get good weight from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                            AppLog.wtf(TAG, "Failed to get good weight from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                             return false;
                         }
@@ -585,7 +625,7 @@ public class Web
 
                                 if (index2 < 0)
                                 {
-                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                     return false;
                                 }
@@ -612,7 +652,7 @@ public class Web
                                     break;
 
                                     default:
-                                        AppLog.wtf(TAG, "Unknown count type: " + header + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                        AppLog.wtf(TAG, "Unknown count type: " + header + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
                                     break;
                                 }
 
@@ -620,7 +660,7 @@ public class Web
 
                                 if (index3 < 0)
                                 {
-                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                     return false;
                                 }
@@ -629,7 +669,7 @@ public class Web
 
                                 if (index4 < 0)
                                 {
-                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index3, index3 + 30) + " | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index3, index3 + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                     return false;
                                 }
@@ -676,7 +716,7 @@ public class Web
 
                                 if (divLevel == 0)
                                 {
-                                    AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage));
+                                    AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
 
                                     return false;
                                 }
@@ -736,7 +776,7 @@ public class Web
                                 , goodCountIncrement
                                 , goodCountType
                                 , String.valueOf(goodBrand)
-                                , getCatalogUrl(shop, shopId, parentCategoryId, firstPage)
+                                , getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage)
                         ));
                     }
 
@@ -793,14 +833,14 @@ public class Web
                             , goodCountIncrement
                             , goodCountType
                             , String.valueOf(goodBrand)
-                            , getCatalogUrl(shop, shopId, parentCategoryId, firstPage)
+                            , getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage)
                     ));
                 }
             } while (true);
         }
         catch (Exception e)
         {
-            AppLog.e(TAG, "Failed to parse goods | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage), e);
+            AppLog.e(TAG, "Failed to parse goods | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage), e);
         }
         // endregion
 
@@ -825,7 +865,7 @@ public class Web
             }
             catch (Exception e)
             {
-                AppLog.e(TAG, "Failed to get pages count | URL: " + getCatalogUrl(shop, shopId, parentCategoryId, firstPage), e);
+                AppLog.e(TAG, "Failed to get pages count | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage), e);
             }
         }
         // endregion

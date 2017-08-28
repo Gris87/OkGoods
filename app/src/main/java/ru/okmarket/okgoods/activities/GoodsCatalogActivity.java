@@ -671,23 +671,25 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                     final ArrayList<GoodsCategoryEntity> webCategories = new ArrayList<>(0);
                     final ArrayList<GoodEntity>          webGoods      = new ArrayList<>(0);
 
-                    for (int i = 0; i < Web.OKEY_DOSTAVKA_RU_SHOPS.length; ++i)
+                    for (int i = 0; i < Web.OKEY_DOSTAVKA_RU_SHOP_GROUPS.length; ++i)
                     {
-                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mCategoryId, Web.FIRST_PAGE)
+                        StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOP_GROUPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], Web.OKEY_DOSTAVKA_RU_SHOP_FFC_IDS[i], mCategoryId, Web.FIRST_PAGE)
                                 , new Response.Listener<String>()
                                 {
                                     // region Attributes
-                                    private String mShop   = null;
-                                    private int    mShopId = 0;
+                                    private String mShop      = null;
+                                    private int    mShopId    = 0;
+                                    private int    mShopFfcId = 0;
                                     // endregion
 
 
 
                                     @SuppressWarnings({"WeakerAccess", "ReturnOfThis"})
-                                    public Response.Listener<String> init(String shop, int shopId)
+                                    public Response.Listener<String> init(String shop, int shopId, int shopFfcId)
                                     {
-                                        mShop   = shop;
-                                        mShopId = shopId;
+                                        mShop      = shop;
+                                        mShopId    = shopId;
+                                        mShopFfcId = shopFfcId;
 
                                         return this;
                                     }
@@ -697,28 +699,30 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     @Override
                                     public void onResponse(String response)
                                     {
-                                        boolean hasPages = Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mCategoryId, Web.FIRST_PAGE);
+                                        boolean hasPages = Web.getCatalogItemsFromResponse(response, webCategories, webGoods, mShop, mShopId, mShopFfcId, mCategoryId, Web.FIRST_PAGE);
                                         mGoodsCatalogActivity.loadPartiallyCompleted(webCategories, webGoods);
 
                                         --mGoodsCatalogActivity.mRequestsInProgress;
 
                                         if (hasPages)
                                         {
-                                            StringRequest request2 = new StringRequest(Request.Method.GET, Web.getCatalogUrl(mShop, mShopId, mCategoryId, Web.HUGE_PAGE)
+                                            StringRequest request2 = new StringRequest(Request.Method.GET, Web.getCatalogUrl(mShop, mShopId, mShopFfcId, mCategoryId, Web.HUGE_PAGE)
                                                     , new Response.Listener<String>()
                                                     {
                                                         // region Attributes
-                                                        private String mInnerShop   = null;
-                                                        private int    mInnerShopId = 0;
+                                                        private String mInnerShop      = null;
+                                                        private int    mInnerShopId    = 0;
+                                                        private int    mInnerShopFfcId = 0;
                                                         // endregion
 
 
 
                                                         @SuppressWarnings({"WeakerAccess", "ReturnOfThis"})
-                                                        public Response.Listener<String> init(String shop, int shopId)
+                                                        public Response.Listener<String> init(String shop, int shopId, int shopFfcId)
                                                         {
-                                                            mInnerShop   = shop;
-                                                            mInnerShopId = shopId;
+                                                            mInnerShop      = shop;
+                                                            mInnerShopId    = shopId;
+                                                            mInnerShopFfcId = shopFfcId;
 
                                                             return this;
                                                         }
@@ -728,7 +732,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                                         @Override
                                                         public void onResponse(String innerResponse)
                                                         {
-                                                            Web.getCatalogItemsFromResponse(innerResponse, webCategories, webGoods, mInnerShop, mInnerShopId, mCategoryId, Web.HUGE_PAGE);
+                                                            Web.getCatalogItemsFromResponse(innerResponse, webCategories, webGoods, mInnerShop, mInnerShopId, mInnerShopFfcId, mCategoryId, Web.HUGE_PAGE);
                                                             mGoodsCatalogActivity.loadPartiallyCompleted(webCategories, webGoods);
 
                                                             --mGoodsCatalogActivity.mRequestsInProgress;
@@ -739,21 +743,23 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                                             }
                                                         }
                                                     }
-                                                    .init(mShop, mShopId)
+                                                    .init(mShop, mShopId, mShopFfcId)
                                                     , new Response.ErrorListener()
                                                     {
                                                         // region Attributes
-                                                        private String mInnerShop   = null;
-                                                        private int    mInnerShopId = 0;
+                                                        private String mInnerShop      = null;
+                                                        private int    mInnerShopId    = 0;
+                                                        private int    mInnerShopFfcId = 0;
                                                         // endregion
 
 
 
                                                         @SuppressWarnings({"WeakerAccess", "ReturnOfThis"})
-                                                        public Response.ErrorListener init(String shop, int shopId)
+                                                        public Response.ErrorListener init(String shop, int shopId, int shopFfcId)
                                                         {
-                                                            mInnerShop   = shop;
-                                                            mInnerShopId = shopId;
+                                                            mInnerShop      = shop;
+                                                            mInnerShopId    = shopId;
+                                                            mInnerShopFfcId = shopFfcId;
 
                                                             return this;
                                                         }
@@ -763,7 +769,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                                         @Override
                                                         public void onErrorResponse(VolleyError error)
                                                         {
-                                                            AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mInnerShop, mInnerShopId, mCategoryId, Web.HUGE_PAGE));
+                                                            AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mInnerShop, mInnerShopId, mInnerShopFfcId, mCategoryId, Web.HUGE_PAGE));
 
                                                             --mGoodsCatalogActivity.mRequestsInProgress;
 
@@ -773,7 +779,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                                             }
                                                         }
                                                     }
-                                                    .init(mShop, mShopId)
+                                                    .init(mShop, mShopId, mShopFfcId)
                                             );
 
                                             request2.setTag(TAG);
@@ -790,21 +796,23 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                         }
                                     }
                                 }
-                                .init(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i])
+                                .init(Web.OKEY_DOSTAVKA_RU_SHOP_GROUPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], Web.OKEY_DOSTAVKA_RU_SHOP_FFC_IDS[i])
                                 , new Response.ErrorListener()
                                 {
                                     // region Attributes
-                                    private String mShop   = null;
-                                    private int    mShopId = 0;
+                                    private String mShop      = null;
+                                    private int    mShopId    = 0;
+                                    private int    mShopFfcId = 0;
                                     // endregion
 
 
 
                                     @SuppressWarnings({"WeakerAccess", "ReturnOfThis"})
-                                    public Response.ErrorListener init(String shop, int shopId)
+                                    public Response.ErrorListener init(String shop, int shopId, int shopFfcId)
                                     {
-                                        mShop   = shop;
-                                        mShopId = shopId;
+                                        mShop      = shop;
+                                        mShopId    = shopId;
+                                        mShopFfcId = shopFfcId;
 
                                         return this;
                                     }
@@ -814,7 +822,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                     @Override
                                     public void onErrorResponse(VolleyError error)
                                     {
-                                        AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mShop, mShopId, mCategoryId, Web.FIRST_PAGE));
+                                        AppLog.w(TAG, "Failed to get goods catalog: " + Web.getCatalogUrl(mShop, mShopId, mShopFfcId, mCategoryId, Web.FIRST_PAGE));
 
                                         --mGoodsCatalogActivity.mRequestsInProgress;
 
@@ -824,7 +832,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                         }
                                     }
                                 }
-                                .init(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i])
+                                .init(Web.OKEY_DOSTAVKA_RU_SHOP_GROUPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], Web.OKEY_DOSTAVKA_RU_SHOP_FFC_IDS[i])
                         );
 
                         request.setTag(TAG);
