@@ -41,13 +41,19 @@ import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
 public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTouchListener, GoodsCategoriesAdapter.OnItemClickListener, GoodsAdapter.OnCategoryClickListener, GoodsAdapter.OnGoodClickListener
 {
+    // region Statics
+    // region Tag
     @SuppressWarnings("unused")
     private static final String TAG = "GoodsCatalogActivity";
+    // endregion
 
 
 
+    // region Save state constants
     private static final String SAVED_STATE_TREE              = "TREE";
     private static final String SAVED_STATE_SELECTED_CATEGORY = "SELECTED_CATEGORY";
+    // endregion
+    // endregion
 
 
 
@@ -87,6 +93,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                 '}';
     }
 
+    @SuppressWarnings("RedundantCast")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -245,6 +252,10 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         {
             Tree<GoodsCategoryEntity> tree = Utils.buildCategoriesTreeFromList(allNodes, allNodes.get(0));
 
+            mGoodsCategoriesAdapter.setTree(tree);
+
+
+
             Tree<GoodsCategoryEntity> foundCategory = tree.doDepthForResult(new Tree.OperationWithResult<GoodsCategoryEntity, Tree<GoodsCategoryEntity>>()
             {
                 @Override
@@ -273,9 +284,10 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                 }
             });
 
+
+
             if (foundCategory != null)
             {
-                mGoodsCategoriesAdapter.setTree(tree);
                 selectCategory(foundCategory);
             }
         }
@@ -368,7 +380,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
 
-        mGoodsAdapter.setItems(mSelectedCategory.getAll(), mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), MainDatabase.ALLOW_DISABLED_NO, MainDatabase.LIMIT_STANDARD));
+        mGoodsAdapter.setItems(mSelectedCategory.getAll(), MainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), MainDatabase.ALLOW_DISABLED_NO, MainDatabase.LIMIT_STANDARD));
 
         if (mGoodsLoadingTask != null)
         {
@@ -391,7 +403,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
     {
         if (!webCategories.isEmpty() || !webGoods.isEmpty())
         {
-            ArrayList<GoodsCategoryEntity> categoriesInDB = mMainDatabase.getGoodsCategories(mDB, mSelectedCategory.getData().getId(), MainDatabase.ALLOW_DISABLED_YES);
+            ArrayList<GoodsCategoryEntity> categoriesInDB = MainDatabase.getGoodsCategories(mDB, mSelectedCategory.getData().getId(), MainDatabase.ALLOW_DISABLED_YES);
 
             for (int i = 0; i < categoriesInDB.size(); ++i)
             {
@@ -413,7 +425,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                     category.setEnabled(MainDatabase.DISABLED);
                 }
 
-                mMainDatabase.updateGoodsCategory(mDB, category);
+                MainDatabase.updateGoodsCategory(mDB, category);
             }
 
             for (int i = 0; i < webCategories.size(); ++i)
@@ -423,9 +435,11 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                 if (!categoriesInDB.contains(category))
                 {
                     categoriesInDB.add(category);
-                    mMainDatabase.insertGoodsCategory(mDB, category);
+                    MainDatabase.insertGoodsCategory(mDB, category);
                 }
             }
+
+
 
             for (int i = 0; i < mSelectedCategory.size(); ++i)
             {
@@ -470,7 +484,11 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
 
 
-            ArrayList<GoodEntity> goodsInDB = mMainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), MainDatabase.ALLOW_DISABLED_YES, MainDatabase.LIMIT_UNLIMITED);
+            // =====================================================================================
+
+
+
+            ArrayList<GoodEntity> goodsInDB = MainDatabase.getGoods(mDB, mSelectedCategory.getData().getId(), MainDatabase.ALLOW_DISABLED_YES, MainDatabase.LIMIT_UNLIMITED);
 
             for (int i = 0; i < goodsInDB.size(); ++i)
             {
@@ -504,7 +522,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                     good.setEnabled(MainDatabase.DISABLED);
                 }
 
-                mMainDatabase.updateGood(mDB, good);
+                MainDatabase.updateGood(mDB, good);
             }
 
             for (int i = 0; i < webGoods.size(); ++i)
@@ -514,9 +532,11 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                 if (!goodsInDB.contains(category))
                 {
                     goodsInDB.add(category);
-                    mMainDatabase.insertGood(mDB, category);
+                    MainDatabase.insertGood(mDB, category);
                 }
             }
+
+
 
             ArrayList<GoodEntity> goods = mGoodsAdapter.getGoods();
 
@@ -573,7 +593,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
         if (!webCategories.isEmpty() || !webGoods.isEmpty())
         {
             mSelectedCategory.getData().setUpdateTime(System.currentTimeMillis());
-            mMainDatabase.updateGoodsCategoryUpdateTime(mDB, mSelectedCategory.getData());
+            MainDatabase.updateGoodsCategoryUpdateTime(mDB, mSelectedCategory.getData());
         }
 
         mLoadingProgressBar.setVisibility(View.GONE);
@@ -583,9 +603,11 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
     private static final class GoodsLoadingTask extends AsyncTask<Void, Void, ArrayList<GoodEntity>>
     {
+        // region Attributes
         @SuppressWarnings("FieldNotUsedInToString")
         private GoodsCatalogActivity mGoodsCatalogActivity = null;
         private int                  mCategoryId           = 0;
+        // endregion
 
 
 
@@ -613,7 +635,7 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
 
             try
             {
-                res = mGoodsCatalogActivity.mMainDatabase.getGoods(mGoodsCatalogActivity.mDB, mCategoryId, MainDatabase.ALLOW_DISABLED_NO, MainDatabase.LIMIT_UNLIMITED);
+                res = MainDatabase.getGoods(mGoodsCatalogActivity.mDB, mCategoryId, MainDatabase.ALLOW_DISABLED_NO, MainDatabase.LIMIT_UNLIMITED);
             }
             catch (Exception ignored)
             {
@@ -654,8 +676,10 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                         StringRequest request = new StringRequest(Request.Method.GET, Web.getCatalogUrl(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i], mCategoryId, Web.FIRST_PAGE)
                                 , new Response.Listener<String>()
                                 {
+                                    // region Attributes
                                     private String mShop   = null;
                                     private int    mShopId = 0;
+                                    // endregion
 
 
 
@@ -683,8 +707,10 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                             StringRequest request2 = new StringRequest(Request.Method.GET, Web.getCatalogUrl(mShop, mShopId, mCategoryId, Web.HUGE_PAGE)
                                                     , new Response.Listener<String>()
                                                     {
+                                                        // region Attributes
                                                         private String mInnerShop   = null;
                                                         private int    mInnerShopId = 0;
+                                                        // endregion
 
 
 
@@ -716,8 +742,10 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                                     .init(mShop, mShopId)
                                                     , new Response.ErrorListener()
                                                     {
+                                                        // region Attributes
                                                         private String mInnerShop   = null;
                                                         private int    mInnerShopId = 0;
+                                                        // endregion
 
 
 
@@ -765,8 +793,10 @@ public class GoodsCatalogActivity extends AppCompatActivity implements View.OnTo
                                 .init(Web.OKEY_DOSTAVKA_RU_SHOPS[i], Web.OKEY_DOSTAVKA_RU_SHOP_IDS[i])
                                 , new Response.ErrorListener()
                                 {
+                                    // region Attributes
                                     private String mShop   = null;
                                     private int    mShopId = 0;
+                                    // endregion
 
 
 
