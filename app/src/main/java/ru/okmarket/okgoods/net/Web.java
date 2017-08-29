@@ -3,6 +3,7 @@ package ru.okmarket.okgoods.net;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -244,395 +245,13 @@ public final class Web
 
 
         // region Parse goods
-        try
+        if (!parseGoods(response, goods, startPoint, shop, shopId, ffcId, parentCategoryId, firstPage))
         {
-            int index = startPoint;   // TODO: Start point for goods?
-
-            do
-            {
-                index = response.indexOf("<div class=\"product ok-theme\">", index + 1);
-
-                if (index < 0)
-                {
-                    break;
-                }
-
-                int divLevel = 1;
-
-                int    goodId             = MainDatabase.SPECIAL_ID_NONE;
-                String goodName           = null;
-                int    goodImageId        = 0;
-                double goodCost           = 0;
-                double goodUnit           = 0;
-                int    goodUnitType       = MainDatabase.UNIT_TYPE_NOTHING;
-                double goodCountIncrement = 0;
-                int    goodCountType      = MainDatabase.UNIT_TYPE_NOTHING;
-                String goodBrand          = null;
-                int    goodEnabled        = MainDatabase.DISABLED;
-
-                int i = index + 46;
-
-                while (i < response.length())
-                {
-                    if (response.startsWith("<div class=\"product_name\">", i))
-                    {
-                        ++divLevel;
-
-                        int index2 = response.indexOf("title=\"", i + 26);
-
-                        if (index2 < 0)
-                        {
-                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                            return false;
-                        }
-
-                        int index3 = response.indexOf("onclick=\"", index2 + 7);
-
-                        if (index3 < 0)
-                        {
-                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                            return false;
-                        }
-
-                        goodName = response.substring(index2 + 7, index3).trim();
-
-                        if (!goodName.isEmpty() && goodName.charAt(goodName.length() - 1) == '\"')
-                        {
-                            goodName = goodName.substring(0, goodName.length() - 1);
-                        }
-                        else
-                        {
-                            AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                            return false;
-                        }
-
-                        i = index3 + 9;
-                        break;
-                    }
-                    else
-                    if (response.startsWith("<div", i))
-                    {
-                        ++divLevel;
-                    }
-                    else
-                    if (response.startsWith("</div>", i))
-                    {
-                        --divLevel;
-
-                        if (divLevel == 0)
-                        {
-                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                            return false;
-                        }
-                    }
-
-                    ++i;
-                }
-
-                while (i < response.length())
-                {
-                    if (response.startsWith("var product = {", i))
-                    {
-                        int index2 = response.indexOf('}', i + 15);
-
-                        if (index2 < 0)
-                        {
-                            AppLog.wtf(TAG, "Failed to get good metadata from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                            return false;
-                        }
-
-                        String goodMetaData = response.substring(i + 14, index2 + 1);
-                        JSONObject jsonObject = new JSONObject(goodMetaData);
-
-                        goodId      = jsonObject.getInt(   "productId");
-                        goodImageId = jsonObject.getInt(   "id");
-                        goodCost    = jsonObject.getDouble("price");
-                        goodBrand   = jsonObject.getString("brand");
-
-                        i = index2 + 1;
-                        break;
-                    }
-                    else
-                    if (response.startsWith("<div", i))
-                    {
-                        ++divLevel;
-                    }
-                    else
-                    if (response.startsWith("</div>", i))
-                    {
-                        --divLevel;
-
-                        if (divLevel == 0)
-                        {
-                            AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                            return false;
-                        }
-                    }
-
-                    ++i;
-                }
-
-                while (i < response.length())
-                {
-                    if (response.startsWith("<div class=\"product_weight\">", i))
-                    {
-                        int index2 = response.indexOf("</div>", i + 28);
-
-                        if (index2 < 0)
-                        {
-                            AppLog.wtf(TAG, "Failed to get good weight from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                            return false;
-                        }
-
-                        String weight = response.substring(i + 28, index2).replace("<span>", "").replace("</span>", "").replace("кг", "").trim().replace(',', '.');
-
-                        if (goodUnit == 0 || goodUnitType == MainDatabase.UNIT_TYPE_NOTHING)
-                        {
-                            goodUnit = Double.parseDouble(weight);
-                            goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
-                        }
-
-                        i = index2 + 27;
-                    }
-                    else
-                    if (response.startsWith("<div class=\"quantity_section\">", i))
-                    {
-                        ++divLevel;
-                        i += 30;
-
-                        while (i < response.length())
-                        {
-                            if (response.startsWith("class=\"header\">", i))
-                            {
-                                int index2 = response.indexOf('<', i + 15);
-
-                                if (index2 < 0)
-                                {
-                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                                    return false;
-                                }
-
-                                String header = response.substring(i + 15, index2);
-
-                                switch (header)
-                                {
-                                    case "Количество":
-                                        goodCountType = MainDatabase.UNIT_TYPE_ITEMS;
-
-                                        if (goodUnit == 0 || goodUnitType == MainDatabase.UNIT_TYPE_NOTHING)
-                                        {
-                                            goodUnit     = 1;
-                                            goodUnitType = MainDatabase.UNIT_TYPE_ITEMS;
-                                        }
-                                    break;
-
-                                    case "Вес":
-                                        goodCountType = MainDatabase.UNIT_TYPE_KILOGRAM;
-
-                                        goodUnit     = 1;
-                                        goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
-                                    break;
-
-                                    default:
-                                        AppLog.wtf(TAG, "Unknown count type: " + header + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-                                    break;
-                                }
-
-                                int index3 = response.indexOf("notifyAndUpdateQuantityChange(this, this.value, ", index2 + 1);
-
-                                if (index3 < 0)
-                                {
-                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                                    return false;
-                                }
-
-                                int index4 = response.indexOf(',', index3 + 48);
-
-                                if (index4 < 0)
-                                {
-                                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index3, index3 + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                                    return false;
-                                }
-
-                                String increment   = response.substring(index3 + 48, index4);
-                                goodCountIncrement = Double.parseDouble(increment);
-
-                                if (goodCountIncrement > 1)
-                                {
-                                    goodCountIncrement = 1;
-                                }
-
-                                goodEnabled = MainDatabase.ENABLED;
-
-                                i = index4;
-                                break;
-                            }
-                            else
-                            if (response.startsWith("<div class=\"product-unavailable-text\">", i))
-                            {
-                                ++divLevel;
-
-                                goodCountType      = MainDatabase.UNIT_TYPE_ITEMS;
-                                goodCountIncrement = 1;
-                                goodEnabled        = MainDatabase.DISABLED;
-
-                                if (goodUnit == 0 || goodUnitType == MainDatabase.UNIT_TYPE_NOTHING)
-                                {
-                                    goodUnit     = 1;
-                                    goodUnitType = MainDatabase.UNIT_TYPE_ITEMS;
-                                }
-
-                                break;
-                            }
-                            else
-                            if (response.startsWith("<div", i))
-                            {
-                                ++divLevel;
-                            }
-                            else
-                            if (response.startsWith("</div>", i))
-                            {
-                                --divLevel;
-
-                                if (divLevel == 0)
-                                {
-                                    AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
-
-                                    return false;
-                                }
-                            }
-
-                            ++i;
-                        }
-                    }
-                    else
-                    if (response.startsWith("<div", i))
-                    {
-                        ++divLevel;
-                    }
-                    else
-                    if (response.startsWith("</div>", i))
-                    {
-                        --divLevel;
-
-                        if (divLevel == 0)
-                        {
-                            break;
-                        }
-                    }
-
-                    ++i;
-                }
-
-                index = i;
-
-                if (goodId != MainDatabase.SPECIAL_ID_NONE)
-                {
-                    if (
-                        TextUtils.isEmpty(goodName)
-                        ||
-                        goodImageId        == 0
-                        ||
-                        goodCost           == 0
-                        ||
-                        goodUnit           == 0
-                        ||
-                        goodUnitType       == MainDatabase.UNIT_TYPE_NOTHING
-                        ||
-                        goodCountIncrement == 0
-                        ||
-                        goodCountType      == MainDatabase.UNIT_TYPE_NOTHING
-                        ||
-                        TextUtils.isEmpty(goodBrand)
-                       )
-                    {
-                        AppLog.e(TAG, String.format(Locale.US, "Parsed good with invalid data: goodId = %1$d, goodName = %2$s, goodImageId = %3$d, goodCost = %4$.2f, goodUnit = %5$.2f, goodUnitType = %6$d, goodCountIncrement = %7$.2f, goodCountType = %8$d, goodBrand = %9$s | URL: %10$s"
-                                , goodId
-                                , String.valueOf(goodName)
-                                , goodImageId
-                                , goodCost
-                                , goodUnit
-                                , goodUnitType
-                                , goodCountIncrement
-                                , goodCountType
-                                , String.valueOf(goodBrand)
-                                , getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage)
-                        ));
-                    }
-
-
-
-                    boolean absent = true;
-
-                    for (int j = 0; j < goods.size(); ++j)
-                    {
-                        if (goods.get(j).getId() == goodId)
-                        {
-                            absent = false;
-
-                            break;
-                        }
-                    }
-
-                    if (absent)
-                    {
-                        JSONObject goodAttrs = new JSONObject();
-                        goodAttrs.put(GoodEntity.ATTRIBUTE_BRAND, goodBrand);
-
-
-
-                        GoodEntity good = GoodEntity.newInstance();
-
-                        good.setId(goodId);
-                        good.setCategoryId(parentCategoryId);
-                        good.setName(goodName);
-                        good.setImageId(goodImageId);
-                        good.setCost(goodCost);
-                        good.setUnit(goodUnit);
-                        good.setUnitType(goodUnitType);
-                        good.setCountIncrement(goodCountIncrement);
-                        good.setCountType(goodCountType);
-                        good.setAttrs(goodAttrs);
-                        good.setAttrsDetails(null);
-                        good.setPriority(goods.size() + 1);
-                        good.setUpdateTime(0);
-                        good.setEnabled(goodEnabled);
-
-                        goods.add(good);
-                    }
-                }
-                else
-                {
-                    AppLog.e(TAG, String.format(Locale.US, "Failed to get ID for good: goodId = %1$d, goodName = %2$s, goodImageId = %3$d, goodCost = %4$.2f, goodUnit = %5$.2f, goodUnitType = %6$d, goodCountIncrement = %7$.2f, goodCountType = %8$d, goodBrand = %9$s | URL: %10$s"
-                            , goodId
-                            , String.valueOf(goodName)
-                            , goodImageId
-                            , goodCost
-                            , goodUnit
-                            , goodUnitType
-                            , goodCountIncrement
-                            , goodCountType
-                            , String.valueOf(goodBrand)
-                            , getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage)
-                    ));
-                }
-            } while (true);
-        }
-        catch (Exception e)
-        {
-            AppLog.e(TAG, "Failed to parse goods | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage), e);
+            return false;
         }
         // endregion
+
+
 
         // region Check for pages
         if (firstPage == FIRST_PAGE)
@@ -660,6 +279,8 @@ public final class Web
             }
         }
         // endregion
+
+
 
         return false;
     }
@@ -706,7 +327,7 @@ public final class Web
 
 
 
-                int    i = index + 46;
+                int i = index + 46;
 
                 int    categoryId;
                 String categoryName;
@@ -853,7 +474,7 @@ public final class Web
         return new Pair<>(i, res);
     }
 
-    private static Pair<Integer, Integer> parseCategoryId(String response, int pos, String shop, int shopId, int ffcId, int parentCategoryId, int firstPage) throws UnsupportedEncodingException
+    private static Pair<Integer, Integer> parseCategoryId(String response, int pos, String shop, int shopId, int ffcId, int parentCategoryId, int firstPage)
     {
         int res = MainDatabase.SPECIAL_ID_NONE;
 
@@ -937,7 +558,7 @@ public final class Web
         return new Pair<>(i, res);
     }
 
-    private static Pair<Integer, String> parseCategoryName(String response, int pos, String shop, int shopId, int ffcId, int parentCategoryId, int firstPage) throws UnsupportedEncodingException
+    private static Pair<Integer, String> parseCategoryName(String response, int pos, String shop, int shopId, int ffcId, int parentCategoryId, int firstPage)
     {
         String res = "";
 
@@ -981,5 +602,546 @@ public final class Web
 
 
         return new Pair<>(i, res);
+    }
+
+    private static boolean parseGoods(String response, ArrayList<GoodEntity> goods, int startPoint, String shop, int shopId, int ffcId, int parentCategoryId, int firstPage)
+    {
+        try
+        {
+            int index = startPoint;   // TODO: Start point for goods?
+
+            do
+            {
+                index = response.indexOf("<div class=\"product ok-theme\">", index + 1);
+
+                if (index < 0)
+                {
+                    break;
+                }
+
+
+
+                int i = index + 30;
+                int divLevel = 1;
+
+                int    goodId;
+                String goodName;
+                int    goodImageId;
+                double goodCost;
+                double goodUnit;
+                int    goodUnitType;
+                double goodCountIncrement;
+                int    goodCountType;
+                String goodBrand;
+                int    goodEnabled;
+
+
+
+                Pair<Integer, Pair<Integer, String>> triple = parseGoodName(response, i, divLevel, shop, shopId, ffcId, parentCategoryId, firstPage);
+
+                if (triple == null)
+                {
+                    return false;
+                }
+
+                i        = triple.first;
+                divLevel = triple.second.first;
+                goodName = triple.second.second;
+
+
+
+                Pair<Integer, Pair<Integer, Pair<Integer, Pair<Integer, Pair<Double, String>>>>> dataSet = parseGoodIdImageIdCostBrand(response, i, divLevel, shop, shopId, ffcId, parentCategoryId, firstPage);
+
+                if (dataSet == null)
+                {
+                    return false;
+                }
+
+                i           = dataSet.first;
+                divLevel    = dataSet.second.first;
+                goodId      = dataSet.second.second.first;
+                goodImageId = dataSet.second.second.second.first;
+                goodCost    = dataSet.second.second.second.second.first;
+                goodBrand   = dataSet.second.second.second.second.second;
+
+
+
+                Pair<Integer, Pair<Integer, Pair<Double, Pair<Integer, Pair<Double, Pair<Integer, Integer>>>>>> dataSet2 = parseGoodUnitUnitTypeCountIncrementCountTypeEnabled(response, i, divLevel, shop, shopId, ffcId, parentCategoryId, firstPage);
+
+                if (dataSet2 == null)
+                {
+                    return false;
+                }
+
+                i                  = dataSet2.first;
+                //noinspection UnusedAssignment
+                divLevel           = dataSet2.second.first;
+                goodUnit           = dataSet2.second.second.first;
+                goodUnitType       = dataSet2.second.second.second.first;
+                goodCountIncrement = dataSet2.second.second.second.second.first;
+                goodCountType      = dataSet2.second.second.second.second.second.first;
+                goodEnabled        = dataSet2.second.second.second.second.second.second;
+
+
+
+                index = i;
+
+                if (goodId != MainDatabase.SPECIAL_ID_NONE)
+                {
+                    if (
+                        TextUtils.isEmpty(goodName)
+                        ||
+                        goodImageId        == 0
+                        ||
+                        goodCost           == 0
+                        ||
+                        goodUnit           == 0
+                        ||
+                        goodUnitType       == MainDatabase.UNIT_TYPE_NOTHING
+                        ||
+                        goodCountIncrement == 0
+                        ||
+                        goodCountType      == MainDatabase.UNIT_TYPE_NOTHING
+                        ||
+                        TextUtils.isEmpty(goodBrand)
+                       )
+                    {
+                        AppLog.e(TAG, String.format(Locale.US, "Parsed good with invalid data: goodId = %1$d, goodName = %2$s, goodImageId = %3$d, goodCost = %4$.2f, goodUnit = %5$.2f, goodUnitType = %6$d, goodCountIncrement = %7$.2f, goodCountType = %8$d, goodBrand = %9$s | URL: %10$s"
+                                , goodId
+                                , String.valueOf(goodName)
+                                , goodImageId
+                                , goodCost
+                                , goodUnit
+                                , goodUnitType
+                                , goodCountIncrement
+                                , goodCountType
+                                , String.valueOf(goodBrand)
+                                , getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage)
+                        ));
+                    }
+
+
+
+                    boolean absent = true;
+
+                    for (int j = 0; j < goods.size(); ++j)
+                    {
+                        if (goods.get(j).getId() == goodId)
+                        {
+                            absent = false;
+
+                            break;
+                        }
+                    }
+
+                    if (absent)
+                    {
+                        JSONObject goodAttrs = new JSONObject();
+                        goodAttrs.put(GoodEntity.ATTRIBUTE_BRAND, goodBrand);
+
+
+
+                        GoodEntity good = GoodEntity.newInstance();
+
+                        good.setId(goodId);
+                        good.setCategoryId(parentCategoryId);
+                        good.setName(goodName);
+                        good.setImageId(goodImageId);
+                        good.setCost(goodCost);
+                        good.setUnit(goodUnit);
+                        good.setUnitType(goodUnitType);
+                        good.setCountIncrement(goodCountIncrement);
+                        good.setCountType(goodCountType);
+                        good.setAttrs(goodAttrs);
+                        good.setAttrsDetails(null);
+                        good.setPriority(goods.size() + 1);
+                        good.setUpdateTime(0);
+                        good.setEnabled(goodEnabled);
+
+                        goods.add(good);
+                    }
+                }
+                else
+                {
+                    AppLog.e(TAG, String.format(Locale.US, "Failed to get ID for good: goodId = %1$d, goodName = %2$s, goodImageId = %3$d, goodCost = %4$.2f, goodUnit = %5$.2f, goodUnitType = %6$d, goodCountIncrement = %7$.2f, goodCountType = %8$d, goodBrand = %9$s | URL: %10$s"
+                            , goodId
+                            , String.valueOf(goodName)
+                            , goodImageId
+                            , goodCost
+                            , goodUnit
+                            , goodUnitType
+                            , goodCountIncrement
+                            , goodCountType
+                            , String.valueOf(goodBrand)
+                            , getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage)
+                    ));
+                }
+            } while (true);
+        }
+        catch (Exception e)
+        {
+            AppLog.e(TAG, "Failed to parse goods | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage), e);
+
+            return false;
+        }
+
+
+
+        return true;
+    }
+
+    private static Pair<Integer, Pair<Integer, String>> parseGoodName(String response, int pos, int level, String shop, int shopId, int ffcId, int parentCategoryId, int firstPage)
+    {
+        String res = "";
+
+
+
+        int i        = pos;
+        int divLevel = level;
+
+        while (i < response.length())
+        {
+            if (response.startsWith("<div class=\"product_name\">", i))
+            {
+                ++divLevel;
+
+                int index = response.indexOf("title=\"", i + 26);
+
+                if (index < 0)
+                {
+                    AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+
+                int index2 = response.indexOf("onclick=\"", index + 7);
+
+                if (index2 < 0)
+                {
+                    AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index, index + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+
+                res = response.substring(index + 7, index2).trim();
+
+                if (!res.isEmpty() && res.charAt(res.length() - 1) == '\"')
+                {
+                    res = res.substring(0, res.length() - 1);
+                }
+                else
+                {
+                    AppLog.wtf(TAG, "Failed to get good name from line: " + response.substring(index, index + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+
+                i = index2 + 9;
+
+                break;
+            }
+            else
+            if (response.startsWith("<div", i))
+            {
+                ++divLevel;
+            }
+            else
+            if (response.startsWith("</div>", i))
+            {
+                --divLevel;
+
+                if (divLevel == 0)
+                {
+                    AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+            }
+
+            ++i;
+        }
+
+
+
+        return new Pair<>(i, new Pair<>(divLevel, res));
+    }
+
+    private static Pair<Integer, Pair<Integer, Pair<Integer, Pair<Integer, Pair<Double, String>>>>> parseGoodIdImageIdCostBrand(String response, int pos, int level, String shop, int shopId, int ffcId, int parentCategoryId, int firstPage) throws JSONException
+    {
+        int    goodId      = MainDatabase.SPECIAL_ID_NONE;
+        int    goodImageId = 0;
+        double goodCost    = 0;
+        String goodBrand   = null;
+
+
+
+        int i        = pos;
+        int divLevel = level;
+
+        while (i < response.length())
+        {
+            if (response.startsWith("var product = {", i))
+            {
+                int index = response.indexOf('}', i + 15);
+
+                if (index < 0)
+                {
+                    AppLog.wtf(TAG, "Failed to get good metadata from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+
+                String goodMetaData = response.substring(i + 14, index + 1);
+                JSONObject jsonObject = new JSONObject(goodMetaData);
+
+                goodId      = jsonObject.getInt(   "productId");
+                goodImageId = jsonObject.getInt(   "id");
+                goodCost    = jsonObject.getDouble("price");
+                goodBrand   = jsonObject.getString("brand");
+
+                i = index + 1;
+
+                break;
+            }
+            else
+            if (response.startsWith("<div", i))
+            {
+                ++divLevel;
+            }
+            else
+            if (response.startsWith("</div>", i))
+            {
+                --divLevel;
+
+                if (divLevel == 0)
+                {
+                    AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+            }
+
+            ++i;
+        }
+
+
+
+        return new Pair<>(i, new Pair<>(divLevel, new Pair<>(goodId, new Pair<>(goodImageId, new Pair<>(goodCost, goodBrand)))));
+    }
+
+    private static Pair<Integer, Pair<Integer, Pair<Double, Pair<Integer, Pair<Double, Pair<Integer, Integer>>>>>> parseGoodUnitUnitTypeCountIncrementCountTypeEnabled(String response, int pos, int level, String shop, int shopId, int ffcId, int parentCategoryId, int firstPage)
+    {
+        double goodUnit           = 0;
+        int    goodUnitType       = MainDatabase.UNIT_TYPE_NOTHING;
+        double goodCountIncrement = 0;
+        int    goodCountType      = MainDatabase.UNIT_TYPE_NOTHING;
+        int    goodEnabled        = MainDatabase.DISABLED;
+
+
+
+        int i        = pos;
+        int divLevel = level;
+
+        while (i < response.length())
+        {
+            if (response.startsWith("<div class=\"product_weight\">", i))
+            {
+                int index = response.indexOf("</div>", i + 28);
+
+                if (index < 0)
+                {
+                    AppLog.wtf(TAG, "Failed to get good weight from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+
+                String weight = response.substring(i + 28, index).replace("<span>", "").replace("</span>", "").replace("кг", "").trim().replace(',', '.');
+
+                //noinspection ConstantConditions
+                if (goodUnit == 0 || goodUnitType == MainDatabase.UNIT_TYPE_NOTHING)
+                {
+                    goodUnit = Double.parseDouble(weight);
+                    goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
+                }
+
+                i = index + 6;
+            }
+            else
+            if (response.startsWith("<div class=\"quantity_section\">", i))
+            {
+                ++divLevel;
+                i += 30;
+
+
+
+                Pair<Integer, Pair<Integer, Pair<Double, Pair<Integer, Pair<Double, Pair<Integer, Integer>>>>>> dataSet = parseGoodQuantitySection(response, i, divLevel, goodUnit, goodUnitType, shop, shopId, ffcId, parentCategoryId, firstPage);
+
+                if (dataSet == null)
+                {
+                    return null;
+                }
+
+                i                  = dataSet.first;
+                divLevel           = dataSet.second.first;
+                goodUnit           = dataSet.second.second.first;
+                goodUnitType       = dataSet.second.second.second.first;
+                goodCountIncrement = dataSet.second.second.second.second.first;
+                goodCountType      = dataSet.second.second.second.second.second.first;
+                goodEnabled        = dataSet.second.second.second.second.second.second;
+            }
+            else
+            if (response.startsWith("<div", i))
+            {
+                ++divLevel;
+            }
+            else
+            if (response.startsWith("</div>", i))
+            {
+                --divLevel;
+
+                if (divLevel == 0)
+                {
+                    break;
+                }
+            }
+
+            ++i;
+        }
+
+
+
+        return new Pair<>(i, new Pair<>(divLevel, new Pair<>(goodUnit, new Pair<>(goodUnitType, new Pair<>(goodCountIncrement, new Pair<>(goodCountType, goodEnabled))))));
+    }
+
+    @SuppressWarnings("AssignmentToMethodParameter")
+    private static Pair<Integer, Pair<Integer, Pair<Double, Pair<Integer, Pair<Double, Pair<Integer, Integer>>>>>> parseGoodQuantitySection(String response, int pos, int level, double goodUnit, int goodUnitType, String shop, int shopId, int ffcId, int parentCategoryId, int firstPage)
+    {
+        double goodCountIncrement = 0;
+        int    goodCountType      = MainDatabase.UNIT_TYPE_NOTHING;
+        int    goodEnabled        = MainDatabase.DISABLED;
+
+
+
+        int i        = pos;
+        int divLevel = level;
+
+        while (i < response.length())
+        {
+            if (response.startsWith("class=\"header\">", i))
+            {
+                int index = response.indexOf('<', i + 15);
+
+                if (index < 0)
+                {
+                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(i, i + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+
+                String header = response.substring(i + 15, index);
+
+                switch (header)
+                {
+                    case "Количество":
+                    {
+                        goodCountType = MainDatabase.UNIT_TYPE_ITEMS;
+
+                        if (goodUnit == 0 || goodUnitType == MainDatabase.UNIT_TYPE_NOTHING)
+                        {
+                            goodUnit = 1;
+                            goodUnitType = MainDatabase.UNIT_TYPE_ITEMS;
+                        }
+                    }
+                    break;
+
+                    case "Вес":
+                    {
+                        goodCountType = MainDatabase.UNIT_TYPE_KILOGRAM;
+
+                        goodUnit = 1;
+                        goodUnitType = MainDatabase.UNIT_TYPE_KILOGRAM;
+                    }
+                    break;
+
+                    default:
+                    {
+                        AppLog.wtf(TAG, "Unknown count type: " + header + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+                    }
+                    break;
+                }
+
+                int index2 = response.indexOf("notifyAndUpdateQuantityChange(this, this.value, ", index + 1);
+
+                if (index2 < 0)
+                {
+                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index, index + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+
+                int index3 = response.indexOf(',', index2 + 48);
+
+                if (index3 < 0)
+                {
+                    AppLog.wtf(TAG, "Failed to get good count increment from line: " + response.substring(index2, index2 + 30) + " | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+
+                String increment   = response.substring(index2 + 48, index3);
+                goodCountIncrement = Double.parseDouble(increment);
+
+                if (goodCountIncrement > 1)
+                {
+                    goodCountIncrement = 1;
+                }
+
+                goodEnabled = MainDatabase.ENABLED;
+
+                i = index3 + 1;
+
+                break;
+            }
+            else
+            if (response.startsWith("<div class=\"product-unavailable-text\">", i))
+            {
+                ++divLevel;
+
+                goodCountType      = MainDatabase.UNIT_TYPE_ITEMS;
+                goodCountIncrement = 1;
+                goodEnabled        = MainDatabase.DISABLED;
+
+                if (goodUnit == 0 || goodUnitType == MainDatabase.UNIT_TYPE_NOTHING)
+                {
+                    goodUnit     = 1;
+                    goodUnitType = MainDatabase.UNIT_TYPE_ITEMS;
+                }
+
+                break;
+            }
+            else
+            if (response.startsWith("<div", i))
+            {
+                ++divLevel;
+            }
+            else
+            if (response.startsWith("</div>", i))
+            {
+                --divLevel;
+
+                if (divLevel == 0)
+                {
+                    AppLog.wtf(TAG, "Unexpected closure for tag div | URL: " + getCatalogUrl(shop, shopId, ffcId, parentCategoryId, firstPage));
+
+                    return null;
+                }
+            }
+
+            ++i;
+        }
+
+
+
+        return new Pair<>(i, new Pair<>(divLevel, new Pair<>(goodUnit, new Pair<>(goodUnitType, new Pair<>(goodCountIncrement, new Pair<>(goodCountType, goodEnabled))))));
     }
 }
