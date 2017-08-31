@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string name="dialog_select_city_title">Select your city</string>
+    <string name="dialog_select_city_title">Select your city</string>
 </resources>

@@ -1,18 +1,15 @@
 package ru.okmarket.okgoods.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
-import android.view.MenuItem;
 
 import java.util.List;
 
@@ -32,7 +29,7 @@ import ru.okmarket.okgoods.other.ApplicationPreferences;
  * API Guide</a> for more information on developing a Settings UI.
  */
 @SuppressWarnings({"ClassWithoutConstructor", "PublicConstructor"})
-public class SettingsActivity extends AppCompatPreferenceActivity
+public class SettingsActivity extends PreferenceActivity
 {
     // region Statics
     // region Tag
@@ -79,16 +76,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity
     // endregion
 
     /**
-     * Helper method to determine if the device has an extra-large screen. For
-     * example, 10" tablets are extra-large.
-     */
-    private static boolean isXLargeTablet(Context context)
-    {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
-    }
-
-    /**
      * Binds a preference's summary to its value. More specifically, when the
      * preference's value is changed, its summary (line of text below the
      * preference title) is updated to reflect the value. The summary is also
@@ -109,44 +96,67 @@ public class SettingsActivity extends AppCompatPreferenceActivity
                         .getString(preference.getKey(), ""));
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
 
-        setupActionBar();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+
+        setupSimplePreferencesScreen();
     }
 
     /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
+     * Shows the simplified settings UI if the device configuration if the
+     * device configuration dictates that a simplified, single-pane UI should be
+     * shown.
      */
-    private void setupActionBar()
+    @SuppressWarnings("deprecation")
+    private void setupSimplePreferencesScreen()
     {
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null)
+        if (isSimplePreferences())
         {
-            // Show the Up button in the action bar.
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            // In the simplified UI, fragments are not used at all and we instead
+            // use the older PreferenceActivity APIs.
+
+            // Change preference file name
+            PreferenceManager prefManager = getPreferenceManager();
+            prefManager.setSharedPreferencesName(ApplicationPreferences.MAIN_SHARED_PREFERENCES);
+            prefManager.setSharedPreferencesMode(MODE_PRIVATE);
+
+            // Create empty PreferenceScreen
+            setPreferenceScreen(prefManager.createPreferenceScreen(this));
+
+            // Add 'general' preferences, and a corresponding header.
+            PreferenceCategory fakeHeader = new PreferenceCategory(this);
+            fakeHeader.setTitle(R.string.settings_pref_header_general);
+            getPreferenceScreen().addPreference(fakeHeader);
+            addPreferencesFromResource(R.xml.pref_general);
+
+            // Add 'notifications' preferences, and a corresponding header.
+            fakeHeader = new PreferenceCategory(this);
+            fakeHeader.setTitle(R.string.settings_pref_header_notifications);
+            getPreferenceScreen().addPreference(fakeHeader);
+            addPreferencesFromResource(R.xml.pref_notification);
+
+
+
+            MainDatabase mainDatabase = MainDatabase.newInstance(this);
+            SQLiteDatabase db         = mainDatabase.getReadableDatabase();
+
+            ListPreference cities = (ListPreference)findPreference(getString(R.string.pref_key_city));
+            cities.setEntries(MainDatabase.getCities(db));
+            cities.setEntryValues(MainDatabase.CITIES);
+
+            db.close();
+
+
+
+            bindPreferenceSummaryToValue(cities);
         }
-    }
-
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item)
-    {
-        int id = item.getItemId();
-
-        if (id == android.R.id.home)
-        {
-            if (!super.onMenuItemSelected(featureId, item))
-            {
-                NavUtils.navigateUpFromSameTask(this);
-            }
-
-            return true;
-        }
-
-        return super.onMenuItemSelected(featureId, item);
     }
 
     /**
@@ -155,7 +165,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity
     @Override
     public boolean onIsMultiPane()
     {
-        return isXLargeTablet(this);
+        return isXLargeTablet();
+    }
+
+    /**
+     * Helper method to determine if the device has an extra-large screen. For
+     * example, 10" tablets are extra-large.
+     */
+    private boolean isXLargeTablet()
+    {
+        return (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
+
+    /**
+     * Determines whether the simplified settings UI should be shown. This is
+     * true if the device doesn't have newer APIs like {@link PreferenceFragment},
+     * or the device doesn't have an extra-large screen. In these cases, a single-pane
+     * "simplified" settings UI should be shown.
+     */
+    private boolean isSimplePreferences()
+    {
+        return !isXLargeTablet();
     }
 
     /**
@@ -164,7 +194,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity
     @Override
     public void onBuildHeaders(List<Header> target)
     {
-        loadHeadersFromResource(R.xml.pref_headers, target);
+        if (!isSimplePreferences())
+        {
+            loadHeadersFromResource(R.xml.pref_headers, target);
+        }
     }
 
     /**
@@ -188,22 +221,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity
     @SuppressWarnings({"PublicInnerClass", "ClassWithoutConstructor", "PublicConstructor"})
     public static class GeneralPreferenceFragment extends PreferenceFragment
     {
-        // region Attributes
-        private MainDatabase   mMainDatabase = null;
-        private SQLiteDatabase mDB           = null;
-        // endregion
-
-
-
-        @Override
-        public String toString()
-        {
-            return "GeneralPreferenceFragment{" +
-                    "mMainDatabase=" + mMainDatabase +
-                    ", mDB="         + mDB           +
-                    '}';
-        }
-
         @Override
         public void onCreate(Bundle savedInstanceState)
         {
@@ -217,46 +234,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity
             prefManager.setSharedPreferencesMode(MODE_PRIVATE);
 
             addPreferencesFromResource(R.xml.pref_general);
-            setHasOptionsMenu(true);
 
 
 
-            mMainDatabase = MainDatabase.newInstance(getActivity());
-            mDB           = mMainDatabase.getReadableDatabase();
-
-
+            MainDatabase mainDatabase = MainDatabase.newInstance(getActivity());
+            SQLiteDatabase db         = mainDatabase.getReadableDatabase();
 
             ListPreference cities = (ListPreference)findPreference(getString(R.string.pref_key_city));
-            cities.setEntries(MainDatabase.getCities(mDB));
+            cities.setEntries(MainDatabase.getCities(db));
             cities.setEntryValues(MainDatabase.CITIES);
 
+            db.close();
+
+
+
             bindPreferenceSummaryToValue(cities);
-        }
-
-        @Override
-        public void onDestroy()
-        {
-            super.onDestroy();
-
-            if (mDB != null)
-            {
-                mDB.close();
-            }
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item)
-        {
-            int id = item.getItemId();
-
-            if (id == android.R.id.home)
-            {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
-
-                return true;
-            }
-
-            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -280,22 +272,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity
             prefManager.setSharedPreferencesMode(MODE_PRIVATE);
 
             addPreferencesFromResource(R.xml.pref_notification);
-            setHasOptionsMenu(true);
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item)
-        {
-            int id = item.getItemId();
-
-            if (id == android.R.id.home)
-            {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
-
-                return true;
-            }
-
-            return super.onOptionsItemSelected(item);
         }
     }
 }
