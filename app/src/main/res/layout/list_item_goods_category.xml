@@ -29,6 +29,7 @@
         android:layout_gravity="start|center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:maxLines="1"
-        android:gravity="start|center_vertical" />
+        android:gravity="start|center_vertical"
+        android:ellipsize="end" />
 
 </LinearLayout>

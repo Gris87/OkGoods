@@ -13,9 +13,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:maxLines="1"
+        android:maxLines="2"
         android:gravity="center_horizontal|top"
-        android:text="@string/shop_details_undefined_shop" />
+        android:text="@string/shop_details_undefined_shop"
+        android:ellipsize="start" />
 
     <android.support.v7.widget.GridLayout
         android:id="@+id/shopDetailsGridLayout"
