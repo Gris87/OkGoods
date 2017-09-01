@@ -1,4 +1,3 @@
-Remove paddings
 Add comments to colors.xml
 Gravity for each TextView
 Add Google Analytics
