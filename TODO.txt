@@ -1,10 +1,9 @@
 Add Google Analytics
-Apply Glow effect on list items
 Send exceptions to Google Analytics
+Apply Glow effect on list items
 Sort categories and goods on load
 AsyncTasks for parsing
 nulls in shops table
-Improve settings
 Fix issue with icons
 Wait for animation finish before set attributes in History/SelectedGoods lists
 Take from cache while offline
@@ -35,7 +34,6 @@ Updater class with callbacks
 Show 10 second timer on update db action
 Auto-update options (Frequency, Wi-Fi)
 Cost statistics
-Google analytics
 Walls in 3D
 Stairs
 
