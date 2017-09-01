@@ -30,6 +30,7 @@ import ru.okmarket.okgoods.dialogs.SelectCityDialog;
 import ru.okmarket.okgoods.fragments.ShopMapFragment;
 import ru.okmarket.okgoods.other.ApplicationExtras;
 import ru.okmarket.okgoods.other.ApplicationPreferences;
+import ru.okmarket.okgoods.other.ApplicationSettings;
 import ru.okmarket.okgoods.util.AnimationUtils;
 import ru.okmarket.okgoods.util.AppLog;
 import ru.okmarket.okgoods.widgets.NoScrollableDrawerLayout;
@@ -336,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         // noinspection StatementWithEmptyBody
         if (requestCode == SETTINGS)
         {
-            // Nothing
+            ApplicationSettings.update(this);
         }
         else
         if (requestCode == SELECT_SHOP)
