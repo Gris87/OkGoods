@@ -5,6 +5,8 @@ import android.app.Application;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
+import java.util.Map;
+
 import ru.okmarket.okgoods.other.ApplicationSettings;
 
 /**
@@ -18,24 +20,15 @@ public class OkGoodsApplication extends Application
     @SuppressWarnings("unused")
     private static final String TAG = "OkGoodsApplication";
     // endregion
-    // endregion
 
 
 
     // region Attributes
-    private Tracker mTracker = null;
+    private static Tracker sTracker = null;
+    // endregion
     // endregion
 
 
-
-    /** {@inheritDoc} */
-    @Override
-    public String toString()
-    {
-        return "OkGoodsApplication{" +
-                "mTracker=" + mTracker +
-                '}';
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -43,7 +36,8 @@ public class OkGoodsApplication extends Application
     {
         super.onCreate();
 
-        mTracker = GoogleAnalytics.getInstance(this).newTracker(R.xml.tracker_config);
+        //noinspection AssignmentToStaticFieldFromInstanceMethod
+        sTracker = GoogleAnalytics.getInstance(this).newTracker(R.xml.tracker_config);
 
         ApplicationSettings.update(this);
     }
@@ -53,9 +47,16 @@ public class OkGoodsApplication extends Application
      *
      * @return Google Analytics tracker
      */
-    @SuppressWarnings("unused")
-    public Tracker getDefaultTracker()
+    public static Tracker getDefaultTracker()
     {
-        return mTracker;
+        return sTracker;
+    }
+
+    public static void sendToDefaultTracker(Map<String, String> message)
+    {
+        if (sTracker != null)
+        {
+            sTracker.send(message);
+        }
     }
 }

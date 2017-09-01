@@ -1,27 +1,32 @@
 {
   "project_info": {
-    "project_number": "479557377437",
-    "project_id": "firebase-okgoods"
+    "project_number": "1065022921433",
+    "project_id": "okgoods-747d0"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:479557377437:android:3f4171c747fe8808",
+        "mobilesdk_app_id": "1:1065022921433:android:3f4171c747fe8808",
         "android_client_info": {
           "package_name": "ru.okmarket.okgoods"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1065022921433-tbn7m2k4nee8nif3v3465tcur9m0v6l6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCn1JM86x9jHcBzEVEPaIXhbwJSPJJNs-U"
+          "current_key": "AIzaSyAeixzw2QttTouVxbvKsiwzjynYsnjW6uw"
         }
       ],
       "services": {
         "analytics_service": {
           "status": 2,
           "analytics_property": {
-            "tracking_id": "UA-51133429-2"
+            "tracking_id": "UA-105742053-1"
           }
         },
         "appinvite_service": {

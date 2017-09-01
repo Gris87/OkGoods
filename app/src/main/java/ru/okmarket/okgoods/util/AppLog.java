@@ -2,6 +2,13 @@ package ru.okmarket.okgoods.util;
 
 import android.util.Log;
 
+import com.google.android.gms.analytics.HitBuilders;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import ru.okmarket.okgoods.OkGoodsApplication;
+
 @SuppressWarnings("unused")
 public final class AppLog
 {
@@ -56,21 +63,53 @@ public final class AppLog
 
     public static int w(String tag, String msg, Throwable tr)
     {
+        OkGoodsApplication.sendToDefaultTracker(new HitBuilders.EventBuilder()
+                .setCategory("Log")
+                .setAction("Warning")
+                .setLabel(tag + ": " + msg)
+                .build());
+
         return Log.w(tag, msg, tr);
     }
 
     public static int w(String tag, Throwable tr)
     {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter  printWriter  = new PrintWriter(stringWriter);
+        tr.printStackTrace(printWriter);
+
+        OkGoodsApplication.sendToDefaultTracker(new HitBuilders.EventBuilder()
+                .setCategory("Log")
+                .setAction("Exception")
+                .setLabel(stringWriter.toString())
+                .build());
+
         return Log.w(tag, tr);
     }
 
     public static int e(String tag, String msg)
     {
+        OkGoodsApplication.sendToDefaultTracker(new HitBuilders.EventBuilder()
+                .setCategory("Log")
+                .setAction("Error")
+                .setLabel(tag + ": " + msg)
+                .build());
+
         return Log.e(tag, msg);
     }
 
     public static int e(String tag, String msg, Throwable tr)
     {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter  printWriter  = new PrintWriter(stringWriter);
+        tr.printStackTrace(printWriter);
+
+        OkGoodsApplication.sendToDefaultTracker(new HitBuilders.EventBuilder()
+                .setCategory("Log")
+                .setAction("Exception")
+                .setLabel(stringWriter.toString())
+                .build());
+
         return Log.e(tag, msg, tr);
     }
 
@@ -81,9 +120,9 @@ public final class AppLog
             //noinspection ProhibitedExceptionThrown
             throw new Exception("Logged stacktrace");
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return Log.e(tag, msg, e);
+            return e(tag, msg, ex);
         }
     }
 
@@ -94,9 +133,9 @@ public final class AppLog
             //noinspection ProhibitedExceptionThrown
             throw new Exception("Logged stacktrace");
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return Log.e(tag, msg + '\n' + Log.getStackTraceString(tr), e);
+            return e(tag, msg + '\n' + Log.getStackTraceString(tr), ex);
         }
     }
 
@@ -107,9 +146,9 @@ public final class AppLog
             //noinspection ProhibitedExceptionThrown
             throw new Exception("Logged stacktrace");
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return Log.e(tag, Log.getStackTraceString(tr), e);
+            return e(tag, Log.getStackTraceString(tr), ex);
         }
     }
 
