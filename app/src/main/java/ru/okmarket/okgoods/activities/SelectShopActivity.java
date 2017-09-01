@@ -1,10 +1,14 @@
 package ru.okmarket.okgoods.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -54,6 +58,12 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
 
 
+    // region Request permissions codes
+    private static final int REQUEST_PERMISSIONS = 1;
+    // endregion
+
+
+
     // region Activities ID
     private static final int PHOTO_VIEWER = 1;
     // endregion
@@ -83,6 +93,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
     private MapView                  mMapView                     = null;
     private Overlay                  mShopsOverlay                = null;
     private SparseArray<OverlayItem> mShopsOverlayItems           = null;
+    private MyLocationOverlay        mMyLocationOverlay           = null;
     private Drawable                 mSupermarketDrawable         = null;
     private Drawable                 mHypermarketDrawable         = null;
     private Drawable                 mSupermarketSelectedDrawable = null;
@@ -108,6 +119,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
                 "mMapView="                       + mMapView                     +
                 ", mShopsOverlay="                + mShopsOverlay                +
                 ", mShopsOverlayItems="           + mShopsOverlayItems           +
+                ", mMyLocationOverlay="           + mMyLocationOverlay           +
                 ", mSupermarketDrawable="         + mSupermarketDrawable         +
                 ", mHypermarketDrawable="         + mHypermarketDrawable         +
                 ", mSupermarketSelectedDrawable=" + mSupermarketSelectedDrawable +
@@ -130,6 +142,19 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+
+
+        ActivityCompat.requestPermissions(
+                this,
+                new String[]
+                    {
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    },
+                REQUEST_PERMISSIONS);
+
+
+
         setContentView(R.layout.activity_select_shop);
 
 
@@ -165,7 +190,7 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
 
         MapController     mapController     = mMapView.getMapController();
         OverlayManager    overlayManager    = mapController.getOverlayManager();
-        MyLocationOverlay myLocationOverlay = overlayManager.getMyLocation();
+        mMyLocationOverlay                  = overlayManager.getMyLocation();
 
         mMapView.showBuiltInScreenButtons(true);
         mShopsOverlay = new Overlay(mapController);
@@ -181,8 +206,8 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
         mHypermarketSelectedDrawable = getResources().getDrawable(R.drawable.hypermarket_overlay_selected);
 
         overlayManager.addOverlay(mShopsOverlay);
-        myLocationOverlay.setAutoScroll(false);
-        myLocationOverlay.addMyLocationListener(this);
+        mMyLocationOverlay.setAutoScroll(false);
+        mMyLocationOverlay.addMyLocationListener(this);
 
         mapController.setPositionNoAnimationTo(MainDatabase.CITIES_COORDS[cityId - 1]);
         mapController.setZoomCurrent(10);
@@ -293,6 +318,42 @@ public class SelectShopActivity extends AppCompatActivity implements View.OnTouc
         if (mLastKnownPositionLatitude != 0 && mLastKnownPositionLongitude != 0)
         {
             mShopsAdapter.findNearestShop(mLastKnownPositionLatitude, mLastKnownPositionLongitude);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode)
+        {
+            case REQUEST_PERMISSIONS:
+            {
+                boolean granted = true;
+
+                for (int grantResult : grantResults)
+                {
+                    if (grantResult != PackageManager.PERMISSION_GRANTED)
+                    {
+                        granted = false;
+
+                        break;
+                    }
+                }
+
+                if (granted)
+                {
+                    mMyLocationOverlay.refreshPermission();
+                }
+            }
+            break;
+
+            default:
+            {
+                AppLog.e(TAG, "Unknown request permissions: " + requestCode);
+            }
+            break;
         }
     }
 

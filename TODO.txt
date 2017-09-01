@@ -1,4 +1,3 @@
-Request for Location
 Use Standard Android Material Icons
 Remove paddings
 Add comments to colors.xml
