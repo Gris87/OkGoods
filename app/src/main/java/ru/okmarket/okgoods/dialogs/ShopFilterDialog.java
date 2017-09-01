@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
@@ -185,9 +186,34 @@ public class ShopFilterDialog extends DialogFragment implements CompoundButton.O
                     {
                         dialog.dismiss();
                     }
-                });
+                })
+                .setNeutralButton(R.string.dialog_shop_filter_reset, null);
 
         return builder.create();
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+        AlertDialog dialog = (AlertDialog)getDialog();
+
+        if (dialog != null)
+        {
+            Button neutralButton = dialog.getButton(Dialog.BUTTON_NEUTRAL);
+
+            neutralButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    mShopFilter.reset();
+
+                    updateUI();
+                }
+            });
+        }
     }
 
     @Override

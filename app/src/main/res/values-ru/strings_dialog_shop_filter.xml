@@ -6,4 +6,5 @@
     <string name="dialog_shop_filter_hypermarket">Гипермаркет</string>
     <string name="dialog_shop_filter_all_day">Круглосуточно</string>
     <string name="dialog_shop_filter_services">Услуги:</string>
+    <string name="dialog_shop_filter_reset">Сбросить</string>
 </resources>

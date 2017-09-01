@@ -62,6 +62,14 @@ public final class ShopFilter implements Parcelable
         return new ShopFilter(another);
     }
 
+    public void reset()
+    {
+        mIsHypermarket = false;
+        mIsSupermarket = false;
+        mIsAllDay      = false;
+        mServicesSet   = 0;
+    }
+
     public boolean isHypermarket()
     {
         return mIsHypermarket;

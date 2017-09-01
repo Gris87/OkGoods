@@ -6,4 +6,5 @@
     <string name="dialog_shop_filter_hypermarket">Hypermarket</string>
     <string name="dialog_shop_filter_all_day">All day</string>
     <string name="dialog_shop_filter_services">Services:</string>
+    <string name="dialog_shop_filter_reset">Reset</string>
 </resources>
