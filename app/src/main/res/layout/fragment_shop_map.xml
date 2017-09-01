@@ -25,8 +25,9 @@
                 android:layout_marginLeft="@dimen/common_margin"
                 android:layout_marginStart="@dimen/common_margin"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:gravity="center"
                 android:textStyle="bold"
+                android:maxLines="1"
+                android:gravity="center_horizontal|center_vertical"
                 android:textColor="@color/textColorPrimary"
                 android:text="@string/shop_map_shop" />
 
@@ -41,8 +42,9 @@
                 android:layout_toRightOf="@id/shopTextView"
                 android:layout_toEndOf="@id/shopTextView"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:maxLines="1"
+                android:gravity="center_horizontal|center_vertical"
                 android:ellipsize="start"
-                android:gravity="center"
                 android:textColor="@color/textColorPrimary"
                 android:text="@string/shop_map_select_shop" />
 

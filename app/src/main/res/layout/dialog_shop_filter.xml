@@ -47,6 +47,8 @@
             android:layout_marginRight="@dimen/common_margin"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/dialog_shop_filter_services" />
 
         <android.support.v7.widget.GridLayout

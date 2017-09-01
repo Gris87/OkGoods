@@ -18,7 +18,8 @@
             android:layout_height="match_parent"
             android:visibility="gone"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:gravity="center"
+            android:maxLines="1"
+            android:gravity="center_horizontal|center_vertical"
             android:textColor="@color/noInformationColor"
             android:text="@string/history_details_no_information" />
 
@@ -47,6 +48,7 @@
             android:layout_marginBottom="@dimen/common_margin"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:textColor="@color/textColorPrimary"
             android:text="@string/history_details_total" />
 
@@ -60,6 +62,7 @@
             android:layout_marginBottom="@dimen/common_margin"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:textColor="@color/textColorPrimary" />
 
     </LinearLayout>

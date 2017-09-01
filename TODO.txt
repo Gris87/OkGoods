@@ -1,8 +1,6 @@
-Gravity for each TextView
 Add Google Analytics
 Apply Glow effect on list items
 Send exceptions to Google Analytics
-Remove activity_*_margin
 Sort categories and goods on load
 AsyncTasks for parsing
 nulls in shops table

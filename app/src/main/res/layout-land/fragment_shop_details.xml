@@ -12,8 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:maxLines="1"
+        android:gravity="center_horizontal|center_vertical"
         android:text="@string/shop_details_undefined_shop" />
 
     <android.support.v7.widget.GridLayout
@@ -37,6 +38,8 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/shop_details_phone" />
 
         <TextView
@@ -46,6 +49,8 @@
             grid:layout_columnWeight="50"
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/no_value" />
 
         <TextView
@@ -55,6 +60,8 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/shop_details_work_hours" />
 
         <TextView
@@ -64,6 +71,8 @@
             grid:layout_columnWeight="50"
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/no_value" />
 
         <TextView
@@ -73,6 +82,8 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/shop_details_square" />
 
         <TextView
@@ -82,6 +93,8 @@
             grid:layout_columnWeight="50"
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/no_value" />
 
         <TextView
@@ -91,6 +104,8 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/shop_details_opening_date" />
 
         <TextView
@@ -100,6 +115,8 @@
             grid:layout_columnWeight="50"
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/no_value" />
 
         <TextView
@@ -109,6 +126,8 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/shop_details_parking_places" />
 
         <TextView
@@ -118,6 +137,8 @@
             grid:layout_columnWeight="50"
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/no_value" />
 
         <TextView
@@ -127,6 +148,8 @@
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/shop_details_number_of_cashboxes" />
 
         <TextView
@@ -136,6 +159,8 @@
             grid:layout_columnWeight="50"
             grid:layout_gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/no_value" />
 
     </android.support.v7.widget.GridLayout>
@@ -160,6 +185,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/shop_details_services" />
 
         <HorizontalScrollView
@@ -332,6 +359,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:text="@string/shop_details_photos" />
 
         <FrameLayout
