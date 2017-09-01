@@ -1,8 +1,6 @@
-Use Standard Android Material Icons
 Remove paddings
 Add comments to colors.xml
 Gravity for each TextView
-Update to the latest SDK
 Add Google Analytics
 Apply Glow effect on list items
 Send exceptions to Google Analytics
@@ -11,6 +9,7 @@ Sort categories and goods on load
 AsyncTasks for parsing
 nulls in shops table
 Improve settings
+Fix issue with icons
 Wait for animation finish before set attributes in History/SelectedGoods lists
 Take from cache while offline
 Add error image for shop photo meta data loader
