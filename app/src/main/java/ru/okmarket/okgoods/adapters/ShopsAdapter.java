@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.entities.ShopEntity;
 import ru.okmarket.okgoods.other.ShopFilter;
+import ru.okmarket.okgoods.widgets.GlowView;
 
 public final class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ShopViewHolder>
 {
@@ -93,15 +94,15 @@ public final class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ShopVi
         if (mSelectedShop != null && mSelectedShop.equals(item))
         {
             // noinspection deprecation
-            holder.getView().setBackgroundColor(mContext.getResources().getColor(R.color.selectedShop));
+            holder.getGlowView().setBackgroundColor(mContext.getResources().getColor(R.color.selectedShop));
         }
         else
         {
             // noinspection deprecation
-            holder.getView().setBackgroundColor(mContext.getResources().getColor(R.color.windowBackground));
+            holder.getGlowView().setBackgroundColor(mContext.getResources().getColor(R.color.windowBackground));
         }
 
-        holder.getView().setOnClickListener(new View.OnClickListener()
+        holder.getGlowView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -228,7 +229,7 @@ public final class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ShopVi
     public static final class ShopViewHolder extends RecyclerView.ViewHolder
     {
         // region Attributes
-        private View      mView                 = null;
+        private GlowView  mGlowView             = null;
         private TextView  mNameTextView         = null;
         private ImageView mNearestShopImageView = null;
         // endregion
@@ -239,7 +240,7 @@ public final class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ShopVi
         public String toString()
         {
             return "ShopViewHolder{" +
-                    "mView="                   + mView                 +
+                    "mGlowView="               + mGlowView             +
                     ", mNameTextView="         + mNameTextView         +
                     ", mNearestShopImageView=" + mNearestShopImageView +
                     '}';
@@ -250,7 +251,7 @@ public final class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ShopVi
         {
             super(view);
 
-            mView                 = view;
+            mGlowView             = (GlowView)view.findViewById(R.id.glowView);
             mNameTextView         = (TextView) view.findViewById(R.id.nameTextView);
             mNearestShopImageView = (ImageView)view.findViewById(R.id.nearestShopImageView);
         }
@@ -260,9 +261,9 @@ public final class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ShopVi
             return new ShopViewHolder(view);
         }
 
-        public View getView()
+        public View getGlowView()
         {
-            return mView;
+            return mGlowView;
         }
 
         public TextView getNameTextView()

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.HistoryDetailsEntity;
+import ru.okmarket.okgoods.widgets.GlowView;
 
 public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDetailsAdapter.HistoryDetailsViewHolder>
 {
@@ -92,7 +93,7 @@ public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDet
 
         holder.getExpandedView().setVisibility(View.GONE);
 
-        holder.getView().setOnClickListener(new View.OnClickListener()
+        holder.getGlowView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -145,7 +146,7 @@ public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDet
     public static final class HistoryDetailsViewHolder extends RecyclerView.ViewHolder
     {
         // region Attributes
-        private View     mView               = null;
+        private GlowView mGlowView           = null;
         private TextView mGoodNameTextView   = null;
         private TextView mCostTextView       = null;
         private View     mExpandedView       = null;
@@ -158,7 +159,7 @@ public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDet
         public String toString()
         {
             return "HistoryDetailsViewHolder{" +
-                    "mView="                 + mView               +
+                    "mGlowView="             + mGlowView           +
                     ", mGoodNameTextView="   + mGoodNameTextView   +
                     ", mCostTextView="       + mCostTextView       +
                     ", mExpandedView="       + mExpandedView       +
@@ -171,7 +172,7 @@ public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDet
         {
             super(view);
 
-            mView               = view;
+            mGlowView           = (GlowView)view.findViewById(R.id.glowView);
             mGoodNameTextView   = (TextView)view.findViewById(R.id.goodNameTextView);
             mCostTextView       = (TextView)view.findViewById(R.id.costTextView);
             mExpandedView       =           view.findViewById(R.id.expandedView);
@@ -183,9 +184,9 @@ public final class HistoryDetailsAdapter extends RecyclerView.Adapter<HistoryDet
             return new HistoryDetailsViewHolder(view);
         }
 
-        public View getView()
+        public GlowView getGlowView()
         {
-            return mView;
+            return mGlowView;
         }
 
         public TextView getGoodNameTextView()

@@ -9,6 +9,9 @@
     <color name="textColorPrimary">#FFFFFFFF</color>
     <color name="textColor">#FF000000</color>
 
+    <!-- List item selection color -->
+    <color name="highlightItemColor">#40004BFF</color>
+
     <!-- Shop selection color -->
     <color name="selectedShop">#FFFFECB3</color>
 

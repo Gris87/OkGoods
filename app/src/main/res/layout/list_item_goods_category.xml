@@ -1,35 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
-    <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
-        android:id="@+id/expandCategoryButton"
-        android:layout_width="@dimen/expand_category_button_size"
-        android:layout_height="@dimen/expand_category_button_size"
-        android:layout_marginLeft="@dimen/common_margin"
-        android:layout_marginStart="@dimen/common_margin"
-        android:layout_marginTop="@dimen/common_margin"
-        android:layout_marginBottom="@dimen/common_margin"
-        android:contentDescription="@string/goods_catalog_expand"
-        android:src="@drawable/expand"
-        android:scaleType="centerInside"
-        android:background="@android:color/transparent" />
+    <ru.okmarket.okgoods.widgets.GlowView
+        android:id="@+id/glowView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="100"
-        android:layout_marginLeft="@dimen/common_margin"
-        android:layout_marginRight="@dimen/common_margin"
-        android:layout_marginTop="@dimen/common_margin"
-        android:layout_marginBottom="@dimen/common_margin"
-        android:layout_gravity="start|center_vertical"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:maxLines="1"
-        android:gravity="start|center_vertical"
-        android:ellipsize="end" />
+        android:orientation="horizontal">
 
-</LinearLayout>
+        <ru.okmarket.okgoods.widgets.ImageButtonWithTooltip
+            android:id="@+id/expandCategoryButton"
+            android:layout_width="@dimen/expand_category_button_size"
+            android:layout_height="@dimen/expand_category_button_size"
+            android:layout_marginLeft="@dimen/common_margin"
+            android:layout_marginStart="@dimen/common_margin"
+            android:layout_marginTop="@dimen/common_margin"
+            android:layout_marginBottom="@dimen/common_margin"
+            android:contentDescription="@string/goods_catalog_expand"
+            android:src="@drawable/expand"
+            android:scaleType="centerInside"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="100"
+            android:layout_marginLeft="@dimen/common_margin"
+            android:layout_marginRight="@dimen/common_margin"
+            android:layout_marginTop="@dimen/common_margin"
+            android:layout_marginBottom="@dimen/common_margin"
+            android:layout_gravity="start|center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
+            android:ellipsize="end" />
+
+    </LinearLayout>
+
+</FrameLayout>

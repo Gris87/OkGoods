@@ -18,6 +18,7 @@ import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 import ru.okmarket.okgoods.net.HttpClient;
 import ru.okmarket.okgoods.net.Web;
 import ru.okmarket.okgoods.widgets.CachedImageView;
+import ru.okmarket.okgoods.widgets.GlowView;
 
 public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodViewHolder>
 {
@@ -106,7 +107,7 @@ public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodVi
 
             holder.getCategoryNameTextView().setText(item.getName());
 
-            holder.getView().setOnClickListener(new View.OnClickListener()
+            holder.getGlowView().setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
@@ -142,7 +143,7 @@ public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodVi
 
             holder.getGoodNameTextView().setText(item.getName());
 
-            holder.getView().setOnClickListener(new View.OnClickListener()
+            holder.getGlowView().setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
@@ -216,7 +217,7 @@ public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodVi
     public static final class GoodViewHolder extends RecyclerView.ViewHolder
     {
         // region Attributes
-        private View            mView                 = null;
+        private GlowView        mGlowView             = null;
         private View            mCategoryView         = null;
         private View            mGoodView             = null;
         private CachedImageView mCategoryImageView    = null;
@@ -231,7 +232,7 @@ public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodVi
         public String toString()
         {
             return "GoodViewHolder{" +
-                    "mView="                   + mView                 +
+                    "mGlowView="               + mGlowView             +
                     ", mCategoryView="         + mCategoryView         +
                     ", mGoodView="             + mGoodView             +
                     ", mCategoryImageView="    + mCategoryImageView    +
@@ -246,7 +247,7 @@ public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodVi
         {
             super(view);
 
-            mView                 = view;
+            mGlowView             = (GlowView)view.findViewById(R.id.glowView);
             mCategoryView         =                  view.findViewById(R.id.categoryView);
             mGoodView             =                  view.findViewById(R.id.goodView);
             mCategoryImageView    = (CachedImageView)view.findViewById(R.id.categoryImageView);
@@ -260,11 +261,10 @@ public final class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodVi
             return new GoodViewHolder(view);
         }
 
-        public View getView()
+        public GlowView getGlowView()
         {
-            return mView;
+            return mGlowView;
         }
-
         public View getCategoryView()
         {
             return mCategoryView;

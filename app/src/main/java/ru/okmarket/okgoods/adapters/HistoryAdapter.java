@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.entities.HistoryEntity;
+import ru.okmarket.okgoods.widgets.GlowView;
 
 public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>
 {
@@ -72,7 +73,7 @@ public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Hi
         holder.getDurationTextView().setText(mContext.getString(R.string.history_time,         item.getDurationString()));
         holder.getTotalTextView().setText(   mContext.getString(R.string.history_rub_currency, item.getTotal()));
 
-        holder.getView().setOnClickListener(new View.OnClickListener()
+        holder.getGlowView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -117,7 +118,7 @@ public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Hi
     public static final class HistoryViewHolder extends RecyclerView.ViewHolder
     {
         // region Attributes
-        private View     mView             = null;
+        private GlowView mGlowView         = null;
         private TextView mShopNameTextView = null;
         private TextView mDateTextView     = null;
         private TextView mDurationTextView = null;
@@ -130,7 +131,7 @@ public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Hi
         public String toString()
         {
             return "HistoryViewHolder{" +
-                    "mView="               + mView             +
+                    "mGlowView="           + mGlowView         +
                     ", mShopNameTextView=" + mShopNameTextView +
                     ", mDateTextView="     + mDateTextView     +
                     ", mDurationTextView=" + mDurationTextView +
@@ -143,7 +144,7 @@ public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Hi
         {
             super(view);
 
-            mView             = view;
+            mGlowView         = (GlowView)view.findViewById(R.id.glowView);
             mShopNameTextView = (TextView)view.findViewById(R.id.shopNameTextView);
             mDateTextView     = (TextView)view.findViewById(R.id.dateTextView);
             mDurationTextView = (TextView)view.findViewById(R.id.durationTextView);
@@ -155,9 +156,9 @@ public final class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Hi
             return new HistoryViewHolder(view);
         }
 
-        public View getView()
+        public GlowView getGlowView()
         {
-            return mView;
+            return mGlowView;
         }
 
         public TextView getShopNameTextView()

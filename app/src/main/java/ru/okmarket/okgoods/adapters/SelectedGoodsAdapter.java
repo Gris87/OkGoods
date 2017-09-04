@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.MainDatabase;
 import ru.okmarket.okgoods.db.entities.SelectedGoodEntity;
+import ru.okmarket.okgoods.widgets.GlowView;
 
 public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoodsAdapter.SelectedGoodViewHolder>
 {
@@ -98,7 +99,7 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
 
         holder.getExpandedView().setVisibility(View.GONE);
 
-        holder.getView().setOnClickListener(new View.OnClickListener()
+        holder.getGlowView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -160,7 +161,7 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
     public static final class SelectedGoodViewHolder extends RecyclerView.ViewHolder
     {
         // region Attributes
-        private View     mView               = null;
+        private GlowView mGlowView           = null;
         private TextView mGoodNameTextView   = null;
         private TextView mCostTextView       = null;
         private View     mExpandedView       = null;
@@ -173,7 +174,7 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
         public String toString()
         {
             return "SelectedGoodViewHolder{" +
-                    "mView="                 + mView               +
+                    "mGlowView="             + mGlowView           +
                     ", mGoodNameTextView="   + mGoodNameTextView   +
                     ", mCostTextView="       + mCostTextView       +
                     ", mExpandedView="       + mExpandedView       +
@@ -186,7 +187,7 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
         {
             super(view);
 
-            mView               = view;
+            mGlowView           = (GlowView)view.findViewById(R.id.glowView);
             mGoodNameTextView   = (TextView)view.findViewById(R.id.goodNameTextView);
             mCostTextView       = (TextView)view.findViewById(R.id.costTextView);
             mExpandedView       =           view.findViewById(R.id.expandedView);
@@ -198,9 +199,9 @@ public final class SelectedGoodsAdapter extends RecyclerView.Adapter<SelectedGoo
             return new SelectedGoodViewHolder(view);
         }
 
-        public View getView()
+        public GlowView getGlowView()
         {
-            return mView;
+            return mGlowView;
         }
 
         public TextView getGoodNameTextView()

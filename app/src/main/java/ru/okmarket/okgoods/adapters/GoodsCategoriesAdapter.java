@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import ru.okmarket.okgoods.R;
 import ru.okmarket.okgoods.db.entities.GoodsCategoryEntity;
 import ru.okmarket.okgoods.util.Tree;
+import ru.okmarket.okgoods.widgets.GlowView;
 import ru.okmarket.okgoods.widgets.ImageButtonWithTooltip;
 
 public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCategoriesAdapter.GoodsCategoryViewHolder>
@@ -189,7 +190,7 @@ public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCate
             holder.getExpandCategoryButton().setVisibility(View.INVISIBLE);
         }
 
-        holder.getView().setOnClickListener(new View.OnClickListener()
+        holder.getGlowView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -253,7 +254,7 @@ public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCate
     public static final class GoodsCategoryViewHolder extends RecyclerView.ViewHolder
     {
         // region Attributes
-        private View                   mView                 = null;
+        private GlowView               mGlowView             = null;
         private ImageButtonWithTooltip mExpandCategoryButton = null;
         private TextView               mNameTextView         = null;
         // endregion
@@ -264,7 +265,7 @@ public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCate
         public String toString()
         {
             return "GoodsCategoryViewHolder{" +
-                    "mView="                   + mView                 +
+                    "mGlowView="               + mGlowView             +
                     ", mExpandCategoryButton=" + mExpandCategoryButton +
                     ", mNameTextView="         + mNameTextView         +
                     '}';
@@ -275,7 +276,7 @@ public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCate
         {
             super(view);
 
-            mView                 = view;
+            mGlowView             = (GlowView)view.findViewById(R.id.glowView);
             mExpandCategoryButton = (ImageButtonWithTooltip)view.findViewById(R.id.expandCategoryButton);
             mNameTextView         = (TextView)              view.findViewById(R.id.nameTextView);
         }
@@ -285,9 +286,9 @@ public final class GoodsCategoriesAdapter extends RecyclerView.Adapter<GoodsCate
             return new GoodsCategoryViewHolder(view);
         }
 
-        public View getView()
+        public GlowView getGlowView()
         {
-            return mView;
+            return mGlowView;
         }
 
         public ImageButtonWithTooltip getExpandCategoryButton()

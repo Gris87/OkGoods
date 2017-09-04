@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/shop_item_height"
-    android:orientation="horizontal"
-    tools:ignore="UseCompoundDrawables">
+    android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="100"
-        android:layout_marginLeft="@dimen/common_margin"
-        android:layout_marginRight="@dimen/common_margin"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:maxLines="2"
-        android:gravity="start|center_vertical"
-        android:ellipsize="start" />
+    <ru.okmarket.okgoods.widgets.GlowView
+        android:id="@+id/glowView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    <ImageView
-        android:id="@+id/nearestShopImageView"
-        android:layout_width="@dimen/shop_item_nearest_shop_size"
-        android:layout_height="@dimen/shop_item_nearest_shop_size"
-        android:layout_marginRight="@dimen/common_margin"
-        android:layout_marginEnd="@dimen/common_margin"
-        android:layout_marginTop="@dimen/common_margin"
-        android:contentDescription="@string/select_shop_nearest_shop"
-        android:src="@drawable/nearest_shop"
-        android:scaleType="centerInside" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shop_item_height"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:layout_marginLeft="@dimen/common_margin"
+            android:layout_marginRight="@dimen/common_margin"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:maxLines="2"
+            android:gravity="start|center_vertical"
+            android:ellipsize="start" />
+
+        <ImageView
+            android:id="@+id/nearestShopImageView"
+            android:layout_width="@dimen/shop_item_nearest_shop_size"
+            android:layout_height="@dimen/shop_item_nearest_shop_size"
+            android:layout_marginRight="@dimen/common_margin"
+            android:layout_marginEnd="@dimen/common_margin"
+            android:layout_marginTop="@dimen/common_margin"
+            android:contentDescription="@string/select_shop_nearest_shop"
+            android:src="@drawable/nearest_shop"
+            android:scaleType="centerInside" />
+
+    </LinearLayout>
+
+</FrameLayout>
